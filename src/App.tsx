@@ -1,51 +1,50 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AppShell } from './components/layout/AppShell'
+import { useApiPort } from './hooks/useApiPort'
+import { setApiPort } from './lib/api'
 
-function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
+function Placeholder({ name }: { name: string }) {
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
+    <div className="p-8 text-[#a09d96]">
+      <p className="text-lg">{name}</p>
+      <p className="text-sm mt-1">Coming in a future plan.</p>
+    </div>
+  )
 }
 
-export default App;
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 1, staleTime: 30_000 } },
+})
+
+function AppRoutes() {
+  const port = useApiPort()
+  useEffect(() => { setApiPort(port) }, [port])
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppShell />}>
+          <Route index element={<Navigate to="/fragments" replace />} />
+          <Route path="optimizer"  element={<Placeholder name="Optimizer" />} />
+          <Route path="fragments"  element={<Placeholder name="Memory Fragments" />} />
+          <Route path="combatants" element={<Placeholder name="Combatants" />} />
+          <Route path="scoring"    element={<Placeholder name="Scoring" />} />
+          <Route path="capture"    element={<Placeholder name="Capture" />} />
+          <Route path="setup"      element={<Placeholder name="Setup" />} />
+          <Route path="rescue"     element={<Placeholder name="Rescue Records" />} />
+          <Route path="about"      element={<Placeholder name="About" />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppRoutes />
+    </QueryClientProvider>
+  )
+}
