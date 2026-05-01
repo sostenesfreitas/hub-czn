@@ -41,3 +41,12 @@ def test_save_scoring_priorities_negative_value_returns_422(client):
 def test_save_scoring_priorities_unknown_stat_returns_422(client):
     response = client.post("/api/scoring/priorities", json={"weights": {"NONEXISTENT_STAT": 5}})
     assert response.status_code == 422
+
+
+def test_save_scoring_priorities_partial_update_merges(client):
+    weights = {ALL_STAT_NAMES[0]: 7}
+    response = client.post("/api/scoring/priorities", json={"weights": weights})
+    assert response.status_code == 200
+    body = response.json()["weights"]
+    assert set(body.keys()) == set(ALL_STAT_NAMES)
+    assert body[ALL_STAT_NAMES[0]] == 7
