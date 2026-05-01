@@ -89,9 +89,11 @@ export function CapturePage() {
         <h1 className="text-xl font-bold text-[#faf9f5]">Capture</h1>
 
         <div className="p-3 rounded-lg bg-[#252320] border border-[#2e2c28] flex flex-col gap-2">
-          <PrereqBadge ok={isAdmin} label="Admin" />
-          <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label="mitmproxy" />
-          <PrereqBadge ok={setupStatus?.certificate ?? false} label="Certificado" />
+          <div className="flex items-center gap-3 flex-wrap">
+            <PrereqBadge ok={isAdmin} label="Admin" />
+            <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label="mitmproxy" />
+            <PrereqBadge ok={setupStatus?.certificate ?? false} label="Certificado" />
+          </div>
           {!prereqsOk && (
             <NavLink to="/setup" className="text-xs text-[#cc785c] hover:underline mt-1">
               → Ir para Setup
