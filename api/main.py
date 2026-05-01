@@ -1,8 +1,5 @@
 import socket
 import sys
-import os
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'Vribbels'))
 
 import uvicorn
 from fastapi import FastAPI
@@ -40,7 +37,10 @@ def _find_free_port(start: int = 7842) -> int:
 
 
 if __name__ == "__main__":
-    port = _find_free_port()
-    # Tauri reads this line from sidecar stdout to discover the port
-    print(f"PORT:{port}", flush=True)
-    uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
+    try:
+        port = _find_free_port()
+        print(f"PORT:{port}", flush=True)
+        uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
+    except Exception as exc:
+        print(f"ERROR:{exc}", flush=True, file=sys.stderr)
+        sys.exit(1)
