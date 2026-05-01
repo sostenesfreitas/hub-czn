@@ -43,7 +43,7 @@ Vribbels/snapshots/
 
 # Reference images and icon generation tools - not needed in repository
 CZN Assets/
-images/
+Vribbels/images/growth_stone_*.png
 Vribbels/images/create_icon.py
 Vribbels/images/generate_growth_stones.py
 Vribbels/images/__pycache__/

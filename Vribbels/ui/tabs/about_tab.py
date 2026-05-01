@@ -62,7 +62,7 @@ class AboutTab(BaseTab):
 
         app_name = ttk.Label(
             info_section,
-            text="Vribbels - CZN Memory Fragment Optimizer",
+            text="Hub CZN",
             font=("Segoe UI", 12, "bold")
         )
         app_name.pack(pady=(0, 5))
@@ -137,10 +137,9 @@ class AboutTab(BaseTab):
         links_section.pack(fill=tk.X)
 
         links = [
-            ("View Releases on GitHub", "https://github.com/Vorbroker/Vribbels-CZN-Optimizer/releases"),
-            ("Report an Issue", "https://github.com/Vorbroker/Vribbels-CZN-Optimizer/issues"),
-            ("Documentation", "https://github.com/Vorbroker/Vribbels-CZN-Optimizer#readme"),
-            ("Support Development", "https://ko-fi.com/H2H21PHYKW")
+            ("View Releases on GitHub", "https://github.com/sostenesfreitas/hub-czn/releases"),
+            ("Report an Issue", "https://github.com/sostenesfreitas/hub-czn/issues"),
+            ("Documentation", "https://github.com/sostenesfreitas/hub-czn#readme"),
         ]
 
         for text, url in links:

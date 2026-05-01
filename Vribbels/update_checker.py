@@ -50,7 +50,7 @@ class UpdateChecker:
         appdata = os.getenv('APPDATA')
         if not appdata:
             appdata = os.path.expanduser("~")
-        self.config_dir = Path(appdata) / 'Vribbels'
+        self.config_dir = Path(appdata) / 'HubCZN'
         self.config_file = self.config_dir / 'update_check.json'
 
         self.current_version = __version__
@@ -177,7 +177,9 @@ class UpdateChecker:
         except requests.exceptions.ConnectionError:
             error_msg = "No internet connection"
         except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 429:
+            if e.response.status_code == 404:
+                error_msg = "No releases published yet"
+            elif e.response.status_code == 429:
                 error_msg = "GitHub API rate limit exceeded"
             else:
                 error_msg = f"GitHub API error: {e.response.status_code}"

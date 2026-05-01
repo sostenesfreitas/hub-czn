@@ -66,7 +66,7 @@ class OptimizerGUI:
         self.config = load_config()
 
         self.root = tk.Tk()
-        self.root.title("Vribbels - CZN Memory Fragment Optimizer")
+        self.root.title("Hub CZN")
         self.root.geometry("1550x1000")
         self.root.minsize(1300, 800)
 
@@ -76,6 +76,14 @@ class OptimizerGUI:
             "green": "#a6e3a1", "red": "#f38ba8", "yellow": "#f9e2af", "purple": "#cba6f7",
             "orange": "#FF8C00", "select": "#3b6ea5",
         }
+
+        try:
+            import sys, os
+            base = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+            icon_path = os.path.join(base, 'images', 'app_icon.ico')
+            self.root.iconbitmap(icon_path)
+        except Exception:
+            pass
 
         self.root.configure(bg=self.colors["bg"])
         self.style = ttk.Style()
@@ -158,12 +166,6 @@ class OptimizerGUI:
     def setup_ui(self):
         top_bar = ttk.Frame(self.root)
         top_bar.pack(fill=tk.X, padx=5, pady=(5, 0))
-        
-        kofi_btn = tk.Button(top_bar, text="Support on Ko-Fi", 
-                            command=lambda: webbrowser.open("https://ko-fi.com/H2H21PHYKW"),
-                            bg="#72a4f2", fg="white", font=("Segoe UI", 9, "bold"),
-                            relief=tk.FLAT, padx=10, pady=3, cursor="hand2")
-        kofi_btn.pack(side=tk.RIGHT, padx=5)
         
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)

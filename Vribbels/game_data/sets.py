@@ -17,10 +17,12 @@ SETS = {
     18: {"name": "Spark of Passion", "pieces": 4, "bonus": "+20% Passion DMG after Upgrade (5 times)", "type": "conditional"},
     19: {"name": "Cursed Corpse", "pieces": 2, "bonus": "+10% DMG to Agony Inflicted", "type": "conditional"},
     20: {"name": "Line of Justice", "pieces": 4, "bonus": "+20% Crit Rate for 2+ cost", "type": "conditional"},
-    22: {"name": "Orb of Inhibition", "pieces": 4, "bonus": "+10% Void DMG for 1 turn after hitting 2 times with Attack (2 max)", "type": "conditional"},
+    22: {"name": "Orb of Inhibition", "pieces": 4, "bonus": "+30% Void DMG to cards with 2+ hits", "type": "conditional"},
     23: {"name": "Judgment's Flames", "pieces": 4, "bonus": "+50% Instinct DMG to Ravaged targets", "type": "conditional"},
     24: {"name": "Beast's Yearning", "pieces": 4, "bonus": "+30% Justice and Order Attack Cards (max 5 per turn)", "type": "conditional"},
     25: {"name": "Glory's Reign", "pieces": 4, "bonus": "+5% ally DMG on Exhaust card create/use (max 15%)", "type": "conditional"},
+    26: {"name": "Prelude to a Hero", "pieces": 4, "bonus": "When Passion/Void Attack Card is Discarded, +15% Crit Chance for 1 turn (max 15%)", "type": "conditional"},
+    27: {"name": "Starlight and Dreams", "pieces": 4, "bonus": "When Shield is gained via ability, +5% ally Counterattack/Extra Attack DMG (max 25%)", "type": "conditional"},
 }
 
 TWO_PIECE_SETS = [sid for sid, s in SETS.items() if s["pieces"] == 2]
