@@ -32,7 +32,7 @@ from capture import *
 from optimizer import GearOptimizer
 from update_checker import UpdateChecker
 from config import load_config, save_config, AppConfig
-from ui import AppContext, MaterialsTab, SetupTab, CaptureTab, InventoryTab, OptimizerTab, HeroesTab, ScoringTab, AboutTab
+from ui import AppContext, MaterialsTab, SetupTab, CaptureTab, InventoryTab, OptimizerTab, HeroesTab, ScoringTab, AboutTab, RescueTab
 
 
 class MultiSelectListbox(tk.Frame):
@@ -210,6 +210,11 @@ class OptimizerGUI:
         self.scoring_tab = self.scoring_tab_instance.get_frame()
         self.notebook.add(self.scoring_tab, text="Scoring")
 
+        # Rescue Records tab
+        self.rescue_tab_instance = RescueTab(self.notebook, self.app_context)
+        self.rescue_tab = self.rescue_tab_instance.get_frame()
+        self.notebook.add(self.rescue_tab, text="Rescue Records")
+
         # About tab
         self.about_tab_instance = AboutTab(self.notebook, self.app_context)
         self.about_tab = self.about_tab_instance.get_frame()
@@ -335,6 +340,8 @@ class OptimizerGUI:
                 self.materials_tab_instance.refresh_materials()
             except Exception:
                 pass  # Silently ignore reload errors during live monitoring
+
+        self.rescue_tab_instance.refresh_records()
 
     def run(self):
         self.root.mainloop()

@@ -5,6 +5,35 @@ All notable changes to Vribbels CZN Optimizer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-05-01
+
+### Added
+- **Rescue Records Tab** — view full gacha pull history captured from the game
+  - Expands batch records into individual pulls sorted newest-first
+  - Grade-based colour coding (yellow = 5-star, purple = 4-star)
+  - Cross-session accumulation: new captures continue from the last saved file
+  - Real-time refresh during live capture
+- **Export JSON** button on Rescue Records tab
+  - Pity tracker format: per-banner pity counter resets on each 5-star
+  - Includes name, rarity, class, attribute, CDN image URL, pull number, timestamp
+  - Summary with 5-star/4-star counts, average pity, current pity per banner
+- **Debug WebSocket traffic** checkbox in Capture tab (previously hidden)
+- **Build system**: `build.bat`, `requirements.txt`, `Vribbels_CZN_Optimizer.spec`
+
+### Changed
+- `gacha_history_list` now detected as the primary rescue records API key
+- Rescue records accumulate across sessions instead of creating a new file each time
+
+### New Characters
+- **Diana** (1061) — Hunter, Passion — ATK 507 / DEF 161 / HP 347 — node CRate/CDmg
+- **Tiphera** (30084) — Controller, Order — ATK 431 / DEF 221 / HP 356 — node DEF%/CRate
+- **Heidemarie** (30093) — Ranger, Passion — ATK 533 / DEF 147 / HP 331 — node CDmg/CRate
+- **Rita** (30097) — Psionic, Justice — ATK 459 / DEF 175 / HP 374 — node CRate/CDmg
+
+### Notes
+- Project forked from [Vorbroker/Vribbels-CZN-Optimizer](https://github.com/Vorbroker/Vribbels-CZN-Optimizer) (MIT)
+- Continued maintenance by sostenesfreitas
+
 ## [1.7.0] - 2026-02-07
 
 ### Added

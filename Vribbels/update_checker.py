@@ -42,7 +42,7 @@ class UpdateChecker:
 
     def __init__(self):
         """Initialize the update checker."""
-        self.github_repo = "Vorbroker/Vribbels-CZN-Optimizer"
+        self.github_repo = "sostenesfreitas/hub-czn"
         self.api_url = f"https://api.github.com/repos/{self.github_repo}/releases/latest"
         self.releases_url = f"https://github.com/{self.github_repo}/releases"
 

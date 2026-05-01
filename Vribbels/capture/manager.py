@@ -66,6 +66,7 @@ class Addon:
         self.inventory_data = None
         self.character_data = None
         self.saved_path = None
+        self.rescue_path = None
         self.zstd_dict = None
         self.zstd_dctx = None
 
@@ -259,6 +260,18 @@ class Addon:
                 self.character_data = data
                 self._save_data()
 
+            # Capture rescue/gacha records (pull history)
+            RESCUE_KEYS = [
+                "gacha_history_list",
+                "gacha_records", "rescue_records", "gacha_record_list",
+                "rescue_record_list", "rescue_history", "gacha_history",
+                "pull_records", "pickup_records",
+            ]
+            for key in RESCUE_KEYS:
+                if key in data:
+                    self._save_rescue_data(key, data[key])
+                    break
+
         except Exception as e:
             self.log_callback(f"Error: {e}")
 
@@ -349,6 +362,45 @@ class Addon:
         else:
             self.log_callback(f"[LIVE] Unequipped {desc}")
 
+    def _save_rescue_data(self, key: str, records):
+        """Save rescue/gacha records, accumulating across pages and sessions."""
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if not self.rescue_path:
+            # Continue from the most recent existing file instead of starting fresh
+            existing = sorted(self.output_dir.glob("rescue_records_*.json"),
+                              key=lambda p: p.stat().st_mtime)
+            self.rescue_path = existing[-1] if existing else self.output_dir / f"rescue_records_{ts}.json"
+
+        existing = []
+        if self.rescue_path.exists():
+            try:
+                with open(self.rescue_path) as f:
+                    existing_data = json.load(f)
+                    existing = existing_data.get("records", [])
+            except Exception:
+                pass
+
+        existing_strs = {json.dumps(r, sort_keys=True) for r in existing}
+        new_records = list(existing)
+        for record in (records if isinstance(records, list) else [records]):
+            key_str = json.dumps(record, sort_keys=True)
+            if key_str not in existing_strs:
+                new_records.append(record)
+                existing_strs.add(key_str)
+
+        save_data = {
+            "capture_time": datetime.now().isoformat(),
+            "source_key": key,
+            "records": new_records,
+        }
+
+        with open(self.rescue_path, "w") as f:
+            json.dump(save_data, f, indent=2)
+
+        self.log_callback(
+            f"[RESCUE] Saved: {len(new_records)} rescue records -> {self.rescue_path.name}"
+        )
+
     def done(self):
         """Cleanup on shutdown."""
         if self.debug_file:
@@ -407,6 +459,16 @@ class CaptureManager:
             Path to latest capture file, or None if no snapshots exist
         """
         files = list(self.output_folder.glob("memory_fragments_*.json"))
+        return max(files, key=lambda f: f.stat().st_mtime) if files else None
+
+    def get_latest_rescue_records(self) -> Optional[Path]:
+        """
+        Get path to most recent rescue records file.
+
+        Returns:
+            Path to latest rescue records file, or None if none exist
+        """
+        files = list(self.output_folder.glob("rescue_records_*.json"))
         return max(files, key=lambda f: f.stat().st_mtime) if files else None
 
     def _read_detected_region(self, capture_file: Path) -> Optional[str]:
@@ -645,6 +707,10 @@ addons = [Addon(OUTPUT_DIR, dict_path=DICT_PATH, debug_mode={debug_mode})]
                 if "Saved:" in line and "Memory Fragments" in line:
                     if self.status_callback:
                         self.status_callback("[OK] Data Captured!")
+                    if self.live_update_callback:
+                        self.live_update_callback()
+
+                if "[RESCUE] Saved:" in line:
                     if self.live_update_callback:
                         self.live_update_callback()
 

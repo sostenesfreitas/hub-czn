@@ -1,6 +1,7 @@
-# Vribbels - Chaos Zero Nightmare Optimizer
+# Hub CZN — Chaos Zero Nightmare Optimizer
 
-A Fribbels-inspired gear management and optimization tool for the mobile game **Chaos Zero Nightmare**. This tool helps you optimize your Memory Fragments to maximize your combatants' performance.
+A gear management and optimization tool for the mobile game **Chaos Zero Nightmare**.  
+Actively maintained fork of [Vribbels CZN Optimizer](https://github.com/Vorbroker/Vribbels-CZN-Optimizer) by Vorbroker (MIT).
 
 ## Features
 
@@ -16,10 +17,15 @@ A Fribbels-inspired gear management and optimization tool for the mobile game **
 - **Materials Tab**: Track your growth stone inventory
 - **Combatants Tab**: View all characters with levels, gear scores, and stats
 
+### Rescue Records
+- **Pull History**: View your full gacha history captured from the game
+- **Pity Tracking**: Export your pull history as JSON with per-banner pity counters
+- **Live Updates**: Records accumulate automatically as you navigate pages in-game
+
 ### Data Capture
 - **Integrated mitmproxy Setup**: Built-in proxy configuration for capturing game data
 - **Automatic Data Extraction**: Captures Memory Fragments, character data, and inventory
-- **One-Click Capture**: Simple interface for extracting data from the game
+- **Live Monitoring**: Equip, unequip, and upgrade without restarting capture
 
 ### Advanced Features
 - **Potential Node Calculation**: Includes character progression bonuses
@@ -35,9 +41,18 @@ A Fribbels-inspired gear management and optimization tool for the mobile game **
 
 ### Quick Start
 
-1. Download the latest release from the [Releases page](https://github.com/Vorbroker/Vribbels-CZN-Optimizer/releases)
+1. Download the latest release from the [Releases page](https://github.com/sostenesfreitas/hub-czn/releases)
 2. Run `Vribbels_CZN_Optimizer.exe`
 3. Navigate to the **Setup** tab and click **Generate & Install Cert**
+
+## Building from Source
+
+```bash
+pip install -r requirements.txt
+pyinstaller Vribbels_CZN_Optimizer.spec --clean --noconfirm
+```
+
+Or double-click `build.bat`.
 
 ## Usage
 
@@ -47,8 +62,14 @@ A Fribbels-inspired gear management and optimization tool for the mobile game **
 2. Navigate to the **Capture** tab
 3. Click **"Start Capture"**
 4. Launch Chaos Zero Nightmare and navigate to the main menu
-5. Click **"Stop Capture"**
-6. Your data will be saved to `Vribbels/captures/memory_fragments_[timestamp].json`
+5. Data loads automatically — keep capture running to see live updates
+
+### Capturing Rescue Records
+
+1. Start Capture
+2. In-game, open the Rescue screen → **Rescue Records** tab
+3. Navigate through all pages — records accumulate automatically
+4. Open the **Rescue Records** tab in the app to view and export
 
 ### Optimizing Builds
 
@@ -59,31 +80,20 @@ A Fribbels-inspired gear management and optimization tool for the mobile game **
 5. Choose **Main Stats** for slots 4, 5, and 6
 6. Adjust **Top %** to control search space (lower = faster, fewer combinations)
 7. Click **"Start"** to begin optimization
-8. Review results showing stat improvements and required gear swaps
-
-### Viewing Materials
-
-Navigate to the **Materials** tab to see your growth stone inventory.
 
 ## Contributing
 
 Contributions are welcome! Feel free to:
-- Report bugs via GitHub Issues
+- Report bugs via [GitHub Issues](https://github.com/sostenesfreitas/hub-czn/issues)
 - Submit character/partner data updates
 - Suggest new features
 - Improve documentation
 
 ## Credits
 
+Originally created by [Vorbroker](https://github.com/Vorbroker/Vribbels-CZN-Optimizer)
+
 Inspired by [Fribbels Epic 7 Gear Optimizer](https://github.com/fribbels/Fribbels-Epic-7-Optimizer)
-
-Thanks to [EpicSevenAssetRipper](https://github.com/CeciliaBot/EpicSevenAssetRipper) for asset extraction tools
-
-## Support
-
-If you find this tool helpful, consider supporting development:
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H21PHYKW)
 
 ## License
 

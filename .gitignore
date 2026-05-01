@@ -58,14 +58,9 @@ docs/
 # Git worktrees (isolated workspaces for parallel development)
 .worktrees/
 
-# Build files and tools (not needed in repository)
+# Build output (not needed in repository)
 build/
 dist/
-build.bat
-build.spec
-BUILD.md
-requirements.txt
-*.spec
 
 # Release packages (distributed via GitHub Releases)
 *.zip
