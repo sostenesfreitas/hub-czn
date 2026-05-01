@@ -49,15 +49,20 @@ function WeightInput({
   value: number
   onChange: (stat: string, v: number) => void
 }) {
+  const id = `weight-${stat.replace(/[^a-z0-9]/gi, '-').toLowerCase()}`
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-xs text-[#a09d96] truncate flex-1">{stat}</span>
+      <label htmlFor={id} className="text-xs text-[#a09d96] truncate flex-1">{stat}</label>
       <input
+        id={id}
         type="number"
         min={0}
         max={10}
         value={value}
-        onChange={e => onChange(stat, Number(e.target.value))}
+        onChange={e => {
+          const n = Number(e.target.value)
+          if (!Number.isNaN(n)) onChange(stat, n)
+        }}
         onBlur={e => {
           const clamped = Math.max(0, Math.min(10, Number(e.target.value)))
           if (clamped !== value) onChange(stat, clamped)
@@ -175,8 +180,18 @@ export function ScoringPanel(props: ScoringPanelProps) {
 
         {drawerOpen && (
           <div className="fixed inset-0 z-50 flex">
-            <div className="absolute inset-0 bg-black/60" onClick={() => setDrawerOpen(false)} />
-            <div className="relative ml-auto w-72 h-full bg-[#252320] border-l border-[#2e2c28] p-4 flex flex-col">
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/60 cursor-default"
+              aria-label="Fechar painel"
+              onClick={() => setDrawerOpen(false)}
+            />
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Painel de pontuação"
+              className="relative ml-auto w-72 h-full bg-[#252320] border-l border-[#2e2c28] p-4 flex flex-col"
+            >
               <div className="flex items-center justify-between mb-3 shrink-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-[#a09d96]">
                   Pontuação
