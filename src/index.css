@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14% 4%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14% 4%;
+  --primary: 20 47% 57%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 24 10% 10%;
+  --secondary-foreground: 40 20% 97%;
+  --muted: 24 5% 64%;
+  --muted-foreground: 24 5% 64%;
+  --accent: 20 47% 57%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 50% 52%;
+  --border: 24 8% 18%;
+  --input: 24 8% 18%;
+  --ring: 20 47% 57%;
+  --radius: 0.5rem;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #181715;
+  color: #faf9f5;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  margin: 0;
+}

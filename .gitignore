@@ -64,3 +64,8 @@ dist/
 # Release packages (distributed via GitHub Releases)
 *.zip
 Vribbels/Vribbels.zip
+
+# Frontend
+node_modules/
+dist/
+src-tauri/target/
