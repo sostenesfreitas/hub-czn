@@ -70,7 +70,7 @@ export function SetupPage() {
 
       <Row
         ok={status.admin}
-        label="Administrator"
+        label="Administrador"
         detail={
           status.admin
             ? 'Running with administrator privileges'
