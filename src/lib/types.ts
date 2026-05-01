@@ -43,3 +43,67 @@ export interface GameData {
   stats: Record<string, unknown>
   characters: Record<string, unknown>
 }
+
+export interface SetupStatus {
+  admin: boolean
+  mitmproxy: boolean
+  mitmproxy_version: string | null
+  certificate: boolean
+}
+
+export interface SetupActionResponse {
+  ok: boolean
+  error?: string
+}
+
+export interface CaptureStatus {
+  running: boolean
+  region: 'global' | 'asia'
+  admin: boolean
+  rescue_file: string | null
+}
+
+export interface CaptureStartRequest {
+  region: 'global' | 'asia'
+  debug: boolean
+}
+
+export interface CaptureStopResponse {
+  ok: boolean
+  file_path: string | null
+  region: string
+}
+
+export interface RescuePull {
+  pull_number: number
+  res_id: number
+  name: string
+  rarity: number
+  kind: string
+  image_url: string
+  pity: number
+  is_featured: boolean
+  timestamp: number
+}
+
+export interface RescueStats {
+  total: number
+  five_star: number
+  four_star: number
+  avg_pity_5: number
+  avg_pity_4: number
+  win_rate_50_50: number
+  resources_spent: number
+}
+
+export interface RescueBanner {
+  banner_name: string
+  pulls: RescuePull[]
+  stats: RescueStats
+}
+
+export interface CaptureLogMessage {
+  level: 'info' | 'success' | 'error' | 'warning'
+  message: string
+  timestamp: string
+}

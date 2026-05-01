@@ -1,4 +1,8 @@
-import type { ApiStatus, GameData, LoadResponse, MemoryFragment } from './types'
+import type {
+  ApiStatus, GameData, LoadResponse, MemoryFragment,
+  SetupStatus, SetupActionResponse, CaptureStatus,
+  CaptureStartRequest, CaptureStopResponse, RescueBanner,
+} from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
 
@@ -46,4 +50,27 @@ export const api = {
   },
 
   gameData: () => request<GameData>('/api/game-data'),
+
+  setupStatus: () => request<SetupStatus>('/api/setup/status'),
+
+  installMitmproxy: () =>
+    request<SetupActionResponse>('/api/setup/install-mitmproxy', { method: 'POST' }),
+
+  generateCert: () =>
+    request<SetupActionResponse>('/api/setup/generate-cert', { method: 'POST' }),
+
+  openCert: () =>
+    request<SetupActionResponse>('/api/setup/open-cert', { method: 'POST' }),
+
+  captureStatus: () => request<CaptureStatus>('/api/capture/status'),
+
+  captureStart: (body: CaptureStartRequest) =>
+    request('/api/capture/start', { method: 'POST', body: JSON.stringify(body) }),
+
+  captureStop: () => request<CaptureStopResponse>('/api/capture/stop', { method: 'POST' }),
+
+  captureSetRegion: (region: 'global' | 'asia') =>
+    request('/api/capture/set-region', { method: 'POST', body: JSON.stringify({ region }) }),
+
+  rescueRecords: () => request<RescueBanner[]>('/api/rescue/records'),
 }
