@@ -13,8 +13,8 @@ function GearSlotCard({ slot }: { slot: GearSlot }) {
         <>
           <p className="text-xs font-semibold text-[#faf9f5]">{slot.main_stat}</p>
           <div className="space-y-0.5">
-            {slot.substats.map((s, i) => (
-              <p key={i} className="text-[11px] text-[#a09d96]">
+            {slot.substats.map((s) => (
+              <p key={s} className="text-[11px] text-[#a09d96]">
                 {s}
               </p>
             ))}
@@ -28,7 +28,7 @@ function GearSlotCard({ slot }: { slot: GearSlot }) {
               <div className="h-1 bg-[#2e2c28] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#cc785c] rounded-full"
-                  style={{ width: `${Math.min(100, slot.score)}%` }}
+                  style={{ width: `${Math.min(100, Math.max(0, slot.score))}%` }}
                 />
               </div>
             </div>
@@ -73,12 +73,11 @@ export function CombatantDetail({ charId }: CombatantDetailProps) {
     queryKey: ['combatants', charId, 'stats'],
     queryFn: () => api.combatantStats(charId),
     enabled: !!charId,
-    staleTime: 30_000,
   })
 
   if (isLoading) {
     return (
-      <div className="flex items-center p-6 text-[#a09d96]">
+      <div role="status" aria-label="Carregando dados do combatente" className="flex items-center p-6 text-[#a09d96]">
         <Loader2 size={16} className="animate-spin mr-2" />
         <span className="text-sm">Carregando...</span>
       </div>
@@ -87,7 +86,7 @@ export function CombatantDetail({ charId }: CombatantDetailProps) {
 
   if (error) {
     return (
-      <div className="p-4 text-sm text-[#c64545]">
+      <div role="alert" className="p-4 text-sm text-[#c64545]">
         Erro ao carregar dados do combatente.
       </div>
     )
