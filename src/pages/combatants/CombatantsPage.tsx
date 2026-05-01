@@ -35,6 +35,8 @@ export function CombatantsPage() {
     mutationFn: (weights: Record<string, number>) => api.saveScoringPriorities(weights),
     onSuccess: () => {
       setSaveError(null)
+      setLocalWeights(null)
+      queryClient.invalidateQueries({ queryKey: ['scoring/priorities'] })
       queryClient.invalidateQueries({ queryKey: ['combatants'] })
     },
     onError: (e: Error) => setSaveError(e.message),
