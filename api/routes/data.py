@@ -63,10 +63,13 @@ def _to_dict(f) -> dict:
     return {
         "id": f.id,
         "slot_num": f.slot_num,
+        "slot_name": f.slot_name,
         "set_id": f.set_id,
         "set_name": f.set_name,
         "rarity_num": f.rarity_num,
+        "rarity": f.rarity,
         "level": f.level,
+        "locked": f.locked,
         "equipped_to": f.equipped_to,
         "gear_score": f.gear_score,
         "potential_low": f.potential_low,
@@ -80,4 +83,5 @@ def _to_dict(f) -> dict:
 def get_game_data():
     from game_data.sets import SETS
     from game_data.constants import STATS
-    return {"sets": SETS, "stats": STATS}
+    from game_data.characters import CHARACTERS
+    return {"sets": SETS, "stats": STATS, "characters": CHARACTERS}

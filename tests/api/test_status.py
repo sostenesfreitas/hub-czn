@@ -28,4 +28,12 @@ def test_game_data_has_sets_and_stats(client):
     body = response.json()
     assert "sets" in body
     assert "stats" in body
+    assert "characters" in body
     assert len(body["sets"]) > 0
+    assert len(body["stats"]) > 0
+    assert len(body["characters"]) > 0
+
+
+def test_load_nonexistent_file_returns_404(client):
+    response = client.post("/api/load", json={"path": "/does/not/exist.json"})
+    assert response.status_code == 404
