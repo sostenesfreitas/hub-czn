@@ -32,25 +32,17 @@ class AppState:
             OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
             def _log(msg: str, tag: str | None = None):
-                level = "info"
-                msg_lower = msg.lower()
-                if msg_lower.startswith("error") or "failed" in msg_lower:
-                    level = "error"
-                elif "saved:" in msg_lower or msg_lower.startswith("[live]"):
-                    level = "success"
-                elif "warning" in msg_lower:
-                    level = "warning"
-
-                # Map explicit tag to level if provided
-                if tag == "error":
-                    level = "error"
-                elif tag == "success":
-                    level = "success"
-                elif tag == "warning":
-                    level = "warning"
-                elif tag == "info":
+                if tag in ("error", "success", "warning", "info"):
+                    level = tag
+                else:
                     level = "info"
-
+                    msg_lower = msg.lower()
+                    if msg_lower.startswith("error") or "failed" in msg_lower:
+                        level = "error"
+                    elif "saved:" in msg_lower or msg_lower.startswith("[live]"):
+                        level = "success"
+                    elif "warning" in msg_lower:
+                        level = "warning"
                 self.log_queue.put({
                     "level": level,
                     "message": msg,
