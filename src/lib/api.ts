@@ -2,6 +2,7 @@ import type {
   ApiStatus, GameData, LoadResponse, MemoryFragment,
   SetupStatus, SetupActionResponse, CaptureStatus,
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
+  Combatant, CombatantStats, ScoringPriorities,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -76,4 +77,17 @@ export const api = {
     request<SetupActionResponse>('/api/capture/open-snapshots', { method: 'POST' }),
 
   rescueRecords: () => request<RescueBanner[]>('/api/rescue/records'),
+
+  combatants: () => request<Combatant[]>('/api/combatants'),
+
+  combatantStats: (charId: string) =>
+    request<CombatantStats>(`/api/combatants/${encodeURIComponent(charId)}/stats`),
+
+  scoringPriorities: () => request<ScoringPriorities>('/api/scoring/priorities'),
+
+  saveScoringPriorities: (weights: Record<string, number>) =>
+    request<ScoringPriorities>('/api/scoring/priorities', {
+      method: 'POST',
+      body: JSON.stringify({ weights }),
+    }),
 }

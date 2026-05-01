@@ -107,3 +107,40 @@ export interface CaptureLogMessage {
   message: string
   timestamp: string
 }
+
+export interface GearSlot {
+  slot: string
+  main_stat: string | null
+  substats: string[]
+  score: number | null
+}
+
+export interface FinalStats {
+  ATK: number
+  DEF: number
+  HP: number
+  CRate: number
+  CDmg: number
+  EHP: number
+  AvgDMG: number
+}
+
+export interface CombatantStats {
+  char_id: string
+  gear_slots: GearSlot[]
+  final_stats: FinalStats
+}
+
+export interface Combatant {
+  char_id: string
+  name: string
+  level: number
+  attribute: string
+  class: string
+  avg_gear_score: number
+  portrait_url: string
+}
+
+export interface ScoringPriorities {
+  weights: Record<string, number>
+}
