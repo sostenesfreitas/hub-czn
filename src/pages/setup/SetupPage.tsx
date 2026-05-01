@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { CheckCircle, XCircle, Loader2, ChevronDown, ChevronRight } from 'lucide-react'
@@ -10,16 +11,24 @@ function StatusIcon({ ok }: { ok: boolean }) {
     : <XCircle size={18} className="text-red-500 shrink-0" />
 }
 
+function MutationError({ error }: { error: unknown }) {
+  if (!error) return null
+  const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado'
+  return <p className="text-[#c64545] text-xs mt-1">{msg}</p>
+}
+
 function Row({
   ok,
   label,
   detail,
   action,
+  error,
 }: {
   ok: boolean
   label: string
   detail: string
-  action?: React.ReactNode
+  action?: ReactNode
+  error?: unknown
 }) {
   return (
     <div className="flex items-start gap-4 p-4 rounded-lg bg-[#252320] border border-[#2e2c28]">
@@ -27,6 +36,7 @@ function Row({
       <div className="flex-1 min-w-0">
         <p className="text-[#faf9f5] font-medium text-sm">{label}</p>
         <p className="text-[#a09d96] text-xs mt-0.5">{detail}</p>
+        <MutationError error={error} />
       </div>
       {action}
     </div>
@@ -86,6 +96,7 @@ export function SetupPage() {
             ? `mitmproxy ${status.mitmproxy_version} installed`
             : 'Required to intercept game traffic'
         }
+        error={installMutation.isError ? installMutation.error : undefined}
         action={
           !status.mitmproxy && (
             <Button
@@ -108,6 +119,7 @@ export function SetupPage() {
             ? 'Certificate generated in ~/.mitmproxy/'
             : 'Required for HTTPS interception'
         }
+        error={certMutation.isError ? certMutation.error : undefined}
         action={
           !status.certificate && (
             <Button
@@ -156,11 +168,20 @@ export function SetupPage() {
               Já importei o certificado
             </label>
           </div>
+          {openCertMutation.isError && (
+            <p className="text-[#c64545] text-xs pl-8">
+              {openCertMutation.error instanceof Error
+                ? openCertMutation.error.message
+                : 'Não foi possível abrir o certificado'}
+            </p>
+          )}
         </div>
       )}
 
       <div className="rounded-lg bg-[#252320] border border-[#2e2c28] overflow-hidden">
         <button
+          type="button"
+          aria-expanded={howOpen}
           className="w-full flex items-center gap-2 px-4 py-3 text-sm text-[#a09d96] hover:text-[#faf9f5]"
           onClick={() => setHowOpen(v => !v)}
         >
