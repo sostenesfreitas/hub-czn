@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -156,6 +156,12 @@ function PanelContent({
 
 export function ScoringPanel(props: ScoringPanelProps) {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (drawerOpen) {
+      dialogRef.current?.focus()
+    }
+  }, [drawerOpen])
 
   return (
     <>
@@ -182,11 +188,14 @@ export function ScoringPanel(props: ScoringPanelProps) {
           <div className="fixed inset-0 z-50 flex">
             <button
               type="button"
+              tabIndex={-1}
               className="absolute inset-0 bg-black/60 cursor-default"
               aria-label="Fechar painel"
               onClick={() => setDrawerOpen(false)}
             />
             <div
+              ref={dialogRef}
+              tabIndex={-1}
               role="dialog"
               aria-modal="true"
               aria-label="Painel de pontuação"
@@ -198,6 +207,7 @@ export function ScoringPanel(props: ScoringPanelProps) {
                 </p>
                 <button
                   type="button"
+                  aria-label="Fechar painel"
                   onClick={() => setDrawerOpen(false)}
                   className="text-[#a09d96]"
                 >
