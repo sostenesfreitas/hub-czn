@@ -70,7 +70,10 @@ export const api = {
   captureStop: () => request<CaptureStopResponse>('/api/capture/stop', { method: 'POST' }),
 
   captureSetRegion: (region: 'global' | 'asia') =>
-    request('/api/capture/set-region', { method: 'POST', body: JSON.stringify({ region }) }),
+    request<SetupActionResponse>('/api/capture/set-region', { method: 'POST', body: JSON.stringify({ region }) }),
+
+  captureOpenSnapshots: () =>
+    request<SetupActionResponse>('/api/capture/open-snapshots', { method: 'POST' }),
 
   rescueRecords: () => request<RescueBanner[]>('/api/rescue/records'),
 }

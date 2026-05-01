@@ -24,6 +24,12 @@ function PrereqBadge({ ok, label }: { ok: boolean; label: string }) {
   )
 }
 
+function MutationError({ error }: { error: unknown }) {
+  if (!error) return null
+  const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado'
+  return <p className="text-[#c64545] text-xs mt-1">{msg}</p>
+}
+
 export function CapturePage() {
   const port = useApiPort()
   const qc = useQueryClient()
@@ -79,15 +85,21 @@ export function CapturePage() {
     mutationFn: (r: 'global' | 'asia') => api.captureSetRegion(r),
   })
 
+  const snapshotsMutation = useMutation({
+    mutationFn: () => api.captureOpenSnapshots(),
+  })
+
   const running = captureStatus?.running ?? false
   const isAdmin = captureStatus?.admin ?? false
   const prereqsOk = isAdmin && (setupStatus?.mitmproxy ?? false) && (setupStatus?.certificate ?? false)
 
   return (
     <div className="p-6 flex gap-6 h-full">
+      {/* Left: controls */}
       <div className="w-60 shrink-0 flex flex-col gap-4">
         <h1 className="text-xl font-bold text-[#faf9f5]">Capture</h1>
 
+        {/* Prerequisites bar */}
         <div className="p-3 rounded-lg bg-[#252320] border border-[#2e2c28] flex flex-col gap-2">
           <div className="flex items-center gap-3 flex-wrap">
             <PrereqBadge ok={isAdmin} label="Admin" />
@@ -101,6 +113,7 @@ export function CapturePage() {
           )}
         </div>
 
+        {/* Region selector */}
         <div className="flex flex-col gap-1">
           <label className="text-xs text-[#a09d96]">Servidor</label>
           <select
@@ -116,8 +129,10 @@ export function CapturePage() {
             <option value="global">Global</option>
             <option value="asia">Asia</option>
           </select>
+          <MutationError error={regionMutation.isError ? regionMutation.error : undefined} />
         </div>
 
+        {/* Debug mode */}
         <label className="flex items-center gap-2 text-sm text-[#a09d96] cursor-pointer">
           <input
             type="checkbox"
@@ -129,32 +144,41 @@ export function CapturePage() {
           Debug mode
         </label>
 
+        {/* Start / Stop */}
         {!running ? (
-          <Button
-            onClick={() => startMutation.mutate()}
-            disabled={!prereqsOk || startMutation.isPending}
-            className="bg-[#cc785c] hover:bg-[#b8674d] text-white w-full"
-          >
-            <Radio size={14} className="mr-2" />
-            Start Capture
-          </Button>
+          <div className="flex flex-col gap-1">
+            <Button
+              onClick={() => startMutation.mutate()}
+              disabled={!prereqsOk || startMutation.isPending}
+              className="bg-[#cc785c] hover:bg-[#b8674d] text-white w-full"
+            >
+              <Radio size={14} className="mr-2" />
+              Start Capture
+            </Button>
+            <MutationError error={startMutation.isError ? startMutation.error : undefined} />
+          </div>
         ) : (
-          <Button
-            onClick={() => stopMutation.mutate()}
-            disabled={stopMutation.isPending}
-            className="bg-red-600 hover:bg-red-700 text-white w-full"
-          >
-            <Square size={14} className="mr-2" />
-            Stop Capture
-          </Button>
+          <div className="flex flex-col gap-1">
+            <Button
+              onClick={() => stopMutation.mutate()}
+              disabled={stopMutation.isPending}
+              className="bg-red-600 hover:bg-red-700 text-white w-full"
+            >
+              <Square size={14} className="mr-2" />
+              Stop Capture
+            </Button>
+            <MutationError error={stopMutation.isError ? stopMutation.error : undefined} />
+          </div>
         )}
 
+        {/* Secondary actions */}
         <div className="flex flex-col gap-2">
           <Button
             size="sm"
             variant="outline"
+            disabled={snapshotsMutation.isPending}
             className="border-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5] w-full justify-start"
-            onClick={() => fetch(`http://127.0.0.1:${port}/api/capture/open-snapshots`, { method: 'POST' })}
+            onClick={() => snapshotsMutation.mutate()}
           >
             <FolderOpen size={13} className="mr-2" />
             Abrir Snapshots
@@ -177,6 +201,7 @@ export function CapturePage() {
         </div>
       </div>
 
+      {/* Right: log panel */}
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-[#a09d96]">Log em tempo real</span>
@@ -206,7 +231,7 @@ export function CapturePage() {
             </div>
           )}
           {messages.map((m, i) => (
-            <div key={i} style={{ color: LEVEL_COLOR[m.level] }}>
+            <div key={`${m.timestamp}-${i}`} style={{ color: LEVEL_COLOR[m.level] }}>
               <span className="text-[#3d3d3a]">{m.timestamp} </span>
               {m.message}
             </div>
