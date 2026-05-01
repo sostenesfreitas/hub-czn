@@ -5,6 +5,9 @@ import { AppShell } from './components/layout/AppShell'
 import { useApiPort } from './hooks/useApiPort'
 import { setApiPort } from './lib/api'
 import { FragmentsPage } from './pages/fragments/FragmentsPage'
+import { SetupPage } from './pages/setup/SetupPage'
+import { CapturePage } from './pages/capture/CapturePage'
+import { RescuePage } from './pages/rescue/RescuePage'
 
 function Placeholder({ name }: { name: string }) {
   return (
@@ -38,11 +41,11 @@ function AppRoutes() {
           <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<Placeholder name="Combatants" />} />
           <Route path="scoring"    element={<Placeholder name="Scoring" />} />
-          <Route path="capture"    element={<Placeholder name="Capture" />} />
-          <Route path="setup"      element={<Placeholder name="Setup" />} />
-          <Route path="rescue"     element={<Placeholder name="Rescue Records" />} />
+          <Route path="capture"    element={<CapturePage />} />
+          <Route path="setup"      element={<SetupPage />} />
+          <Route path="rescue"     element={<RescuePage />} />
           <Route path="about"      element={<Placeholder name="About" />} />
-          <Route path="*" element={<Navigate to="/fragments" replace />} />
+          <Route path="*"          element={<Navigate to="/fragments" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>
