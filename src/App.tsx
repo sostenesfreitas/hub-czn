@@ -15,7 +15,13 @@ function Placeholder({ name }: { name: string }) {
 }
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 30_000 } },
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 30_000,
+      refetchOnWindowFocus: false,
+    },
+  },
 })
 
 function AppRoutes() {
@@ -35,6 +41,7 @@ function AppRoutes() {
           <Route path="setup"      element={<Placeholder name="Setup" />} />
           <Route path="rescue"     element={<Placeholder name="Rescue Records" />} />
           <Route path="about"      element={<Placeholder name="About" />} />
+          <Route path="*" element={<Navigate to="/fragments" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>
