@@ -141,7 +141,7 @@ function PanelContent({
 
       {/* Save */}
       <div className="space-y-2 shrink-0">
-        {saveError && <p className="text-xs text-[#c64545]">{saveError}</p>}
+        {saveError && <p role="alert" className="text-xs text-[#c64545]">{saveError}</p>}
         <Button
           onClick={onSave}
           disabled={!isDirty || isSaving}
