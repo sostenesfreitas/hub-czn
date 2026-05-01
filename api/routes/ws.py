@@ -21,7 +21,8 @@ class _Manager:
             try:
                 await conn.send_json(payload)
             except Exception:
-                self._connections.remove(conn)
+                if conn in self._connections:
+                    self._connections.remove(conn)
 
 
 # Module-level singleton imported by optimize + capture routes in later plans
@@ -35,4 +36,6 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             await websocket.receive_text()  # keep-alive; server pushes only
     except WebSocketDisconnect:
+        pass
+    finally:
         manager.disconnect(websocket)
