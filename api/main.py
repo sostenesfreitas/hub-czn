@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import status, data, ws, setup, capture
+from api.routes import status, data, ws, setup, capture, rescue
 
 
 def create_app() -> FastAPI:
@@ -21,6 +21,7 @@ def create_app() -> FastAPI:
     app.include_router(ws.router)
     app.include_router(setup.router, prefix="/api", tags=["setup"])
     app.include_router(capture.router, prefix="/api", tags=["capture"])
+    app.include_router(rescue.router, prefix="/api", tags=["rescue"])
     return app
 
 
