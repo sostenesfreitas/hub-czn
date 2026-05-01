@@ -39,3 +39,22 @@ async def websocket_endpoint(websocket: WebSocket):
         pass
     finally:
         manager.disconnect(websocket)
+
+
+import asyncio
+import queue as _queue
+
+
+@router.websocket("/ws/capture-log")
+async def capture_log_endpoint(websocket: WebSocket):
+    from api.state import state
+    await websocket.accept()
+    try:
+        while True:
+            try:
+                msg = state.log_queue.get_nowait()
+                await websocket.send_json(msg)
+            except _queue.Empty:
+                await asyncio.sleep(0.1)
+    except WebSocketDisconnect:
+        pass
