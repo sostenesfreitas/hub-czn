@@ -1,8 +1,4 @@
 # api/routes/setup.py
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
-
 from fastapi import APIRouter, HTTPException
 from capture.setup import check_prerequisites, install_mitmproxy, setup_certificate, open_certificate
 

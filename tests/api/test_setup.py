@@ -53,3 +53,12 @@ def test_open_cert_no_certificate():
     with patch("api.routes.setup.check_prerequisites", return_value=mock_status):
         r = client.post("/api/setup/open-cert")
     assert r.status_code == 404
+
+
+def test_generate_cert_failure():
+    with patch("api.routes.setup.setup_certificate", side_effect=Exception("mitmdump not found")):
+        r = client.post("/api/setup/generate-cert")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is False
+    assert "mitmdump not found" in body["error"]
