@@ -26,7 +26,7 @@ export const TANK_WEIGHTS: Record<string, number> = {
   'Passion DMG%': 1, 'Order DMG%': 1, 'Justice DMG%': 1, 'Void DMG%': 1, 'Instinct DMG%': 1,
 }
 
-type Preset = 'dps' | 'tank' | 'custom'
+export type Preset = 'dps' | 'tank' | 'custom'
 
 interface ScoringPanelProps {
   weights: Record<string, number>

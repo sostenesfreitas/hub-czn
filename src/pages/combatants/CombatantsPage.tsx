@@ -3,10 +3,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { RefreshCw, User } from 'lucide-react'
 import { api } from '@/lib/api'
 import { ScoringPanel, DPS_WEIGHTS, TANK_WEIGHTS } from './ScoringPanel'
+import type { Preset } from './ScoringPanel'
 import { CombatantCard } from './CombatantCard'
 import { CombatantDetail } from './CombatantDetail'
-
-type Preset = 'dps' | 'tank' | 'custom'
 
 export function CombatantsPage() {
   const queryClient = useQueryClient()
@@ -44,7 +43,9 @@ export function CombatantsPage() {
   const displayWeights = localWeights ?? serverWeights
 
   const isDirty = useMemo(
-    () => JSON.stringify(displayWeights) !== JSON.stringify(serverWeights),
+    () =>
+      Object.keys(displayWeights).some((k) => displayWeights[k] !== serverWeights[k]) ||
+      Object.keys(serverWeights).some((k) => serverWeights[k] !== displayWeights[k]),
     [displayWeights, serverWeights]
   )
 
@@ -67,8 +68,9 @@ export function CombatantsPage() {
   }, [serverWeights])
 
   const handleSave = useCallback(() => {
+    if (prioritiesLoading) return
     saveMutation.mutate(displayWeights)
-  }, [saveMutation, displayWeights])
+  }, [saveMutation, displayWeights, prioritiesLoading])
 
   const handleCardClick = useCallback((charId: string) => {
     setSelectedCharId((prev) => (prev === charId ? null : charId))
@@ -106,16 +108,18 @@ export function CombatantsPage() {
             </button>
           </div>
         ) : combatantsLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-36 rounded-xl bg-[#252320] border border-[#2e2c28] animate-pulse"
-              />
-            ))}
+          <div role="status" aria-label="Carregando combatentes">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-36 rounded-xl bg-[#252320] border border-[#2e2c28] animate-pulse"
+                />
+              ))}
+            </div>
           </div>
         ) : combatants.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-[#a09d96]">
+          <div role="status" className="flex flex-col items-center justify-center h-64 text-[#a09d96]">
             <User size={40} className="mb-3 opacity-40" />
             <p className="text-sm">Nenhum combatente encontrado.</p>
             <p className="text-xs mt-1 text-center">
