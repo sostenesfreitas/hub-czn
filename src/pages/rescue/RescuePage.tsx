@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { User, RefreshCw } from 'lucide-react'
@@ -13,6 +13,13 @@ import {
 
 const PIE_COLORS = ['#cc785c', '#8b5cf6', '#a09d96']
 const RARITY_FILTER = [0, 5, 4] as const
+const PER_PAGE = 50
+
+const PIE_TOOLTIP_CONTENT_STYLE = { background: '#252320', border: '1px solid #2e2c28', borderRadius: 6 }
+const PIE_TOOLTIP_LABEL_STYLE = { color: '#faf9f5' }
+const PIE_TOOLTIP_ITEM_STYLE = { color: '#a09d96' }
+
+type RarityFilterValue = typeof RARITY_FILTER[number]
 
 function StatRow({ label, value }: { label: string; value: string | number }) {
   return (
@@ -46,6 +53,19 @@ function PortraitCard({ pull }: { pull: RescuePull }) {
   )
 }
 
+function TableCellImage({ pull }: { pull: RescuePull }) {
+  const [imgError, setImgError] = useState(false)
+  if (imgError) return <User size={16} className="text-[#a09d96]" />
+  return (
+    <img
+      src={pull.image_url}
+      alt={pull.name}
+      className="w-6 h-6 rounded object-cover bg-[#252320]"
+      onError={() => setImgError(true)}
+    />
+  )
+}
+
 function PortraitGrid({ pulls }: { pulls: RescuePull[] }) {
   const fiveStars = pulls.filter(p => p.rarity >= 5)
   if (fiveStars.length === 0) return null
@@ -53,8 +73,8 @@ function PortraitGrid({ pulls }: { pulls: RescuePull[] }) {
     <div>
       <p className="text-sm font-medium text-[#faf9f5] mb-3">Saltos 5★ Recentes</p>
       <div className="flex flex-wrap gap-2">
-        {fiveStars.map((p, i) => (
-          <PortraitCard key={i} pull={p} />
+        {fiveStars.map(p => (
+          <PortraitCard key={p.res_id} pull={p} />
         ))}
       </div>
     </div>
@@ -62,17 +82,16 @@ function PortraitGrid({ pulls }: { pulls: RescuePull[] }) {
 }
 
 function BannerView({ banner }: { banner: RescueBanner }) {
-  const [rarityFilter, setRarityFilter] = useState<0 | 5 | 4>(0)
+  const [rarityFilter, setRarityFilter] = useState<RarityFilterValue>(0)
   const [page, setPage] = useState(0)
-  const PER_PAGE = 50
 
   const { stats, pulls } = banner
 
-  const pieData = [
+  const pieData = useMemo(() => [
     { name: '5★', value: stats.five_star },
     { name: '4★', value: stats.four_star },
     { name: '3★', value: stats.total - stats.five_star - stats.four_star },
-  ]
+  ], [stats])
 
   const filtered = rarityFilter === 0 ? pulls : pulls.filter(p => p.rarity === rarityFilter)
   const pages = Math.ceil(filtered.length / PER_PAGE)
@@ -95,12 +114,12 @@ function BannerView({ banner }: { banner: RescueBanner }) {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie data={pieData} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
-                {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
+                {pieData.map((entry, i) => <Cell key={entry.name} fill={PIE_COLORS[i]} />)}
               </Pie>
               <Tooltip
-                contentStyle={{ background: '#252320', border: '1px solid #2e2c28', borderRadius: 6 }}
-                labelStyle={{ color: '#faf9f5' }}
-                itemStyle={{ color: '#a09d96' }}
+                contentStyle={PIE_TOOLTIP_CONTENT_STYLE}
+                labelStyle={PIE_TOOLTIP_LABEL_STYLE}
+                itemStyle={PIE_TOOLTIP_ITEM_STYLE}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -142,17 +161,12 @@ function BannerView({ banner }: { banner: RescueBanner }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pageSlice.map((pull, i) => (
-                <TableRow key={i} className="border-[#2e2c28] hover:bg-[#252320]">
+              {pageSlice.map(pull => (
+                <TableRow key={pull.pull_number} className="border-[#2e2c28] hover:bg-[#252320]">
                   <TableCell className="text-[#a09d96] font-mono text-xs">{pull.pull_number}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <img
-                        src={pull.image_url}
-                        alt={pull.name}
-                        className="w-6 h-6 rounded object-cover bg-[#252320]"
-                        onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-                      />
+                      <TableCellImage pull={pull} />
                       <span className={`text-sm ${pull.rarity >= 5 ? 'text-[#cc785c]' : pull.rarity >= 4 ? 'text-purple-400' : 'text-[#faf9f5]'}`}>
                         {pull.name}
                       </span>
@@ -164,7 +178,7 @@ function BannerView({ banner }: { banner: RescueBanner }) {
                   <TableCell className="font-mono text-sm text-[#faf9f5]">{pull.pity}</TableCell>
                   <TableCell className="text-xs text-[#a09d96]">{banner.banner_name}</TableCell>
                   <TableCell className="text-xs text-[#a09d96]">
-                    {pull.timestamp ? new Date(pull.timestamp * 1000).toLocaleString('pt-BR') : '—'}
+                    {pull.timestamp !== 0 ? new Date(pull.timestamp * 1000).toLocaleString('pt-BR') : '—'}
                   </TableCell>
                 </TableRow>
               ))}
@@ -210,13 +224,21 @@ export function RescuePage() {
 
   const capturing = captureStatus?.running ?? false
 
-  const { data: banners = [], isLoading } = useQuery({
+  const { data: banners = [], isLoading, error } = useQuery({
     queryKey: ['rescue-records'],
     queryFn: () => api.rescueRecords(),
     refetchInterval: capturing ? 10000 : false,
   })
 
   if (isLoading) return <div className="p-8 text-[#a09d96]">Carregando…</div>
+
+  if (error) {
+    return (
+      <div className="p-8 text-[#c64545]">
+        Falha ao carregar registros. Verifique se a API está em execução.
+      </div>
+    )
+  }
 
   if (banners.length === 0) {
     return (
@@ -226,6 +248,8 @@ export function RescuePage() {
       </div>
     )
   }
+
+  const safeBanner = banners[activeTab] ?? banners[0]
 
   return (
     <div className="p-6 flex flex-col gap-4 overflow-y-auto h-full">
@@ -248,7 +272,7 @@ export function RescuePage() {
       <div className="flex gap-1 border-b border-[#2e2c28] pb-0">
         {banners.map((b, i) => (
           <button
-            key={i}
+            key={b.banner_name}
             type="button"
             onClick={() => setActiveTab(i)}
             className={`px-4 py-2 text-sm border-b-2 -mb-px transition-colors ${
@@ -262,7 +286,7 @@ export function RescuePage() {
         ))}
       </div>
 
-      <BannerView banner={banners[activeTab]} />
+      <BannerView banner={safeBanner} />
     </div>
   )
 }
