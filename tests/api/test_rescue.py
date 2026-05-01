@@ -26,18 +26,22 @@ def test_rescue_records_no_file():
 
 
 def test_rescue_records_with_file():
+    import os
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(FAKE_RESCUE, f)
         path = Path(f.name)
 
-    with patch("api.routes.rescue._latest_rescue_file", return_value=path):
-        r = client.get("/api/rescue/records")
+    try:
+        with patch("api.routes.rescue._latest_rescue_file", return_value=path):
+            r = client.get("/api/rescue/records")
 
-    assert r.status_code == 200
-    body = r.json()
-    assert len(body) >= 1
-    banner = body[0]
-    assert "banner_name" in banner
-    assert "pulls" in banner
-    assert "stats" in banner
-    assert banner["stats"]["total"] == 3
+        assert r.status_code == 200
+        body = r.json()
+        assert len(body) >= 1
+        banner = body[0]
+        assert "banner_name" in banner
+        assert "pulls" in banner
+        assert "stats" in banner
+        assert banner["stats"]["total"] == 3
+    finally:
+        os.unlink(path)

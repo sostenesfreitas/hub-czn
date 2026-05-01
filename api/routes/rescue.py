@@ -1,6 +1,10 @@
 # api/routes/rescue.py
 import json
+import sys
+import os
 from pathlib import Path
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
 
 from fastapi import APIRouter
 
@@ -12,6 +16,7 @@ except ImportError:
 
 router = APIRouter()
 
+PITY_CAP = 70
 CDN_BASE = "https://cdn.czndecksmeta.com/face/character/portrait_character_{res_id}.webp"
 
 
@@ -107,48 +112,28 @@ def _process_records(raw: list[dict]) -> list[dict]:
             details = _char_details(p["res_id"])
             rarity = details["rarity"]
 
+            pull_entry = {
+                "pull_number": pull_number,
+                "res_id": p["res_id"],
+                "name": details["name"],
+                "rarity": rarity,
+                "kind": details["kind"],
+                "image_url": details["image_url"],
+                "pity": min(pity, PITY_CAP),
+                "is_featured": p["is_featured"] if rarity >= 5 else False,
+                "timestamp": p["timestamp"],
+            }
+
             if rarity >= 5:
                 five_stars += 1
                 five_star_opportunities += 1
                 if p["is_featured"]:
                     wins_50_50 += 1
-                processed_pulls.append({
-                    "pull_number": pull_number,
-                    "res_id": p["res_id"],
-                    "name": details["name"],
-                    "rarity": rarity,
-                    "kind": details["kind"],
-                    "image_url": details["image_url"],
-                    "pity": pity,
-                    "is_featured": p["is_featured"],
-                    "timestamp": p["timestamp"],
-                })
                 pity = 0
             elif rarity >= 4:
                 four_stars += 1
-                processed_pulls.append({
-                    "pull_number": pull_number,
-                    "res_id": p["res_id"],
-                    "name": details["name"],
-                    "rarity": rarity,
-                    "kind": details["kind"],
-                    "image_url": details["image_url"],
-                    "pity": pity,
-                    "is_featured": False,
-                    "timestamp": p["timestamp"],
-                })
-            else:
-                processed_pulls.append({
-                    "pull_number": pull_number,
-                    "res_id": p["res_id"],
-                    "name": details["name"],
-                    "rarity": rarity,
-                    "kind": details["kind"],
-                    "image_url": details["image_url"],
-                    "pity": pity,
-                    "is_featured": False,
-                    "timestamp": p["timestamp"],
-                })
+
+            processed_pulls.append(pull_entry)
 
         total = len(pulls)
         processed_pulls.reverse()
