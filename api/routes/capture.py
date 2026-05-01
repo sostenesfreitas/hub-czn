@@ -1,6 +1,7 @@
 # api/routes/capture.py
 import ctypes
 import threading
+import time
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException
@@ -39,10 +40,10 @@ def get_capture_status():
 
 @router.post("/capture/start")
 def post_capture_start(body: StartRequest):
-    if state.capture_running:
-        raise HTTPException(status_code=409, detail="Capture is already running.")
     if not _is_admin():
         raise HTTPException(status_code=403, detail="Administrator privileges required.")
+    if state.capture_running:
+        raise HTTPException(status_code=409, detail="Capture is already running.")
 
     state.capture_region = body.region
     mgr = state.get_capture_manager()
@@ -54,9 +55,11 @@ def post_capture_start(body: StartRequest):
             state.log_queue.put({
                 "level": "error",
                 "message": f"Capture error: {exc}",
-                "timestamp": __import__("time").strftime("%H:%M:%S"),
+                "timestamp": time.strftime("%H:%M:%S"),
             })
+        finally:
             state.capture_running = False
+            state.reset_capture_manager()
 
     state.capture_running = True
     threading.Thread(target=_run, daemon=True).start()
@@ -90,8 +93,6 @@ def post_set_region(body: SetRegionRequest):
 @router.post("/capture/open-snapshots")
 def post_open_snapshots():
     import os
-    import sys
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
     from capture.constants import OUTPUT_DIR
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     try:

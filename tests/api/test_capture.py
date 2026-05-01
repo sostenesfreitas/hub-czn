@@ -6,13 +6,6 @@ from api.main import app
 client = TestClient(app)
 
 
-def _mock_manager(running=False):
-    m = MagicMock()
-    m.start_capture = MagicMock()
-    m.stop_capture = MagicMock(return_value=("/path/capture.json", "global"))
-    return m
-
-
 def test_capture_status_not_running():
     r = client.get("/api/capture/status")
     assert r.status_code == 200
@@ -32,9 +25,13 @@ def test_capture_start_no_admin():
 def test_capture_start_already_running():
     from api.state import state
     state.capture_running = True
-    r = client.post("/api/capture/start", json={"region": "global", "debug": False})
-    assert r.status_code == 409
-    state.capture_running = False
+    try:
+        with patch("api.routes.capture.ctypes") as mock_ctypes:
+            mock_ctypes.windll.shell32.IsUserAnAdmin.return_value = 1
+            r = client.post("/api/capture/start", json={"region": "global", "debug": False})
+        assert r.status_code == 409
+    finally:
+        state.capture_running = False
 
 
 def test_capture_stop_not_running():
@@ -43,13 +40,45 @@ def test_capture_stop_not_running():
 
 
 def test_set_region_valid():
-    r = client.post("/api/capture/set-region", json={"region": "asia"})
-    assert r.status_code == 200
-    assert r.json()["region"] == "asia"
-    # reset
-    client.post("/api/capture/set-region", json={"region": "global"})
+    try:
+        r = client.post("/api/capture/set-region", json={"region": "asia"})
+        assert r.status_code == 200
+        assert r.json()["region"] == "asia"
+    finally:
+        client.post("/api/capture/set-region", json={"region": "global"})
 
 
 def test_set_region_invalid():
     r = client.post("/api/capture/set-region", json={"region": "europe"})
     assert r.status_code == 422
+
+
+def test_capture_start_success():
+    mock_mgr = MagicMock()
+    mock_mgr.start_capture = MagicMock()
+    with patch("api.routes.capture.ctypes") as mock_ctypes, \
+         patch("api.state.AppState.get_capture_manager", return_value=mock_mgr), \
+         patch("threading.Thread") as mock_thread:
+        mock_ctypes.windll.shell32.IsUserAnAdmin.return_value = 1
+        mock_thread.return_value.start = MagicMock()
+        r = client.post("/api/capture/start", json={"region": "global", "debug": False})
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+    # cleanup
+    from api.state import state
+    state.capture_running = False
+    state.reset_capture_manager()
+
+
+def test_capture_stop_success():
+    from api.state import state
+    state.capture_running = True
+    mock_mgr = MagicMock()
+    mock_mgr.stop_capture = MagicMock(return_value=("/path/capture.json", "global"))
+    with patch("api.state.AppState.get_capture_manager", return_value=mock_mgr):
+        r = client.post("/api/capture/stop")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is True
+    assert body["file_path"] == "/path/capture.json"
+    assert state.capture_running is False
