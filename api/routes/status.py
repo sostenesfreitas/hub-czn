@@ -4,7 +4,7 @@ from api.state import state
 router = APIRouter()
 
 
-@router.get("/api/status")
+@router.get("/status")
 def get_status():
     return {
         "ok": True,

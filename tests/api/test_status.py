@@ -4,7 +4,7 @@ def test_status_ok(client):
 
 
 def test_status_no_data_loaded(client):
-    data = response = client.get("/api/status").json()
+    data = client.get("/api/status").json()
     assert data["ok"] is True
     assert data["data_loaded"] is False
     assert data["fragments"] == 0

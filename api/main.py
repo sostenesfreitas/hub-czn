@@ -16,8 +16,8 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    app.include_router(status.router)
-    app.include_router(data.router)
+    app.include_router(status.router, prefix="/api", tags=["status"])
+    app.include_router(data.router, prefix="/api", tags=["data"])
     app.include_router(ws.router)
     return app
 
