@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppShell } from './components/layout/AppShell'
 import { useApiPort } from './hooks/useApiPort'
 import { setApiPort } from './lib/api'
+import { FragmentsPage } from './pages/fragments/FragmentsPage'
 
 function Placeholder({ name }: { name: string }) {
   return (
@@ -34,7 +35,7 @@ function AppRoutes() {
         <Route path="/" element={<AppShell />}>
           <Route index element={<Navigate to="/fragments" replace />} />
           <Route path="optimizer"  element={<Placeholder name="Optimizer" />} />
-          <Route path="fragments"  element={<Placeholder name="Memory Fragments" />} />
+          <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<Placeholder name="Combatants" />} />
           <Route path="scoring"    element={<Placeholder name="Scoring" />} />
           <Route path="capture"    element={<Placeholder name="Capture" />} />
