@@ -1,10 +1,11 @@
-// src/pages/rescue/RescuePage.tsx
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+import { User, RefreshCw } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { RescueBanner, RescuePull } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Table, TableBody, TableCell, TableHead,
   TableHeader, TableRow,
@@ -22,6 +23,29 @@ function StatRow({ label, value }: { label: string; value: string | number }) {
   )
 }
 
+function PortraitCard({ pull }: { pull: RescuePull }) {
+  const [imgError, setImgError] = useState(false)
+  return (
+    <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#252320] border border-[#2e2c28]">
+      {imgError ? (
+        <div className="w-full h-full flex items-center justify-center text-[#a09d96]">
+          <User size={24} />
+        </div>
+      ) : (
+        <img
+          src={pull.image_url}
+          alt={pull.name}
+          className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      )}
+      <span className="absolute bottom-0 left-0 bg-black/70 text-[10px] text-[#faf9f5] px-1 py-0.5 font-mono">
+        {pull.pity}
+      </span>
+    </div>
+  )
+}
+
 function PortraitGrid({ pulls }: { pulls: RescuePull[] }) {
   const fiveStars = pulls.filter(p => p.rarity >= 5)
   if (fiveStars.length === 0) return null
@@ -30,17 +54,7 @@ function PortraitGrid({ pulls }: { pulls: RescuePull[] }) {
       <p className="text-sm font-medium text-[#faf9f5] mb-3">Saltos 5★ Recentes</p>
       <div className="flex flex-wrap gap-2">
         {fiveStars.map((p, i) => (
-          <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#252320] border border-[#2e2c28]">
-            <img
-              src={p.image_url}
-              alt={p.name}
-              className="w-full h-full object-cover"
-              onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-            />
-            <span className="absolute bottom-0 left-0 bg-black/70 text-[10px] text-[#faf9f5] px-1 py-0.5 font-mono">
-              {p.pity}
-            </span>
-          </div>
+          <PortraitCard key={i} pull={p} />
         ))}
       </div>
     </div>
@@ -70,7 +84,7 @@ function BannerView({ banner }: { banner: RescueBanner }) {
       <div className="flex gap-6 p-4 rounded-lg bg-[#252320] border border-[#2e2c28]">
         <div className="flex-1 flex flex-col gap-2 justify-center">
           <StatRow label="Total de Saltos" value={stats.total.toLocaleString()} />
-          <StatRow label="Recursos Gastos (Jades)" value={stats.resources_spent.toLocaleString()} />
+          <StatRow label="Recursos Gastos" value={stats.resources_spent.toLocaleString()} />
           <StatRow label="Saltos 5★" value={stats.five_star} />
           <StatRow label="Saltos 4★" value={stats.four_star} />
           <StatRow label="Pity 5★ Médio" value={stats.avg_pity_5} />
@@ -122,7 +136,7 @@ function BannerView({ banner }: { banner: RescueBanner }) {
           <Table>
             <TableHeader>
               <TableRow className="bg-[#252320] hover:bg-[#252320] border-[#2e2c28]">
-                {['Nº Roll', 'Personagem', 'Pity', 'Banner', 'Hora'].map(h => (
+                {['Nº do Roll', 'Personagem', 'Pity', 'Banner', 'Hora'].map(h => (
                   <TableHead key={h} className="text-[#a09d96] text-xs h-9">{h}</TableHead>
                 ))}
               </TableRow>
@@ -186,11 +200,20 @@ function BannerView({ banner }: { banner: RescueBanner }) {
 
 export function RescuePage() {
   const [activeTab, setActiveTab] = useState(0)
+  const qc = useQueryClient()
+
+  const { data: captureStatus } = useQuery({
+    queryKey: ['capture-status'],
+    queryFn: () => api.captureStatus(),
+    refetchInterval: 3000,
+  })
+
+  const capturing = captureStatus?.running ?? false
 
   const { data: banners = [], isLoading } = useQuery({
     queryKey: ['rescue-records'],
     queryFn: () => api.rescueRecords(),
-    refetchInterval: 10000,
+    refetchInterval: capturing ? 10000 : false,
   })
 
   if (isLoading) return <div className="p-8 text-[#a09d96]">Carregando…</div>
@@ -199,15 +222,27 @@ export function RescuePage() {
     return (
       <div className="p-8 text-[#a09d96]">
         <p className="text-lg text-[#faf9f5] mb-2">Rescue Records</p>
-        <p className="text-sm">Nenhum registro capturado ainda.</p>
-        <p className="text-sm mt-1">Inicie o capture e navegue até Rescue Records no jogo.</p>
+        <p className="text-sm">Nenhum registro capturado ainda. Inicie o capture e navegue até Rescue Records no jogo.</p>
       </div>
     )
   }
 
   return (
     <div className="p-6 flex flex-col gap-4 overflow-y-auto h-full">
-      <h1 className="text-xl font-bold text-[#faf9f5]">Rescue Records</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-[#faf9f5]">Rescue Records</h1>
+        {!capturing && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="border-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5]"
+            onClick={() => qc.invalidateQueries({ queryKey: ['rescue-records'] })}
+          >
+            <RefreshCw size={13} className="mr-1" />
+            Atualizar
+          </Button>
+        )}
+      </div>
 
       {/* Banner tabs */}
       <div className="flex gap-1 border-b border-[#2e2c28] pb-0">
