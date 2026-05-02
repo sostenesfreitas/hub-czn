@@ -295,7 +295,7 @@ class GearOptimizer:
             # Add partner card stats
             if char_info.partner_res_id:
                 partner_stats = get_partner_stats(char_info.partner_res_id, char_info.partner_level)
-                ascend_bonus = get_partner_ascend_bonus(char_info.partner_ascend)
+                ascend_bonus = get_partner_ascend_bonus(char_info.partner_res_id, char_info.partner_ascend)
                 partner_atk = partner_stats["atk"] + ascend_bonus["atk"]
                 partner_def = partner_stats["def"] + ascend_bonus["def"]
                 partner_hp = partner_stats["hp"] + ascend_bonus["hp"]
