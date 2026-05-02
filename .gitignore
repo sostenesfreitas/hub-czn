@@ -70,6 +70,7 @@ Vribbels/Vribbels.zip
 node_modules/
 dist/
 src-tauri/target/
+src-tauri/binaries/*.exe
 
 # Test artifacts
 test_output.txt
