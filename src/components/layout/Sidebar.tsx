@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom'
 import {
-  Swords, Layers, Users, BarChart2,
+  Home, Swords, Layers, Users, BarChart2,
   Radio, Settings, Gift, Info,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV = [
+  { to: '/',           label: 'Home',             icon: Home },
   { to: '/optimizer',  label: 'Optimizer',        icon: Swords },
   { to: '/fragments',  label: 'Memory Fragments',  icon: Layers },
   { to: '/combatants', label: 'Combatants',        icon: Users },
@@ -26,6 +27,7 @@ export function Sidebar() {
         <NavLink
           key={to}
           to={to}
+          end={to === '/'}
           className={({ isActive }) =>
             cn(
               'flex items-center gap-3 px-4 py-2 text-sm transition-colors rounded-none',

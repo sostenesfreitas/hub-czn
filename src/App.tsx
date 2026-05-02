@@ -11,6 +11,7 @@ import { RescuePage } from './pages/rescue/RescuePage'
 import { CombatantsPage } from './pages/combatants/CombatantsPage'
 import { OptimizerPage } from './pages/optimizer/OptimizerPage'
 import { AboutPage } from './pages/about/AboutPage'
+import { HomePage } from './pages/home/HomePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +31,7 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AppShell />}>
-          <Route index element={<Navigate to="/fragments" replace />} />
+          <Route index element={<HomePage />} />
           <Route path="optimizer"  element={<OptimizerPage />} />
           <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<CombatantsPage />} />
