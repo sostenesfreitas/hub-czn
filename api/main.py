@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import status, data, ws, setup, capture, rescue, scoring, combatants
+from api.routes import status, data, ws, setup, capture, rescue, scoring, combatants, optimize
 
 
 def create_app() -> FastAPI:
@@ -24,6 +24,7 @@ def create_app() -> FastAPI:
     app.include_router(rescue.router, prefix="/api", tags=["rescue"])
     app.include_router(scoring.router, prefix="/api", tags=["scoring"])
     app.include_router(combatants.router, prefix="/api", tags=["combatants"])
+    app.include_router(optimize.router, prefix="/api", tags=["optimize"])
     return app
 
 
