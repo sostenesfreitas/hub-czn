@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { ExternalLink, GitFork, Bug, BookOpen, RefreshCw } from 'lucide-react'
 import { api } from '@/lib/api'
@@ -11,7 +12,7 @@ async function openUrl(url: string) {
   }
 }
 
-function LinkRow({ icon, label, url }: { icon: React.ReactNode; label: string; url: string }) {
+function LinkRow({ icon, label, url }: { icon: ReactNode; label: string; url: string }) {
   return (
     <button
       type="button"
