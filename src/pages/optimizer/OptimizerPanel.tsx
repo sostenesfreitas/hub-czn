@@ -110,24 +110,12 @@ export function OptimizerPanel({
   const lastAutoFilledRef = useRef<string>('')
   const lastWeightInitRef = useRef<string>('')
 
-  // Auto-populate from char preset when character changes
+  // Auto-populate from char preset when preset arrives for the selected character
   useEffect(() => {
-    if (!sets.length) return
+    if (!sets.length || !charPreset) return
     const charName = configRef.current.char_name
-    if (charName === lastAutoFilledRef.current) return
+    if (!charName || charName === lastAutoFilledRef.current) return
     lastAutoFilledRef.current = charName
-
-    if (!charName || !charPreset) {
-      onChangeRef.current({
-        ...configRef.current,
-        four_piece_sets: [],
-        two_piece_sets: [],
-        main_stat_4: null,
-        main_stat_5: null,
-        main_stat_6: null,
-      })
-      return
-    }
 
     const fourIds = charPreset.recommended_sets.filter((id) =>
       sets.some((s) => s.id === id && s.pieces === 4)
@@ -135,9 +123,9 @@ export function OptimizerPanel({
     const twoIds = charPreset.recommended_sets
       .filter((id) => sets.some((s) => s.id === id && s.pieces === 2))
       .slice(0, 2)
-    const m4 = (charPreset.main_stat_4.find((s) => SLOT_4_STATS.includes(s)) as string | undefined) ?? null
-    const m5 = (charPreset.main_stat_5.find((s) => SLOT_5_STATS.includes(s)) as string | undefined) ?? null
-    const m6 = (charPreset.main_stat_6.find((s) => SLOT_6_STATS.includes(s)) as string | undefined) ?? null
+    const m4 = (charPreset.main_stat_4.find((s) => SLOT_4_STATS.includes(s as typeof SLOT_4_STATS[number])) ?? null) as string | null
+    const m5 = (charPreset.main_stat_5.find((s) => SLOT_5_STATS.includes(s as typeof SLOT_5_STATS[number])) ?? null) as string | null
+    const m6 = (charPreset.main_stat_6.find((s) => SLOT_6_STATS.includes(s as typeof SLOT_6_STATS[number])) ?? null) as string | null
 
     onChangeRef.current({
       ...configRef.current,
@@ -147,7 +135,7 @@ export function OptimizerPanel({
       main_stat_5: m5,
       main_stat_6: m6,
     })
-  }, [config.char_name, charPreset, sets])
+  }, [charPreset, sets])
 
   // Initialize stat_weights from char-weights (or global) when character changes
   useEffect(() => {
@@ -223,7 +211,14 @@ export function OptimizerPanel({
           onChange={(e) => {
             lastAutoFilledRef.current = ''
             lastWeightInitRef.current = ''
-            patch({ char_name: e.target.value })
+            patch({
+              char_name: e.target.value,
+              four_piece_sets: [],
+              two_piece_sets: [],
+              main_stat_4: null,
+              main_stat_5: null,
+              main_stat_6: null,
+            })
           }}
           disabled={disabled || combatants.length === 0}
           className="w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
