@@ -62,6 +62,7 @@ class GearOptimizer:
         self.characters = {}
         self.character_info = {}
         self.unequipped = []
+        self.char_weights = {}
 
         if "inventory" in data:
             inventory = data["inventory"]
@@ -94,9 +95,15 @@ class GearOptimizer:
             char_gear.sort(key=lambda f: f.slot_num)
 
         cw_path = Path(filepath).parent / "char_weights.json"
-        if cw_path.exists():
-            with open(cw_path) as _f:
-                self.char_weights = json.load(_f)
+        try:
+            if cw_path.exists():
+                with open(cw_path, encoding="utf-8") as _f:
+                    self.char_weights = json.load(_f)
+        except Exception as e:
+            print(f"Warning: could not load char_weights.json: {e}")
+            self.char_weights = {}
+
+        self.recalculate_scores()
 
     def _parse_character_data(self, char_data: dict):
         """
