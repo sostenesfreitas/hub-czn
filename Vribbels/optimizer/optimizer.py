@@ -40,6 +40,7 @@ class GearOptimizer:
         self.unequipped: list[MemoryFragment] = []
         self.capture_time = ""
         self.priorities: dict[str, int] = {name: 0 for name in ALL_STAT_NAMES}
+        self.char_weights: dict[str, dict[str, int]] = {}
         self.raw_data = {}
 
     def load_data(self, filepath: str):
@@ -91,6 +92,11 @@ class GearOptimizer:
 
         for char_gear in self.characters.values():
             char_gear.sort(key=lambda f: f.slot_num)
+
+        cw_path = Path(filepath).parent / "char_weights.json"
+        if cw_path.exists():
+            with open(cw_path) as _f:
+                self.char_weights = json.load(_f)
 
     def _parse_character_data(self, char_data: dict):
         """
@@ -191,7 +197,8 @@ class GearOptimizer:
     def recalculate_scores(self):
         """Recalculate priority scores for all fragments."""
         for f in self.fragments:
-            f.calculate_priority_score(self.priorities)
+            w = self.char_weights.get(f.equipped_to) if f.equipped_to else None
+            f.calculate_priority_score(w if w is not None else self.priorities)
 
     def get_gear_by_slot(self, slot_num: int, include_equipped: bool = True,
                          exclude_char: str = None, excluded_heroes: list[str] = None,
