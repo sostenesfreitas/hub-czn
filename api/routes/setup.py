@@ -1,4 +1,9 @@
 # api/routes/setup.py
+from __future__ import annotations
+
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
+
 from fastapi import APIRouter, HTTPException
 from capture.setup import check_prerequisites, install_mitmproxy, setup_certificate, open_certificate
 

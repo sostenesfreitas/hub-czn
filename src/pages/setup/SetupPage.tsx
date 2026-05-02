@@ -50,7 +50,7 @@ export function SetupPage() {
     () => localStorage.getItem('setup.cert_imported') === 'true'
   )
 
-  const { data: status, isLoading } = useQuery({
+  const { data: status, isLoading, isError, error } = useQuery({
     queryKey: ['setup-status'],
     queryFn: () => api.setupStatus(),
     refetchInterval: 5000,
@@ -70,8 +70,18 @@ export function SetupPage() {
     mutationFn: () => api.openCert(),
   })
 
-  if (isLoading || !status) {
+  if (isLoading) {
     return <div className="p-8 text-[#a09d96]">Checking prerequisites…</div>
+  }
+
+  if (isError || !status) {
+    const msg = error instanceof Error ? error.message : 'Verifique se o servidor Python está rodando.'
+    return (
+      <div className="p-8 flex flex-col gap-2">
+        <p className="text-[#c64545] text-sm font-medium">Não foi possível conectar à API</p>
+        <p className="text-[#a09d96] text-xs">{msg}</p>
+      </div>
+    )
   }
 
   return (
