@@ -517,19 +517,22 @@ def parse_potential_node_ids(potential_str: str, res_id: int) -> dict[int, int]:
         else:
             node_ids = potential_str
 
+        res_id_str = str(res_id)
+        res_id_len = len(res_id_str)
+
         for node_id in node_ids:
             node_str = str(node_id)
-            if len(node_str) != 8:
+            # Node ID format: {res_id}{node_prefix}{level:03d}
+            # node_prefix is 1+ digits, level is always 3 digits
+            if len(node_str) != res_id_len + 4:
                 continue
-
-            # Parse: XXXX YY ZZ where XXXX=res_id, YY=node, ZZ=level
-            parsed_res_id = int(node_str[:4])
-            node_num = int(node_str[4:6])
-            node_level = int(node_str[6:8])
-
-            # Validate res_id matches
-            if parsed_res_id == res_id:
-                result[node_num] = node_level
+            if node_str[:res_id_len] != res_id_str:
+                continue
+            remaining = node_str[res_id_len:]
+            node_prefix = int(remaining[:-3])  # digit(s) before last 3
+            node_level = int(remaining[-3:])   # last 3 digits = level
+            node_num = node_prefix * 10        # maps prefix 5→50, 6→60
+            result[node_num] = node_level
     except (ValueError, TypeError):
         pass
 
