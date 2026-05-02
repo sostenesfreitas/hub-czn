@@ -51,6 +51,12 @@ def post_capture_start(body: StartRequest):
     def _run():
         try:
             mgr.start_capture(debug_mode=body.debug)
+            # Block until the proxy process exits (stop_capture terminates it).
+            # Capture the reference now so stop_capture() setting proxy_process=None
+            # doesn't cause a race condition.
+            proc = mgr.proxy_process
+            if proc:
+                proc.wait()
         except Exception as exc:
             state.log_queue.put({
                 "level": "error",
