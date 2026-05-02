@@ -3,7 +3,7 @@ import type {
   SetupStatus, SetupActionResponse, CaptureStatus,
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
   Combatant, CombatantStats, ScoringPriorities,
-  OptimizerConfig, EquipmentSet, AboutInfo,
+  OptimizerConfig, EquipmentSet, AboutInfo, CharPreset,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -31,6 +31,10 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     throw new Error((err as { detail: string }).detail ?? res.statusText)
   }
   return res.json() as Promise<T>
+}
+
+export function assetUrl(path: string): string {
+  return `${base()}${path}`
 }
 
 export const api = {
@@ -104,4 +108,21 @@ export const api = {
     request<{ cancelled: boolean }>('/api/optimize/cancel', { method: 'POST' }),
 
   about: () => request<AboutInfo>('/api/about'),
+
+  charPreset: (charId: number) =>
+    request<CharPreset>(`/api/scoring/char-preset/${charId}`),
+
+  charWeights: (charId: string) =>
+    request<ScoringPriorities>(`/api/scoring/char-weights/${encodeURIComponent(charId)}`),
+
+  saveCharWeights: (charId: string, weights: Record<string, number>) =>
+    request<ScoringPriorities>(`/api/scoring/char-weights/${encodeURIComponent(charId)}`, {
+      method: 'POST',
+      body: JSON.stringify({ weights }),
+    }),
+
+  deleteCharWeights: (charId: string) =>
+    request<{ ok: boolean }>(`/api/scoring/char-weights/${encodeURIComponent(charId)}`, {
+      method: 'DELETE',
+    }),
 }
