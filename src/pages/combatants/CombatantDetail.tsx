@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { GearSlot, FinalStats } from '@/lib/types'
 
-function GearSlotCard({ slot }: { slot: GearSlot }) {
+export function GearSlotCard({ slot }: { slot: GearSlot }) {
   return (
     <div className="bg-[#181715] border border-[#2e2c28] rounded-lg p-3 space-y-1.5">
       <p className="text-[10px] uppercase tracking-wider text-[#a09d96]">{slot.slot}</p>
@@ -39,7 +39,7 @@ function GearSlotCard({ slot }: { slot: GearSlot }) {
   )
 }
 
-function FinalStatsPanel({ stats }: { stats: FinalStats }) {
+export function FinalStatsPanel({ stats }: { stats: FinalStats }) {
   const rows: Array<{ label: string; value: string }> = [
     { label: 'ATK', value: stats.ATK.toLocaleString() },
     { label: 'DEF', value: stats.DEF.toLocaleString() },
