@@ -1,16 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-const STAT_GROUPS = [
-  { label: 'Ofensivo', stats: ['Flat ATK', 'ATK%', 'CRate', 'CDmg', 'Extra DMG%', 'DoT%'] },
-  { label: 'Defensivo', stats: ['Flat DEF', 'DEF%', 'Flat HP', 'HP%'] },
-  {
-    label: 'Elemental',
-    stats: ['Passion DMG%', 'Order DMG%', 'Justice DMG%', 'Void DMG%', 'Instinct DMG%'],
-  },
-  { label: 'Outros', stats: ['Ego'] },
-] as const
 
 export const DPS_WEIGHTS: Record<string, number> = {
   'Flat ATK': 7, 'ATK%': 10, 'Extra DMG%': 6,
@@ -26,7 +17,7 @@ export const TANK_WEIGHTS: Record<string, number> = {
   'Passion DMG%': 1, 'Order DMG%': 1, 'Justice DMG%': 1, 'Void DMG%': 1, 'Instinct DMG%': 1,
 }
 
-export type Preset = 'dps' | 'tank' | 'custom'
+export type Preset = 'dps' | 'tank' | 'custom' | 'system'
 
 interface ScoringPanelProps {
   weights: Record<string, number>
@@ -38,6 +29,9 @@ interface ScoringPanelProps {
   onPresetApply: (preset: 'dps' | 'tank') => void
   onReset: () => void
   onSave: () => void
+  onSystemPreset?: () => void
+  hasCharOverride?: boolean
+  onResetToGlobal?: () => void
 }
 
 function WeightInput({
@@ -52,7 +46,7 @@ function WeightInput({
   const id = `weight-${stat.replace(/[^a-z0-9]/gi, '-').toLowerCase()}`
   return (
     <div className="flex items-center justify-between gap-2">
-      <label htmlFor={id} className="text-xs text-[#a09d96] truncate flex-1">{stat}</label>
+      <label htmlFor={id} className="text-xs text-[#b3b3b3] truncate flex-1">{stat}</label>
       <input
         id={id}
         type="number"
@@ -67,7 +61,7 @@ function WeightInput({
           const clamped = Math.max(0, Math.min(10, Number(e.target.value)))
           if (clamped !== value) onChange(stat, clamped)
         }}
-        className="w-14 text-right text-sm bg-[#2e2c28] border border-[#3a3835] rounded px-2 py-0.5 text-[#faf9f5] focus:outline-none focus:border-[#cc785c]"
+        className="w-14 text-right text-sm bg-[#282828] border border-[#333333] rounded px-2 py-0.5 text-[#ffffff] focus:outline-none focus:border-[#c084fc]"
       />
     </div>
   )
@@ -83,7 +77,22 @@ function PanelContent({
   onPresetApply,
   onReset,
   onSave,
+  onSystemPreset,
+  hasCharOverride,
+  onResetToGlobal,
 }: ScoringPanelProps) {
+  const { t } = useTranslation()
+
+  const STAT_GROUPS = [
+    { labelKey: 'scoring.group.offensive', stats: ['Flat ATK', 'ATK%', 'CRate', 'CDmg', 'Extra DMG%', 'DoT%'] },
+    { labelKey: 'scoring.group.defensive', stats: ['Flat DEF', 'DEF%', 'Flat HP', 'HP%'] },
+    {
+      labelKey: 'scoring.group.elemental',
+      stats: ['Passion DMG%', 'Order DMG%', 'Justice DMG%', 'Void DMG%', 'Instinct DMG%'],
+    },
+    { labelKey: 'scoring.group.other', stats: ['Ego'] },
+  ] as const
+
   return (
     <div className="flex flex-col gap-4 h-full overflow-hidden">
       {/* Presets */}
@@ -95,23 +104,36 @@ function PanelContent({
             onClick={() => onPresetApply(p)}
             className={`px-3 py-1 text-xs rounded font-medium transition-colors ${
               activePreset === p
-                ? 'bg-[#cc785c] text-[#faf9f5]'
-                : 'bg-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5]'
+                ? 'bg-[#c084fc] text-[#ffffff]'
+                : 'bg-[#282828] text-[#b3b3b3] hover:text-[#ffffff]'
             }`}
           >
             {p === 'dps' ? 'DPS' : 'Tank'}
           </button>
         ))}
+        {onSystemPreset && (
+          <button
+            type="button"
+            onClick={onSystemPreset}
+            className={`px-3 py-1 text-xs rounded font-medium transition-colors ${
+              activePreset === 'system'
+                ? 'bg-[#c084fc] text-[#ffffff]'
+                : 'bg-[#282828] text-[#b3b3b3] hover:text-[#ffffff]'
+            }`}
+          >
+            {t('scoring.systemRec')}
+          </button>
+        )}
         <button
           type="button"
           onClick={onReset}
-          className="px-3 py-1 text-xs rounded font-medium bg-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5] transition-colors"
+          className="px-3 py-1 text-xs rounded font-medium bg-[#282828] text-[#b3b3b3] hover:text-[#ffffff] transition-colors"
         >
-          Reset
+          {t('scoring.reset')}
         </button>
         {activePreset === 'custom' && (
-          <span className="px-3 py-1 text-xs rounded font-medium bg-[#252320] text-[#cc785c] border border-[#cc785c]/30">
-            Custom
+          <span className="px-3 py-1 text-xs rounded font-medium bg-[#181818] text-[#c084fc] border border-[#c084fc]/30">
+            {t('scoring.custom')}
           </span>
         )}
       </div>
@@ -119,9 +141,9 @@ function PanelContent({
       {/* Weight inputs */}
       <div className="flex-1 overflow-y-auto space-y-4 pr-1">
         {STAT_GROUPS.map(group => (
-          <div key={group.label}>
-            <p className="text-[10px] uppercase tracking-wider text-[#a09d96] mb-2">
-              {group.label}
+          <div key={group.labelKey}>
+            <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-2">
+              {t(group.labelKey)}
             </p>
             <div className="space-y-2">
               {group.stats.map(stat =>
@@ -141,20 +163,30 @@ function PanelContent({
 
       {/* Save */}
       <div className="space-y-2 shrink-0">
-        {saveError && <p role="alert" className="text-xs text-[#c64545]">{saveError}</p>}
+        {saveError && <p role="alert" className="text-xs text-[#f3727f]">{saveError}</p>}
         <Button
           onClick={onSave}
           disabled={!isDirty || isSaving}
-          className="w-full bg-[#cc785c] hover:bg-[#b8674d] text-[#faf9f5] disabled:opacity-40"
+          className="w-full bg-[#c084fc] hover:bg-[#9333ea] text-[#ffffff] disabled:opacity-40"
         >
-          {isSaving ? 'Salvando...' : 'Salvar'}
+          {isSaving ? t('scoring.saving') : t('scoring.save')}
         </Button>
+        {hasCharOverride && onResetToGlobal && (
+          <button
+            type="button"
+            onClick={onResetToGlobal}
+            className="w-full text-xs text-[#b3b3b3] hover:text-[#ffffff] transition-colors py-1"
+          >
+            {t('scoring.resetToGlobal')}
+          </button>
+        )}
       </div>
     </div>
   )
 }
 
 export function ScoringPanel(props: ScoringPanelProps) {
+  const { t } = useTranslation()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -166,9 +198,9 @@ export function ScoringPanel(props: ScoringPanelProps) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden sm:flex flex-col w-64 shrink-0 bg-[#252320] border border-[#2e2c28] rounded-xl p-4 h-full overflow-hidden">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#a09d96] mb-3">
-          Pontuação
+      <aside className="hidden sm:flex flex-col w-64 shrink-0 bg-[#181818] border border-[#282828] rounded-xl p-4 h-full overflow-hidden">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#b3b3b3] mb-3">
+          {t('scoring.title')}
         </p>
         <PanelContent {...props} />
       </aside>
@@ -178,8 +210,8 @@ export function ScoringPanel(props: ScoringPanelProps) {
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="p-2 rounded-lg bg-[#252320] border border-[#2e2c28] text-[#a09d96]"
-          aria-label="Abrir painel de pontuação"
+          className="p-2 rounded-lg bg-[#181818] border border-[#282828] text-[#b3b3b3]"
+          aria-label={t('scoring.openPanel')}
         >
           <SlidersHorizontal size={20} />
         </button>
@@ -190,7 +222,7 @@ export function ScoringPanel(props: ScoringPanelProps) {
               type="button"
               tabIndex={-1}
               className="absolute inset-0 bg-black/60 cursor-default"
-              aria-label="Fechar painel"
+              aria-label={t('scoring.closePanel')}
               onClick={() => setDrawerOpen(false)}
             />
             <div
@@ -198,18 +230,18 @@ export function ScoringPanel(props: ScoringPanelProps) {
               tabIndex={-1}
               role="dialog"
               aria-modal="true"
-              aria-label="Painel de pontuação"
-              className="relative ml-auto w-72 h-full bg-[#252320] border-l border-[#2e2c28] p-4 flex flex-col"
+              aria-label={t('scoring.title')}
+              className="relative ml-auto w-72 h-full bg-[#181818] border-l border-[#282828] p-4 flex flex-col"
             >
               <div className="flex items-center justify-between mb-3 shrink-0">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#a09d96]">
-                  Pontuação
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#b3b3b3]">
+                  {t('scoring.title')}
                 </p>
                 <button
                   type="button"
-                  aria-label="Fechar painel"
+                  aria-label={t('scoring.closePanel')}
                   onClick={() => setDrawerOpen(false)}
-                  className="text-[#a09d96]"
+                  className="text-[#b3b3b3]"
                 >
                   <X size={16} />
                 </button>
