@@ -144,3 +144,34 @@ export interface Combatant {
 export interface ScoringPriorities {
   weights: Record<string, number>
 }
+
+export interface OptimizerConfig {
+  char_name: string
+  four_piece_sets: number[]
+  two_piece_sets: number[]
+  main_stat_4: string | null
+  main_stat_5: string | null
+  main_stat_6: string | null
+  top_percent: number
+  include_equipped: boolean
+  excluded_heroes: string[]
+  max_results: number
+}
+
+export interface OptimizeProgress {
+  checked: number
+  total: number
+  found: number
+}
+
+export interface OptimizeResult {
+  rank: number
+  score: number
+  gear_slots: GearSlot[]
+  final_stats: FinalStats
+}
+
+export interface EquipmentSet {
+  id: number
+  name: string
+}

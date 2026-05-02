@@ -3,6 +3,7 @@ import type {
   SetupStatus, SetupActionResponse, CaptureStatus,
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
   Combatant, CombatantStats, ScoringPriorities,
+  OptimizerConfig, EquipmentSet,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -90,4 +91,15 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ weights }),
     }),
+
+  optimizeSets: () => request<EquipmentSet[]>('/api/optimize/sets'),
+
+  optimizeStart: (config: OptimizerConfig) =>
+    request<{ job_id: string }>('/api/optimize/start', {
+      method: 'POST',
+      body: JSON.stringify(config),
+    }),
+
+  optimizeCancel: () =>
+    request<{ cancelled: boolean }>('/api/optimize/cancel', { method: 'POST' }),
 }
