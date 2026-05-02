@@ -9,6 +9,7 @@ import { SetupPage } from './pages/setup/SetupPage'
 import { CapturePage } from './pages/capture/CapturePage'
 import { RescuePage } from './pages/rescue/RescuePage'
 import { CombatantsPage } from './pages/combatants/CombatantsPage'
+import { OptimizerPage } from './pages/optimizer/OptimizerPage'
 
 function Placeholder({ name }: { name: string }) {
   return (
@@ -38,7 +39,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<AppShell />}>
           <Route index element={<Navigate to="/fragments" replace />} />
-          <Route path="optimizer"  element={<Placeholder name="Optimizer" />} />
+          <Route path="optimizer"  element={<OptimizerPage />} />
           <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<CombatantsPage />} />
           <Route path="scoring"    element={<Navigate to="/combatants" replace />} />
