@@ -107,6 +107,8 @@ export function SetCombobox({
         )}
         <input
           type="text"
+          role="combobox"
+          aria-expanded={open}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
@@ -129,11 +131,12 @@ export function SetCombobox({
       </div>
 
       {open && !inputDisabled && filtered.length > 0 && (
-        <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#252320] border border-[#2e2c28] rounded shadow-lg max-h-48 overflow-y-auto">
+        <div role="listbox" className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#252320] border border-[#2e2c28] rounded shadow-lg max-h-48 overflow-y-auto">
           {filtered.map((opt) => (
             <button
               key={opt.id}
               type="button"
+              role="option"
               onClick={() => add(opt.id)}
               className="w-full text-left px-3 py-1.5 text-xs text-[#faf9f5] hover:bg-[#2e2c28] transition-colors"
             >
