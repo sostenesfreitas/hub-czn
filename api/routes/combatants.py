@@ -16,7 +16,7 @@ except ImportError:
 
 router = APIRouter()
 
-CDN_BASE = "https://cdn.czndecksmeta.com/face/character/portrait_character_{res_id}.webp"
+LOCAL_FACE = "/assets/game/faces/bookmark_face_character_map_{res_id}.png"
 
 
 def _char_extra(res_id: int) -> dict:
@@ -53,7 +53,7 @@ def get_combatants():
             "attribute": extra["attribute"],
             "class": extra["class"],
             "avg_gear_score": round(avg_score, 1),
-            "portrait_url": CDN_BASE.format(res_id=info.res_id),
+            "portrait_url": LOCAL_FACE.format(res_id=info.res_id),
         })
     result.sort(key=lambda c: -c["avg_gear_score"])
     return result
@@ -73,13 +73,28 @@ def get_combatant_stats(char_id: str):
         slot_name = EQUIPMENT_SLOTS.get(slot_num, f"Slot {slot_num}")
         f = gear_by_slot.get(slot_num)
         if f is None:
-            slots.append({"slot": slot_name, "main_stat": None, "substats": [], "score": None})
+            slots.append({
+                "slot": slot_name, "slot_num": slot_num,
+                "set_name": None, "set_id": None, "level": 0,
+                "main_stat": None, "substats": [],
+                "score": None, "priority_score": None,
+                "potential_low": None, "potential_high": None,
+                "equipped_to": None,
+            })
         else:
             slots.append({
-                "slot": slot_name,
+                "slot": slot_name, "slot_num": slot_num,
+                "set_name": f.set_name, "set_id": f.set_id, "level": f.level,
                 "main_stat": f"{f.main_stat.name} {f.main_stat.format_value()}" if f.main_stat else None,
-                "substats": [f"{s.name} {s.format_value()}" for s in f.substats],
+                "substats": [
+                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count}
+                    for s in f.substats
+                ],
                 "score": round(f.gear_score, 1),
+                "priority_score": round(f.priority_score, 1),
+                "potential_low": round(f.potential_low, 1),
+                "potential_high": round(f.potential_high, 1),
+                "equipped_to": f.equipped_to,
             })
 
     raw = state.optimizer.calculate_build_stats(gear, char_id)

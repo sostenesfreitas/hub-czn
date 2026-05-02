@@ -118,13 +118,21 @@ export interface CaptureLogMessage {
   timestamp: string
 }
 
+export interface SubstatInfo {
+  text: string
+  name: string
+  value: string
+  roll_count: number
+}
+
 export interface GearSlot {
   slot: string
   main_stat: string | null
-  substats: string[]
+  substats: SubstatInfo[]
   score: number | null
   set_name?: string | null
   set_id?: number | null
+  slot_num?: number
   level?: number
   priority_score?: number | null
   potential_low?: number | null

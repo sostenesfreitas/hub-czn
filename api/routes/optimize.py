@@ -43,11 +43,15 @@ def _format_results(results: list) -> list[dict]:
         gear_slots = [
             {
                 "slot": EQUIPMENT_SLOTS.get(p.slot_num, f"Slot {p.slot_num}"),
+                "slot_num": p.slot_num,
                 "set_name": p.set_name,
                 "set_id": p.set_id,
                 "level": p.level,
                 "main_stat": f"{p.main_stat.name} {p.main_stat.format_value()}" if p.main_stat else None,
-                "substats": [f"{s.name} {s.format_value()}" for s in p.substats],
+                "substats": [
+                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count}
+                    for s in p.substats
+                ],
                 "score": round(p.gear_score, 1),
                 "priority_score": round(p.priority_score, 1),
                 "potential_low": round(p.potential_low, 1),

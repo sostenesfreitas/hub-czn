@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { api } from '@/lib/api'
+import { api, assetUrl } from '@/lib/api'
 import type { OptimizeResult, OptimizeProgress, Combatant, CombatantStats, GearSlot, FinalStats } from '@/lib/types'
 
 type JobState = 'idle' | 'running' | 'done' | 'cancelled' | 'error'
@@ -79,13 +79,26 @@ function OwnerCell({ equippedTo, combatants }: { equippedTo: string | null | und
     <div className="flex items-center gap-1.5">
       {owner?.portrait_url && (
         <img
-          src={owner.portrait_url}
+          src={assetUrl(owner.portrait_url)}
           alt={owner.name}
           className="w-5 h-5 rounded-full object-cover border border-[#333333] shrink-0"
         />
       )}
       <span className="text-[10px] text-[#b3b3b3] truncate">{equippedTo}</span>
     </div>
+  )
+}
+
+function PieceThumb({ slot }: { slot: GearSlot }) {
+  if (slot.set_id == null || slot.slot_num == null) return null
+  const url = assetUrl(`/assets/game/pieces/item_piece_set_${String(slot.set_id).padStart(3, '0')}_${slot.slot_num}.png`)
+  return (
+    <img
+      src={url}
+      alt=""
+      className="w-6 h-6 object-contain rounded shrink-0"
+      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+    />
   )
 }
 
@@ -114,14 +127,19 @@ function GearTable({ slots, combatants }: { slots: GearSlot[]; combatants: Comba
             return (
               <tr key={slot.slot} className="border-b border-[#1a1a1a] hover:bg-[#1a1a1a] transition-colors">
                 <td className="px-2.5 py-1.5 text-[10px] text-[#b3b3b3] whitespace-nowrap">{slot.slot}</td>
-                <td className="px-2.5 py-1.5 text-[10px] text-[#ffffff] whitespace-nowrap max-w-[7rem] truncate">
-                  {slot.set_name ?? '—'}
+                <td className="px-2.5 py-1.5 max-w-[9rem]">
+                  <div className="flex items-center gap-1.5">
+                    <PieceThumb slot={slot} />
+                    <span className="text-[10px] text-[#ffffff] truncate">{slot.set_name ?? '—'}</span>
+                  </div>
                 </td>
                 <td className="px-2.5 py-1.5 text-[10px] text-[#c084fc] whitespace-nowrap">{slot.main_stat ?? '—'}</td>
                 <td className="px-2.5 py-1.5">
                   <div className="space-y-0.5">
                     {slot.substats.map((s, i) => (
-                      <p key={i} className="text-[10px] text-[#b3b3b3] whitespace-nowrap">{s}</p>
+                      <p key={i} className="text-[10px] text-[#b3b3b3] whitespace-nowrap">
+                        {s.name} <span className="text-[#ffffff]">{s.value}</span>
+                      </p>
                     ))}
                   </div>
                 </td>

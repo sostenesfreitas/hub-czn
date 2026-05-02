@@ -1,11 +1,19 @@
 import socket
 import sys
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from api.routes import status, data, ws, setup, capture, rescue, scoring, combatants, optimize, about
+
+
+def _assets_dir() -> Path:
+    if hasattr(sys, '_MEIPASS'):
+        return Path(sys._MEIPASS) / 'assets'
+    return Path(__file__).parent / 'assets'
 
 
 def create_app() -> FastAPI:
@@ -16,6 +24,10 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    assets_dir = _assets_dir()
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+
     app.include_router(status.router, prefix="/api", tags=["status"])
     app.include_router(data.router, prefix="/api", tags=["data"])
     app.include_router(ws.router)
