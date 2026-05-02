@@ -72,15 +72,19 @@ export function OptimizerPage() {
       }
     }
 
+    let intentionalClose = false
     ws.onclose = () => {
-      if (jobStateRef.current === 'running') {
+      if (!intentionalClose && jobStateRef.current === 'running') {
         setJobState('error')
         setJobError('Conexão perdida. Recarregue a página e tente novamente.')
         setProgress(null)
       }
     }
 
-    return () => ws.close()
+    return () => {
+      intentionalClose = true
+      ws.close()
+    }
   }, [port])
 
   const handleConfigChange = useCallback((newConfig: OptimizerConfig) => {
@@ -105,7 +109,7 @@ export function OptimizerPage() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Erro ao iniciar otimização'
       setRunError(
-        msg.includes('andamento') ? 'Já existe uma otimização em andamento' : msg
+        msg.includes('already running') ? 'Já existe uma otimização em andamento' : msg
       )
       setJobState('idle')
     }
