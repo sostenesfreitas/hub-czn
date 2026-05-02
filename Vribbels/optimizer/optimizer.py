@@ -415,6 +415,30 @@ class GearOptimizer:
             List of tuples: (gear_list, total_score, final_stats)
             Sorted by score (highest first), limited to max_results
         """
+        stat_weights = settings.get("stat_weights")
+
+        saved_scores = None
+        if stat_weights is not None:
+            saved_scores = {f.id: f.priority_score for f in self.fragments}
+            for f in self.fragments:
+                f.calculate_priority_score(stat_weights)
+            use_priority = True
+        else:
+            use_priority = any(v != 0 for v in self.priorities.values())
+
+        try:
+            return self._optimize_inner(
+                char_name, settings, use_priority, progress_callback, cancel_flag
+            )
+        finally:
+            if saved_scores is not None:
+                for f in self.fragments:
+                    f.priority_score = saved_scores.get(f.id, f.priority_score)
+
+    def _optimize_inner(self, char_name: str, settings: dict, use_priority: bool,
+                        progress_callback: Callable = None,
+                        cancel_flag: list = None) -> list[tuple[list[MemoryFragment], float, dict]]:
+        """Inner optimization logic (called by optimize())."""
         required_4pc_list = settings.get("four_piece_sets", [])  # Now a list for multi-select
         required_2pc = settings.get("two_piece_sets", [])
         main_stat_4 = settings.get("main_stat_4", [])
@@ -424,8 +448,6 @@ class GearOptimizer:
         include_equipped = settings.get("include_equipped", True)
         excluded_heroes = settings.get("excluded_heroes", [])
         max_results = settings.get("max_results", 100)
-
-        use_priority = any(v != 0 for v in self.priorities.values())
 
         # Combine all required sets for initial filtering
         all_required_sets = []
