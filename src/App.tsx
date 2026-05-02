@@ -10,15 +10,7 @@ import { CapturePage } from './pages/capture/CapturePage'
 import { RescuePage } from './pages/rescue/RescuePage'
 import { CombatantsPage } from './pages/combatants/CombatantsPage'
 import { OptimizerPage } from './pages/optimizer/OptimizerPage'
-
-function Placeholder({ name }: { name: string }) {
-  return (
-    <div className="p-8 text-[#a09d96]">
-      <p className="text-lg">{name}</p>
-      <p className="text-sm mt-1">Coming in a future plan.</p>
-    </div>
-  )
-}
+import { AboutPage } from './pages/about/AboutPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +38,7 @@ function AppRoutes() {
           <Route path="capture"    element={<CapturePage />} />
           <Route path="setup"      element={<SetupPage />} />
           <Route path="rescue"     element={<RescuePage />} />
-          <Route path="about"      element={<Placeholder name="About" />} />
+          <Route path="about"      element={<AboutPage />} />
           <Route path="*"          element={<Navigate to="/fragments" replace />} />
         </Route>
       </Routes>

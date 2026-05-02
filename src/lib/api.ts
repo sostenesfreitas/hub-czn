@@ -3,7 +3,7 @@ import type {
   SetupStatus, SetupActionResponse, CaptureStatus,
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
   Combatant, CombatantStats, ScoringPriorities,
-  OptimizerConfig, EquipmentSet,
+  OptimizerConfig, EquipmentSet, AboutInfo,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -102,4 +102,6 @@ export const api = {
 
   optimizeCancel: () =>
     request<{ cancelled: boolean }>('/api/optimize/cancel', { method: 'POST' }),
+
+  about: () => request<AboutInfo>('/api/about'),
 }

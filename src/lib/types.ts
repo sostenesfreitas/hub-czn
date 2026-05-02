@@ -175,3 +175,10 @@ export interface EquipmentSet {
   id: number
   name: string
 }
+
+export interface AboutInfo {
+  version: string
+  github_url: string
+  releases_url: string
+  issues_url: string
+}
