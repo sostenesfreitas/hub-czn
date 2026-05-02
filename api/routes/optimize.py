@@ -43,12 +43,29 @@ def _format_results(results: list) -> list[dict]:
         gear_slots = [
             {
                 "slot": EQUIPMENT_SLOTS.get(p.slot_num, f"Slot {p.slot_num}"),
+                "set_name": p.set_name,
+                "set_id": p.set_id,
+                "level": p.level,
                 "main_stat": f"{p.main_stat.name} {p.main_stat.format_value()}" if p.main_stat else None,
                 "substats": [f"{s.name} {s.format_value()}" for s in p.substats],
                 "score": round(p.gear_score, 1),
+                "priority_score": round(p.priority_score, 1),
+                "potential_low": round(p.potential_low, 1),
+                "potential_high": round(p.potential_high, 1),
+                "equipped_to": p.equipped_to,
             }
             for p in gear_sorted
         ]
+
+        set_counts: dict[str, int] = {}
+        for p in gear_sorted:
+            if p.set_name:
+                set_counts[p.set_name] = set_counts.get(p.set_name, 0) + 1
+        set_summary = " + ".join(
+            f"{cnt}×{name}"
+            for name, cnt in sorted(set_counts.items(), key=lambda x: -x[1])
+        )
+
         final_stats = {
             "ATK": round(raw_stats.get("ATK", 0)),
             "DEF": round(raw_stats.get("DEF", 0)),
@@ -57,10 +74,12 @@ def _format_results(results: list) -> list[dict]:
             "CDmg": round(raw_stats.get("CDmg", 125), 1),
             "EHP": round(raw_stats.get("EHP", 0)),
             "AvgDMG": round(raw_stats.get("Avg DMG", 0)),
+            "ExtraDMG": round(raw_stats.get("Extra DMG%", 0), 1),
         }
         formatted.append({
             "rank": rank,
             "score": round(score, 1),
+            "set_summary": set_summary,
             "gear_slots": gear_slots,
             "final_stats": final_stats,
         })

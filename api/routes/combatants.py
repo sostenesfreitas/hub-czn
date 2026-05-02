@@ -91,6 +91,7 @@ def get_combatant_stats(char_id: str):
         "CDmg": round(raw.get("CDmg", 125), 1),
         "EHP": round(raw.get("EHP", 0)),
         "AvgDMG": round(raw.get("Avg DMG", 0)),
+        "ExtraDMG": round(raw.get("Extra DMG%", 0), 1),
     }
 
     return {"char_id": char_id, "gear_slots": slots, "final_stats": final_stats}

@@ -106,7 +106,9 @@ export function OptimizerPage() {
     setSelectedRank(null)
     setJobError(null)
     try {
-      await api.optimizeStart(config)
+      const sw = config.stat_weights
+      const hasWeights = sw != null && Object.values(sw).some((v) => v !== 0)
+      await api.optimizeStart({ ...config, stat_weights: hasWeights ? sw : null })
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Erro ao iniciar otimização'
       setRunError(
@@ -142,6 +144,7 @@ export function OptimizerPage() {
         selectedRank={selectedRank}
         onSelectRank={handleSelectRank}
         jobError={jobError}
+        charId={config.char_name}
       />
     </div>
   )

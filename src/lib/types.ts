@@ -123,6 +123,13 @@ export interface GearSlot {
   main_stat: string | null
   substats: string[]
   score: number | null
+  set_name?: string | null
+  set_id?: number | null
+  level?: number
+  priority_score?: number | null
+  potential_low?: number | null
+  potential_high?: number | null
+  equipped_to?: string | null
 }
 
 export interface FinalStats {
@@ -133,6 +140,7 @@ export interface FinalStats {
   CDmg: number
   EHP: number
   AvgDMG: number
+  ExtraDMG?: number
 }
 
 export interface CombatantStats {
@@ -179,6 +187,7 @@ export interface OptimizeProgress {
 export interface OptimizeResult {
   rank: number
   score: number
+  set_summary: string
   gear_slots: GearSlot[]
   final_stats: FinalStats
 }
