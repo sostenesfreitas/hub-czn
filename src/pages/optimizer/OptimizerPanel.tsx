@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { OptimizerConfig, EquipmentSet } from '@/lib/types'
-import type { Combatant } from '@/lib/types'
+import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress } from '@/lib/types'
 import { SetCombobox } from './SetCombobox'
 import type { ComboboxOption } from './SetCombobox'
-import type { OptimizeProgress } from '@/lib/types'
 
 const SLOT_4_STATS = ['ATK%', 'DEF%', 'HP%', 'CRate', 'CDmg']
 const SLOT_5_STATS = [
@@ -97,10 +95,11 @@ export function OptimizerPanel({
     <aside className={`${panelBase} overflow-y-auto space-y-4`}>
       {/* Character */}
       <div className="space-y-1">
-        <label className="text-[10px] uppercase tracking-wider text-[#a09d96]">
+        <label htmlFor="optimizer-char" className="text-[10px] uppercase tracking-wider text-[#a09d96]">
           Personagem
         </label>
         <select
+          id="optimizer-char"
           value={config.char_name}
           onChange={(e) => patch({ char_name: e.target.value })}
           disabled={disabled || combatants.length === 0}
@@ -150,10 +149,11 @@ export function OptimizerPanel({
       {/* Main stats */}
       {MAIN_STAT_SLOTS.map(({ label, key, opts }) => (
         <div key={key} className="space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-[#a09d96]">
+          <label htmlFor={key} className="text-[10px] uppercase tracking-wider text-[#a09d96]">
             {label}
           </label>
           <select
+            id={key}
             value={config[key] ?? ''}
             onChange={(e) => patch({ [key]: e.target.value || null })}
             disabled={disabled}
@@ -172,10 +172,11 @@ export function OptimizerPanel({
       {/* Filters */}
       <div className="space-y-3">
         <div className="space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-[#a09d96]">
+          <label htmlFor="optimizer-top-pct" className="text-[10px] uppercase tracking-wider text-[#a09d96]">
             Top % do gear
           </label>
           <input
+            id="optimizer-top-pct"
             type="number"
             min={1}
             max={100}
@@ -190,10 +191,11 @@ export function OptimizerPanel({
         </div>
 
         <div className="space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-[#a09d96]">
+          <label htmlFor="optimizer-max-results" className="text-[10px] uppercase tracking-wider text-[#a09d96]">
             Máx. resultados
           </label>
           <input
+            id="optimizer-max-results"
             type="number"
             min={1}
             max={50}
