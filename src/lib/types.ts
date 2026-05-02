@@ -38,8 +38,18 @@ export interface LoadResponse {
   combatants: number
 }
 
+export interface SetInfo {
+  name: string
+  pieces: number
+  bonus: string
+  type: string
+  stat?: string
+  value?: number
+  icon_path?: string
+}
+
 export interface GameData {
-  sets: Record<string, { name: string; pieces: number; bonus: string; type: string }>
+  sets: Record<string, SetInfo>
   stats: Record<string, unknown>
   characters: Record<string, unknown>
 }
@@ -134,6 +144,7 @@ export interface CombatantStats {
 export interface Combatant {
   char_id: string
   name: string
+  res_id: number
   level: number
   attribute: string
   class: string
@@ -174,6 +185,7 @@ export interface OptimizeResult {
 export interface EquipmentSet {
   id: number
   name: string
+  pieces: number
 }
 
 export interface AboutInfo {
@@ -181,4 +193,13 @@ export interface AboutInfo {
   github_url: string
   releases_url: string
   issues_url: string
+}
+
+export interface CharPreset {
+  recommended_sets: number[]
+  main_stat_4: string[]
+  main_stat_5: string[]
+  main_stat_6: string[]
+  substats: string[]
+  weights: Record<string, number>
 }

@@ -69,7 +69,7 @@ def _format_results(results: list) -> list[dict]:
 @router.get("/optimize/sets")
 def optimize_sets():
     return sorted(
-        [{"id": sid, "name": s["name"]} for sid, s in SETS.items()],
+        [{"id": sid, "name": s["name"], "pieces": s["pieces"]} for sid, s in SETS.items()],
         key=lambda x: x["name"],
     )
 
