@@ -15,7 +15,7 @@ from game_data import (
     get_character, get_character_by_name, get_partner,
     get_level_from_exp, get_partner_level_from_exp,
     get_friendship_bonus, parse_potential_node_ids,
-    get_partner_stats, get_partner_passive_stats, get_potential_stat_bonus,
+    get_partner_stats, get_partner_ascend_bonus, get_partner_passive_stats, get_potential_stat_bonus,
     SETS, SLOT_ORDER, ALL_STAT_NAMES
 )
 
@@ -295,9 +295,10 @@ class GearOptimizer:
             # Add partner card stats
             if char_info.partner_res_id:
                 partner_stats = get_partner_stats(char_info.partner_res_id, char_info.partner_level)
-                partner_atk = partner_stats["atk"]
-                partner_def = partner_stats["def"]
-                partner_hp = partner_stats["hp"]
+                ascend_bonus = get_partner_ascend_bonus(char_info.partner_ascend)
+                partner_atk = partner_stats["atk"] + ascend_bonus["atk"]
+                partner_def = partner_stats["def"] + ascend_bonus["def"]
+                partner_hp = partner_stats["hp"] + ascend_bonus["hp"]
 
                 # Add partner passive stats (unconditional bonuses)
                 partner_passive_stats = get_partner_passive_stats(

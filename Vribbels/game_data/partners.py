@@ -709,28 +709,76 @@ PARTNERS = {
 # Base stats by grade and class at level 60
 # Offensive classes (Hunter, Psionic, Ranger, Striker): High ATK, low DEF
 # Defensive classes (Controller, Vanguard): Low ATK, high DEF
+# Per-partner base stats at max level (level 60), sourced from game DB
+# (cumulative level group bonus + default_stat_add)
+PARTNER_BASE_STATS: dict[int, dict] = {
+    1025:  {"atk": 145, "def": 0,  "hp": 119},
+    1058:  {"atk": 108, "def": 0,  "hp": 80},
+    20001: {"atk": 0,   "def": 35, "hp": 70},
+    20002: {"atk": 0,   "def": 51, "hp": 119},
+    20003: {"atk": 0,   "def": 35, "hp": 70},
+    20004: {"atk": 145, "def": 0,  "hp": 119},
+    20005: {"atk": 0,   "def": 39, "hp": 80},
+    20006: {"atk": 0,   "def": 39, "hp": 80},
+    20007: {"atk": 96,  "def": 0,  "hp": 70},
+    20008: {"atk": 108, "def": 0,  "hp": 80},
+    20009: {"atk": 0,   "def": 51, "hp": 119},
+    20010: {"atk": 84,  "def": 0,  "hp": 60},
+    20011: {"atk": 96,  "def": 0,  "hp": 70},
+    20012: {"atk": 84,  "def": 0,  "hp": 60},
+    20013: {"atk": 0,   "def": 31, "hp": 60},
+    20014: {"atk": 108, "def": 0,  "hp": 80},
+    20015: {"atk": 84,  "def": 0,  "hp": 60},
+    20016: {"atk": 84,  "def": 0,  "hp": 60},
+    20019: {"atk": 108, "def": 0,  "hp": 80},
+    20021: {"atk": 145, "def": 0,  "hp": 119},
+    20023: {"atk": 0,   "def": 39, "hp": 80},
+    20024: {"atk": 0,   "def": 35, "hp": 70},
+    20025: {"atk": 96,  "def": 0,  "hp": 70},
+    20026: {"atk": 0,   "def": 31, "hp": 60},
+    20027: {"atk": 96,  "def": 0,  "hp": 70},
+    20028: {"atk": 108, "def": 0,  "hp": 80},
+    20030: {"atk": 145, "def": 0,  "hp": 119},
+    20032: {"atk": 0,   "def": 35, "hp": 70},
+    20033: {"atk": 96,  "def": 0,  "hp": 70},
+    20034: {"atk": 145, "def": 0,  "hp": 119},
+    20035: {"atk": 96,  "def": 0,  "hp": 70},
+    20036: {"atk": 96,  "def": 0,  "hp": 70},
+    20037: {"atk": 145, "def": 0,  "hp": 119},
+    20038: {"atk": 145, "def": 0,  "hp": 119},
+    30044: {"atk": 145, "def": 0,  "hp": 119},
+    30045: {"atk": 145, "def": 0,  "hp": 119},
+    30046: {"atk": 145, "def": 0,  "hp": 119},
+    30051: {"atk": 145, "def": 0,  "hp": 119},
+    30052: {"atk": 0,   "def": 51, "hp": 119},
+    30053: {"atk": 145, "def": 0,  "hp": 119},
+    30054: {"atk": 0,   "def": 51, "hp": 119},
+    30076: {"atk": 145, "def": 0,  "hp": 119},
+    30085: {"atk": 0,   "def": 51, "hp": 119},
+    30091: {"atk": 0,   "def": 51, "hp": 119},
+    30094: {"atk": 145, "def": 0,  "hp": 119},
+}
+
+# Fallback estimates by (grade, class) for partners not yet in PARTNER_BASE_STATS
 PARTNER_CLASS_STATS = {
-    # 3-star classes
-    (3, "Hunter"):     {"atk": 89, "def": 5, "hp": 85},
-    (3, "Psionic"):    {"atk": 89, "def": 5, "hp": 85},
-    (3, "Ranger"):     {"atk": 89, "def": 5, "hp": 85},
-    (3, "Striker"):    {"atk": 89, "def": 5, "hp": 85},
-    (3, "Controller"): {"atk": 5, "def": 36, "hp": 85},
-    (3, "Vanguard"):   {"atk": 5, "def": 36, "hp": 85},
-    # 4-star classes
-    (4, "Hunter"):     {"atk": 101, "def": 5, "hp": 95},
-    (4, "Psionic"):    {"atk": 101, "def": 5, "hp": 95},
-    (4, "Ranger"):     {"atk": 101, "def": 5, "hp": 95},
-    (4, "Striker"):    {"atk": 101, "def": 5, "hp": 95},
-    (4, "Controller"): {"atk": 5, "def": 40, "hp": 95},
-    (4, "Vanguard"):   {"atk": 5, "def": 40, "hp": 95},
-    # 5-star classes
-    (5, "Hunter"):     {"atk": 111, "def": 5, "hp": 105},
-    (5, "Psionic"):    {"atk": 111, "def": 5, "hp": 105},
-    (5, "Ranger"):     {"atk": 111, "def": 5, "hp": 105},
-    (5, "Striker"):    {"atk": 111, "def": 5, "hp": 105},
-    (5, "Controller"): {"atk": 5, "def": 44, "hp": 105},
-    (5, "Vanguard"):   {"atk": 5, "def": 44, "hp": 105},
+    (3, "Hunter"):     {"atk": 84,  "def": 0,  "hp": 60},
+    (3, "Psionic"):    {"atk": 84,  "def": 0,  "hp": 60},
+    (3, "Ranger"):     {"atk": 84,  "def": 0,  "hp": 60},
+    (3, "Striker"):    {"atk": 84,  "def": 0,  "hp": 60},
+    (3, "Controller"): {"atk": 0,   "def": 31, "hp": 60},
+    (3, "Vanguard"):   {"atk": 0,   "def": 31, "hp": 60},
+    (4, "Hunter"):     {"atk": 96,  "def": 0,  "hp": 70},
+    (4, "Psionic"):    {"atk": 96,  "def": 0,  "hp": 70},
+    (4, "Ranger"):     {"atk": 96,  "def": 0,  "hp": 70},
+    (4, "Striker"):    {"atk": 96,  "def": 0,  "hp": 70},
+    (4, "Controller"): {"atk": 0,   "def": 35, "hp": 70},
+    (4, "Vanguard"):   {"atk": 0,   "def": 35, "hp": 70},
+    (5, "Hunter"):     {"atk": 145, "def": 0,  "hp": 119},
+    (5, "Psionic"):    {"atk": 145, "def": 0,  "hp": 119},
+    (5, "Ranger"):     {"atk": 145, "def": 0,  "hp": 119},
+    (5, "Striker"):    {"atk": 145, "def": 0,  "hp": 119},
+    (5, "Controller"): {"atk": 0,   "def": 51, "hp": 119},
+    (5, "Vanguard"):   {"atk": 0,   "def": 51, "hp": 119},
 }
 
 
@@ -748,12 +796,13 @@ def get_value_for_ego_level(values_tuple: tuple, limit_break: int) -> float:
 
 
 def get_partner_base_stats(res_id: int) -> dict:
-    """Get base stats for a partner card based on its grade and class."""
+    """Get base stats for a partner card at max level (60), sourced from game DB."""
+    if res_id in PARTNER_BASE_STATS:
+        return PARTNER_BASE_STATS[res_id]
     partner = get_partner(res_id)
     grade = partner.get("grade", 3)
     partner_class = partner.get("class", "Controller")
-    base = PARTNER_CLASS_STATS.get((grade, partner_class), {"atk": 85, "def": 5, "hp": 90})
-    return base
+    return PARTNER_CLASS_STATS.get((grade, partner_class), {"atk": 0, "def": 0, "hp": 0})
 
 
 def get_partner_stats(res_id: int, level: int) -> dict:
@@ -766,6 +815,13 @@ def get_partner_stats(res_id: int, level: int) -> dict:
         "def": int(base["def"] * scale),
         "hp": int(base["hp"] * scale),
     }
+
+
+def get_partner_ascend_bonus(ascend: int) -> dict:
+    """Get cumulative flat stat bonus from partner ascension (ascend 0-5).
+    Each ascend step adds ATK+1, DEF+1, HP+5 (from dev_ascend group in game DB)."""
+    level = max(0, min(5, ascend))
+    return {"atk": level, "def": level, "hp": level * 5}
 
 
 def get_partner_passive_stats(res_id: int, limit_break: int) -> dict:
