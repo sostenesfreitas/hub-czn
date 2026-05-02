@@ -36,9 +36,10 @@ def _persist_char_weights() -> None:
     try:
         from capture.constants import OUTPUT_DIR
         path = Path(OUTPUT_DIR) / "char_weights.json"
-        path.write_text(json.dumps(state.optimizer.char_weights, indent=2))
-    except Exception:
-        pass
+        path.write_text(json.dumps(state.optimizer.char_weights, indent=2), encoding="utf-8")
+    except Exception as exc:
+        import logging
+        logging.getLogger(__name__).warning("Failed to persist char_weights.json: %s", exc)
 
 
 @router.get("/scoring/priorities")
@@ -67,6 +68,8 @@ def get_char_scoring_preset(char_id: int):
 
 @router.get("/scoring/char-weights/{char_id}")
 def get_char_weights(char_id: str):
+    if '/' in char_id or '\\' in char_id:
+        raise HTTPException(status_code=400, detail="Invalid char_id")
     weights = state.optimizer.char_weights.get(char_id)
     if weights is None:
         raise HTTPException(status_code=404, detail=f"No override for {char_id}")
@@ -75,6 +78,8 @@ def get_char_weights(char_id: str):
 
 @router.post("/scoring/char-weights/{char_id}")
 def save_char_weights(char_id: str, body: ScoringPrioritiesRequest):
+    if '/' in char_id or '\\' in char_id:
+        raise HTTPException(status_code=400, detail="Invalid char_id")
     unknown = [k for k in body.weights if k not in ALL_STAT_NAMES]
     if unknown:
         raise HTTPException(status_code=422, detail=f"Unknown stat names: {unknown}")
@@ -87,6 +92,8 @@ def save_char_weights(char_id: str, body: ScoringPrioritiesRequest):
 
 @router.delete("/scoring/char-weights/{char_id}")
 def delete_char_weights(char_id: str):
+    if '/' in char_id or '\\' in char_id:
+        raise HTTPException(status_code=400, detail="Invalid char_id")
     state.optimizer.char_weights.pop(char_id, None)
     _persist_char_weights()
     if state.data_loaded:
