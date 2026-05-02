@@ -1,9 +1,8 @@
-import sys
-import os
 import queue
 import time
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'Vribbels'))
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
 
 from optimizer import GearOptimizer
 

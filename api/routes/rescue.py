@@ -1,10 +1,10 @@
-# api/routes/rescue.py
+from __future__ import annotations
+
 import json
-import sys
-import os
 from pathlib import Path
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
 
 from fastapi import APIRouter
 

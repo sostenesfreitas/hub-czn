@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import os
-import sys
-
 from fastapi import APIRouter
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
 
 try:
     from version import __version__

@@ -1,8 +1,7 @@
 from __future__ import annotations
-import sys
-import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
