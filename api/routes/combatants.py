@@ -34,13 +34,13 @@ def get_combatants():
     result = []
     for name, info in state.optimizer.character_info.items():
         gear = state.optimizer.characters.get(name, [])
-        has_weights = (
+        char_has_weights = (
             any(v != 0 for v in state.optimizer.priorities.values())
-            or bool(state.optimizer.char_weights)
+            or name in state.optimizer.char_weights
         )
         avg_score = (
             sum(f.priority_score for f in gear) / len(gear)
-            if gear and has_weights
+            if gear and char_has_weights
             else sum(f.gear_score for f in gear) / len(gear) if gear
             else 0.0
         )
