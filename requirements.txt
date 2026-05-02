@@ -1,5 +1,13 @@
+# Runtime dependencies for the FastAPI sidecar
+fastapi
+uvicorn[standard]
+mitmproxy
+python-multipart
+websockets
 pillow
 packaging
 requests
 zstandard
+
+# Build tooling (not bundled into the sidecar)
 pyinstaller
