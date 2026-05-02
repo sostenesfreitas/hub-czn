@@ -6,7 +6,7 @@ import { useApiPort } from '@/hooks/useApiPort'
 import { useCaptureLog } from '@/hooks/useCaptureLog'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, XCircle, Radio, Square, FolderOpen, Download } from 'lucide-react'
-import type { CaptureLogMessage } from '@/lib/types'
+import type { CaptureLogMessage, CaptureStatus } from '@/lib/types'
 
 const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
   success: '#4ade80',
@@ -70,6 +70,17 @@ export function CapturePage() {
 
   const startMutation = useMutation({
     mutationFn: () => api.captureStart({ region, debug }),
+    onMutate: async () => {
+      await qc.cancelQueries({ queryKey: ['capture-status'] })
+      const prev = qc.getQueryData<CaptureStatus>(['capture-status'])
+      qc.setQueryData<CaptureStatus>(['capture-status'], old =>
+        old ? { ...old, running: true } : old
+      )
+      return { prev }
+    },
+    onError: (_err, _vars, context) => {
+      qc.setQueryData(['capture-status'], context?.prev)
+    },
     onSuccess: () => {
       clear()
       qc.invalidateQueries({ queryKey: ['capture-status'] })
@@ -78,6 +89,17 @@ export function CapturePage() {
 
   const stopMutation = useMutation({
     mutationFn: () => api.captureStop(),
+    onMutate: async () => {
+      await qc.cancelQueries({ queryKey: ['capture-status'] })
+      const prev = qc.getQueryData<CaptureStatus>(['capture-status'])
+      qc.setQueryData<CaptureStatus>(['capture-status'], old =>
+        old ? { ...old, running: false } : old
+      )
+      return { prev }
+    },
+    onError: (_err, _vars, context) => {
+      qc.setQueryData(['capture-status'], context?.prev)
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['capture-status'] }),
   })
 
