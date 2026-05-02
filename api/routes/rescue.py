@@ -172,6 +172,7 @@ def get_rescue_records():
         return []
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
-        return _process_records(raw)
+        records = raw.get("records", []) if isinstance(raw, dict) else raw
+        return _process_records(records)
     except Exception:
         return []

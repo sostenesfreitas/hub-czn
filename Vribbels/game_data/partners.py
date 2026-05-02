@@ -712,7 +712,7 @@ PARTNERS = {
 # Per-partner base stats at max level (level 60), sourced from game DB
 # (cumulative level group bonus + default_stat_add)
 PARTNER_BASE_STATS: dict[int, dict] = {
-    1025:  {"atk": 118, "def": 0,  "hp": 119},
+    1025:  {"atk": 145, "def": 0,  "hp": 119},
     1058:  {"atk": 89,  "def": 0,  "hp": 80},
     20001: {"atk": 0,   "def": 35, "hp": 70},
     20002: {"atk": 0,   "def": 51, "hp": 119},
@@ -748,7 +748,7 @@ PARTNER_BASE_STATS: dict[int, dict] = {
     20038: {"atk": 118, "def": 0,  "hp": 119},
     30044: {"atk": 118, "def": 0,  "hp": 119},
     30045: {"atk": 118, "def": 0,  "hp": 119},
-    30046: {"atk": 118, "def": 0,  "hp": 119},
+    30046: {"atk": 145, "def": 0,  "hp": 119},
     30051: {"atk": 118, "def": 0,  "hp": 119},
     30052: {"atk": 0,   "def": 51, "hp": 119},
     30053: {"atk": 118, "def": 0,  "hp": 119},

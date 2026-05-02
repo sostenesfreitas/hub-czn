@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { api, assetUrl } from '@/lib/api'
-import type { OptimizeResult, OptimizeProgress, Combatant, CombatantStats, GearSlot, FinalStats } from '@/lib/types'
+import { api } from '@/lib/api'
+import type { OptimizeResult, OptimizeProgress, CombatantStats, FinalStats } from '@/lib/types'
+import { GearSlotCard } from '../combatants/CombatantDetail'
 
 type JobState = 'idle' | 'running' | 'done' | 'cancelled' | 'error'
 
@@ -70,105 +71,14 @@ function StatsComparison({
   )
 }
 
-// ─── Gear Table ───────────────────────────────────────────────────────────────
-
-function OwnerCell({ equippedTo, combatants }: { equippedTo: string | null | undefined; combatants: Combatant[] }) {
-  if (!equippedTo) return <span className="text-[10px] text-[#555555]">—</span>
-  const owner = combatants.find((c) => c.char_id === equippedTo)
-  return (
-    <div className="flex items-center gap-1.5">
-      {owner?.portrait_url && (
-        <img
-          src={assetUrl(owner.portrait_url)}
-          alt={owner.name}
-          className="w-5 h-5 rounded-full object-cover border border-[#333333] shrink-0"
-        />
-      )}
-      <span className="text-[10px] text-[#b3b3b3] truncate">{equippedTo}</span>
-    </div>
-  )
-}
-
-function PieceThumb({ slot }: { slot: GearSlot }) {
-  if (slot.set_id == null || slot.slot_num == null) return null
-  const url = assetUrl(`/assets/game/pieces/item_piece_set_${String(slot.set_id).padStart(3, '0')}_${slot.slot_num}.png`)
-  return (
-    <img
-      src={url}
-      alt=""
-      className="w-6 h-6 object-contain rounded shrink-0"
-      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-    />
-  )
-}
-
-function GearTable({ slots, combatants }: { slots: GearSlot[]; combatants: Combatant[] }) {
-  return (
-    <div className="overflow-x-auto rounded-xl border border-[#282828]">
-      <table className="w-full border-collapse text-xs bg-[#121212]">
-        <thead>
-          <tr className="border-b border-[#282828]">
-            {['Slot', 'Set', 'Main', 'Substats', 'GS', 'Pot.', 'Owner'].map((h) => (
-              <th
-                key={h}
-                className="px-2.5 py-1.5 text-[10px] uppercase tracking-wider text-[#666666] text-left font-medium whitespace-nowrap"
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {slots.map((slot) => {
-            const potRange =
-              slot.potential_low != null && slot.potential_high != null
-                ? `${slot.potential_low.toFixed(0)}–${slot.potential_high.toFixed(0)}`
-                : '—'
-            return (
-              <tr key={slot.slot} className="border-b border-[#1a1a1a] hover:bg-[#1a1a1a] transition-colors">
-                <td className="px-2.5 py-1.5 text-[10px] text-[#b3b3b3] whitespace-nowrap">{slot.slot}</td>
-                <td className="px-2.5 py-1.5 max-w-[9rem]">
-                  <div className="flex items-center gap-1.5">
-                    <PieceThumb slot={slot} />
-                    <span className="text-[10px] text-[#ffffff] truncate">{slot.set_name ?? '—'}</span>
-                  </div>
-                </td>
-                <td className="px-2.5 py-1.5 text-[10px] text-[#c084fc] whitespace-nowrap">{slot.main_stat ?? '—'}</td>
-                <td className="px-2.5 py-1.5">
-                  <div className="space-y-0.5">
-                    {slot.substats.map((s, i) => (
-                      <p key={i} className="text-[10px] text-[#b3b3b3] whitespace-nowrap">
-                        {s.name} <span className="text-[#ffffff]">{s.value}</span>
-                      </p>
-                    ))}
-                  </div>
-                </td>
-                <td className="px-2.5 py-1.5 text-[10px] text-[#c084fc] text-right whitespace-nowrap font-semibold">
-                  {slot.score?.toFixed(1) ?? '—'}
-                </td>
-                <td className="px-2.5 py-1.5 text-[10px] text-[#b3b3b3] text-right whitespace-nowrap">{potRange}</td>
-                <td className="px-2.5 py-1.5">
-                  <OwnerCell equippedTo={slot.equipped_to} combatants={combatants} />
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
 // ─── Expanded Build ───────────────────────────────────────────────────────────
 
 function ExpandedBuild({
   result,
   currentStats,
-  combatants,
 }: {
   result: OptimizeResult
   currentStats: CombatantStats | undefined
-  combatants: Combatant[]
 }) {
   return (
     <div className="p-4 space-y-4">
@@ -182,7 +92,11 @@ function ExpandedBuild({
       )}
       <div>
         <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-2">Peças</p>
-        <GearTable slots={result.gear_slots} combatants={combatants} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+          {result.gear_slots.map((slot) => (
+            <GearSlotCard key={slot.slot} slot={slot} />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -202,12 +116,6 @@ export function ResultsArea({
   charId,
 }: ResultsAreaProps) {
   const { t } = useTranslation()
-
-  const { data: combatants = [] } = useQuery<Combatant[]>({
-    queryKey: ['combatants'],
-    queryFn: () => api.combatants(),
-    staleTime: 30_000,
-  })
 
   const { data: currentStats } = useQuery<CombatantStats>({
     queryKey: ['combatants', charId, 'stats'],
@@ -315,7 +223,6 @@ export function ResultsArea({
                 <ExpandedBuild
                   result={r}
                   currentStats={currentStats}
-                  combatants={combatants}
                 />
               )}
             </div>

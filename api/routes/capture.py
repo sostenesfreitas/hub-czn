@@ -87,6 +87,15 @@ def post_capture_stop():
         state.capture_running = False
         state.reset_capture_manager()
 
+    if file_path:
+        state.rescue_file_path = str(file_path)
+        try:
+            state.optimizer.load_data(str(file_path))
+            state.data_loaded = True
+            state.loaded_file = str(file_path)
+        except Exception:
+            pass
+
     return {"ok": True, "file_path": str(file_path) if file_path else None, "region": region}
 
 

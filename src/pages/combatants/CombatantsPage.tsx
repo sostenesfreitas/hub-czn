@@ -25,24 +25,17 @@ function AttrBadge({ attr }: { attr: string }) {
   )
 }
 
-// ─── Collapse art (tries _02 first, falls back to _01, then placeholder) ──
+// ─── Collapse art — absolute, fills container height, natural width ────────
 
-function CollapseArt({ resId }: { resId: number }) {
+function CollapseBackground({ resId }: { resId: number }) {
   const [variant, setVariant] = useState<'02' | '01' | null>('02')
-
-  if (!variant) {
-    return (
-      <div className="w-full h-full rounded-xl bg-[#121212] border border-[#282828] flex items-center justify-center">
-        <User size={40} className="text-[#333333]" />
-      </div>
-    )
-  }
-
+  if (!variant) return null
   return (
     <img
       src={assetUrl(`/assets/game/collapse/collapse_${resId}_${variant}.png`)}
       alt=""
-      className="w-full h-full object-cover object-top rounded-xl"
+      className="absolute left-0 top-0 pointer-events-none select-none"
+      style={{ height: '100%', width: 'auto' }}
       onError={() => {
         if (variant === '02') setVariant('01')
         else setVariant(null)
@@ -51,9 +44,50 @@ function CollapseArt({ resId }: { resId: number }) {
   )
 }
 
-// ─── Expanded content (lazy fetch) ────────────────────────────────────────
+// ─── Partner badge ─────────────────────────────────────────────────────────
 
-function ExpandedContent({ charId, resId }: { charId: string; resId: number }) {
+function PartnerBadge({
+  partnerResId,
+  partnerName,
+}: {
+  partnerResId: number | null | undefined
+  partnerName: string | null | undefined
+}) {
+  const [imgOk, setImgOk] = useState(true)
+  if (!partnerResId && !partnerName) return null
+  return (
+    <div className="flex items-center gap-2 bg-[#141414]/90 border border-[#2a2a2a] rounded-lg px-2 py-1.5">
+      {partnerResId && imgOk ? (
+        <img
+          src={assetUrl(`/assets/game/tp_skill/battle_icon_tp_skill_${partnerResId}.png`)}
+          alt={partnerName ?? ''}
+          className="w-10 h-[26px] rounded object-cover shrink-0"
+          onError={() => setImgOk(false)}
+        />
+      ) : (
+        <div className="w-10 h-[26px] rounded bg-[#282828] shrink-0" />
+      )}
+      <div className="min-w-0">
+        <p className="text-[9px] uppercase tracking-wider text-[#555555] leading-tight">Partner</p>
+        <p className="text-[11px] text-[#b3b3b3] truncate leading-tight">{partnerName ?? '—'}</p>
+      </div>
+    </div>
+  )
+}
+
+// ─── Expanded content ──────────────────────────────────────────────────────
+
+function ExpandedContent({
+  charId,
+  resId,
+  partnerResId,
+  partnerName,
+}: {
+  charId: string
+  resId: number
+  partnerResId: number | null | undefined
+  partnerName: string | null | undefined
+}) {
   const { data, isLoading } = useQuery({
     queryKey: ['combatants', charId, 'stats'],
     queryFn: () => api.combatantStats(charId),
@@ -61,27 +95,49 @@ function ExpandedContent({ charId, resId }: { charId: string; resId: number }) {
   })
 
   return (
-    <div className="flex gap-4 px-4 pb-5 pt-3 bg-[#0e0e0e] border-t border-[#1e1e1e]">
-      {/* Collapse art */}
-      <div className="w-44 shrink-0" style={{ minHeight: '280px' }}>
-        <CollapseArt resId={resId} />
-      </div>
+    <div className="relative overflow-hidden border-t border-[#1e1e1e] bg-[#0e0e0e]">
+      {/* Character art: left-anchored, fills full panel height */}
+      <CollapseBackground resId={resId} />
 
-      {/* Right side */}
-      {isLoading ? (
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 size={18} className="animate-spin text-[#c084fc]" />
-        </div>
-      ) : data ? (
-        <div className="flex-1 min-w-0 flex flex-col gap-3">
-          <FinalStatsPanel stats={data.final_stats} />
-          <div className="grid grid-cols-3 xl:grid-cols-6 gap-2">
-            {data.gear_slots.map((slot) => (
-              <GearSlotCard key={slot.slot} slot={slot} />
-            ))}
+      {/* Gradient: image fades right into background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to right, transparent 12%, rgba(14,14,14,0.55) 26%, rgba(14,14,14,0.82) 42%, #0e0e0e 58%)',
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col pt-3 pb-5">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-10">
+            <Loader2 size={18} className="animate-spin text-[#c084fc]" />
           </div>
-        </div>
-      ) : null}
+        ) : data ? (
+          <>
+            {/* Top: partner + compact stats — right-aligned, spanning right 3 of 6 cols */}
+            <div className="px-4 mb-3 flex flex-col items-end gap-2">
+              <PartnerBadge partnerResId={partnerResId} partnerName={partnerName} />
+              <div style={{ width: 'calc(50% - 4px)', opacity: 0.72 }}>
+                <FinalStatsPanel stats={data.final_stats} compact />
+              </div>
+            </div>
+
+            {/* Bottom: gear cards — full width */}
+            <div className="grid grid-cols-3 xl:grid-cols-6 gap-2 px-4">
+              {data.gear_slots.map((slot, i) => {
+                const opacity = i === 0 ? 0.72 : i === 1 ? 0.86 : 1
+                return (
+                  <div key={slot.slot} style={{ opacity }}>
+                    <GearSlotCard slot={slot} />
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        ) : null}
+      </div>
     </div>
   )
 }
@@ -115,7 +171,7 @@ function CombatantRow({
           expanded ? 'bg-[#c084fc]/5' : 'hover:bg-[#1e1e1e]'
         }`}
       >
-        {/* Rank number */}
+        {/* Rank */}
         <span className="w-5 text-right text-[10px] text-[#444444] tabular-nums shrink-0">
           {rank}
         </span>
@@ -144,6 +200,15 @@ function CombatantRow({
           {combatant.class}
         </span>
 
+        {/* Ego Manifestation */}
+        {combatant.ego != null && (
+          <span className={`text-[10px] font-bold shrink-0 tabular-nums ${
+            combatant.ego === 6 ? 'text-[#ffd700]' : 'text-[#888888]'
+          }`}>
+            E{combatant.ego}
+          </span>
+        )}
+
         {/* GS score */}
         <div className="shrink-0 text-right w-12">
           {combatant.avg_gear_score > 0 ? (
@@ -162,7 +227,14 @@ function CombatantRow({
         </div>
       </button>
 
-      {expanded && <ExpandedContent charId={combatant.char_id} resId={combatant.res_id} />}
+      {expanded && (
+        <ExpandedContent
+          charId={combatant.char_id}
+          resId={combatant.res_id}
+          partnerResId={combatant.partner_res_id}
+          partnerName={combatant.partner_name}
+        />
+      )}
     </div>
   )
 }

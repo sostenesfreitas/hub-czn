@@ -28,6 +28,25 @@ class AppState:
         # CaptureManager is created lazily on first start
         self._capture_manager = None
 
+        self._auto_load_latest()
+
+    def _auto_load_latest(self):
+        """On startup, load the most recent snapshot so Fragments/Combatants are available immediately."""
+        try:
+            from capture.constants import OUTPUT_DIR
+            frags = sorted(OUTPUT_DIR.glob("memory_fragments_*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+            if not frags:
+                return
+            latest = frags[0]
+            self.optimizer.load_data(str(latest))
+            self.data_loaded = True
+            self.loaded_file = str(latest)
+            # Also set rescue_file_path to the latest rescue snapshot if one exists
+            rescue = sorted(OUTPUT_DIR.glob("rescue_records_*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+            self.rescue_file_path = str(rescue[0]) if rescue else None
+        except Exception:
+            pass
+
     def get_capture_manager(self):
         """Return existing manager or create a new one for this session."""
         if self._capture_manager is None:
@@ -54,9 +73,24 @@ class AppState:
                     "timestamp": time.strftime("%H:%M:%S"),
                 })
 
+            def _on_data_saved():
+                mgr = self._capture_manager
+                if mgr is None:
+                    return
+                latest = mgr.get_latest_capture()
+                if latest:
+                    try:
+                        self.optimizer.load_data(str(latest))
+                        self.data_loaded = True
+                        self.loaded_file = str(latest)
+                        self.rescue_file_path = str(latest)
+                    except Exception:
+                        pass
+
             self._capture_manager = CaptureManager(
                 output_folder=OUTPUT_DIR,
                 log_callback=_log,
+                live_update_callback=_on_data_saved,
             )
 
         return self._capture_manager

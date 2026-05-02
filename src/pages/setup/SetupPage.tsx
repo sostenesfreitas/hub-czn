@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { api } from '@/lib/api'
 import { CheckCircle, XCircle, Loader2, ChevronDown, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -12,9 +13,10 @@ function StatusIcon({ ok }: { ok: boolean }) {
 }
 
 function MutationError({ error }: { error: unknown }) {
+  const { t } = useTranslation()
   if (!error) return null
-  const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado'
-  return <p className="text-[#c64545] text-xs mt-1">{msg}</p>
+  const msg = error instanceof Error ? error.message : t('common.unexpectedError')
+  return <p className="text-[#f3727f] text-xs mt-1">{msg}</p>
 }
 
 function Row({
@@ -31,11 +33,11 @@ function Row({
   error?: unknown
 }) {
   return (
-    <div className="flex items-start gap-4 p-4 rounded-lg bg-[#252320] border border-[#2e2c28]">
+    <div className="flex items-start gap-4 p-4 rounded-lg bg-[#181818] border border-[#282828]">
       <StatusIcon ok={ok} />
       <div className="flex-1 min-w-0">
-        <p className="text-[#faf9f5] font-medium text-sm">{label}</p>
-        <p className="text-[#a09d96] text-xs mt-0.5">{detail}</p>
+        <p className="text-[#ffffff] font-medium text-sm">{label}</p>
+        <p className="text-[#b3b3b3] text-xs mt-0.5">{detail}</p>
         <MutationError error={error} />
       </div>
       {action}
@@ -44,6 +46,7 @@ function Row({
 }
 
 export function SetupPage() {
+  const { t } = useTranslation()
   const qc = useQueryClient()
   const [howOpen, setHowOpen] = useState(false)
   const [certImported, setCertImported] = useState(
@@ -71,40 +74,37 @@ export function SetupPage() {
   })
 
   if (isLoading) {
-    return <div className="p-8 text-[#a09d96]">Checking prerequisites…</div>
+    return <div className="p-8 text-[#b3b3b3]">{t('setup.loading')}</div>
   }
 
   if (isError || !status) {
-    const msg = error instanceof Error ? error.message : 'Verifique se o servidor Python está rodando.'
     return (
       <div className="p-8 flex flex-col gap-2">
-        <p className="text-[#c64545] text-sm font-medium">Não foi possível conectar à API</p>
-        <p className="text-[#a09d96] text-xs">{msg}</p>
+        <p className="text-[#f3727f] text-sm font-medium">{t('setup.apiError')}</p>
+        <p className="text-[#b3b3b3] text-xs">
+          {error instanceof Error ? error.message : t('setup.apiErrorHint')}
+        </p>
       </div>
     )
   }
 
   return (
     <div className="p-6 flex flex-col gap-4 max-w-xl">
-      <h1 className="text-xl font-bold text-[#faf9f5]">Setup</h1>
+      <h1 className="text-xl font-bold text-[#ffffff]">{t('setup.title')}</h1>
 
       <Row
         ok={status.admin}
-        label="Administrador"
-        detail={
-          status.admin
-            ? 'Running with administrator privileges'
-            : 'Close the app and reopen with "Run as administrator"'
-        }
+        label={t('setup.admin.label')}
+        detail={status.admin ? t('setup.admin.ok') : t('setup.admin.fail')}
       />
 
       <Row
         ok={status.mitmproxy}
-        label="mitmproxy"
+        label={t('setup.mitmproxy.label')}
         detail={
           status.mitmproxy
-            ? `mitmproxy ${status.mitmproxy_version} installed`
-            : 'Required to intercept game traffic'
+            ? t('setup.mitmproxy.ok', { version: status.mitmproxy_version })
+            : t('setup.mitmproxy.fail')
         }
         error={installMutation.isError ? installMutation.error : undefined}
         action={
@@ -113,9 +113,9 @@ export function SetupPage() {
               size="sm"
               onClick={() => installMutation.mutate()}
               disabled={installMutation.isPending}
-              className="bg-[#cc785c] hover:bg-[#b8674d] text-white shrink-0"
+              className="bg-[#c084fc] hover:bg-[#9333ea] text-white shrink-0"
             >
-              {installMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : 'Instalar'}
+              {installMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : t('setup.mitmproxy.install')}
             </Button>
           )
         }
@@ -123,11 +123,11 @@ export function SetupPage() {
 
       <Row
         ok={status.certificate}
-        label="Certificado CA"
+        label={t('setup.certificate.label')}
         detail={
           status.certificate
-            ? 'Certificate generated in ~/.mitmproxy/'
-            : 'Required for HTTPS interception'
+            ? t('setup.certificate.ok')
+            : t('setup.certificate.fail')
         }
         error={certMutation.isError ? certMutation.error : undefined}
         action={
@@ -136,23 +136,22 @@ export function SetupPage() {
               size="sm"
               onClick={() => certMutation.mutate()}
               disabled={certMutation.isPending}
-              className="bg-[#cc785c] hover:bg-[#b8674d] text-white shrink-0"
+              className="bg-[#c084fc] hover:bg-[#9333ea] text-white shrink-0"
             >
-              {certMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : 'Gerar'}
+              {certMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : t('setup.certificate.generate')}
             </Button>
           )
         }
       />
 
       {status.certificate && (
-        <div className="p-4 rounded-lg bg-[#252320] border border-[#2e2c28] flex flex-col gap-3">
+        <div className="p-4 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-3">
           <div className="flex items-start gap-4">
             <StatusIcon ok={certImported} />
             <div className="flex-1">
-              <p className="text-[#faf9f5] font-medium text-sm">Importar certificado no Windows</p>
-              <p className="text-[#a09d96] text-xs mt-0.5">
-                Abra o certificado → "Instalar Certificado" → "Máquina Local" →
-                "Autoridades de Certificação Raiz Confiáveis"
+              <p className="text-[#ffffff] font-medium text-sm">{t('setup.importCert.label')}</p>
+              <p className="text-[#b3b3b3] text-xs mt-0.5">
+                {t('setup.importCert.detail')}
               </p>
             </div>
           </div>
@@ -161,11 +160,11 @@ export function SetupPage() {
               size="sm"
               variant="outline"
               onClick={() => openCertMutation.mutate()}
-              className="border-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5]"
+              className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
             >
-              Abrir certificado
+              {t('setup.importCert.open')}
             </Button>
-            <label className="flex items-center gap-2 text-xs text-[#a09d96] cursor-pointer">
+            <label className="flex items-center gap-2 text-xs text-[#b3b3b3] cursor-pointer">
               <input
                 type="checkbox"
                 checked={certImported}
@@ -173,37 +172,34 @@ export function SetupPage() {
                   setCertImported(e.target.checked)
                   localStorage.setItem('setup.cert_imported', String(e.target.checked))
                 }}
-                className="accent-[#cc785c]"
+                className="accent-[#c084fc]"
               />
-              Já importei o certificado
+              {t('setup.importCert.confirm')}
             </label>
           </div>
           {openCertMutation.isError && (
-            <p className="text-[#c64545] text-xs pl-8">
+            <p className="text-[#f3727f] text-xs pl-8">
               {openCertMutation.error instanceof Error
                 ? openCertMutation.error.message
-                : 'Não foi possível abrir o certificado'}
+                : t('setup.importCert.error')}
             </p>
           )}
         </div>
       )}
 
-      <div className="rounded-lg bg-[#252320] border border-[#2e2c28] overflow-hidden">
+      <div className="rounded-lg bg-[#181818] border border-[#282828] overflow-hidden">
         <button
           type="button"
           aria-expanded={howOpen}
-          className="w-full flex items-center gap-2 px-4 py-3 text-sm text-[#a09d96] hover:text-[#faf9f5]"
+          className="w-full flex items-center gap-2 px-4 py-3 text-sm text-[#b3b3b3] hover:text-[#ffffff]"
           onClick={() => setHowOpen(v => !v)}
         >
           {howOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          Como funciona?
+          {t('setup.howItWorks')}
         </button>
         {howOpen && (
-          <div className="px-4 pb-4 text-xs text-[#a09d96] leading-relaxed">
-            O app usa mitmproxy como proxy reverso local. Ao iniciar o capture, ele redireciona o
-            tráfego do jogo para o proxy via arquivo hosts do Windows. O proxy intercepta as
-            mensagens WebSocket do servidor e extrai os dados de inventário e rescue em tempo real.
-            Nenhum dado é enviado para fora — tudo fica local.
+          <div className="px-4 pb-4 text-xs text-[#b3b3b3] leading-relaxed">
+            {t('setup.howItWorksDetail')}
           </div>
         )}
       </div>

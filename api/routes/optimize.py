@@ -79,6 +79,7 @@ def _format_results(results: list) -> list[dict]:
             "EHP": round(raw_stats.get("EHP", 0)),
             "AvgDMG": round(raw_stats.get("Avg DMG", 0)),
             "ExtraDMG": round(raw_stats.get("Extra DMG%", 0), 1),
+            "Ego": round(raw_stats.get("Ego", 0)),
         }
         formatted.append({
             "rank": rank,
@@ -93,7 +94,7 @@ def _format_results(results: list) -> list[dict]:
 @router.get("/optimize/sets")
 def optimize_sets():
     return sorted(
-        [{"id": sid, "name": s["name"], "pieces": s["pieces"]} for sid, s in SETS.items()],
+        [{"id": sid, "name": s["name"], "pieces": s["pieces"], "icon_path": s.get("icon_path")} for sid, s in SETS.items()],
         key=lambda x: x["name"],
     )
 

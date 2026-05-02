@@ -752,6 +752,16 @@ addons = [Addon(OUTPUT_DIR, dict_path=DICT_PATH, debug_mode={debug_mode})]
 
         self.log_callback("Starting capture...", None)
 
+        # Kill any orphaned mitmdump from previous failed captures so port 13701 is free
+        if sys.platform == "win32":
+            try:
+                subprocess.run(
+                    ["taskkill", "/F", "/IM", "mitmdump.exe"],
+                    capture_output=True, check=False
+                )
+            except Exception:
+                pass
+
         # Resolve game servers for current region
         # (Always re-resolve to ensure we use the correct region's servers)
         self.resolve_game_server()

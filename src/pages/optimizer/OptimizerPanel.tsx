@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
@@ -109,33 +109,29 @@ export function OptimizerPanel({
 
   const lastAutoFilledRef = useRef<string>('')
   const lastWeightInitRef = useRef<string>('')
+  const queryClient = useQueryClient()
 
-  // Auto-populate from char preset when preset arrives for the selected character
+  function applyPreset(preset: CharPreset, charId: string, baseConfig: OptimizerConfig) {
+    const fourIds = preset.recommended_sets.filter((id) =>
+      sets.some((s) => s.id === id && s.pieces === 4)
+    )
+    const twoIds = preset.recommended_sets
+      .filter((id) => sets.some((s) => s.id === id && s.pieces === 2))
+      .slice(0, 2)
+    const m4 = (preset.main_stat_4.find((s) => SLOT_4_STATS.includes(s as typeof SLOT_4_STATS[number])) ?? null) as string | null
+    const m5 = (preset.main_stat_5.find((s) => SLOT_5_STATS.includes(s as typeof SLOT_5_STATS[number])) ?? null) as string | null
+    const m6 = (preset.main_stat_6.find((s) => SLOT_6_STATS.includes(s as typeof SLOT_6_STATS[number])) ?? null) as string | null
+    lastAutoFilledRef.current = charId
+    onChangeRef.current({ ...baseConfig, char_name: charId, four_piece_sets: fourIds, two_piece_sets: twoIds, main_stat_4: m4, main_stat_5: m5, main_stat_6: m6 })
+  }
+
+  // Fallback: apply preset when it loads async (first visit, preset not yet cached)
   useEffect(() => {
     if (!sets.length || !charPreset) return
     const charName = configRef.current.char_name
     if (!charName || charName === lastAutoFilledRef.current) return
-    lastAutoFilledRef.current = charName
-
-    const fourIds = charPreset.recommended_sets.filter((id) =>
-      sets.some((s) => s.id === id && s.pieces === 4)
-    )
-    const twoIds = charPreset.recommended_sets
-      .filter((id) => sets.some((s) => s.id === id && s.pieces === 2))
-      .slice(0, 2)
-    const m4 = (charPreset.main_stat_4.find((s) => SLOT_4_STATS.includes(s as typeof SLOT_4_STATS[number])) ?? null) as string | null
-    const m5 = (charPreset.main_stat_5.find((s) => SLOT_5_STATS.includes(s as typeof SLOT_5_STATS[number])) ?? null) as string | null
-    const m6 = (charPreset.main_stat_6.find((s) => SLOT_6_STATS.includes(s as typeof SLOT_6_STATS[number])) ?? null) as string | null
-
-    onChangeRef.current({
-      ...configRef.current,
-      four_piece_sets: fourIds,
-      two_piece_sets: twoIds,
-      main_stat_4: m4,
-      main_stat_5: m5,
-      main_stat_6: m6,
-    })
-  }, [charPreset, sets])
+    applyPreset(charPreset, charName, configRef.current)
+  }, [charPreset, sets]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Initialize stat_weights from char-weights (or global) when character changes
   useEffect(() => {
@@ -157,11 +153,11 @@ export function OptimizerPanel({
 
   const fourPieceOptions: ComboboxOption[] = sets
     .filter((s) => s.pieces === 4)
-    .map((s) => ({ id: String(s.id), label: s.name }))
+    .map((s) => ({ id: String(s.id), label: s.name, icon_path: `/assets/game/pieces/item_piece_set_${String(s.id).padStart(3, '0')}_1.png` }))
 
   const twoPieceOptions: ComboboxOption[] = sets
     .filter((s) => s.pieces === 2)
-    .map((s) => ({ id: String(s.id), label: s.name }))
+    .map((s) => ({ id: String(s.id), label: s.name, icon_path: `/assets/game/pieces/item_piece_set_${String(s.id).padStart(3, '0')}_1.png` }))
 
   const heroOptions: ComboboxOption[] = combatants.map((c) => ({
     id: c.char_id,
@@ -209,16 +205,31 @@ export function OptimizerPanel({
           id="optimizer-char"
           value={config.char_name}
           onChange={(e) => {
-            lastAutoFilledRef.current = ''
+            const charId = e.target.value
             lastWeightInitRef.current = ''
-            patch({
-              char_name: e.target.value,
+            lastAutoFilledRef.current = ''
+
+            const combatant = combatants.find((c) => c.char_id === charId)
+            const resId = combatant?.res_id ?? null
+            const cached = resId != null
+              ? queryClient.getQueryData<CharPreset>(['scoring/char-preset', resId])
+              : undefined
+
+            const base: OptimizerConfig = {
+              ...config,
+              char_name: charId,
               four_piece_sets: [],
               two_piece_sets: [],
               main_stat_4: null,
               main_stat_5: null,
               main_stat_6: null,
-            })
+            }
+
+            if (cached && sets.length) {
+              applyPreset(cached, charId, base)
+            } else {
+              onChange(base)
+            }
           }}
           disabled={disabled || combatants.length === 0}
           className="w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"

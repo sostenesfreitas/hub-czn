@@ -128,7 +128,8 @@ class AboutTab(BaseTab):
         self.check_btn = ttk.Button(
             btn_frame,
             text="Check Now",
-            command=self.check_now
+            command=self.check_now,
+            style="Accent.TButton"
         )
         self.check_btn.pack(side=tk.LEFT)
 

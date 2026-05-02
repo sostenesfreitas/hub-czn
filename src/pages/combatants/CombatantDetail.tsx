@@ -113,7 +113,7 @@ export function GearSlotCard({ slot }: { slot: GearSlot }) {
   )
 }
 
-export function FinalStatsPanel({ stats }: { stats: FinalStats }) {
+export function FinalStatsPanel({ stats, compact = false }: { stats: FinalStats; compact?: boolean }) {
   const { t } = useTranslation()
 
   const rows: Array<{ label: string; value: string }> = [
@@ -124,13 +124,16 @@ export function FinalStatsPanel({ stats }: { stats: FinalStats }) {
     { label: 'CDmg', value: `${stats.CDmg.toFixed(1)}%` },
     { label: 'EHP', value: stats.EHP.toLocaleString() },
     { label: 'Avg DMG', value: stats.AvgDMG.toLocaleString() },
+    ...(stats.Ego && stats.Ego > 0 ? [{ label: 'Ego', value: stats.Ego.toLocaleString() }] : []),
   ]
   return (
-    <div className="bg-[#181818] border border-[#282828] rounded-xl p-4">
-      <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-3">{t('combatants.detail.finalStats')}</p>
-      <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+    <div className={`bg-[#181818] border border-[#282828] rounded-xl ${compact ? 'p-2.5' : 'p-4'}`}>
+      <p className={`uppercase tracking-wider text-[#b3b3b3] ${compact ? 'text-[9px] mb-1.5' : 'text-[10px] mb-3'}`}>
+        {t('combatants.detail.finalStats')}
+      </p>
+      <div className={`grid grid-cols-2 ${compact ? 'gap-x-4 gap-y-0.5' : 'gap-x-6 gap-y-2'}`}>
         {rows.map(r => (
-          <div key={r.label} className="flex justify-between text-sm">
+          <div key={r.label} className={`flex justify-between ${compact ? 'text-[11px]' : 'text-sm'}`}>
             <span className="text-[#b3b3b3]">{r.label}</span>
             <span className="text-[#c084fc] font-semibold">{r.value}</span>
           </div>

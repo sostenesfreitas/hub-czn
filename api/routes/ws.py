@@ -56,5 +56,5 @@ async def capture_log_endpoint(websocket: WebSocket):
                 await websocket.send_json(msg)
             except _queue.Empty:
                 await asyncio.sleep(0.1)
-    except WebSocketDisconnect:
+    except (WebSocketDisconnect, asyncio.CancelledError):
         pass

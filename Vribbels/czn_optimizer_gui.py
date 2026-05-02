@@ -37,13 +37,16 @@ from ui import AppContext, MaterialsTab, SetupTab, CaptureTab, InventoryTab, Opt
 
 class MultiSelectListbox(tk.Frame):
     """A frame containing a listbox with multi-select capability"""
-    def __init__(self, parent, items, height=4, **kwargs):
+    def __init__(self, parent, items, height=4, colors=None, **kwargs):
         super().__init__(parent, **kwargs)
-        
+        c = colors or {}
         self.listbox = tk.Listbox(self, selectmode=tk.MULTIPLE, height=height,
-                                  exportselection=False, bg="#363650", fg="#cdd6f4",
-                                  selectbackground="#3b6ea5", selectforeground="#cdd6f4",
-                                  highlightthickness=0)
+                                  exportselection=False,
+                                  bg=c.get("bg_lighter", "#2e2c28"),
+                                  fg=c.get("fg", "#faf9f5"),
+                                  selectbackground=c.get("select", "#a9583e"),
+                                  selectforeground=c.get("fg", "#faf9f5"),
+                                  highlightthickness=0, relief="flat", borderwidth=0)
         self.listbox.pack(fill=tk.BOTH, expand=True)
         
         for item in items:
@@ -71,10 +74,21 @@ class OptimizerGUI:
         self.root.minsize(1300, 800)
 
         self.colors = {
-            "bg": "#1e1e2e", "bg_light": "#2a2a3e", "bg_lighter": "#363650",
-            "fg": "#cdd6f4", "fg_dim": "#6c7086", "accent": "#89b4fa",
-            "green": "#a6e3a1", "red": "#f38ba8", "yellow": "#f9e2af", "purple": "#cba6f7",
-            "orange": "#FF8C00", "select": "#3b6ea5",
+            "bg":           "#181715",  # surface-dark — main floor
+            "bg_light":     "#252320",  # surface-dark-elevated — panels, cards
+            "bg_lighter":   "#2e2c28",  # hover / listbox / dropdown surface
+            "fg":           "#faf9f5",  # on-dark — primary text (cream white)
+            "fg_dim":       "#a09d96",  # on-dark-soft — muted / secondary text
+            "accent":       "#cc785c",  # coral — brand primary
+            "accent_press": "#a9583e",  # coral active/press
+            "green":        "#5db872",  # success
+            "red":          "#c64545",  # error
+            "yellow":       "#d4a017",  # warning
+            "purple":       "#b08ab8",  # kept for game attribute/rarity compat
+            "orange":       "#e8a55a",  # accent-amber
+            "teal":         "#5db8a6",  # accent-teal
+            "select":       "#a9583e",  # selection highlight (coral-dark)
+            "hairline":     "#2e2c28",  # subtle 1px border
         }
 
         try:
@@ -136,32 +150,89 @@ class OptimizerGUI:
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def configure_styles(self):
-        self.style.configure(".", background=self.colors["bg"], foreground=self.colors["fg"])
-        self.style.configure("TFrame", background=self.colors["bg"])
-        self.style.configure("TLabel", background=self.colors["bg"], foreground=self.colors["fg"])
-        self.style.configure("TButton", background=self.colors["bg_light"], foreground=self.colors["fg"], padding=5)
-        self.style.map("TButton", background=[("active", self.colors["bg_lighter"])])
-        self.style.configure("TCombobox", fieldbackground=self.colors["bg_lighter"], background=self.colors["bg_lighter"],
-                             foreground=self.colors["fg"], selectbackground=self.colors["select"],
-                             selectforeground=self.colors["fg"])
-        self.style.map("TCombobox", fieldbackground=[("readonly", self.colors["bg_lighter"])], 
-                       foreground=[("readonly", self.colors["fg"])])
-        self.style.configure("TCheckbutton", background=self.colors["bg"], foreground=self.colors["fg"])
-        self.style.map("TCheckbutton", background=[("active", self.colors["bg_lighter"])],
-                       foreground=[("active", self.colors["fg"])])
-        self.style.configure("TLabelframe", background=self.colors["bg"])
-        self.style.configure("TLabelframe.Label", background=self.colors["bg"], foreground=self.colors["accent"])
-        self.style.configure("TScale", background=self.colors["bg"], troughcolor=self.colors["bg_light"])
-        self.style.configure("TNotebook", background=self.colors["bg"])
-        self.style.configure("TNotebook.Tab", background=self.colors["bg_light"], foreground=self.colors["fg"], padding=[10, 5])
-        self.style.map("TNotebook.Tab", background=[("selected", self.colors["bg_lighter"])])
-        self.style.configure("Treeview", background=self.colors["bg_light"], foreground=self.colors["fg"],
-                             fieldbackground=self.colors["bg_light"], rowheight=24)
-        self.style.configure("Treeview.Heading", background=self.colors["bg_lighter"], foreground=self.colors["fg"])
-        self.style.map("Treeview.Heading", background=[("active", self.colors["select"])],
-                       foreground=[("active", self.colors["fg"])])
-        self.style.map("Treeview", background=[("selected", self.colors["select"])],
-                       foreground=[("selected", self.colors["fg"])])
+        c = self.colors
+        font_body = ("Segoe UI", 9)
+        font_bold  = ("Segoe UI", 9, "bold")
+        font_sm    = ("Segoe UI", 8)
+
+        self.style.configure(".", background=c["bg"], foreground=c["fg"], font=font_body)
+        self.style.configure("TFrame", background=c["bg"])
+        self.style.configure("TLabel", background=c["bg"], foreground=c["fg"])
+
+        # Standard button — elevated surface
+        self.style.configure("TButton",
+            background=c["bg_light"], foreground=c["fg"],
+            padding=[10, 5], relief="flat", borderwidth=0, font=font_body)
+        self.style.map("TButton",
+            background=[("active", c["bg_lighter"]), ("pressed", c["bg_lighter"])],
+            foreground=[("disabled", c["fg_dim"])])
+
+        # Accent button — coral primary CTA
+        self.style.configure("Accent.TButton",
+            background=c["accent"], foreground="#ffffff",
+            padding=[10, 5], relief="flat", borderwidth=0, font=font_bold)
+        self.style.map("Accent.TButton",
+            background=[("active", c["accent_press"]), ("pressed", c["accent_press"])],
+            foreground=[("active", "#ffffff")])
+
+        self.style.configure("TCombobox",
+            fieldbackground=c["bg_lighter"], background=c["bg_lighter"],
+            foreground=c["fg"], selectbackground=c["select"],
+            selectforeground=c["fg"], borderwidth=1, relief="flat")
+        self.style.map("TCombobox",
+            fieldbackground=[("readonly", c["bg_lighter"])],
+            foreground=[("readonly", c["fg"])])
+
+        self.style.configure("TCheckbutton", background=c["bg"], foreground=c["fg"])
+        self.style.map("TCheckbutton",
+            background=[("active", c["bg"])],
+            foreground=[("active", c["fg"])])
+
+        self.style.configure("TLabelframe",
+            background=c["bg"], relief="flat", borderwidth=1,
+            bordercolor=c["hairline"])
+        self.style.configure("TLabelframe.Label",
+            background=c["bg"], foreground=c["accent"], font=font_bold)
+
+        self.style.configure("TScale",
+            background=c["bg"], troughcolor=c["bg_light"],
+            sliderlength=14, troughrelief="flat")
+
+        # Notebook — selected tab label in coral, unselected dimmed
+        self.style.configure("TNotebook",
+            background=c["bg"], borderwidth=0, tabmargins=[0, 0, 0, 0])
+        self.style.configure("TNotebook.Tab",
+            background=c["bg_light"], foreground=c["fg_dim"],
+            padding=[12, 6], font=font_body)
+        self.style.map("TNotebook.Tab",
+            background=[("selected", c["bg"])],
+            foreground=[("selected", c["accent"])],
+            font=[("selected", font_bold)])
+
+        # Treeview — cleaner headings, row height increase for breathing room
+        self.style.configure("Treeview",
+            background=c["bg_light"], foreground=c["fg"],
+            fieldbackground=c["bg_light"], rowheight=26,
+            borderwidth=0, relief="flat")
+        self.style.configure("Treeview.Heading",
+            background=c["bg"], foreground=c["fg_dim"],
+            font=font_sm, relief="flat", borderwidth=0)
+        self.style.map("Treeview.Heading",
+            background=[("active", c["bg_lighter"])],
+            foreground=[("active", c["fg"])])
+        self.style.map("Treeview",
+            background=[("selected", c["select"])],
+            foreground=[("selected", c["fg"])])
+
+        # Scrollbar
+        self.style.configure("TScrollbar",
+            background=c["bg_light"], troughcolor=c["bg"],
+            relief="flat", borderwidth=0, arrowsize=12)
+        self.style.map("TScrollbar",
+            background=[("active", c["bg_lighter"])])
+
+        # Separator
+        self.style.configure("TSeparator", background=c["hairline"])
 
     def setup_ui(self):
         top_bar = ttk.Frame(self.root)

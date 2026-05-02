@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { api } from '@/lib/api'
 import { useApiPort } from '@/hooks/useApiPort'
@@ -12,7 +13,7 @@ const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
   success: '#4ade80',
   error: '#f87171',
   warning: '#fbbf24',
-  info: '#a09d96',
+  info: '#b3b3b3',
 }
 
 function PrereqBadge({ ok, label }: { ok: boolean; label: string }) {
@@ -25,12 +26,14 @@ function PrereqBadge({ ok, label }: { ok: boolean; label: string }) {
 }
 
 function MutationError({ error }: { error: unknown }) {
+  const { t } = useTranslation()
   if (!error) return null
-  const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado'
-  return <p className="text-[#c64545] text-xs mt-1">{msg}</p>
+  const msg = error instanceof Error ? error.message : t('common.unexpectedError')
+  return <p className="text-[#f3727f] text-xs mt-1">{msg}</p>
 }
 
 export function CapturePage() {
+  const { t } = useTranslation()
   const port = useApiPort()
   const qc = useQueryClient()
   const { messages, clear } = useCaptureLog(port)
@@ -119,25 +122,25 @@ export function CapturePage() {
     <div className="p-6 flex gap-6 h-full">
       {/* Left: controls */}
       <div className="w-60 shrink-0 flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-[#faf9f5]">Capture</h1>
+        <h1 className="text-xl font-bold text-[#ffffff]">{t('capture.title')}</h1>
 
         {/* Prerequisites bar */}
-        <div className="p-3 rounded-lg bg-[#252320] border border-[#2e2c28] flex flex-col gap-2">
+        <div className="p-3 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-2">
           <div className="flex items-center gap-3 flex-wrap">
-            <PrereqBadge ok={isAdmin} label="Admin" />
-            <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label="mitmproxy" />
-            <PrereqBadge ok={setupStatus?.certificate ?? false} label="Certificado" />
+            <PrereqBadge ok={isAdmin} label={t('capture.prereq.admin')} />
+            <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label={t('capture.prereq.mitmproxy')} />
+            <PrereqBadge ok={setupStatus?.certificate ?? false} label={t('capture.prereq.certificate')} />
           </div>
           {!prereqsOk && (
-            <NavLink to="/setup" className="text-xs text-[#cc785c] hover:underline mt-1">
-              → Ir para Setup
+            <NavLink to="/setup" className="text-xs text-[#c084fc] hover:underline mt-1">
+              {t('capture.goToSetup')}
             </NavLink>
           )}
         </div>
 
         {/* Region selector */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-[#a09d96]">Servidor</label>
+          <label className="text-xs text-[#b3b3b3]">{t('capture.server')}</label>
           <select
             value={region}
             disabled={running}
@@ -146,7 +149,7 @@ export function CapturePage() {
               setRegion(r)
               regionMutation.mutate(r)
             }}
-            className="bg-[#252320] border border-[#2e2c28] rounded px-2 py-1.5 text-sm text-[#faf9f5] disabled:opacity-50"
+            className="bg-[#181818] border border-[#282828] rounded px-2 py-1.5 text-sm text-[#ffffff] disabled:opacity-50"
           >
             <option value="global">Global</option>
             <option value="asia">Asia</option>
@@ -155,15 +158,15 @@ export function CapturePage() {
         </div>
 
         {/* Debug mode */}
-        <label className="flex items-center gap-2 text-sm text-[#a09d96] cursor-pointer">
+        <label className="flex items-center gap-2 text-sm text-[#b3b3b3] cursor-pointer">
           <input
             type="checkbox"
             checked={debug}
             disabled={running}
             onChange={e => setDebug(e.target.checked)}
-            className="accent-[#cc785c]"
+            className="accent-[#c084fc]"
           />
-          Debug mode
+          {t('capture.debugMode')}
         </label>
 
         {/* Start / Stop */}
@@ -172,10 +175,10 @@ export function CapturePage() {
             <Button
               onClick={() => startMutation.mutate()}
               disabled={!prereqsOk || startMutation.isPending}
-              className="bg-[#cc785c] hover:bg-[#b8674d] text-white w-full"
+              className="bg-[#c084fc] hover:bg-[#9333ea] text-white w-full"
             >
               <Radio size={14} className="mr-2" />
-              Start Capture
+              {t('capture.start')}
             </Button>
             <MutationError error={startMutation.isError ? startMutation.error : undefined} />
           </div>
@@ -187,7 +190,7 @@ export function CapturePage() {
               className="bg-red-600 hover:bg-red-700 text-white w-full"
             >
               <Square size={14} className="mr-2" />
-              Stop Capture
+              {t('capture.stop')}
             </Button>
             <MutationError error={stopMutation.isError ? stopMutation.error : undefined} />
           </div>
@@ -199,17 +202,17 @@ export function CapturePage() {
             size="sm"
             variant="outline"
             disabled={snapshotsMutation.isPending}
-            className="border-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5] w-full justify-start"
+            className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff] w-full justify-start"
             onClick={() => snapshotsMutation.mutate()}
           >
             <FolderOpen size={13} className="mr-2" />
-            Abrir Snapshots
+            {t('capture.openSnapshots')}
           </Button>
           <Button
             size="sm"
             variant="outline"
             disabled={!captureStatus?.rescue_file}
-            className="border-[#2e2c28] text-[#a09d96] hover:text-[#faf9f5] w-full justify-start disabled:opacity-40"
+            className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff] w-full justify-start disabled:opacity-40"
             onClick={() => {
               if (captureStatus?.rescue_file) {
                 api.load(captureStatus.rescue_file)
@@ -218,7 +221,7 @@ export function CapturePage() {
             }}
           >
             <Download size={13} className="mr-2" />
-            Carregar Último
+            {t('capture.loadLatest')}
           </Button>
         </div>
       </div>
@@ -226,35 +229,35 @@ export function CapturePage() {
       {/* Right: log panel */}
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-[#a09d96]">Log em tempo real</span>
+          <span className="text-xs text-[#b3b3b3]">{t('capture.log.title')}</span>
           <div className="flex gap-2">
             <button
               type="button"
-              className="text-xs text-[#a09d96] hover:text-[#faf9f5]"
+              className="text-xs text-[#b3b3b3] hover:text-[#ffffff]"
               onClick={() => setAutoScroll(v => !v)}
             >
-              {autoScroll ? 'Pausar scroll' : 'Retomar scroll'}
+              {autoScroll ? t('capture.log.pauseScroll') : t('capture.log.resumeScroll')}
             </button>
-            <button type="button" className="text-xs text-[#a09d96] hover:text-[#faf9f5]" onClick={clear}>
-              Limpar
+            <button type="button" className="text-xs text-[#b3b3b3] hover:text-[#ffffff]" onClick={clear}>
+              {t('capture.log.clear')}
             </button>
           </div>
         </div>
 
         <div
           ref={logRef}
-          className="flex-1 overflow-y-auto rounded-lg bg-[#0f0e0c] border border-[#2e2c28] p-3 font-mono text-xs leading-relaxed"
+          className="flex-1 overflow-y-auto rounded-lg bg-[#0d0d0d] border border-[#282828] p-3 font-mono text-xs leading-relaxed"
         >
           {messages.length === 0 && !running && (
-            <div className="text-[#3d3d3a] space-y-1">
-              <p>1. Clique em Start Capture</p>
-              <p>2. Abra o jogo</p>
-              <p>3. Navegue até o inventário de Memory Fragments</p>
+            <div className="text-[#404040] space-y-1">
+              <p>{t('capture.log.step1')}</p>
+              <p>{t('capture.log.step2')}</p>
+              <p>{t('capture.log.step3')}</p>
             </div>
           )}
           {messages.map((m, i) => (
             <div key={`${m.timestamp}-${i}`} style={{ color: LEVEL_COLOR[m.level] }}>
-              <span className="text-[#3d3d3a]">{m.timestamp} </span>
+              <span className="text-[#404040]">{m.timestamp} </span>
               {m.message}
             </div>
           ))}

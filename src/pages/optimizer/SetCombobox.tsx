@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { X, ChevronDown, Loader2 } from 'lucide-react'
+import { assetUrl } from '@/lib/api'
 
 export interface ComboboxOption {
   id: string
   label: string
+  icon_path?: string
 }
 
 interface SetComboboxProps {
@@ -74,15 +76,23 @@ export function SetCombobox({
             return (
               <span
                 key={id}
-                className="inline-flex items-center gap-1 bg-[#cc785c]/20 border border-[#cc785c]/40 text-[#cc785c] text-xs rounded px-2 py-0.5"
+                className="inline-flex items-center gap-1 bg-[#c084fc]/20 border border-[#c084fc]/40 text-[#c084fc] text-xs rounded px-2 py-0.5"
               >
+                {opt?.icon_path && (
+                  <img
+                    src={assetUrl(opt.icon_path)}
+                    alt=""
+                    className="w-3.5 h-3.5 object-contain shrink-0"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                  />
+                )}
                 {opt?.label ?? id}
                 {!disabled && (
                   <button
                     type="button"
                     onClick={() => remove(id)}
                     aria-label={`Remover ${opt?.label ?? id}`}
-                    className="hover:text-[#faf9f5] transition-colors"
+                    className="hover:text-[#ffffff] transition-colors"
                   >
                     <X size={10} />
                   </button>
@@ -97,12 +107,12 @@ export function SetCombobox({
         {isLoading ? (
           <Loader2
             size={12}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a09d96] animate-spin"
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#b3b3b3] animate-spin"
           />
         ) : (
           <ChevronDown
             size={12}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#a09d96] pointer-events-none"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#b3b3b3] pointer-events-none"
           />
         )}
         <input
@@ -122,8 +132,8 @@ export function SetCombobox({
               : placeholder
           }
           className={[
-            'w-full bg-[#2e2c28] border border-[#3a3835] rounded px-2.5 py-1.5 text-xs',
-            'text-[#faf9f5] placeholder-[#3a3835] outline-none focus:border-[#cc785c]',
+            'w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs',
+            'text-[#ffffff] placeholder-[#333333] outline-none focus:border-[#c084fc]',
             isLoading ? 'pl-7' : '',
             inputDisabled ? 'opacity-50 cursor-not-allowed' : '',
           ].join(' ')}
@@ -131,15 +141,23 @@ export function SetCombobox({
       </div>
 
       {open && !inputDisabled && filtered.length > 0 && (
-        <div role="listbox" className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#252320] border border-[#2e2c28] rounded shadow-lg max-h-48 overflow-y-auto">
+        <div role="listbox" className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#181818] border border-[#282828] rounded shadow-lg max-h-48 overflow-y-auto">
           {filtered.map((opt) => (
             <button
               key={opt.id}
               type="button"
               role="option"
               onClick={() => add(opt.id)}
-              className="w-full text-left px-3 py-1.5 text-xs text-[#faf9f5] hover:bg-[#2e2c28] transition-colors"
+              className="w-full text-left flex items-center gap-2 px-3 py-1.5 text-xs text-[#ffffff] hover:bg-[#282828] transition-colors"
             >
+              {opt.icon_path && (
+                <img
+                  src={assetUrl(opt.icon_path)}
+                  alt=""
+                  className="w-4 h-4 object-contain shrink-0"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                />
+              )}
               {opt.label}
             </button>
           ))}

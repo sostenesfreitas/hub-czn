@@ -19,6 +19,7 @@ a = Analysis(
         (str(vribbels / 'game_data'),        'game_data'),
         (str(vribbels / 'images'),           'images'),
         (str(vribbels / 'zstd_dictionary.bin'), '.'),
+        (str(repo_root / 'api' / 'assets'),  'assets'),
     ],
     hiddenimports=[
         'uvicorn.logging',

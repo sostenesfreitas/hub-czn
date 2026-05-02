@@ -371,6 +371,18 @@ class GearOptimizer:
                         hp_pct += value
                     elif stat == "Crit DMG":
                         crit_dmg += value
+                two_piece = set_info.get("two_piece")
+                if two_piece and count >= 2:
+                    stat = two_piece.get("stat", "")
+                    value = two_piece.get("value", 0)
+                    if stat == "ATK%":
+                        atk_pct += value
+                    elif stat == "DEF%":
+                        def_pct += value
+                    elif stat == "HP%":
+                        hp_pct += value
+                    elif stat == "Crit DMG":
+                        crit_dmg += value
 
         total_atk = base_atk * (1 + atk_pct / 100) + flat_atk + friendship_atk + partner_atk
         total_def = base_def * (1 + def_pct / 100) + flat_def + friendship_def + partner_def

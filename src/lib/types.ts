@@ -149,6 +149,7 @@ export interface FinalStats {
   EHP: number
   AvgDMG: number
   ExtraDMG?: number
+  Ego?: number
 }
 
 export interface CombatantStats {
@@ -166,6 +167,9 @@ export interface Combatant {
   class: string
   avg_gear_score: number
   portrait_url: string
+  ego?: number
+  partner_name?: string | null
+  partner_res_id?: number | null
 }
 
 export interface ScoringPriorities {
@@ -204,6 +208,7 @@ export interface EquipmentSet {
   id: number
   name: string
   pieces: number
+  icon_path?: string
 }
 
 export interface AboutInfo {

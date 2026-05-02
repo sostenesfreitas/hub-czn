@@ -54,6 +54,9 @@ def get_combatants():
             "class": extra["class"],
             "avg_gear_score": round(avg_score, 1),
             "portrait_url": LOCAL_FACE.format(res_id=info.res_id),
+            "ego": info.limit_break,
+            "partner_name": info.partner_name or None,
+            "partner_res_id": info.partner_res_id or None,
         })
     result.sort(key=lambda c: -c["avg_gear_score"])
     return result
@@ -107,6 +110,7 @@ def get_combatant_stats(char_id: str):
         "EHP": round(raw.get("EHP", 0)),
         "AvgDMG": round(raw.get("Avg DMG", 0)),
         "ExtraDMG": round(raw.get("Extra DMG%", 0), 1),
+        "Ego": round(raw.get("Ego", 0)),
     }
 
     return {"char_id": char_id, "gear_slots": slots, "final_stats": final_stats}
