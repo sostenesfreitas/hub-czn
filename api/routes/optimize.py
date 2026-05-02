@@ -1,12 +1,13 @@
 from __future__ import annotations
+
+from api.frozen_path import add_vribbels_to_path
+add_vribbels_to_path()
+
 import asyncio
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-
-from api.frozen_path import add_vribbels_to_path
-add_vribbels_to_path()
 
 try:
     from game_data.sets import SETS

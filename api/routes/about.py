@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from fastapi import APIRouter
-
 from api.frozen_path import add_vribbels_to_path
 add_vribbels_to_path()
+
+from fastapi import APIRouter
 
 try:
     from version import __version__
