@@ -2,10 +2,9 @@
 # PyInstaller spec for the Hub CZN FastAPI sidecar.
 # Run from the repo root: pyinstaller api/hub_czn_api.spec --clean --noconfirm
 
-import os
 from pathlib import Path
 
-repo_root = Path(os.getcwd())
+repo_root = Path(SPECPATH).parent  # SPECPATH = .../api; parent = repo root
 vribbels = repo_root / 'Vribbels'
 
 a = Analysis(
@@ -38,7 +37,6 @@ a = Analysis(
         'anyio',
         'anyio._backends._asyncio',
         'zstandard',
-        'PIL._tkinter_finder',
     ],
     hookspath=[],
     hooksconfig={},
