@@ -50,3 +50,63 @@ def test_save_scoring_priorities_partial_update_merges(client):
     body = response.json()["weights"]
     assert set(body.keys()) == set(ALL_STAT_NAMES)
     assert body[ALL_STAT_NAMES[0]] == 7
+
+
+# ── char-weights ──────────────────────────────────────────────────────────────
+
+def test_get_char_weights_no_override_returns_404(client):
+    response = client.get("/api/scoring/char-weights/Luke")
+    assert response.status_code == 404
+
+
+def test_save_char_weights_round_trips(client):
+    weights = {name: 5 for name in ALL_STAT_NAMES}
+    response = client.post("/api/scoring/char-weights/Luke", json={"weights": weights})
+    assert response.status_code == 200
+    assert response.json()["weights"] == weights
+
+
+def test_save_char_weights_unknown_stat_returns_422(client):
+    response = client.post(
+        "/api/scoring/char-weights/Luke",
+        json={"weights": {"NONEXISTENT_STAT": 5}},
+    )
+    assert response.status_code == 422
+
+
+def test_save_char_weights_value_above_10_returns_422(client):
+    response = client.post(
+        "/api/scoring/char-weights/Luke",
+        json={"weights": {ALL_STAT_NAMES[0]: 11}},
+    )
+    assert response.status_code == 422
+
+
+def test_get_char_weights_after_save_returns_weights(client):
+    weights = {name: 3 for name in ALL_STAT_NAMES}
+    client.post("/api/scoring/char-weights/Luke", json={"weights": weights})
+    response = client.get("/api/scoring/char-weights/Luke")
+    assert response.status_code == 200
+    assert response.json()["weights"] == weights
+
+
+def test_delete_char_weights_returns_ok(client):
+    weights = {name: 5 for name in ALL_STAT_NAMES}
+    client.post("/api/scoring/char-weights/Luke", json={"weights": weights})
+    response = client.delete("/api/scoring/char-weights/Luke")
+    assert response.status_code == 200
+    assert response.json()["ok"] is True
+
+
+def test_delete_char_weights_then_get_returns_404(client):
+    weights = {name: 5 for name in ALL_STAT_NAMES}
+    client.post("/api/scoring/char-weights/Luke", json={"weights": weights})
+    client.delete("/api/scoring/char-weights/Luke")
+    response = client.get("/api/scoring/char-weights/Luke")
+    assert response.status_code == 404
+
+
+def test_delete_char_weights_nonexistent_returns_ok(client):
+    response = client.delete("/api/scoring/char-weights/NonExistent")
+    assert response.status_code == 200
+    assert response.json()["ok"] is True
