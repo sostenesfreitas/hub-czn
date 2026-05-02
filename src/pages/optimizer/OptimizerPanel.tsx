@@ -1,8 +1,9 @@
+import { useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress } from '@/lib/types'
+import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress, CharPreset } from '@/lib/types'
 import { SetCombobox } from './SetCombobox'
 import type { ComboboxOption } from './SetCombobox'
 
@@ -18,6 +19,21 @@ const MAIN_STAT_SLOTS = [
   { labelKey: 'optimizer.mainStatSlot5' as const, key: 'main_stat_5' as const, opts: SLOT_5_STATS },
   { labelKey: 'optimizer.mainStatSlot6' as const, key: 'main_stat_6' as const, opts: SLOT_6_STATS },
 ]
+
+const STAT_GROUPS = [
+  { label: 'Ofensivo', stats: ['ATK%', 'CRate', 'CDmg', 'Extra DMG%', 'DoT%', 'Flat ATK'] },
+  { label: 'Defensivo', stats: ['DEF%', 'HP%', 'Flat DEF', 'Flat HP'] },
+  { label: 'Elemental', stats: ['Passion DMG%', 'Order DMG%', 'Justice DMG%', 'Void DMG%', 'Instinct DMG%'] },
+  { label: 'Outros', stats: ['Ego'] },
+] as const
+
+function mapWeight(w: number): number {
+  return Math.round(Math.max(0, Math.min(10, w)) / 10 * 3)
+}
+
+const DEFAULT_STAT_WEIGHTS: Record<string, number> = Object.fromEntries(
+  STAT_GROUPS.flatMap(g => g.stats as readonly string[]).map(s => [s, 0])
+)
 
 interface OptimizerPanelProps {
   config: OptimizerConfig
@@ -58,6 +74,96 @@ export function OptimizerPanel({
     queryFn: () => api.optimizeSets(),
   })
 
+  const selectedCombatant = combatants.find((c) => c.char_id === config.char_name)
+  const selectedResId = selectedCombatant?.res_id ?? null
+
+  const { data: charPreset } = useQuery<CharPreset>({
+    queryKey: ['scoring/char-preset', selectedResId],
+    queryFn: () => api.charPreset(selectedResId!),
+    enabled: selectedResId != null,
+    retry: false,
+    staleTime: Infinity,
+  })
+
+  const { data: charSavedWeights } = useQuery({
+    queryKey: ['scoring/char-weights', config.char_name],
+    queryFn: () => api.charWeights(config.char_name),
+    enabled: config.char_name !== '',
+    retry: false,
+    staleTime: 30_000,
+    select: (d) => d.weights,
+  })
+
+  const { data: globalPriorities } = useQuery({
+    queryKey: ['scoring/priorities'],
+    queryFn: () => api.scoringPriorities(),
+    staleTime: 60_000,
+    select: (d) => d.weights,
+  })
+
+  // Stable refs so effects don't go stale
+  const onChangeRef = useRef(onChange)
+  onChangeRef.current = onChange
+  const configRef = useRef(config)
+  configRef.current = config
+
+  const lastAutoFilledRef = useRef<string>('')
+  const lastWeightInitRef = useRef<string>('')
+
+  // Auto-populate from char preset when character changes
+  useEffect(() => {
+    if (!sets.length) return
+    const charName = configRef.current.char_name
+    if (charName === lastAutoFilledRef.current) return
+    lastAutoFilledRef.current = charName
+
+    if (!charName || !charPreset) {
+      onChangeRef.current({
+        ...configRef.current,
+        four_piece_sets: [],
+        two_piece_sets: [],
+        main_stat_4: null,
+        main_stat_5: null,
+        main_stat_6: null,
+      })
+      return
+    }
+
+    const fourIds = charPreset.recommended_sets.filter((id) =>
+      sets.some((s) => s.id === id && s.pieces === 4)
+    )
+    const twoIds = charPreset.recommended_sets
+      .filter((id) => sets.some((s) => s.id === id && s.pieces === 2))
+      .slice(0, 2)
+    const m4 = (charPreset.main_stat_4.find((s) => SLOT_4_STATS.includes(s)) as string | undefined) ?? null
+    const m5 = (charPreset.main_stat_5.find((s) => SLOT_5_STATS.includes(s)) as string | undefined) ?? null
+    const m6 = (charPreset.main_stat_6.find((s) => SLOT_6_STATS.includes(s)) as string | undefined) ?? null
+
+    onChangeRef.current({
+      ...configRef.current,
+      four_piece_sets: fourIds,
+      two_piece_sets: twoIds,
+      main_stat_4: m4,
+      main_stat_5: m5,
+      main_stat_6: m6,
+    })
+  }, [config.char_name, charPreset, sets])
+
+  // Initialize stat_weights from char-weights (or global) when character changes
+  useEffect(() => {
+    const charName = configRef.current.char_name
+    if (charName === lastWeightInitRef.current) return
+    const sourceWeights = charSavedWeights ?? globalPriorities
+    if (!sourceWeights) return
+    lastWeightInitRef.current = charName
+
+    const mapped: Record<string, number> = { ...DEFAULT_STAT_WEIGHTS }
+    for (const [k, v] of Object.entries(sourceWeights)) {
+      if (k in mapped) mapped[k] = mapWeight(v)
+    }
+    onChangeRef.current({ ...configRef.current, stat_weights: mapped })
+  }, [config.char_name, charSavedWeights, globalPriorities])
+
   const dataLoaded = status?.data_loaded ?? false
   const disabled = isRunning
 
@@ -78,9 +184,14 @@ export function OptimizerPanel({
     onChange({ ...config, ...partial })
   }
 
+  function patchWeight(stat: string, value: number) {
+    const current = config.stat_weights ?? { ...DEFAULT_STAT_WEIGHTS }
+    patch({ stat_weights: { ...current, [stat]: value } })
+  }
+
   const canRun = dataLoaded && config.char_name !== '' && !isRunning
 
-  const panelBase = 'w-64 shrink-0 bg-[#181818] border-r border-[#282828] p-4'
+  const panelBase = 'w-72 shrink-0 bg-[#181818] border-r border-[#282828] p-4'
 
   if (!dataLoaded) {
     return (
@@ -97,6 +208,8 @@ export function OptimizerPanel({
       ? Math.round((progress.checked / progress.total) * 100)
       : 0
 
+  const sw = config.stat_weights ?? DEFAULT_STAT_WEIGHTS
+
   return (
     <aside className={`${panelBase} overflow-y-auto space-y-4`}>
       {/* Character */}
@@ -107,7 +220,11 @@ export function OptimizerPanel({
         <select
           id="optimizer-char"
           value={config.char_name}
-          onChange={(e) => patch({ char_name: e.target.value })}
+          onChange={(e) => {
+            lastAutoFilledRef.current = ''
+            lastWeightInitRef.current = ''
+            patch({ char_name: e.target.value })
+          }}
           disabled={disabled || combatants.length === 0}
           className="w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -174,6 +291,50 @@ export function OptimizerPanel({
           </select>
         </div>
       ))}
+
+      {/* Stat priority */}
+      <div className="space-y-2">
+        <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+          Prioridade de Stat (-1 a 3)
+        </p>
+        {STAT_GROUPS.map((group) => (
+          <div key={group.label}>
+            <p className="text-[9px] uppercase tracking-wider text-[#666666] mb-1">{group.label}</p>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+              {group.stats.map((stat) => {
+                const statKey = stat as string
+                const val = sw[statKey] ?? 0
+                const id = `sw-${statKey.replace(/[^a-z0-9]/gi, '-').toLowerCase()}`
+                return (
+                  <div key={statKey} className="flex items-center gap-1.5">
+                    <label htmlFor={id} className="text-[10px] text-[#b3b3b3] truncate flex-1 min-w-0">
+                      {statKey}
+                    </label>
+                    <input
+                      id={id}
+                      type="number"
+                      min={-1}
+                      max={3}
+                      step={1}
+                      value={val}
+                      disabled={disabled}
+                      onChange={(e) => {
+                        const n = Number(e.target.value)
+                        if (!Number.isNaN(n)) patchWeight(statKey, n)
+                      }}
+                      onBlur={(e) => {
+                        const clamped = Math.max(-1, Math.min(3, Math.round(Number(e.target.value))))
+                        patchWeight(statKey, clamped)
+                      }}
+                      className="w-10 text-right text-xs bg-[#282828] border border-[#333333] rounded px-1 py-0.5 text-[#ffffff] focus:outline-none focus:border-[#c084fc] disabled:opacity-50"
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Filters */}
       <div className="space-y-3">
@@ -279,7 +440,7 @@ export function OptimizerPanel({
           type="button"
           onClick={onRun}
           disabled={!canRun}
-          className="w-full flex items-center justify-center gap-2 bg-[#c084fc] hover:bg-[#d4895e] rounded py-2 text-xs text-[#121212] font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 bg-[#c084fc] hover:bg-[#9333ea] rounded py-2 text-xs text-[#121212] font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Play size={12} />
           {t('optimizer.run')}
