@@ -167,6 +167,7 @@ export interface OptimizerConfig {
   include_equipped: boolean
   excluded_heroes: string[]
   max_results: number
+  stat_weights: Record<string, number> | null
 }
 
 export interface OptimizeProgress {
