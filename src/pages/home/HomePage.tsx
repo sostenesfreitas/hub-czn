@@ -3,11 +3,13 @@ import { useNavigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 
+const ONBOARDING_KEY = 'home.onboarding_done'
+
 function OnboardingView({ onDone }: { onDone: () => void }) {
   const navigate = useNavigate()
 
   function handleStart() {
-    localStorage.setItem('home.onboarding_done', 'true')
+    localStorage.setItem(ONBOARDING_KEY, 'true')
     onDone()
     navigate('/setup')
   }
@@ -103,19 +105,19 @@ function StatusCard({
 }
 
 function DashboardView({ onReset }: { onReset: () => void }) {
-  const { data: setup } = useQuery({
+  const { data: setup, isError: setupError } = useQuery({
     queryKey: ['setup-status'],
     queryFn: () => api.setupStatus(),
   })
-  const { data: fragments } = useQuery({
+  const { data: fragments, isError: fragmentsError } = useQuery({
     queryKey: ['fragments'],
     queryFn: () => api.fragments(),
   })
-  const { data: capture } = useQuery({
+  const { data: capture, isError: captureError } = useQuery({
     queryKey: ['capture-status'],
     queryFn: () => api.captureStatus(),
   })
-  const { data: rescue } = useQuery({
+  const { data: rescue, isError: rescueError } = useQuery({
     queryKey: ['rescue-records'],
     queryFn: () => api.rescueRecords(),
   })
@@ -133,24 +135,24 @@ function DashboardView({ onReset }: { onReset: () => void }) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatusCard
           label="Setup"
-          value={setupComplete == null ? '…' : setupComplete ? '✓ Completo' : '✗ Pendente'}
+          value={setupError ? '—' : setupComplete == null ? '…' : setupComplete ? '✓ Completo' : '✗ Pendente'}
           to="/setup"
           accent={setupComplete === false}
         />
         <StatusCard
           label="Fragmentos"
-          value={fragments == null ? '…' : fragments.length > 0 ? `${fragments.length} itens` : 'Sem dados'}
+          value={fragmentsError ? '—' : fragments == null ? '…' : fragments.length > 0 ? `${fragments.length} itens` : 'Sem dados'}
           to="/fragments"
         />
         <StatusCard
           label="Capture"
-          value={capture == null ? '…' : capture.running ? 'Ativo' : 'Parado'}
+          value={captureError ? '—' : capture == null ? '…' : capture.running ? 'Ativo' : 'Parado'}
           to="/capture"
-          accent={capture?.running}
+          accent={capture?.running === true}
         />
         <StatusCard
           label="Rescue Records"
-          value={rescue == null ? '…' : rescue.length > 0 ? `${rescue.length} registros` : 'Sem dados'}
+          value={rescueError ? '—' : rescue == null ? '…' : rescue.length > 0 ? `${rescue.length} registros` : 'Sem dados'}
           to="/rescue"
         />
       </div>
@@ -158,7 +160,7 @@ function DashboardView({ onReset }: { onReset: () => void }) {
       <button
         type="button"
         onClick={() => {
-          localStorage.removeItem('home.onboarding_done')
+          localStorage.removeItem(ONBOARDING_KEY)
           onReset()
         }}
         className="text-xs text-[#3a3835] hover:text-[#a09d96] transition-colors self-start"
@@ -171,7 +173,7 @@ function DashboardView({ onReset }: { onReset: () => void }) {
 
 export function HomePage() {
   const [seen, setSeen] = useState(
-    () => localStorage.getItem('home.onboarding_done') === 'true'
+    () => localStorage.getItem(ONBOARDING_KEY) === 'true'
   )
 
   return seen
