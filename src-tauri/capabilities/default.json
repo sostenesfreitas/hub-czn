@@ -7,6 +7,6 @@
     "core:default",
     "shell:allow-execute",
     "shell:allow-spawn",
-    "opener:allow-open"
+    "opener:allow-open-url"
   ]
 }
