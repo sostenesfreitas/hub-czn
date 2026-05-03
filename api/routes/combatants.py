@@ -62,6 +62,56 @@ def get_combatants():
     return result
 
 
+@router.get("/combatants/export")
+def get_combatants_export():
+    if not state.data_loaded:
+        raise HTTPException(status_code=422, detail="No data loaded")
+    result = []
+    for name, info in state.optimizer.character_info.items():
+        gear = state.optimizer.characters.get(name, [])
+        gear_by_slot = {f.slot_num: f for f in gear}
+        slots = []
+        for slot_num in range(1, 7):
+            slot_name = EQUIPMENT_SLOTS.get(slot_num, f"Slot {slot_num}")
+            f = gear_by_slot.get(slot_num)
+            slots.append({
+                "slot": slot_name,
+                "slot_num": slot_num,
+                "set_name": f.set_name if f else None,
+                "level": f.level if f else 0,
+                "main_stat": (
+                    f"{f.main_stat.name} {f.main_stat.format_value()}"
+                    if f and f.main_stat else None
+                ),
+                "substats": [
+                    {
+                        "name": s.name,
+                        "value": s.format_value(),
+                        "roll_count": s.roll_count,
+                    }
+                    for s in f.substats
+                ] if f else [],
+                "score": round(f.gear_score, 1) if f else None,
+            })
+        raw = state.optimizer.calculate_build_stats(gear, name)
+        result.append({
+            "char_id": name,
+            "name": name,
+            "res_id": info.res_id,
+            "level": info.level,
+            "gear_slots": slots,
+            "final_stats": {
+                "ATK": round(raw.get("ATK", 0)),
+                "DEF": round(raw.get("DEF", 0)),
+                "HP": round(raw.get("HP", 0)),
+                "CRate": round(raw.get("CRate", 0), 1),
+                "CDmg": round(raw.get("CDmg", 125), 1),
+                "EHP": round(raw.get("EHP", 0)),
+            },
+        })
+    return result
+
+
 @router.get("/combatants/{char_id}/stats")
 def get_combatant_stats(char_id: str):
     if not state.data_loaded:
