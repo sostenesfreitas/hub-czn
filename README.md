@@ -17,7 +17,6 @@ A desktop app (Windows) that intercepts the game's network traffic to extract yo
 | **Scoring** | Configure per-character or global stat weights used by the optimizer |
 | **Combatants** | Full roster with level, attribute, class, Ego, gear score and equipped build details |
 | **Rescue Records** | Complete gacha pull history with pity counters, banner stats and charts |
-| **Card Library** | Browse all cards by character with coefficient, hits and spark variants |
 | **Damage Simulator** | Simulate card damage against any enemy DEF using your equipped build |
 
 ---
@@ -183,17 +182,7 @@ After capturing, go to the **Rescue Records** tab:
 
 ---
 
-### 9 — Card Library
-
-Browse all character cards:
-
-- Search by card name or ID
-- Filter by character or card type (Damage / Support)
-- Each card shows: thumbnail, cost, type, damage coefficient, hit count, and spark variant details
-
----
-
-### 10 — Damage Simulator
+### 9 — Damage Simulator
 
 Simulate how much damage your characters deal:
 
