@@ -46,10 +46,10 @@ class CardResult(BaseModel):
     cost: int
     eff_value: int
     hits: int
-    base_damage: float
+    normal_damage: float
+    crit_damage: float
     avg_damage: float
-    final_damage: float
-    effective_damage: float
+    icon_path: str | None
 
 
 class SimulateDamageResponse(BaseModel):
@@ -68,8 +68,9 @@ class SimulateDamageResponse(BaseModel):
     fortitude: bool
     buff_mult: float
     cards: list[CardResult]
-    total_damage: float
-    total_effective_damage: float
+    total_normal: float
+    total_crit: float
+    total_avg: float
 
 
 # ---------------------------------------------------------------------------
@@ -107,9 +108,11 @@ def _load_card_db_from_folder(db_path: Path) -> tuple[dict, dict, dict]:
             for entry in data:
                 cid = entry.get("id")
                 if cid:
+                    sct = entry.get("sct_name", "")
                     card_lookup[cid] = {
                         "cost": int(entry.get("cost", 0)),
                         "link_skill_eff_id": _parse_list(entry.get("link_skill_eff_id", "[]")),
+                        "sct_name": sct if sct and sct != "none" else None,
                     }
         elif eff_re.match(name):
             for entry in data:
@@ -266,11 +269,16 @@ def simulate_damage(body: SimulateDamageRequest):
             continue  # non-damage card
 
         card_name = _get_card_name(effective_card_id)
+        sct_name = (
+            card_lookup.get(effective_card_id, {}).get("sct_name")
+            or card_lookup.get(base_card_id, {}).get("sct_name")
+        )
+        icon_path = f"/assets/cards/{sct_name}.png" if sct_name else None
 
         base_dmg = atk * (eff_value / 100)
-        avg_dmg = base_dmg * crit_factor
-        final_dmg = avg_dmg * morale_mult * buff_mult
-        effective_dmg = final_dmg * def_reduction
+        normal_dmg = base_dmg * morale_mult * buff_mult * def_reduction
+        crit_dmg = base_dmg * (cdmg / 100) * morale_mult * buff_mult * def_reduction
+        avg_dmg = normal_dmg * (1 - crate / 100) + crit_dmg * (crate / 100)
 
         results.append(CardResult(
             card_id=base_card_id,
@@ -279,14 +287,15 @@ def simulate_damage(body: SimulateDamageRequest):
             cost=cost,
             eff_value=eff_value,
             hits=hits,
-            base_damage=round(base_dmg, 1),
+            normal_damage=round(normal_dmg, 1),
+            crit_damage=round(crit_dmg, 1),
             avg_damage=round(avg_dmg, 1),
-            final_damage=round(final_dmg, 1),
-            effective_damage=round(effective_dmg, 1),
+            icon_path=icon_path,
         ))
 
-    total_dmg = sum(r.final_damage for r in results)
-    total_eff_dmg = sum(r.effective_damage for r in results)
+    total_normal = sum(r.normal_damage for r in results)
+    total_crit = sum(r.crit_damage for r in results)
+    total_avg = sum(r.avg_damage for r in results)
 
     return SimulateDamageResponse(
         char_name=body.char_name,
@@ -304,8 +313,9 @@ def simulate_damage(body: SimulateDamageRequest):
         fortitude=body.fortitude,
         buff_mult=round(buff_mult, 4),
         cards=results,
-        total_damage=round(total_dmg, 1),
-        total_effective_damage=round(total_eff_dmg, 1),
+        total_normal=round(total_normal, 1),
+        total_crit=round(total_crit, 1),
+        total_avg=round(total_avg, 1),
     )
 
 
