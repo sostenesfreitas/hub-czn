@@ -50,7 +50,7 @@ export function OptimizerPage() {
         selectedRank: number | null
       }
       if (!saved.results?.length) return
-      setConfig(saved.config)
+      setConfig({ ...DEFAULT_CONFIG, ...saved.config })
       setResults(saved.results)
       setSelectedRank(saved.selectedRank ?? null)
       setJobState('done')
