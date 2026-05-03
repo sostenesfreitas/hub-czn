@@ -49,11 +49,14 @@ export function OptimizerPage() {
         results: OptimizeResult[]
         selectedRank: number | null
       }
-      if (!saved.results?.length) return
-      setConfig({ ...DEFAULT_CONFIG, ...saved.config })
-      setResults(saved.results)
-      setSelectedRank(saved.selectedRank ?? null)
-      setJobState('done')
+      if (saved.config) {
+        setConfig({ ...DEFAULT_CONFIG, ...saved.config })
+      }
+      if (saved.results?.length) {
+        setResults(saved.results)
+        setSelectedRank(saved.selectedRank ?? null)
+        setJobState('done')
+      }
     } catch { /* malformed — fall back to default */ }
   }, [])
 
@@ -120,11 +123,27 @@ export function OptimizerPage() {
 
   const handleConfigChange = useCallback((newConfig: OptimizerConfig) => {
     setConfig(newConfig)
-    // Any config change while done resets the results
     if (jobStateRef.current === 'done') {
       setJobState('idle')
       setResults([])
       setSelectedRank(null)
+      // Config changed — invalidate saved results too
+      try {
+        localStorage.setItem(
+          'czn_optimizer_state',
+          JSON.stringify({ config: newConfig, results: [], selectedRank: null })
+        )
+      } catch { /* ignore */ }
+    } else {
+      // Not done — just update the saved config (preserve any saved results)
+      try {
+        const raw = localStorage.getItem('czn_optimizer_state')
+        const prev = raw ? (JSON.parse(raw) as Record<string, unknown>) : {}
+        localStorage.setItem(
+          'czn_optimizer_state',
+          JSON.stringify({ ...prev, config: newConfig })
+        )
+      } catch { /* ignore */ }
     }
   }, [])
 

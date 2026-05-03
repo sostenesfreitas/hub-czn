@@ -109,8 +109,8 @@ export function OptimizerPanel({
   const configRef = useRef(config)
   configRef.current = config
 
-  const lastAutoFilledRef = useRef<string>('')
-  const lastWeightInitRef = useRef<string>('')
+  const lastAutoFilledRef = useRef<string>(config.char_name)
+  const lastWeightInitRef = useRef<string>(config.char_name)
   const queryClient = useQueryClient()
   const [helpOpen, setHelpOpen] = useState(false)
 
