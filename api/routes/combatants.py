@@ -93,7 +93,10 @@ def get_combatants_export():
                 ] if f else [],
                 "score": round(f.gear_score, 1) if f else None,
             })
-        raw = state.optimizer.calculate_build_stats(gear, name)
+        try:
+            raw = state.optimizer.calculate_build_stats(gear, name)
+        except Exception:
+            raw = {}
         result.append({
             "char_id": name,
             "name": name,
