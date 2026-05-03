@@ -24,7 +24,7 @@ function CharAvatar({ combatant }: { combatant: Combatant }) {
   return (
     <img
       src={assetUrl(combatant.portrait_url)}
-      alt={combatant.name}
+      alt=""
       className="w-6 h-6 rounded-full object-cover shrink-0"
       onError={() => setError(true)}
     />
@@ -89,11 +89,9 @@ export function CharacterCombobox({
         aria-expanded={open}
         aria-label={ariaLabel}
         onClick={() => {
-          if (!disabled) {
-            setOpen((o) => !o)
-            setFilter('')
-            setActiveIndex(-1)
-          }
+          setOpen((o) => !o)
+          setFilter('')
+          setActiveIndex(-1)
         }}
         className="w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs text-left flex items-center gap-2 outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
       >
@@ -162,7 +160,6 @@ export function CharacterCombobox({
                 aria-selected={c.char_id === value}
                 tabIndex={-1}
                 onClick={() => {
-                  if (disabled) return
                   onChange(c.char_id)
                   setOpen(false)
                   setFilter('')
