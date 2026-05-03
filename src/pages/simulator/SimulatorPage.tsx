@@ -144,18 +144,17 @@ function CardRow({ card }: { card: SimCardResult }) {
 export function SimulatorPage() {
   const { t } = useTranslation()
 
-  const saved = loadPersistedState()
+  const [charName, setCharName] = useState(() => loadPersistedState()?.charName ?? '')
+  const [deckId, setDeckId] = useState<number | null>(() => loadPersistedState()?.deckId ?? null)
+  const [morale, setMorale] = useState(() => loadPersistedState()?.morale ?? 0)
+  const [useSparks, setUseSparks] = useState(() => loadPersistedState()?.useSparks ?? true)
+  const [monsterDef, setMonsterDef] = useState(() => loadPersistedState()?.monsterDef ?? 20)
+  const [weaken, setWeaken] = useState(() => loadPersistedState()?.weaken ?? false)
+  const [vulnerableStacks, setVulnerableStacks] = useState(() => loadPersistedState()?.vulnerableStacks ?? 0)
+  const [dmgReduction, setDmgReduction] = useState(() => loadPersistedState()?.dmgReduction ?? false)
+  const [result, setResult] = useState<SimulateDamageResponse | null>(() => loadPersistedState()?.result ?? null)
 
-  const [charName, setCharName] = useState(saved?.charName ?? '')
-  const [deckId, setDeckId] = useState<number | null>(saved?.deckId ?? null)
-  const [morale, setMorale] = useState(saved?.morale ?? 0)
-  const [useSparks, setUseSparks] = useState(saved?.useSparks ?? true)
-  const [monsterDef, setMonsterDef] = useState(saved?.monsterDef ?? 20)
-  const [weaken, setWeaken] = useState(saved?.weaken ?? false)
-  const [vulnerableStacks, setVulnerableStacks] = useState(saved?.vulnerableStacks ?? 0)
-  const [dmgReduction, setDmgReduction] = useState(saved?.dmgReduction ?? false)
-  const [result, setResult] = useState<SimulateDamageResponse | null>(saved?.result ?? null)
-
+  // Callers must pass every field that just changed in `patch` to override the closure snapshot.
   function persist(patch: Partial<PersistedState>) {
     savePersistedState({
       charName, deckId, morale, useSparks, monsterDef,
@@ -522,7 +521,7 @@ export function SimulatorPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {result.cards
+                    {[...result.cards]
                       .sort((a, b) => b.avg_damage - a.avg_damage)
                       .map((card) => (
                         <CardRow key={`${card.card_id}-${card.spark_id}`} card={card} />
