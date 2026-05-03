@@ -269,6 +269,7 @@ def simulate_damage(body: SimulateDamageRequest):
             continue  # non-damage card
 
         card_name = _get_card_name(effective_card_id)
+        # spark variant may lack sct_name; fall back to base card illustration
         sct_name = (
             card_lookup.get(effective_card_id, {}).get("sct_name")
             or card_lookup.get(base_card_id, {}).get("sct_name")
@@ -278,6 +279,7 @@ def simulate_damage(body: SimulateDamageRequest):
         base_dmg = atk * (eff_value / 100)
         normal_dmg = base_dmg * morale_mult * buff_mult * def_reduction
         crit_dmg = base_dmg * (cdmg / 100) * morale_mult * buff_mult * def_reduction
+        # avg uses pre-rounded intermediates; stored normal/crit are rounded separately
         avg_dmg = normal_dmg * (1 - crate / 100) + crit_dmg * (crate / 100)
 
         results.append(CardResult(
