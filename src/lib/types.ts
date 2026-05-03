@@ -152,10 +152,19 @@ export interface FinalStats {
   Ego?: number
 }
 
+export interface BaseStats {
+  s_atk: number
+  s_def: number
+  s_hp: number
+  s_cri: number
+  s_cri_dmg_rate: number
+}
+
 export interface CombatantStats {
   char_id: string
   gear_slots: GearSlot[]
   final_stats: FinalStats
+  base_stats?: BaseStats | null
 }
 
 export interface Combatant {
@@ -228,8 +237,33 @@ export interface CharPreset {
   weights: Record<string, number>
 }
 
+export interface CardCharacter {
+  char_res_id: number
+  name: string
+}
+
+export interface CardEntry {
+  card_id: string
+  char_res_id: number | null
+  name: string
+  cost: number
+  eff_value: number
+  hits: number
+  spark_count: number
+  effect_types: string[]
+}
+
+export interface DeckInfo {
+  deck_id: number
+  name: string
+  point: number
+  card_count: number
+  bookmark_slot: number
+}
+
 export interface SimulateRequest {
   char_name: string
+  deck_id?: number | null
   morale: number
   use_sparks: boolean
   monster_def: number
@@ -240,6 +274,7 @@ export interface SimulateRequest {
 
 export interface SimCardResult {
   card_id: string
+  name: string
   spark_id: string | null
   cost: number
   eff_value: number
@@ -252,6 +287,7 @@ export interface SimCardResult {
 
 export interface SimulateDamageResponse {
   char_name: string
+  deck_id: number
   atk: number
   crate: number
   cdmg: number

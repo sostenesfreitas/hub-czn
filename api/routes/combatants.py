@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+from pathlib import Path
+import json
+
 from api.frozen_path import add_vribbels_to_path
 add_vribbels_to_path()
 
 from fastapi import APIRouter, HTTPException
 
 from api.state import state
+import api.utils.game_db as game_db
 
 try:
     from game_data.characters import CHARACTERS
@@ -17,6 +21,47 @@ except ImportError:
 router = APIRouter()
 
 LOCAL_FACE = "/assets/game/faces/bookmark_face_character_map_{res_id}.png"
+
+def _get_extracted_db() -> Path | None:
+    if not state.loaded_file:
+        return None
+    p = Path(state.loaded_file).parent
+    for _ in range(3):
+        candidate = p / "db"
+        if candidate.exists():
+            return candidate
+        p = p.parent
+    return None
+
+
+def _load_char_base_stats_from_folder(db_path: Path) -> dict[str, dict]:
+    for f in db_path.iterdir():
+        if f.name == "char_base@char_combatant.json":
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+                return {
+                    str(e["id"]): {
+                        "s_atk": int(e.get("s_atk", 0)),
+                        "s_def": int(e.get("s_def", 0)),
+                        "s_hp": int(e.get("s_hp", 0)),
+                        "s_cri": int(e.get("s_cri", 0)),
+                        "s_cri_dmg_rate": int(e.get("s_cri_dmg_rate", 125)),
+                    }
+                    for e in data if "id" in e
+                }
+            except Exception:
+                return {}
+    return {}
+
+
+def _resolve_char_base() -> dict[str, dict]:
+    bundled = game_db.get()
+    if bundled.get("char_base"):
+        return bundled["char_base"]
+    db_path = _get_extracted_db()
+    if db_path:
+        return _load_char_base_stats_from_folder(db_path)
+    return {}
 
 
 def _char_extra(res_id: int) -> dict:
@@ -166,4 +211,11 @@ def get_combatant_stats(char_id: str):
         "Ego": round(raw.get("Ego", 0)),
     }
 
-    return {"char_id": char_id, "gear_slots": slots, "final_stats": final_stats}
+    base_stats: dict | None = None
+    info = state.optimizer.character_info[char_id]
+    char_base = _resolve_char_base()
+    entry = char_base.get(str(info.res_id))
+    if entry:
+        base_stats = entry
+
+    return {"char_id": char_id, "gear_slots": slots, "final_stats": final_stats, "base_stats": base_stats}

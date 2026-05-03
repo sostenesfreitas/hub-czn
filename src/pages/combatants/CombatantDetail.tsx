@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Loader2, User } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
-import type { GearSlot, FinalStats } from '@/lib/types'
+import type { GearSlot, FinalStats, BaseStats } from '@/lib/types'
 
 // ─── Grade helpers ─────────────────────────────────────────────────────────
 
@@ -188,6 +188,34 @@ export function FinalStatsPanel({ stats, compact = false }: { stats: FinalStats;
   )
 }
 
+export function BaseStatsPanel({ stats }: { stats: BaseStats }) {
+  const { t } = useTranslation()
+
+  const rows = [
+    { label: 'ATK', value: stats.s_atk.toLocaleString() },
+    { label: 'DEF', value: stats.s_def.toLocaleString() },
+    { label: 'HP', value: stats.s_hp.toLocaleString() },
+    { label: 'CRate', value: `${stats.s_cri}%` },
+    { label: 'CDmg', value: `${stats.s_cri_dmg_rate}%` },
+  ]
+
+  return (
+    <div className="bg-[#181818] border border-[#282828] rounded-xl p-4">
+      <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-3">
+        {t('combatants.detail.baseStats')}
+      </p>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+        {rows.map(r => (
+          <div key={r.label} className="flex justify-between text-sm">
+            <span className="text-[#b3b3b3]">{r.label}</span>
+            <span className="text-[#60a5fa] font-semibold">{r.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 interface CombatantDetailProps {
   charId: string
 }
@@ -227,7 +255,10 @@ export function CombatantDetail({ charId }: CombatantDetailProps) {
           <GearSlotCard key={slot.slot} slot={slot} />
         ))}
       </div>
-      <FinalStatsPanel stats={data.final_stats} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {data.base_stats && <BaseStatsPanel stats={data.base_stats} />}
+        <FinalStatsPanel stats={data.final_stats} />
+      </div>
     </div>
   )
 }

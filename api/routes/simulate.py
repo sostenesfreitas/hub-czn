@@ -8,6 +8,8 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from api.state import state
+import api.utils.text_lookup as text_lookup
+import api.utils.game_db as game_db
 
 router = APIRouter()
 
@@ -20,6 +22,7 @@ MORALE_PCT_PER_STACK = 20  # +20% card damage per Morale stack (cs00_0001_01 eff
 
 class SimulateDamageRequest(BaseModel):
     char_name: str
+    deck_id: int | None = None        # savedata id; None = pick highest-point deck
     morale: int = Field(default=0, ge=0, le=50)
     use_sparks: bool = True
     monster_def: int = Field(default=20, ge=0, le=9999)
@@ -28,8 +31,17 @@ class SimulateDamageRequest(BaseModel):
     fortitude: bool = False           # Damage Reduction: monster buff ×0.85 dmg taken (cs00_0062)
 
 
+class DeckInfo(BaseModel):
+    deck_id: int
+    name: str
+    point: int
+    card_count: int
+    bookmark_slot: int
+
+
 class CardResult(BaseModel):
     card_id: str
+    name: str
     spark_id: str | None
     cost: int
     eff_value: int
@@ -42,6 +54,7 @@ class CardResult(BaseModel):
 
 class SimulateDamageResponse(BaseModel):
     char_name: str
+    deck_id: int
     atk: float
     crate: float
     cdmg: float
@@ -60,26 +73,17 @@ class SimulateDamageResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Card DB loading helpers
+# Extracted-DB fallback helpers (for users who have the raw game files)
 # ---------------------------------------------------------------------------
 
 def _parse_list(raw: str) -> list[str]:
-    """Parse a game DB array string like '[a,b,c]' into a Python list."""
     raw = raw.strip()
     if raw in ("[]", "none", ""):
         return []
     return [x.strip() for x in raw.strip("[]").split(",") if x.strip()]
 
 
-def _load_card_db(db_path: Path) -> tuple[dict, dict, dict]:
-    """
-    Load all card(*) and r_spark files from the db folder.
-
-    Returns:
-        card_lookup:   {card_id: {cost, link_skill_eff_id, ...}}
-        eff_lookup:    {eff_id: {eff, eff_value, eff_count_value}}
-        rspark_lookup: {rspark_id: change_link_card_id}
-    """
+def _load_card_db_from_folder(db_path: Path) -> tuple[dict, dict, dict]:
     card_lookup: dict = {}
     eff_lookup: dict = {}
     rspark_lookup: dict = {}
@@ -89,7 +93,7 @@ def _load_card_db(db_path: Path) -> tuple[dict, dict, dict]:
     rspark_re = re.compile(r"card\([^)]+\)@card_r_spark\.json$")
 
     for f in db_path.iterdir():
-        if not f.suffix == ".json":
+        if f.suffix != ".json":
             continue
         try:
             data = json.loads(f.read_text(encoding="utf-8"))
@@ -113,8 +117,8 @@ def _load_card_db(db_path: Path) -> tuple[dict, dict, dict]:
                 if eid:
                     eff_lookup[eid] = {
                         "eff": entry.get("eff", ""),
-                        "eff_value": int(entry.get("eff_value", 0)),
-                        "eff_count_value": int(entry.get("eff_count_value", 1)),
+                        "eff_value": int(float(entry.get("eff_value", 0))),
+                        "eff_count_value": int(float(entry.get("eff_count_value", 1))),
                     }
         elif rspark_re.match(name):
             for entry in data:
@@ -125,12 +129,39 @@ def _load_card_db(db_path: Path) -> tuple[dict, dict, dict]:
     return card_lookup, eff_lookup, rspark_lookup
 
 
-def _get_db_path() -> Path | None:
-    if state.loaded_file:
-        candidate = Path(state.loaded_file).parent / "db"
+def _find_extracted_folder(name: str) -> Path | None:
+    if not state.loaded_file:
+        return None
+    p = Path(state.loaded_file).parent
+    for _ in range(3):
+        candidate = p / name
         if candidate.exists():
             return candidate
+        p = p.parent
     return None
+
+
+def _resolve_card_db() -> tuple[dict, dict, dict]:
+    """Return (card_lookup, eff_lookup, rspark_lookup) from bundled data or extracted db/."""
+    bundled = game_db.get()
+    if bundled.get("cards"):
+        return bundled["cards"], bundled["effects"], bundled["rsparks"]
+    db_path = _find_extracted_folder("db")
+    if db_path:
+        return _load_card_db_from_folder(db_path)
+    return {}, {}, {}
+
+
+def _get_card_name(card_id: str) -> str:
+    bundled = game_db.get()
+    if bundled.get("names"):
+        return bundled["names"].get(f"card@name@{card_id}", "")
+    text_base = _find_extracted_folder("text")
+    if text_base:
+        text_path = text_base / "en" / "text.json"
+        if text_path.exists():
+            text_lookup.load_from(text_path)
+    return text_lookup.get(f"card@name@{card_id}", "")
 
 
 def _card_damage(card_id: str, card_lookup: dict, eff_lookup: dict) -> tuple[int, int, int]:
@@ -160,13 +191,6 @@ def simulate_damage(body: SimulateDamageRequest):
     if body.char_name not in state.optimizer.character_info:
         raise HTTPException(status_code=422, detail=f"Unknown character: {body.char_name}")
 
-    db_path = _get_db_path()
-    if db_path is None:
-        raise HTTPException(
-            status_code=422,
-            detail="Game DB folder not found. Expected a 'db/' subfolder next to the loaded capture file.",
-        )
-
     # --- Character stats ---
     char_info = state.optimizer.character_info[body.char_name]
     equipped = state.optimizer.characters.get(body.char_name, [])
@@ -190,21 +214,28 @@ def simulate_damage(body: SimulateDamageRequest):
     if body.fortitude:
         buff_mult *= 0.85   # Damage Reduction (cs00_0062): -15% dmg taken by monster
 
-    # --- Load card DB ---
-    card_lookup, eff_lookup, rspark_lookup = _load_card_db(db_path)
+    # --- Load card DB (bundled first, extracted db/ as fallback) ---
+    card_lookup, eff_lookup, rspark_lookup = _resolve_card_db()
+    if not card_lookup:
+        raise HTTPException(
+            status_code=422,
+            detail="Card data not available. Bundled game_db.json not found and no extracted db/ folder detected.",
+        )
 
     # --- Get character's card deck from save data ---
-    raw_chars = state.optimizer.raw_data.get("characters", {})
-    slot_entities = raw_chars.get("savedata_slot_entities", [])
+    savedata: list = state.optimizer.raw_data.get("inventory", {}).get("savedata", [])
 
     res_id = char_info.res_id
-    deck_entry = next(
-        (e for e in slot_entities if e.get("char_res_id") == res_id),
-        None,
-    )
-
-    if not deck_entry:
+    char_decks = [e for e in savedata if e.get("char_res_id") == res_id and e.get("card_datas")]
+    if not char_decks:
         raise HTTPException(status_code=422, detail=f"No deck data found for {body.char_name} (res_id {res_id})")
+
+    if body.deck_id is not None:
+        deck_entry = next((e for e in char_decks if e.get("id") == body.deck_id), None)
+        if deck_entry is None:
+            raise HTTPException(status_code=422, detail=f"Deck {body.deck_id} not found for {body.char_name}")
+    else:
+        deck_entry = max(char_decks, key=lambda e: e.get("point", 0))
 
     card_datas = deck_entry.get("card_datas", [])
 
@@ -234,6 +265,8 @@ def simulate_damage(body: SimulateDamageRequest):
         if eff_value == 0:
             continue  # non-damage card
 
+        card_name = _get_card_name(effective_card_id)
+
         base_dmg = atk * (eff_value / 100)
         avg_dmg = base_dmg * crit_factor
         final_dmg = avg_dmg * morale_mult * buff_mult
@@ -241,6 +274,7 @@ def simulate_damage(body: SimulateDamageRequest):
 
         results.append(CardResult(
             card_id=base_card_id,
+            name=card_name,
             spark_id=rspark_id,
             cost=cost,
             eff_value=eff_value,
@@ -256,6 +290,7 @@ def simulate_damage(body: SimulateDamageRequest):
 
     return SimulateDamageResponse(
         char_name=body.char_name,
+        deck_id=deck_entry["id"],
         atk=round(atk, 1),
         crate=round(crate, 1),
         cdmg=round(cdmg, 1),
@@ -274,20 +309,26 @@ def simulate_damage(body: SimulateDamageRequest):
     )
 
 
-@router.get("/simulate/deck/{char_name}")
-def get_deck(char_name: str):
-    """Return the raw card deck for a character (for debugging)."""
+@router.get("/simulate/decks/{char_name}", response_model=list[DeckInfo])
+def get_character_decks(char_name: str):
     if not state.data_loaded:
         raise HTTPException(status_code=422, detail="No data loaded")
     if char_name not in state.optimizer.character_info:
         raise HTTPException(status_code=422, detail=f"Unknown character: {char_name}")
 
     char_info = state.optimizer.character_info[char_name]
-    raw_chars = state.optimizer.raw_data.get("characters", {})
-    slot_entities = raw_chars.get("savedata_slot_entities", [])
+    savedata: list = state.optimizer.raw_data.get("inventory", {}).get("savedata", [])
+    char_decks = [e for e in savedata if e.get("char_res_id") == char_info.res_id and e.get("card_datas")]
 
-    deck_entry = next(
-        (e for e in slot_entities if e.get("char_res_id") == char_info.res_id),
-        None,
-    )
-    return {"res_id": char_info.res_id, "deck": deck_entry}
+    result = [
+        DeckInfo(
+            deck_id=e["id"],
+            name=e.get("name") or "",
+            point=e.get("point", 0),
+            card_count=len(e.get("card_datas", [])),
+            bookmark_slot=e.get("bookmark_slot", 0),
+        )
+        for e in char_decks
+    ]
+    result.sort(key=lambda d: (-d.bookmark_slot, -d.point))
+    return result

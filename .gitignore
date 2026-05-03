@@ -74,3 +74,10 @@ src-tauri/binaries/*.exe
 
 # Test artifacts
 test_output.txt
+
+# Raw extracted game data (bundled version is at api/data/game_db.json)
+extracted_db/
+
+# Superpowers internal files
+.superpowers/
+docs/superpowers/

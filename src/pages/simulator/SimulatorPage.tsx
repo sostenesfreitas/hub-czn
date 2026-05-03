@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Play, Zap } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { Combatant, SimulateDamageResponse, SimCardResult } from '@/lib/types'
+import type { Combatant, SimulateDamageResponse, SimCardResult, DeckInfo } from '@/lib/types'
 import { CharacterCombobox } from '@/components/ui/character-combobox'
 
 const MORALE_PCT = 20
@@ -16,7 +16,7 @@ const DEF_PRESETS = [
   { label: 'WL3', value: 23 },
   { label: 'WL4', value: 27 },
   { label: 'WL5', value: 31 },
-  { label: 'ST F150', value: 59 },
+  { label: 'ST F150 (Soul Collector)', value: 59 },
 ]
 
 function StatPill({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
@@ -32,15 +32,19 @@ function CardRow({ card }: { card: SimCardResult }) {
   const shortId = card.card_id.replace(/^c_\d+_/, '')
   const hasSpark = !!card.spark_id
   const coefficient = (card.eff_value / 100).toFixed(2)
+  const displayName = card.name || shortId
 
   return (
     <tr className="border-b border-[#2a2a2a] hover:bg-[#1e1e1e] transition-colors">
-      <td className="px-3 py-2 font-mono text-xs text-[#c084fc]">
-        {shortId}
-        {hasSpark && (
-          <span className="ml-1 text-[#facc15] text-[10px]" title={card.spark_id ?? ''}>
-            ✦
-          </span>
+      <td className="px-3 py-2 text-xs">
+        <div className="flex items-center gap-1">
+          <span className="text-[#e5e7eb] font-medium" title={shortId}>{displayName}</span>
+          {hasSpark && (
+            <span className="text-[#facc15] text-[10px]" title={card.spark_id ?? ''}>✦</span>
+          )}
+        </div>
+        {card.name && (
+          <span className="font-mono text-[10px] text-[#555]">{shortId}</span>
         )}
       </td>
       <td className="px-3 py-2 text-center text-[#e5e7eb] text-xs">{card.cost}</td>
@@ -62,6 +66,7 @@ export function SimulatorPage() {
   const { t } = useTranslation()
 
   const [charName, setCharName] = useState('')
+  const [deckId, setDeckId] = useState<number | null>(null)
   const [morale, setMorale] = useState(0)
   const [useSparks, setUseSparks] = useState(true)
   const [monsterDef, setMonsterDef] = useState(20)
@@ -83,10 +88,18 @@ export function SimulatorPage() {
     staleTime: 30_000,
   })
 
+  const { data: decks = [] } = useQuery<DeckInfo[]>({
+    queryKey: ['simulate-decks', charName],
+    queryFn: () => api.simulateDecks(charName),
+    enabled: charName !== '' && (status?.data_loaded ?? false),
+    staleTime: 30_000,
+  })
+
   const mutation = useMutation({
     mutationFn: () =>
       api.simulateDamage({
         char_name: charName,
+        deck_id: deckId,
         morale,
         use_sparks: useSparks,
         monster_def: monsterDef,
@@ -121,9 +134,59 @@ export function SimulatorPage() {
           <CharacterCombobox
             combatants={combatants}
             value={charName}
-            onChange={setCharName}
+            onChange={(v) => { setCharName(v); setDeckId(null) }}
           />
         </div>
+
+        {charName && decks.length > 0 && (
+          <div className="flex flex-col gap-1">
+            <label className="text-[#b3b3b3] text-xs">{t('simulator.deck')}</label>
+            <div className="flex flex-col gap-0.5 max-h-40 overflow-y-auto pr-0.5">
+              <button
+                type="button"
+                onClick={() => setDeckId(null)}
+                className={`text-left text-xs px-2 py-1.5 rounded transition-colors ${
+                  deckId === null
+                    ? 'bg-[#c084fc] text-white'
+                    : 'bg-[#222] text-[#888] hover:text-[#e5e7eb]'
+                }`}
+              >
+                {t('simulator.deckAuto')}
+              </button>
+              {decks.map((d) => {
+                const label = d.bookmark_slot > 0
+                  ? t('simulator.deckSlot', { slot: d.bookmark_slot })
+                  : `#${d.deck_id}`
+                const sub = t('simulator.deckPoints', {
+                  point: d.point.toLocaleString(),
+                  count: d.card_count,
+                })
+                return (
+                  <button
+                    key={d.deck_id}
+                    type="button"
+                    onClick={() => setDeckId(d.deck_id)}
+                    className={`text-left text-xs px-2 py-1.5 rounded transition-colors ${
+                      deckId === d.deck_id
+                        ? 'bg-[#c084fc] text-white'
+                        : 'bg-[#222] text-[#888] hover:text-[#e5e7eb]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate font-medium">{d.name || label}</span>
+                      {d.bookmark_slot > 0 && !d.name && (
+                        <span className="shrink-0 text-[9px] opacity-60">★</span>
+                      )}
+                    </div>
+                    <div className={`text-[10px] mt-0.5 ${deckId === d.deck_id ? 'text-white/70' : 'text-[#555]'}`}>
+                      {sub}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col gap-1">
           <div className="flex justify-between items-center">
@@ -295,7 +358,12 @@ export function SimulatorPage() {
           <div className="flex flex-col gap-4">
             {/* Stats summary */}
             <div>
-              <h3 className="text-[#ffffff] font-bold text-sm mb-3">{result.char_name}</h3>
+              <div className="flex items-baseline gap-2 mb-3">
+                <h3 className="text-[#ffffff] font-bold text-sm">{result.char_name}</h3>
+                {result.deck_id != null && (
+                  <span className="text-[#555] text-[10px]">deck #{result.deck_id}</span>
+                )}
+              </div>
               <div className="flex flex-wrap gap-2 mb-4">
                 <StatPill label="ATK" value={Math.round(result.atk).toLocaleString()} />
                 <StatPill label="CRate" value={`${result.crate.toFixed(1)}%`} />
