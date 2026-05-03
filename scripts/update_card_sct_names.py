@@ -32,7 +32,7 @@ def main(output_dir: str) -> None:
             continue
         try:
             data = json.loads(f.read_text(encoding="utf-8"))
-        except Exception:
+        except (json.JSONDecodeError, OSError):
             continue
         for entry in data:
             cid = entry.get("id")
