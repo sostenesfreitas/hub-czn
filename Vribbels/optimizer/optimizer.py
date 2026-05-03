@@ -461,6 +461,7 @@ class GearOptimizer:
         include_equipped = settings.get("include_equipped", True)
         excluded_heroes = settings.get("excluded_heroes", [])
         max_results = settings.get("max_results", 100)
+        allow_wildcards = settings.get("allow_wildcards", False)
 
         # Combine all required sets for initial filtering
         all_required_sets = []
@@ -486,7 +487,7 @@ class GearOptimizer:
                 include_equipped=include_equipped,
                 exclude_char=char_name,
                 excluded_heroes=excluded_heroes,
-                required_sets=all_required_sets if all_required_sets else None,
+                required_sets=None if allow_wildcards else (all_required_sets if all_required_sets else None),
                 required_main=main_filter,
                 top_percent=top_percent,
                 use_priority_score=use_priority,

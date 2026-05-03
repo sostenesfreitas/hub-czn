@@ -34,6 +34,7 @@ class OptimizeStartRequest(BaseModel):
     excluded_heroes: list[str] = Field(default_factory=list)
     max_results: int = Field(default=10, ge=1, le=50)
     stat_weights: dict[str, int] | None = None
+    allow_wildcards: bool = False
 
 
 def _format_results(results: list) -> list[dict]:
@@ -123,6 +124,7 @@ async def optimize_start(body: OptimizeStartRequest):
         "excluded_heroes": body.excluded_heroes,
         "max_results": body.max_results,
         "stat_weights": body.stat_weights,
+        "allow_wildcards": body.allow_wildcards,
     }
 
     loop = asyncio.get_running_loop()
