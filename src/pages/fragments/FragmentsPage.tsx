@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import type { ReactNode } from 'react'
 import { api, assetUrl } from '@/lib/api'
 import type { MemoryFragment, SetInfo } from '@/lib/types'
 import {
@@ -7,6 +8,7 @@ import {
   TableHeader, TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { InfoPopover } from '@/components/ui/info-popover'
 
 const RARITY_COLOR: Record<number, string> = {
   1: '#a8a29e',  // Common    — stone
@@ -71,18 +73,18 @@ export function FragmentsPage() {
     )
   }
 
-  const COLS = [
-    t('fragments.col.slot'),
-    t('fragments.col.set'),
-    t('fragments.col.level'),
-    t('fragments.col.main'),
-    t('fragments.col.sub1'),
-    t('fragments.col.sub2'),
-    t('fragments.col.sub3'),
-    t('fragments.col.sub4'),
-    t('fragments.col.gs'),
-    t('fragments.col.potential'),
-    t('fragments.col.equipped'),
+  const COLS: { key: string; label: ReactNode }[] = [
+    { key: 'slot',      label: t('fragments.col.slot') },
+    { key: 'set',       label: t('fragments.col.set') },
+    { key: 'level',     label: t('fragments.col.level') },
+    { key: 'main',      label: t('fragments.col.main') },
+    { key: 'sub1',      label: t('fragments.col.sub1') },
+    { key: 'sub2',      label: t('fragments.col.sub2') },
+    { key: 'sub3',      label: t('fragments.col.sub3') },
+    { key: 'sub4',      label: t('fragments.col.sub4') },
+    { key: 'gs',        label: <span className="flex items-center gap-1">{t('fragments.col.gs')}<InfoPopover content={t('tips.gs')} /></span> },
+    { key: 'potential', label: <span className="flex items-center gap-1">{t('fragments.col.potential')}<InfoPopover content={t('tips.potential')} /></span> },
+    { key: 'equipped',  label: t('fragments.col.equipped') },
   ]
 
   return (
@@ -98,9 +100,9 @@ export function FragmentsPage() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#121212] hover:bg-[#121212] border-[#282828]">
-              {COLS.map(h => (
-                <TableHead key={h} className="text-[#b3b3b3] text-xs font-medium h-9">
-                  {h}
+              {COLS.map(col => (
+                <TableHead key={col.key} className="text-[#b3b3b3] text-xs font-medium h-9">
+                  {col.label}
                 </TableHead>
               ))}
             </TableRow>
