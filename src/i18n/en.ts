@@ -1,4 +1,12 @@
 const en = {
+  tips: {
+    gs: 'Gear Score — measures how well a gear piece rolled relative to its maximum potential (0–100).',
+    potential: 'Potential — the possible final GS range based on remaining upgrade slots (low = min rolls, high = max rolls).',
+    crate: 'Crit Rate — probability that an attack deals critical damage.',
+    cdmg: 'Crit Damage — bonus damage multiplier applied on critical hits.',
+    dot: 'Damage over Time — periodic damage applied after an attack (e.g. burn, bleed).',
+    ego: 'Ego — a unique stat in Chaos Zero Nightmare that scales specific character skills.',
+  },
   nav: {
     home: 'Home',
     optimizer: 'Optimizer',
@@ -116,7 +124,7 @@ const en = {
   },
   capture: {
     title: 'Capture',
-    prereq: { admin: 'Admin', mitmproxy: 'mitmproxy', certificate: 'Certificate' },
+    prereq: { admin: 'Admin', mitmproxy: 'mitmproxy', certificate: 'Certificate', adminTip: 'Admin rights let the app modify the Windows hosts file to redirect game traffic through the local proxy. No data leaves your machine.', mitmproxyTip: "mitmproxy acts as a local reverse proxy that intercepts the game's WebSocket messages to extract gear and rescue data in real time." },
     goToSetup: '→ Go to Setup',
     server: 'Server',
     debugMode: 'Debug mode',
@@ -136,6 +144,15 @@ const en = {
       startError: 'Error starting auto-scroll',
       stopError: 'Error stopping auto-scroll',
     },
+    howToUse: {
+      title: 'How to use Capture',
+      step1: '1. Click Start Capture',
+      step2: '2. Open the game',
+      step3: '3. Navigate to Memory Fragments — your gear inventory will be captured automatically',
+      step4: '4. Navigate to Rescue Records — your pull history will be captured automatically',
+      step5: '5. Click Stop Capture when done',
+      step6: '6. Click Load Latest, then go to Optimizer or Rescue Records to use your data',
+    },
     log: {
       title: 'Real-time log',
       pauseScroll: 'Pause scroll',
@@ -144,6 +161,7 @@ const en = {
       step1: '1. Click Start Capture',
       step2: '2. Open the game',
       step3: '3. Navigate to the Memory Fragments inventory',
+      step4: '4. Click Load Latest → go to Optimizer or Rescue Records',
     },
   },
   setup: {
@@ -229,6 +247,16 @@ const en = {
     cancelled: 'Optimization cancelled.',
     error: 'Error during optimization.',
     noBuilds: 'No builds found. Try relaxing the filters.',
+    help: {
+      title: 'How the optimizer works',
+      body: 'The optimizer scores every possible gear combination using the stat weights you configure in the Scoring tab. Set your priorities there first — higher weight means that stat matters more when ranking builds.',
+      weightScale: 'Weight scale: -1 = penalize, 0 = ignored, 1 = normal, 2 = double, 3 = triple weight.',
+    },
+    topPercentTip: 'Only consider gear in the top X% by Gear Score. Lower % = faster search but may exclude viable pieces. 60% is a safe default.',
+    maxResultsTip: 'Maximum number of builds to display. Lower values are faster to browse.',
+    includeEquippedTip: 'When on, gear already equipped on characters is also evaluated. Useful when optimizing your full collection.',
+    excludeCharsTip: 'Gear equipped on excluded characters is reserved and will not be used in builds.',
+    statPriorityLabel: 'Stat Priority (-1 to 3)',
   },
   about: {
     title: 'About',

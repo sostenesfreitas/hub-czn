@@ -1,4 +1,12 @@
 const ptBR = {
+  tips: {
+    gs: 'Gear Score — mede o quão bem uma peça de gear rolou em relação ao seu potencial máximo (0–100).',
+    potential: 'Potencial — o intervalo de GS final possível com base nos slots de upgrade restantes (baixo = rolls mínimos, alto = rolls máximos).',
+    crate: 'Crit Rate — probabilidade de um ataque causar dano crítico.',
+    cdmg: 'Crit Damage — multiplicador de dano bônus aplicado em acertos críticos.',
+    dot: 'Dano ao Longo do Tempo — dano periódico após um ataque (ex: queimadura, sangramento).',
+    ego: 'Ego — um atributo único em Chaos Zero Nightmare que escala habilidades específicas de personagens.',
+  },
   nav: {
     home: 'Início',
     optimizer: 'Otimizador',
@@ -116,7 +124,7 @@ const ptBR = {
   },
   capture: {
     title: 'Captura',
-    prereq: { admin: 'Admin', mitmproxy: 'mitmproxy', certificate: 'Certificado' },
+    prereq: { admin: 'Admin', mitmproxy: 'mitmproxy', certificate: 'Certificado', adminTip: 'Direitos de administrador permitem que o app modifique o arquivo hosts do Windows para redirecionar o tráfego do jogo pelo proxy local. Nenhum dado sai da sua máquina.', mitmproxyTip: 'O mitmproxy funciona como um proxy reverso local que intercepta as mensagens WebSocket do jogo para extrair dados de gear e rescue em tempo real.' },
     goToSetup: '→ Ir para Configuração',
     server: 'Servidor',
     debugMode: 'Modo debug',
@@ -136,6 +144,15 @@ const ptBR = {
       startError: 'Erro ao iniciar auto-scroll',
       stopError: 'Erro ao parar auto-scroll',
     },
+    howToUse: {
+      title: 'Como usar a Captura',
+      step1: '1. Clique em Iniciar Captura',
+      step2: '2. Abra o jogo',
+      step3: '3. Navegue até Fragmentos de Memória — seu inventário será capturado automaticamente',
+      step4: '4. Navegue até Rescue Records — seu histórico de pulls será capturado automaticamente',
+      step5: '5. Clique em Parar Captura quando terminar',
+      step6: '6. Clique em Carregar Último, depois vá para o Otimizador ou Registros de Rescue',
+    },
     log: {
       title: 'Log em tempo real',
       pauseScroll: 'Pausar scroll',
@@ -144,6 +161,7 @@ const ptBR = {
       step1: '1. Clique em Iniciar Captura',
       step2: '2. Abra o jogo',
       step3: '3. Navegue até o inventário de Fragmentos de Memória',
+      step4: '4. Clique em Carregar Último → vá para o Otimizador ou Registros de Rescue',
     },
   },
   setup: {
@@ -229,6 +247,16 @@ const ptBR = {
     cancelled: 'Otimização cancelada.',
     error: 'Erro durante a otimização.',
     noBuilds: 'Nenhuma build encontrada. Tente relaxar os filtros.',
+    help: {
+      title: 'Como funciona o otimizador',
+      body: 'O otimizador pontua todas as combinações de gear possíveis usando os pesos de stats configurados na aba Pontuação. Configure suas prioridades lá primeiro — peso mais alto significa que aquele stat importa mais ao classificar builds.',
+      weightScale: 'Escala de peso: -1 = penalizar, 0 = ignorado, 1 = normal, 2 = duplo, 3 = triplo.',
+    },
+    topPercentTip: 'Considerar apenas o gear no top X% por Gear Score. % menor = busca mais rápida, mas pode excluir peças viáveis. 60% é um padrão seguro.',
+    maxResultsTip: 'Número máximo de builds a exibir. Valores menores são mais rápidos de navegar.',
+    includeEquippedTip: 'Quando ativado, o gear já equipado em personagens também é avaliado. Útil para otimizar toda a coleção.',
+    excludeCharsTip: 'O gear equipado em personagens excluídos é reservado e não será usado em builds.',
+    statPriorityLabel: 'Prioridade de Stat (-1 a 3)',
   },
   about: {
     title: 'Sobre',
