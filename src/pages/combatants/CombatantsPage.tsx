@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { RefreshCw, User, Loader2, ChevronDown, ChevronRight, Download } from 'lucide-react'
+import { RefreshCw, User, Loader2, ChevronDown, ChevronRight, Download, Cloud } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
+import { openExternal } from '@/lib/browser'
 import { downloadJson } from '@/lib/download'
 import type { Combatant } from '@/lib/types'
 import { GearSlotCard, FinalStatsPanel } from './CombatantDetail'
@@ -10,18 +11,28 @@ import { Button } from '@/components/ui/button'
 
 // ─── Attribute badge ───────────────────────────────────────────────────────
 
-const ATTR_STYLE: Record<string, string> = {
-  Passion:  'bg-[#ef4444]/15 text-[#f87171] border-[#ef4444]/30',
-  Order:    'bg-[#3b82f6]/15 text-[#60a5fa] border-[#3b82f6]/30',
-  Justice:  'bg-[#eab308]/15 text-[#facc15] border-[#eab308]/30',
-  Void:     'bg-[#a855f7]/15 text-[#c084fc] border-[#a855f7]/30',
-  Instinct: 'bg-[#22c55e]/15 text-[#4ade80] border-[#22c55e]/30',
+const ATTR_ICON: Record<string, string> = {
+  Passion:  '/assets/game/icon_type_ego_passion.png',
+  Order:    '/assets/game/icon_type_ego_order.png',
+  Justice:  '/assets/game/icon_type_ego_justice.png',
+  Void:     '/assets/game/icon_type_ego_void.png',
+  Instinct: '/assets/game/icon_type_ego_instinct.png',
 }
 
 function AttrBadge({ attr }: { attr: string }) {
-  const cls = ATTR_STYLE[attr] ?? 'bg-[#282828] text-[#888888] border-[#333333]'
+  const icon = ATTR_ICON[attr]
+  if (icon) {
+    return (
+      <img
+        src={assetUrl(icon)}
+        alt={attr}
+        title={attr}
+        className="w-5 h-5 shrink-0 object-contain"
+      />
+    )
+  }
   return (
-    <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border leading-tight shrink-0 ${cls}`}>
+    <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded border leading-tight shrink-0 bg-[#282828] text-[#888888] border-[#333333]">
       {attr}
     </span>
   )
@@ -264,7 +275,7 @@ export function CombatantsPage() {
     setExporting(true)
     try {
       const data = await api.combatantsExport()
-      downloadJson('combatants.json', data)
+      await downloadJson('combatants.json', data)
     } finally {
       setExporting(false)
     }
@@ -308,7 +319,7 @@ export function CombatantsPage() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="flex items-center justify-end px-4 pt-3 pb-1 shrink-0">
+      <div className="flex items-center justify-end gap-2 px-4 pt-3 pb-1 shrink-0">
         <Button
           size="sm"
           variant="outline"
@@ -321,6 +332,15 @@ export function CombatantsPage() {
             : <Download size={13} className="mr-1" />
           }
           {t('combatants.exportJson')}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => openExternal('https://hub-czn.lovable.app')}
+          className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
+        >
+          <Cloud size={13} className="mr-1" />
+          {t('combatants.saveCloud')}
         </Button>
       </div>
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-1.5">

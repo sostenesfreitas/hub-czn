@@ -60,6 +60,7 @@ const ptBR = {
     empty: 'Nenhum combatente encontrado.',
     emptyHint: 'Carregue um arquivo de captura na tela Fragmentos.',
     exportJson: 'Exportar JSON',
+    saveCloud: 'Salvar na Nuvem',
     level: 'Nv. {{level}}',
     detail: {
       loading: 'Carregando dados do combatente',
@@ -221,6 +222,7 @@ const ptBR = {
     empty: 'Nenhum registro capturado ainda. Inicie a captura e navegue até Rescue Records no jogo.',
     refresh: 'Atualizar',
     exportJson: 'Exportar JSON',
+    saveCloud: 'Salvar na Nuvem',
     fiveStarRecent: 'Pulls 5★ Recentes',
     fullHistory: 'Histórico Completo',
     filter: { all: 'Todos' },

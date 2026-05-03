@@ -60,6 +60,7 @@ const en = {
     empty: 'No combatants found.',
     emptyHint: 'Load a capture file from the Fragments screen.',
     exportJson: 'Export JSON',
+    saveCloud: 'Save to Cloud',
     level: 'Lv. {{level}}',
     detail: {
       loading: 'Loading combatant data',
@@ -221,6 +222,7 @@ const en = {
     empty: 'No records captured yet. Start capture and navigate to Rescue Records in the game.',
     refresh: 'Refresh',
     exportJson: 'Export JSON',
+    saveCloud: 'Save to Cloud',
     fiveStarRecent: 'Recent 5★ Pulls',
     fullHistory: 'Full History',
     filter: { all: 'All' },

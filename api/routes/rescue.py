@@ -17,7 +17,7 @@ except ImportError:
 router = APIRouter()
 
 PITY_CAP = 70
-CDN_BASE = "https://cdn.czndecksmeta.com/face/character/portrait_character_{res_id}.webp"
+LOCAL_FACE_BASE = "/assets/game/faces/bookmark_face_character_map_{res_id}.png"
 
 
 def _char_details(res_id: int) -> dict:
@@ -27,7 +27,7 @@ def _char_details(res_id: int) -> dict:
             "name": char.get("name", f"#{res_id}"),
             "rarity": char.get("grade", 3),
             "kind": "Combatant",
-            "image_url": CDN_BASE.format(res_id=res_id),
+            "image_url": LOCAL_FACE_BASE.format(res_id=res_id),
         }
     partner = PARTNERS.get(res_id)
     if partner and partner.get("name") != "Unknown":
@@ -35,13 +35,13 @@ def _char_details(res_id: int) -> dict:
             "name": partner.get("name", f"#{res_id}"),
             "rarity": partner.get("grade", 3),
             "kind": "Partner",
-            "image_url": CDN_BASE.format(res_id=res_id),
+            "image_url": LOCAL_FACE_BASE.format(res_id=res_id),
         }
     return {
         "name": f"#{res_id}",
         "rarity": 3,
         "kind": "Unknown",
-        "image_url": CDN_BASE.format(res_id=res_id),
+        "image_url": LOCAL_FACE_BASE.format(res_id=res_id),
     }
 
 

@@ -2,8 +2,9 @@ import { useState, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import { User, RefreshCw, Download } from 'lucide-react'
-import { api } from '@/lib/api'
+import { User, RefreshCw, Download, Cloud } from 'lucide-react'
+import { api, assetUrl } from '@/lib/api'
+import { openExternal } from '@/lib/browser'
 import { downloadJson } from '@/lib/download'
 import i18n from '@/i18n'
 import type { RescueBanner, RescuePull } from '@/lib/types'
@@ -24,6 +25,13 @@ const PIE_TOOLTIP_ITEM_STYLE = { color: '#b3b3b3' }
 
 type RarityFilterValue = typeof RARITY_FILTER[number]
 
+function pitColor(pity: number): string {
+  if (pity >= 66) return 'text-[#f87171]'
+  if (pity >= 51) return 'text-[#fb923c]'
+  if (pity >= 26) return 'text-[#fbbf24]'
+  return 'text-[#86efac]'
+}
+
 function StatRow({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="flex justify-between text-sm">
@@ -43,13 +51,13 @@ function PortraitCard({ pull }: { pull: RescuePull }) {
         </div>
       ) : (
         <img
-          src={pull.image_url}
+          src={assetUrl(pull.image_url)}
           alt={pull.name}
           className="w-full h-full object-cover"
           onError={() => setImgError(true)}
         />
       )}
-      <span className="absolute bottom-0 left-0 bg-black/70 text-[10px] text-[#ffffff] px-1 py-0.5 font-mono">
+      <span className={`absolute bottom-0 left-0 bg-black/70 text-[10px] px-1 py-0.5 font-mono ${pitColor(pull.pity)}`}>
         {pull.pity}
       </span>
     </div>
@@ -61,7 +69,7 @@ function TableCellImage({ pull }: { pull: RescuePull }) {
   if (imgError) return <User size={16} className="text-[#b3b3b3]" />
   return (
     <img
-      src={pull.image_url}
+      src={assetUrl(pull.image_url)}
       alt={pull.name}
       className="w-6 h-6 rounded object-cover bg-[#181818]"
       onError={() => setImgError(true)}
@@ -113,7 +121,6 @@ function BannerView({ banner }: { banner: RescueBanner }) {
           <StatRow label={t('rescue.stats.fourStar')} value={stats.four_star} />
           <StatRow label={t('rescue.stats.avgPity5')} value={stats.avg_pity_5} />
           <StatRow label={t('rescue.stats.avgPity4')} value={stats.avg_pity_4} />
-          <StatRow label={t('rescue.stats.winRate')} value={`${(stats.win_rate_50_50 * 100).toFixed(2)}%`} />
         </div>
         <div className="w-40 h-40">
           <ResponsiveContainer width="100%" height="100%">
@@ -186,7 +193,7 @@ function BannerView({ banner }: { banner: RescueBanner }) {
                       </Badge>
                     </div>
                   </TableCell>
-                  <TableCell className="font-mono text-sm text-[#ffffff]">{pull.pity}</TableCell>
+                  <TableCell className={`font-mono text-sm ${pitColor(pull.pity)}`}>{pull.pity}</TableCell>
                   <TableCell className="text-xs text-[#b3b3b3]">{banner.banner_name}</TableCell>
                   <TableCell className="text-xs text-[#b3b3b3]">
                     {pull.timestamp !== 0 ? new Date(pull.timestamp * 1000).toLocaleString(i18n.language) : '—'}
@@ -223,8 +230,8 @@ function BannerView({ banner }: { banner: RescueBanner }) {
   )
 }
 
-function exportRescue(banners: RescueBanner[]) {
-  downloadJson('rescue_records.json', banners)
+async function exportRescue(banners: RescueBanner[]) {
+  await downloadJson('rescue_records.json', banners)
 }
 
 export function RescuePage() {
@@ -271,6 +278,15 @@ export function RescuePage() {
           >
             <Download size={13} className="mr-1" />
             {t('rescue.exportJson')}
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
+            onClick={() => openExternal('https://hub-czn.lovable.app')}
+          >
+            <Cloud size={13} className="mr-1" />
+            {t('rescue.saveCloud')}
           </Button>
           <Button
             size="sm"

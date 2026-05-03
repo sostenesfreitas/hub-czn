@@ -1,11 +1,11 @@
-export function downloadJson(filename: string, data: unknown): void {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  setTimeout(() => URL.revokeObjectURL(url), 100)
+import { save } from '@tauri-apps/plugin-dialog'
+import { writeTextFile } from '@tauri-apps/plugin-fs'
+
+export async function downloadJson(filename: string, data: unknown): Promise<void> {
+  const path = await save({
+    defaultPath: filename,
+    filters: [{ name: 'JSON', extensions: ['json'] }],
+  })
+  if (!path) return
+  await writeTextFile(path, JSON.stringify(data, null, 2))
 }

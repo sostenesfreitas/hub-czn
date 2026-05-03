@@ -7,6 +7,9 @@
     "core:default",
     "shell:allow-execute",
     "shell:allow-spawn",
-    "opener:allow-open-url"
+    "shell:allow-open",
+    "opener:allow-open-url",
+    "dialog:allow-save",
+    "fs:allow-write-text-file"
   ]
 }

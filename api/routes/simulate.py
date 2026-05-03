@@ -268,7 +268,7 @@ def simulate_damage(body: SimulateDamageRequest):
         if eff_value == 0:
             continue  # non-damage card
 
-        card_name = _get_card_name(effective_card_id)
+        card_name = _get_card_name(effective_card_id) or _get_card_name(base_card_id)
         # spark variant may lack sct_name; fall back to base card illustration
         sct_name = (
             card_lookup.get(effective_card_id, {}).get("sct_name")

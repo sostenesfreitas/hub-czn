@@ -94,11 +94,11 @@ function CardRow({ card }: { card: SimCardResult }) {
               <img
                 src={assetUrl(card.icon_path)}
                 alt=""
-                className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                className="w-12 h-12 rounded flex-shrink-0 object-cover"
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="w-8 h-8 rounded flex-shrink-0 bg-[#282828]" />
+              <div className="w-12 h-12 rounded flex-shrink-0 bg-[#282828]" />
             )}
             <div className="flex items-center gap-1">
               <span className="text-[#e5e7eb] font-medium">{displayName}</span>
