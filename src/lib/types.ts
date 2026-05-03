@@ -279,10 +279,10 @@ export interface SimCardResult {
   cost: number
   eff_value: number
   hits: number
-  base_damage: number
+  normal_damage: number
+  crit_damage: number
   avg_damage: number
-  final_damage: number
-  effective_damage: number
+  icon_path: string | null
 }
 
 export interface SimulateDamageResponse {
@@ -301,6 +301,7 @@ export interface SimulateDamageResponse {
   fortitude: boolean
   buff_mult: number
   cards: SimCardResult[]
-  total_damage: number
-  total_effective_damage: number
+  total_normal: number
+  total_crit: number
+  total_avg: number
 }
