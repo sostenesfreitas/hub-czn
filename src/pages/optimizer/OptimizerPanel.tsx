@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Play, Square } from 'lucide-react'
+import { ChevronDown, ChevronRight, Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress, CharPreset } from '@/lib/types'
+import { InfoPopover } from '@/components/ui/info-popover'
 import { SetCombobox } from './SetCombobox'
 import type { ComboboxOption } from './SetCombobox'
 
@@ -110,6 +111,7 @@ export function OptimizerPanel({
   const lastAutoFilledRef = useRef<string>('')
   const lastWeightInitRef = useRef<string>('')
   const queryClient = useQueryClient()
+  const [helpOpen, setHelpOpen] = useState(false)
 
   function applyPreset(preset: CharPreset, charId: string, baseConfig: OptimizerConfig) {
     const fourIds = preset.recommended_sets.filter((id) =>
@@ -196,6 +198,25 @@ export function OptimizerPanel({
 
   return (
     <aside className={`${panelBase} overflow-y-auto space-y-4`}>
+      {/* How it works accordion */}
+      <div className="rounded-lg border border-[#282828] overflow-hidden">
+        <button
+          type="button"
+          aria-expanded={helpOpen}
+          className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[#b3b3b3] hover:text-[#ffffff]"
+          onClick={() => setHelpOpen(v => !v)}
+        >
+          {helpOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+          {t('optimizer.help.title')}
+        </button>
+        {helpOpen && (
+          <div className="px-3 pb-3 space-y-1">
+            <p className="text-xs text-[#b3b3b3] leading-relaxed">{t('optimizer.help.body')}</p>
+            <p className="text-[10px] text-[#666]">{t('optimizer.help.weightScale')}</p>
+          </div>
+        )}
+      </div>
+
       {/* Character */}
       <div className="space-y-1">
         <label htmlFor="optimizer-char" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
@@ -301,7 +322,7 @@ export function OptimizerPanel({
       {/* Stat priority */}
       <div className="space-y-2">
         <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
-          Prioridade de Stat (-1 a 3)
+          {t('optimizer.statPriorityLabel')}
         </p>
         {STAT_GROUPS.map((group) => (
           <div key={group.label}>
@@ -345,8 +366,9 @@ export function OptimizerPanel({
       {/* Filters */}
       <div className="space-y-3">
         <div className="space-y-1">
-          <label htmlFor="optimizer-top-pct" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+          <label htmlFor="optimizer-top-pct" className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
             {t('optimizer.topPercent')}
+            <InfoPopover content={t('optimizer.topPercentTip')} />
           </label>
           <input
             id="optimizer-top-pct"
@@ -364,8 +386,9 @@ export function OptimizerPanel({
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="optimizer-max-results" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+          <label htmlFor="optimizer-max-results" className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
             {t('optimizer.maxResults')}
+            <InfoPopover content={t('optimizer.maxResultsTip')} />
           </label>
           <input
             id="optimizer-max-results"
@@ -390,14 +413,18 @@ export function OptimizerPanel({
             disabled={disabled}
             className="accent-[#c084fc]"
           />
-          <span className="text-xs text-[#ffffff]">{t('optimizer.includeEquipped')}</span>
+          <span className="text-xs text-[#ffffff] flex items-center gap-1">
+            {t('optimizer.includeEquipped')}
+            <InfoPopover content={t('optimizer.includeEquippedTip')} />
+          </span>
         </label>
       </div>
 
       {/* Excluded heroes */}
       <div className="space-y-1">
-        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
           {t('optimizer.excludeChars')}
+          <InfoPopover content={t('optimizer.excludeCharsTip')} />
         </label>
         <SetCombobox
           options={heroOptions}
