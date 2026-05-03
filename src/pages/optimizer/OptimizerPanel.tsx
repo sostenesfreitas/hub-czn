@@ -297,19 +297,21 @@ export function OptimizerPanel({
       </div>
 
       {/* Wildcard toggle */}
-      <label className="flex items-center gap-2 cursor-pointer select-none border-t border-[#282828] pt-3 mt-1">
-        <input
-          type="checkbox"
-          checked={config.allow_wildcards}
-          onChange={(e) => patch({ allow_wildcards: e.target.checked })}
-          disabled={disabled}
-          className="accent-[#c084fc]"
-        />
-        <span className="text-xs text-[#ffffff] flex items-center gap-1">
-          {t('optimizer.allowWildcards')}
-          <InfoPopover content={t('optimizer.allowWildcardsTip')} />
-        </span>
-      </label>
+      <div className="border-t border-[#282828] pt-3">
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={config.allow_wildcards}
+            onChange={(e) => patch({ allow_wildcards: e.target.checked })}
+            disabled={disabled}
+            className="accent-[#c084fc]"
+          />
+          <span className="text-xs text-[#ffffff] flex items-center gap-1">
+            {t('optimizer.allowWildcards')}
+            <InfoPopover content={t('optimizer.allowWildcardsTip')} />
+          </span>
+        </label>
+      </div>
 
       {/* Main stats */}
       {MAIN_STAT_SLOTS.map(({ labelKey, key, opts }) => (
