@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Loader2 } from 'lucide-react'
+import { Loader2, User } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
 import type { GearSlot, FinalStats } from '@/lib/types'
 
@@ -28,7 +28,15 @@ function pieceImageUrl(setId: number, slotNum: number): string {
 
 // ─── GearSlotCard ──────────────────────────────────────────────────────────
 
-export function GearSlotCard({ slot }: { slot: GearSlot }) {
+export function GearSlotCard({
+  slot,
+  equippedToPortrait,
+  equippedToName,
+}: {
+  slot: GearSlot
+  equippedToPortrait?: string
+  equippedToName?: string
+}) {
   const { t } = useTranslation()
 
   if (slot.main_stat === null) {
@@ -46,7 +54,7 @@ export function GearSlotCard({ slot }: { slot: GearSlot }) {
   return (
     <div className="bg-[#181818] border border-[#282828] rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-2.5 px-3 pt-3 pb-2.5 border-b border-[#1e1e1e]">
+      <div className="relative flex items-center gap-2.5 px-3 pt-3 pb-2.5 border-b border-[#1e1e1e]">
         <div className="relative shrink-0">
           {hasPieceImg ? (
             <img
@@ -80,6 +88,23 @@ export function GearSlotCard({ slot }: { slot: GearSlot }) {
           </p>
           <p className="text-xs font-semibold text-[#ffffff] truncate">{slot.main_stat}</p>
         </div>
+
+        {equippedToPortrait ? (
+          <img
+            src={equippedToPortrait}
+            alt={equippedToName}
+            title={equippedToName}
+            className="absolute top-2 right-2 w-6 h-6 rounded-full object-cover border border-[#282828] shrink-0"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+          />
+        ) : equippedToName ? (
+          <div
+            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#282828] flex items-center justify-center shrink-0"
+            title={equippedToName}
+          >
+            <User size={12} className="text-[#555]" />
+          </div>
+        ) : null}
       </div>
 
       {/* Substats */}

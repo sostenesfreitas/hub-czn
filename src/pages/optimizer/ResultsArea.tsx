@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { api } from '@/lib/api'
-import type { OptimizeResult, OptimizeProgress, CombatantStats, FinalStats } from '@/lib/types'
+import { api, assetUrl } from '@/lib/api'
+import type { OptimizeResult, OptimizeProgress, CombatantStats, FinalStats, Combatant } from '@/lib/types'
 import { GearSlotCard } from '../combatants/CombatantDetail'
 
 type JobState = 'idle' | 'running' | 'done' | 'cancelled' | 'error'
@@ -76,9 +76,11 @@ function StatsComparison({
 function ExpandedBuild({
   result,
   currentStats,
+  combatants,
 }: {
   result: OptimizeResult
   currentStats: CombatantStats | undefined
+  combatants: Combatant[]
 }) {
   return (
     <div className="p-4 space-y-4">
@@ -93,9 +95,19 @@ function ExpandedBuild({
       <div>
         <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-2">Peças</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
-          {result.gear_slots.map((slot) => (
-            <GearSlotCard key={slot.slot} slot={slot} />
-          ))}
+          {result.gear_slots.map((slot) => {
+            const owner = slot.equipped_to
+              ? combatants.find((c) => c.char_id === slot.equipped_to)
+              : undefined
+            return (
+              <GearSlotCard
+                key={slot.slot}
+                slot={slot}
+                equippedToPortrait={owner?.portrait_url ? assetUrl(owner.portrait_url) : undefined}
+                equippedToName={owner?.name}
+              />
+            )
+          })}
         </div>
       </div>
     </div>
@@ -116,6 +128,9 @@ export function ResultsArea({
   charId,
 }: ResultsAreaProps) {
   const { t } = useTranslation()
+
+  const queryClient = useQueryClient()
+  const combatants = queryClient.getQueryData<Combatant[]>(['combatants']) ?? []
 
   const { data: currentStats } = useQuery<CombatantStats>({
     queryKey: ['combatants', charId, 'stats'],
@@ -223,6 +238,7 @@ export function ResultsArea({
                 <ExpandedBuild
                   result={r}
                   currentStats={currentStats}
+                  combatants={combatants}
                 />
               )}
             </div>
