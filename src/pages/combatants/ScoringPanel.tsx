@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { InfoPopover } from '@/components/ui/info-popover'
 
 export const DPS_WEIGHTS: Record<string, number> = {
   'Flat ATK': 7, 'ATK%': 10, 'Extra DMG%': 6,
@@ -38,15 +39,20 @@ function WeightInput({
   stat,
   value,
   onChange,
+  tip,
 }: {
   stat: string
   value: number
   onChange: (stat: string, v: number) => void
+  tip?: string
 }) {
   const id = `weight-${stat.replace(/[^a-z0-9]/gi, '-').toLowerCase()}`
   return (
     <div className="flex items-center justify-between gap-2">
-      <label htmlFor={id} className="text-xs text-[#b3b3b3] truncate flex-1">{stat}</label>
+      <label htmlFor={id} className="text-xs text-[#b3b3b3] flex-1 flex items-center gap-1 min-w-0">
+        <span className="truncate">{stat}</span>
+        {tip && <InfoPopover content={tip} />}
+      </label>
       <input
         id={id}
         type="number"
@@ -82,6 +88,13 @@ function PanelContent({
   onResetToGlobal,
 }: ScoringPanelProps) {
   const { t } = useTranslation()
+
+  const STAT_TIPS = useMemo<Record<string, string>>(() => ({
+    CRate: t('tips.crate'),
+    CDmg: t('tips.cdmg'),
+    'DoT%': t('tips.dot'),
+    Ego: t('tips.ego'),
+  }), [t])
 
   const STAT_GROUPS = [
     { labelKey: 'scoring.group.offensive', stats: ['Flat ATK', 'ATK%', 'CRate', 'CDmg', 'Extra DMG%', 'DoT%'] },
@@ -153,6 +166,7 @@ function PanelContent({
                     stat={stat}
                     value={weights[stat] ?? 0}
                     onChange={onWeightChange}
+                    tip={STAT_TIPS[stat]}
                   />
                 ) : null
               )}

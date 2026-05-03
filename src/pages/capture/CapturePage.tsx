@@ -6,7 +6,8 @@ import { api } from '@/lib/api'
 import { useApiPort } from '@/hooks/useApiPort'
 import { useCaptureLog } from '@/hooks/useCaptureLog'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, XCircle, Radio, Square, FolderOpen, Download, Loader2 } from 'lucide-react'
+import { CheckCircle, XCircle, Radio, Square, FolderOpen, Download, Loader2, ChevronDown, ChevronRight } from 'lucide-react'
+import { InfoPopover } from '@/components/ui/info-popover'
 import type { CaptureLogMessage, CaptureStatus } from '@/lib/types'
 
 const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
@@ -16,11 +17,12 @@ const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
   info: '#b3b3b3',
 }
 
-function PrereqBadge({ ok, label }: { ok: boolean; label: string }) {
+function PrereqBadge({ ok, label, tip }: { ok: boolean; label: string; tip?: string }) {
   return (
     <span className={`flex items-center gap-1 text-xs ${ok ? 'text-green-400' : 'text-red-400'}`}>
       {ok ? <CheckCircle size={12} /> : <XCircle size={12} />}
       {label}
+      {tip && <InfoPopover content={tip} />}
     </span>
   )
 }
@@ -172,6 +174,7 @@ export function CapturePage() {
   const [autoScroll, setAutoScroll] = useState(true)
   const [debug, setDebug] = useState(false)
   const [region, setRegion] = useState<'global' | 'asia'>('global')
+  const [howToUseOpen, setHowToUseOpen] = useState(false)
   const logRef = useRef<HTMLDivElement>(null)
 
   const { data: captureStatus } = useQuery({
@@ -259,14 +262,34 @@ export function CapturePage() {
         {/* Prerequisites bar */}
         <div className="p-3 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-2">
           <div className="flex items-center gap-3 flex-wrap">
-            <PrereqBadge ok={isAdmin} label={t('capture.prereq.admin')} />
-            <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label={t('capture.prereq.mitmproxy')} />
+            <PrereqBadge ok={isAdmin} label={t('capture.prereq.admin')} tip={t('capture.prereq.adminTip')} />
+            <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label={t('capture.prereq.mitmproxy')} tip={t('capture.prereq.mitmproxyTip')} />
             <PrereqBadge ok={setupStatus?.certificate ?? false} label={t('capture.prereq.certificate')} />
           </div>
           {!prereqsOk && (
             <NavLink to="/setup" className="text-xs text-[#c084fc] hover:underline mt-1">
               {t('capture.goToSetup')}
             </NavLink>
+          )}
+        </div>
+
+        {/* How to use accordion */}
+        <div className="rounded-lg bg-[#181818] border border-[#282828] overflow-hidden">
+          <button
+            type="button"
+            aria-expanded={howToUseOpen}
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[#b3b3b3] hover:text-[#ffffff]"
+            onClick={() => setHowToUseOpen(v => !v)}
+          >
+            {howToUseOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+            {t('capture.howToUse.title')}
+          </button>
+          {howToUseOpen && (
+            <ol className="px-4 pb-3 text-xs text-[#b3b3b3] leading-relaxed space-y-1 list-none">
+              {(['step1', 'step2', 'step3', 'step4', 'step5', 'step6'] as const).map(k => (
+                <li key={k}>{t(`capture.howToUse.${k}`)}</li>
+              ))}
+            </ol>
           )}
         </div>
 
@@ -386,6 +409,7 @@ export function CapturePage() {
               <p>{t('capture.log.step1')}</p>
               <p>{t('capture.log.step2')}</p>
               <p>{t('capture.log.step3')}</p>
+              <p>{t('capture.log.step4')}</p>
             </div>
           )}
           {messages.map((m, i) => (
