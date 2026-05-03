@@ -2,22 +2,72 @@ import { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Play, Zap } from 'lucide-react'
-import { api } from '@/lib/api'
+import { api, assetUrl } from '@/lib/api'
 import type { Combatant, SimulateDamageResponse, SimCardResult, DeckInfo } from '@/lib/types'
 import { CharacterCombobox } from '@/components/ui/character-combobox'
 
 const MORALE_PCT = 20
 
-// DEF presets derived from equip_stat_define@equip_stat_define.json
-// ST F150 boss: tier 200 → equip_id=5 → base DEF=31; powerstep 391 vs WL5 ref 205 → ~59
-const DEF_PRESETS = [
-  { label: 'WL1', value: 10 },
-  { label: 'WL2', value: 17 },
-  { label: 'WL3', value: 23 },
-  { label: 'WL4', value: 27 },
-  { label: 'WL5', value: 31 },
-  { label: 'ST F150 (Soul Collector)', value: 59 },
+// DEF values: WL = s_def from equip_stat_define; Tower = s_def × boss_powerstep/205 (WL5 ref).
+// F30-F120 share boss_powerstep=323 (→36/49); F150 escalates to 391 (Soul Collector).
+const DEF_PRESET_GROUPS = [
+  {
+    label: 'simulator.presetGroupWorld',
+    presets: [
+      { label: 'WL1', value: 10 },
+      { label: 'WL2', value: 17 },
+      { label: 'WL3', value: 23 },
+      { label: 'WL4', value: 27 },
+      { label: 'WL5', value: 31 },
+    ],
+  },
+  {
+    label: 'simulator.presetGroupTower',
+    presets: [
+      { label: 'F30', value: 36 },
+      { label: 'F60', value: 49 },
+      { label: 'F90', value: 49 },
+      { label: 'F120', value: 49 },
+      { label: 'F150', value: 59 },
+    ],
+  },
+  {
+    label: 'simulator.presetGroupBoss',
+    presets: [
+      { label: 'Soul Collector (F150)', value: 59 },
+    ],
+  },
 ]
+
+const STORAGE_KEY = 'czn_simulator_state'
+
+interface PersistedState {
+  charName: string
+  deckId: number | null
+  morale: number
+  useSparks: boolean
+  monsterDef: number
+  weaken: boolean
+  vulnerableStacks: number
+  dmgReduction: boolean
+  result: SimulateDamageResponse | null
+}
+
+function loadPersistedState(): PersistedState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw) as PersistedState
+  } catch {
+    return null
+  }
+}
+
+function savePersistedState(s: PersistedState): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s))
+  } catch { }
+}
 
 function StatPill({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
@@ -29,51 +79,90 @@ function StatPill({ label, value, highlight }: { label: string; value: string; h
 }
 
 function CardRow({ card }: { card: SimCardResult }) {
-  const shortId = card.card_id.replace(/^c_\d+_/, '')
+  const { t } = useTranslation()
   const hasSpark = !!card.spark_id
   const coefficient = (card.eff_value / 100).toFixed(2)
-  const displayName = card.name || shortId
+  const displayName = card.name || card.card_id.replace(/^c_\d+_/, '')
+  const [imgError, setImgError] = useState(false)
 
   return (
-    <tr className="border-b border-[#2a2a2a] hover:bg-[#1e1e1e] transition-colors">
-      <td className="px-3 py-2 text-xs">
-        <div className="flex items-center gap-1">
-          <span className="text-[#e5e7eb] font-medium" title={shortId}>{displayName}</span>
-          {hasSpark && (
-            <span className="text-[#facc15] text-[10px]" title={card.spark_id ?? ''}>✦</span>
-          )}
-        </div>
-        {card.name && (
-          <span className="font-mono text-[10px] text-[#555]">{shortId}</span>
-        )}
-      </td>
-      <td className="px-3 py-2 text-center text-[#e5e7eb] text-xs">{card.cost}</td>
-      <td className="px-3 py-2 text-center text-[#e5e7eb] text-xs font-mono">
-        {coefficient}× ATK
-      </td>
-      <td className="px-3 py-2 text-center text-[#e5e7eb] text-xs">{card.hits}</td>
-      <td className="px-3 py-2 text-right text-[#e5e7eb] text-xs font-mono">
-        {card.final_damage.toLocaleString()}
-      </td>
-      <td className="px-3 py-2 text-right text-[#a3e635] text-xs font-mono font-bold">
-        {card.effective_damage.toLocaleString()}
-      </td>
-    </tr>
+    <>
+      <tr className="border-b border-[#2a2a2a] hover:bg-[#1e1e1e] transition-colors">
+        <td className="px-3 py-2 text-xs">
+          <div className="flex items-center gap-2">
+            {card.icon_path && !imgError ? (
+              <img
+                src={assetUrl(card.icon_path)}
+                alt=""
+                className="w-8 h-8 rounded flex-shrink-0 object-cover"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="w-8 h-8 rounded flex-shrink-0 bg-[#282828]" />
+            )}
+            <div className="flex items-center gap-1">
+              <span className="text-[#e5e7eb] font-medium">{displayName}</span>
+              {hasSpark && (
+                <span className="text-[#facc15] text-[10px]" title={t('simulator.epifaniaApplied')}>✦</span>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className="px-3 py-2 text-center text-[#b3b3b3] text-xs">{card.cost}</td>
+        <td className="px-3 py-2 text-center text-[#b3b3b3] text-xs font-mono">{coefficient}×</td>
+        <td className="px-3 py-2 text-center text-[#b3b3b3] text-xs">{card.hits}</td>
+        <td className="px-3 py-2 text-right text-[#e5e7eb] text-xs font-mono">
+          {card.normal_damage.toLocaleString()}
+        </td>
+        <td className="px-3 py-2 text-right text-[#e5e7eb] text-xs font-mono">
+          {card.crit_damage.toLocaleString()}
+        </td>
+        <td className="px-3 py-2 text-right text-[#a3e635] text-xs font-mono font-bold">
+          {card.avg_damage.toLocaleString()}
+        </td>
+      </tr>
+      {card.hits > 1 && (
+        <tr className="border-b border-[#282828] bg-[#141414]">
+          <td className="px-3 py-1 text-[9px] text-[#555] pl-14" colSpan={4}>
+            {t('simulator.perHit')}
+          </td>
+          <td className="px-3 py-1 text-right text-[#555] text-[10px] font-mono">
+            {(card.normal_damage / card.hits).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          </td>
+          <td className="px-3 py-1 text-right text-[#555] text-[10px] font-mono">
+            {(card.crit_damage / card.hits).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          </td>
+          <td className="px-3 py-1 text-right text-[#6a9e35] text-[10px] font-mono">
+            {(card.avg_damage / card.hits).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          </td>
+        </tr>
+      )}
+    </>
   )
 }
 
 export function SimulatorPage() {
   const { t } = useTranslation()
 
-  const [charName, setCharName] = useState('')
-  const [deckId, setDeckId] = useState<number | null>(null)
-  const [morale, setMorale] = useState(0)
-  const [useSparks, setUseSparks] = useState(true)
-  const [monsterDef, setMonsterDef] = useState(20)
-  const [weaken, setWeaken] = useState(false)
-  const [vulnerableStacks, setVulnerableStacks] = useState(0)
-  const [dmgReduction, setDmgReduction] = useState(false)
-  const [result, setResult] = useState<SimulateDamageResponse | null>(null)
+  const saved = loadPersistedState()
+
+  const [charName, setCharName] = useState(saved?.charName ?? '')
+  const [deckId, setDeckId] = useState<number | null>(saved?.deckId ?? null)
+  const [morale, setMorale] = useState(saved?.morale ?? 0)
+  const [useSparks, setUseSparks] = useState(saved?.useSparks ?? true)
+  const [monsterDef, setMonsterDef] = useState(saved?.monsterDef ?? 20)
+  const [weaken, setWeaken] = useState(saved?.weaken ?? false)
+  const [vulnerableStacks, setVulnerableStacks] = useState(saved?.vulnerableStacks ?? 0)
+  const [dmgReduction, setDmgReduction] = useState(saved?.dmgReduction ?? false)
+  const [result, setResult] = useState<SimulateDamageResponse | null>(saved?.result ?? null)
+
+  function persist(patch: Partial<PersistedState>) {
+    savePersistedState({
+      charName, deckId, morale, useSparks, monsterDef,
+      weaken, vulnerableStacks, dmgReduction, result,
+      ...patch,
+    })
+  }
 
   const { data: status } = useQuery({
     queryKey: ['status'],
@@ -107,7 +196,7 @@ export function SimulatorPage() {
         exposed_stacks: vulnerableStacks,
         fortitude: dmgReduction,
       }),
-    onSuccess: (data) => setResult(data),
+    onSuccess: (data) => { setResult(data); persist({ result: data }) },
   })
 
   const canRun = charName !== '' && !mutation.isPending && (status?.data_loaded ?? false)
@@ -134,7 +223,7 @@ export function SimulatorPage() {
           <CharacterCombobox
             combatants={combatants}
             value={charName}
-            onChange={(v) => { setCharName(v); setDeckId(null) }}
+            onChange={(v) => { setCharName(v); setDeckId(null); persist({ charName: v, deckId: null }) }}
           />
         </div>
 
@@ -144,7 +233,7 @@ export function SimulatorPage() {
             <div className="flex flex-col gap-0.5 max-h-40 overflow-y-auto pr-0.5">
               <button
                 type="button"
-                onClick={() => setDeckId(null)}
+                onClick={() => { setDeckId(null); persist({ deckId: null }) }}
                 className={`text-left text-xs px-2 py-1.5 rounded transition-colors ${
                   deckId === null
                     ? 'bg-[#c084fc] text-white'
@@ -165,7 +254,7 @@ export function SimulatorPage() {
                   <button
                     key={d.deck_id}
                     type="button"
-                    onClick={() => setDeckId(d.deck_id)}
+                    onClick={() => { setDeckId(d.deck_id); persist({ deckId: d.deck_id }) }}
                     className={`text-left text-xs px-2 py-1.5 rounded transition-colors ${
                       deckId === d.deck_id
                         ? 'bg-[#c084fc] text-white'
@@ -198,7 +287,7 @@ export function SimulatorPage() {
             min={0}
             max={20}
             value={morale}
-            onChange={(e) => setMorale(Number(e.target.value))}
+            onChange={(e) => { const v = Number(e.target.value); setMorale(v); persist({ morale: v }) }}
             className="w-full accent-[#c084fc]"
           />
           <div className="flex justify-between text-[#555] text-[10px]">
@@ -220,24 +309,33 @@ export function SimulatorPage() {
               min={0}
               max={9999}
               value={monsterDef}
-              onChange={(e) => setMonsterDef(Math.max(0, Number(e.target.value)))}
+              onChange={(e) => { const v = Math.max(0, Number(e.target.value)); setMonsterDef(v); persist({ monsterDef: v }) }}
               className="flex-1 bg-[#222] border border-[#333] text-[#e5e7eb] text-xs rounded px-2 py-1 w-0 font-mono"
             />
           </div>
-          <div className="flex flex-wrap gap-1 mt-1">
-            {DEF_PRESETS.map((p) => (
-              <button
-                key={p.label}
-                type="button"
-                onClick={() => setMonsterDef(p.value)}
-                className={`text-[10px] px-1.5 py-0.5 rounded transition-colors ${
-                  monsterDef === p.value
-                    ? 'bg-[#fb923c] text-white'
-                    : 'bg-[#2a2a2a] text-[#888] hover:text-[#e5e7eb]'
-                }`}
-              >
-                {p.label}
-              </button>
+          <div className="flex flex-col gap-2 mt-1">
+            {DEF_PRESET_GROUPS.map((group) => (
+              <div key={group.label}>
+                <p className="text-[9px] text-[#555] uppercase tracking-wider mb-1">
+                  {t(group.label)}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {group.presets.map((p) => (
+                    <button
+                      key={`${group.label}-${p.label}`}
+                      type="button"
+                      onClick={() => { setMonsterDef(p.value); persist({ monsterDef: p.value }) }}
+                      className={`text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+                        monsterDef === p.value
+                          ? 'bg-[#fb923c] text-white'
+                          : 'bg-[#2a2a2a] text-[#888] hover:text-[#e5e7eb]'
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -256,7 +354,7 @@ export function SimulatorPage() {
                 id="weaken"
                 type="checkbox"
                 checked={weaken}
-                onChange={(e) => setWeaken(e.target.checked)}
+                onChange={(e) => { setWeaken(e.target.checked); persist({ weaken: e.target.checked }) }}
                 className="accent-[#f87171]"
               />
             </div>
@@ -270,7 +368,7 @@ export function SimulatorPage() {
                 id="dmg-reduction"
                 type="checkbox"
                 checked={dmgReduction}
-                onChange={(e) => setDmgReduction(e.target.checked)}
+                onChange={(e) => { setDmgReduction(e.target.checked); persist({ dmgReduction: e.target.checked }) }}
                 className="accent-[#34d399]"
               />
             </div>
@@ -289,7 +387,7 @@ export function SimulatorPage() {
                 min={0}
                 max={5}
                 value={vulnerableStacks}
-                onChange={(e) => setVulnerableStacks(Number(e.target.value))}
+                onChange={(e) => { const v = Number(e.target.value); setVulnerableStacks(v); persist({ vulnerableStacks: v }) }}
                 className="w-full accent-[#facc15]"
               />
               <div className="flex justify-between text-[#555] text-[10px]">
@@ -309,7 +407,7 @@ export function SimulatorPage() {
             id="use-sparks"
             type="checkbox"
             checked={useSparks}
-            onChange={(e) => setUseSparks(e.target.checked)}
+            onChange={(e) => { setUseSparks(e.target.checked); persist({ useSparks: e.target.checked }) }}
             className="accent-[#c084fc]"
           />
           <label htmlFor="use-sparks" className="text-[#b3b3b3] text-xs cursor-pointer">
@@ -385,17 +483,23 @@ export function SimulatorPage() {
             </div>
 
             {/* Totals */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <div className="bg-[#1e1e1e] rounded px-4 py-3 flex flex-col gap-0.5">
-                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalDeck')}</span>
+                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalNormal')}</span>
                 <span className="text-[#e5e7eb] font-bold text-lg font-mono">
-                  {result.total_damage.toLocaleString()}
+                  {result.total_normal.toLocaleString()}
+                </span>
+              </div>
+              <div className="bg-[#1e1e1e] rounded px-4 py-3 flex flex-col gap-0.5">
+                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalCrit')}</span>
+                <span className="text-[#e5e7eb] font-bold text-lg font-mono">
+                  {result.total_crit.toLocaleString()}
                 </span>
               </div>
               <div className="bg-[#1a2a1a] rounded px-4 py-3 flex flex-col gap-0.5">
-                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalEffective')}</span>
+                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalAvg')}</span>
                 <span className="text-[#a3e635] font-bold text-lg font-mono">
-                  {result.total_effective_damage.toLocaleString()}
+                  {result.total_avg.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -408,24 +512,26 @@ export function SimulatorPage() {
                 <table className="w-full text-sm border-collapse">
                   <thead>
                     <tr className="border-b border-[#333] text-[#888] text-xs uppercase tracking-wide">
-                      <th className="px-3 py-2 text-left">{t('simulator.col.card')}</th>
+                      <th className="px-3 py-2 text-left min-w-[160px]">{t('simulator.col.card')}</th>
                       <th className="px-3 py-2 text-center">{t('simulator.col.cost')}</th>
                       <th className="px-3 py-2 text-center">{t('simulator.col.coefficient')}</th>
                       <th className="px-3 py-2 text-center">{t('simulator.col.hits')}</th>
-                      <th className="px-3 py-2 text-right">{t('simulator.col.finalDmg')}</th>
-                      <th className="px-3 py-2 text-right">{t('simulator.col.effectiveDmg')}</th>
+                      <th className="px-3 py-2 text-right">{t('simulator.col.normal')}</th>
+                      <th className="px-3 py-2 text-right">{t('simulator.col.crit')}</th>
+                      <th className="px-3 py-2 text-right text-[#a3e635]">{t('simulator.col.avg')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {result.cards
-                      .sort((a, b) => b.effective_damage - a.effective_damage)
+                      .sort((a, b) => b.avg_damage - a.avg_damage)
                       .map((card) => (
                         <CardRow key={`${card.card_id}-${card.spark_id}`} card={card} />
                       ))}
                   </tbody>
                 </table>
                 <p className="text-[#555] text-[10px] mt-2 px-1">
-                  ✦ = {t('simulator.sparkNote')}
+                  ✦ = {t('simulator.epifaniaNote')}
+                  &nbsp;·&nbsp; {t('simulator.avgNote')}
                 </p>
               </div>
             )}
