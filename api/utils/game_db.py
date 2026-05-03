@@ -19,3 +19,9 @@ def get() -> dict:
         else:
             _cache = {}
     return _cache
+
+
+def invalidate() -> None:
+    """Force reload on next get() call."""
+    global _cache
+    _cache = None
