@@ -276,6 +276,14 @@ def simulate_damage(body: SimulateDamageRequest):
         )
         icon_path = f"/assets/cards/{sct_name}.png" if sct_name else None
 
+        # dmg_revise_rate=0.36 from constant_meta(stat_formula): this is the default lookup key
+        # into the powerstep_define table, which stores per-power-step monster stat multipliers
+        # (dmg_revise, hp_revise, cure_revise, shield_revise). The table scales MONSTER stats
+        # by difficulty tier — it is NOT a multiplier on player card damage output. Excluded.
+        #
+        # The two other stat_formula constants (dmg_decrease_rate_0_value=-160,
+        # dmg_decrease_rate_curv_value=300) are parameters of the DEF reduction curve, which
+        # is already applied below as: def_reduction = 300 / (300 + monster_def). Confirmed.
         base_dmg = atk * (eff_value / 100)
         normal_dmg = base_dmg * morale_mult * buff_mult * def_reduction
         crit_dmg = base_dmg * (cdmg / 100) * morale_mult * buff_mult * def_reduction
