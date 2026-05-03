@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { api, assetUrl } from '@/lib/api'
@@ -129,8 +129,11 @@ export function ResultsArea({
 }: ResultsAreaProps) {
   const { t } = useTranslation()
 
-  const queryClient = useQueryClient()
-  const combatants = queryClient.getQueryData<Combatant[]>(['combatants']) ?? []
+  const { data: combatants = [] } = useQuery<Combatant[]>({
+    queryKey: ['combatants'],
+    queryFn: () => api.combatants(),
+    staleTime: 30_000,
+  })
 
   const { data: currentStats } = useQuery<CombatantStats>({
     queryKey: ['combatants', charId, 'stats'],

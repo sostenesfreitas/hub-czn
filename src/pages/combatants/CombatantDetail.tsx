@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Loader2, User } from 'lucide-react'
@@ -24,6 +25,40 @@ function RollArrows({ count }: { count: number }) {
 
 function pieceImageUrl(setId: number, slotNum: number): string {
   return assetUrl(`/assets/game/pieces/item_piece_set_${String(setId).padStart(3, '0')}_${slotNum}.png`)
+}
+
+// ─── EquippedByAvatar ──────────────────────────────────────────────────────
+
+function EquippedByAvatar({ portrait, name }: { portrait?: string; name?: string }) {
+  const [imgErr, setImgErr] = useState(false)
+
+  if (!name && !portrait) return null
+
+  if (portrait && !imgErr) {
+    return (
+      <img
+        src={portrait}
+        alt={name ?? ''}
+        title={name}
+        className="absolute top-2 right-2 w-6 h-6 rounded-full object-cover border border-[#282828]"
+        onError={() => setImgErr(true)}
+      />
+    )
+  }
+
+  if (name) {
+    return (
+      <div
+        className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#282828] flex items-center justify-center"
+        title={name}
+        aria-label={name}
+      >
+        <User size={12} className="text-[#555]" />
+      </div>
+    )
+  }
+
+  return null
 }
 
 // ─── GearSlotCard ──────────────────────────────────────────────────────────
@@ -89,22 +124,7 @@ export function GearSlotCard({
           <p className="text-xs font-semibold text-[#ffffff] truncate">{slot.main_stat}</p>
         </div>
 
-        {equippedToPortrait ? (
-          <img
-            src={equippedToPortrait}
-            alt={equippedToName}
-            title={equippedToName}
-            className="absolute top-2 right-2 w-6 h-6 rounded-full object-cover border border-[#282828] shrink-0"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-          />
-        ) : equippedToName ? (
-          <div
-            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#282828] flex items-center justify-center shrink-0"
-            title={equippedToName}
-          >
-            <User size={12} className="text-[#555]" />
-          </div>
-        ) : null}
+        <EquippedByAvatar portrait={equippedToPortrait} name={equippedToName} />
       </div>
 
       {/* Substats */}
