@@ -30,6 +30,10 @@ function CharAvatar({ combatant }: { combatant: Combatant }) {
   )
 }
 
+function normalize(s: string) {
+  return s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+}
+
 export function CharacterCombobox({
   combatants,
   value,
@@ -40,6 +44,7 @@ export function CharacterCombobox({
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState('')
   const containerRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!open) return
@@ -53,16 +58,26 @@ export function CharacterCombobox({
     return () => document.removeEventListener('mousedown', handleMouseDown)
   }, [open])
 
+  useEffect(() => {
+    if (open) {
+      const t = setTimeout(() => searchRef.current?.focus(), 0)
+      return () => clearTimeout(t)
+    }
+  }, [open])
+
   const selected = combatants.find((c) => c.char_id === value)
   const filtered = filter
-    ? combatants.filter((c) => c.name.toLowerCase().includes(filter.toLowerCase()))
+    ? combatants.filter((c) => normalize(c.name).includes(normalize(filter)))
     : combatants
 
   return (
     <div ref={containerRef} className="relative">
       <button
+        id="char-combobox-trigger"
         type="button"
         disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         onClick={() => {
           if (!disabled) {
             setOpen((o) => !o)
@@ -83,10 +98,10 @@ export function CharacterCombobox({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-[#1e1e1e] border border-[#333] rounded z-50 overflow-hidden shadow-xl">
+        <div role="listbox" className="absolute top-full left-0 right-0 mt-1 bg-[#1e1e1e] border border-[#333] rounded z-50 overflow-hidden shadow-xl">
           <div className="p-1.5 border-b border-[#282828]">
             <input
-              autoFocus
+              ref={searchRef}
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder="Buscar..."
@@ -98,6 +113,8 @@ export function CharacterCombobox({
               <button
                 key={c.char_id}
                 type="button"
+                role="option"
+                aria-selected={c.char_id === value}
                 onClick={() => {
                   onChange(c.char_id)
                   setOpen(false)

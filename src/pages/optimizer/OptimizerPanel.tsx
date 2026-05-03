@@ -220,7 +220,7 @@ export function OptimizerPanel({
 
       {/* Character */}
       <div className="space-y-1">
-        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+        <label htmlFor="char-combobox-trigger" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
           {t('optimizer.character')}
         </label>
         <CharacterCombobox
