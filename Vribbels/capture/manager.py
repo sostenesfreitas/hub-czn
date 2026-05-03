@@ -42,6 +42,23 @@ except ImportError:
     HAS_ZSTD = False
 
 
+def _rescue_record_key(record: dict) -> str:
+    """Stable dedup key using only semantic fields, tolerating extra fields and type differences."""
+    gacha_id = str(record.get("gacha_id", ""))
+    try:
+        create_at = int(record.get("createAt", 0))
+    except (ValueError, TypeError):
+        create_at = 0
+    reward_raw = record.get("reward", [])
+    if isinstance(reward_raw, str):
+        try:
+            reward_raw = json.loads(reward_raw)
+        except Exception:
+            reward_raw = []
+    reward = sorted(int(r) for r in (reward_raw or []) if r is not None)
+    return f"{gacha_id}|{create_at}|{reward}"
+
+
 class Addon:
     """mitmproxy addon that intercepts WebSocket messages and extracts game data."""
 
@@ -380,10 +397,10 @@ class Addon:
             except Exception:
                 pass
 
-        existing_strs = {json.dumps(r, sort_keys=True) for r in existing}
+        existing_strs = {_rescue_record_key(r) for r in existing}
         new_records = list(existing)
         for record in (records if isinstance(records, list) else [records]):
-            key_str = json.dumps(record, sort_keys=True)
+            key_str = _rescue_record_key(record)
             if key_str not in existing_strs:
                 new_records.append(record)
                 existing_strs.add(key_str)

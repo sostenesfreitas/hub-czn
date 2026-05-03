@@ -30,6 +30,17 @@ def _read_rescue_count() -> int:
         return 0
 
 
+def _read_rescue_file_mtime() -> float:
+    # _save_rescue_data always rewrites the file even when all records deduplicate,
+    # so mtime advancing means the game sent data; frozen mtime means end of history.
+    try:
+        from capture.constants import OUTPUT_DIR
+        files = list(OUTPUT_DIR.glob("rescue_records_*.json"))
+        return max(f.stat().st_mtime for f in files) if files else 0.0
+    except Exception:
+        return 0.0
+
+
 def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
     import pyautogui
 
@@ -44,21 +55,23 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
 
     pos = pyautogui.position()
     consecutive_no_new = 0
-    last_count = _read_rescue_count()
     pages = 0
 
     while state.autoscroll_running:
+        click_time = time.time()
         pyautogui.click(pos.x, pos.y)
         pages += 1
-        time.sleep(1.2)
+        time.sleep(2.0)
+
+        # Use mtime to detect whether the game sent rescue data after this click.
+        # Record-count comparison fails when records were already in the file from a
+        # prior session (dedup keeps count constant even though the game responded).
+        if _read_rescue_file_mtime() > click_time:
+            consecutive_no_new = 0
+        else:
+            consecutive_no_new += 1
 
         current_count = _read_rescue_count()
-        if current_count == last_count:
-            consecutive_no_new += 1
-        else:
-            consecutive_no_new = 0
-            last_count = current_count
-
         asyncio.run_coroutine_threadsafe(
             manager.broadcast({
                 "type": "autoscroll.progress",
@@ -81,7 +94,7 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
             return
 
     asyncio.run_coroutine_threadsafe(
-        manager.broadcast({"type": "autoscroll.stopped", "pages": pages, "records": last_count}),
+        manager.broadcast({"type": "autoscroll.stopped", "pages": pages, "records": _read_rescue_count()}),
         loop,
     )
 
