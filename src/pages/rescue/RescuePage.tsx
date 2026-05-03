@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { User, RefreshCw, Download } from 'lucide-react'
 import { api } from '@/lib/api'
+import { downloadJson } from '@/lib/download'
 import i18n from '@/i18n'
 import type { RescueBanner, RescuePull } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
@@ -223,13 +224,7 @@ function BannerView({ banner }: { banner: RescueBanner }) {
 }
 
 function exportRescue(banners: RescueBanner[]) {
-  const blob = new Blob([JSON.stringify(banners, null, 2)], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'rescue_records.json'
-  a.click()
-  URL.revokeObjectURL(url)
+  downloadJson('rescue_records.json', banners)
 }
 
 export function RescuePage() {

@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { RefreshCw, User, Loader2, ChevronDown, ChevronRight, Download } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
+import { downloadJson } from '@/lib/download'
 import type { Combatant } from '@/lib/types'
 import { GearSlotCard, FinalStatsPanel } from './CombatantDetail'
 import { Button } from '@/components/ui/button'
@@ -259,21 +260,15 @@ export function CombatantsPage() {
 
   const [exporting, setExporting] = useState(false)
 
-  async function exportCombatants() {
+  const exportCombatants = useCallback(async () => {
     setExporting(true)
     try {
       const data = await api.combatantsExport()
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'combatants.json'
-      a.click()
-      URL.revokeObjectURL(url)
+      downloadJson('combatants.json', data)
     } finally {
       setExporting(false)
     }
-  }
+  }, [])
 
   if (error) {
     return (
