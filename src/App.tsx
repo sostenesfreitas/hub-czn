@@ -13,6 +13,7 @@ import { OptimizerPage } from './pages/optimizer/OptimizerPage'
 import { AboutPage } from './pages/about/AboutPage'
 import { HomePage } from './pages/home/HomePage'
 import { ScoringPage } from './pages/scoring/ScoringPage'
+import { SimulatorPage } from './pages/simulator/SimulatorPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ function AppRoutes() {
           <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<CombatantsPage />} />
           <Route path="scoring"    element={<ScoringPage />} />
+          <Route path="simulator"  element={<SimulatorPage />} />
           <Route path="capture"    element={<CapturePage />} />
           <Route path="setup"      element={<SetupPage />} />
           <Route path="rescue"     element={<RescuePage />} />

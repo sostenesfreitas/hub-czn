@@ -4,6 +4,7 @@ import type {
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
   Combatant, CombatantStats, ScoringPriorities,
   OptimizerConfig, EquipmentSet, AboutInfo, CharPreset,
+  SimulateRequest, SimulateDamageResponse,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -112,6 +113,15 @@ export const api = {
     request<{ cancelled: boolean }>('/api/optimize/cancel', { method: 'POST' }),
 
   about: () => request<AboutInfo>('/api/about'),
+
+  simulateDamage: (body: SimulateRequest) =>
+    request<SimulateDamageResponse>('/api/simulate/damage', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  simulateDeck: (charName: string) =>
+    request<unknown>(`/api/simulate/deck/${encodeURIComponent(charName)}`),
 
   charPreset: (charId: number) =>
     request<CharPreset>(`/api/scoring/char-preset/${charId}`),

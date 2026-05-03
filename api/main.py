@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from api.routes import status, data, ws, setup, capture, rescue, scoring, combatants, optimize, about, autoscroll
+from api.routes import status, data, ws, setup, capture, rescue, scoring, combatants, optimize, about, autoscroll, simulate
 
 
 def _assets_dir() -> Path:
@@ -39,6 +39,7 @@ def create_app() -> FastAPI:
     app.include_router(optimize.router, prefix="/api", tags=["optimize"])
     app.include_router(about.router, prefix="/api", tags=["about"])
     app.include_router(autoscroll.router, prefix="/api", tags=["autoscroll"])
+    app.include_router(simulate.router, prefix="/api", tags=["simulate"])
     return app
 
 

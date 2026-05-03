@@ -227,3 +227,32 @@ export interface CharPreset {
   substats: string[]
   weights: Record<string, number>
 }
+
+export interface SimulateRequest {
+  char_name: string
+  morale: number
+  use_sparks: boolean
+}
+
+export interface SimCardResult {
+  card_id: string
+  spark_id: string | null
+  cost: number
+  eff_value: number
+  hits: number
+  base_damage: number
+  avg_damage: number
+  final_damage: number
+}
+
+export interface SimulateDamageResponse {
+  char_name: string
+  atk: number
+  crate: number
+  cdmg: number
+  morale_stacks: number
+  morale_mult: number
+  crit_factor: number
+  cards: SimCardResult[]
+  total_damage: number
+}
