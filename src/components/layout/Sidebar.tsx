@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import i18n from '@/i18n'
+import { useUpdateCheck } from '@/hooks/useUpdateCheck'
 
 const NAV = [
   { to: '/',           key: 'nav.home',        icon: Home },
@@ -14,13 +15,14 @@ const NAV = [
   { to: '/combatants', key: 'nav.combatants',  icon: Users },
   { to: '/scoring',    key: 'nav.scoring',     icon: BarChart2 },
   { to: '/capture',    key: 'nav.capture',     icon: Radio },
-  { to: '/setup',      key: 'nav.setup',       icon: Settings },
   { to: '/rescue',     key: 'nav.rescue',      icon: Gift },
+  { to: '/setup',      key: 'nav.setup',       icon: Settings },
   { to: '/about',      key: 'nav.about',       icon: Info },
 ] as const
 
 export function Sidebar() {
   const { t, i18n: i18nInstance } = useTranslation()
+  const { hasUpdate } = useUpdateCheck()
 
   return (
     <nav className="w-52 shrink-0 h-full flex flex-col bg-[#181818] py-4 gap-0.5">
@@ -42,7 +44,10 @@ export function Sidebar() {
           }
         >
           <Icon size={15} />
-          {t(key)}
+          <span className="flex-1">{t(key)}</span>
+          {key === 'nav.about' && hasUpdate && (
+            <span className="w-2 h-2 rounded-full bg-[#c084fc] shrink-0" />
+          )}
         </NavLink>
       ))}
       <div className="mt-auto pt-4 px-4 border-t border-[#282828] flex gap-2">
