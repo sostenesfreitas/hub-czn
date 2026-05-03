@@ -232,18 +232,9 @@ export function RescuePage() {
   const [activeTab, setActiveTab] = useState(0)
   const qc = useQueryClient()
 
-  const { data: captureStatus } = useQuery({
-    queryKey: ['capture-status'],
-    queryFn: () => api.captureStatus(),
-    refetchInterval: 3000,
-  })
-
-  const capturing = captureStatus?.running ?? false
-
   const { data: banners = [], isLoading, error } = useQuery({
     queryKey: ['rescue-records'],
     queryFn: () => api.rescueRecords(),
-    refetchInterval: capturing ? 10000 : false,
   })
 
   if (isLoading) return <div className="p-8 text-[#b3b3b3]">{t('rescue.loading')}</div>
@@ -281,17 +272,15 @@ export function RescuePage() {
             <Download size={13} className="mr-1" />
             {t('rescue.exportJson')}
           </Button>
-          {!capturing && (
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
-              onClick={() => qc.invalidateQueries({ queryKey: ['rescue-records'] })}
-            >
-              <RefreshCw size={13} className="mr-1" />
-              {t('rescue.refresh')}
-            </Button>
-          )}
+          <Button
+            size="sm"
+            variant="outline"
+            className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
+            onClick={() => qc.invalidateQueries({ queryKey: ['rescue-records'] })}
+          >
+            <RefreshCw size={13} className="mr-1" />
+            {t('rescue.refresh')}
+          </Button>
         </div>
       </div>
 
@@ -313,7 +302,7 @@ export function RescuePage() {
         ))}
       </div>
 
-      <BannerView banner={safeBanner} />
+      <BannerView key={safeBanner.banner_name} banner={safeBanner} />
     </div>
   )
 }
