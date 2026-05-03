@@ -23,6 +23,9 @@ class SimulateDamageRequest(BaseModel):
     morale: int = Field(default=0, ge=0, le=50)
     use_sparks: bool = True
     monster_def: int = Field(default=20, ge=0, le=9999)
+    frightened: bool = False          # player debuff: ×0.75 damage dealt (cs00_0003)
+    exposed_stacks: int = Field(default=0, ge=0, le=20)  # monster debuff: +50% dmg taken per stack (cs00_0002)
+    fortitude: bool = False           # monster buff: ×0.85 dmg taken (cs00_0062)
 
 
 class CardResult(BaseModel):
@@ -47,6 +50,10 @@ class SimulateDamageResponse(BaseModel):
     crit_factor: float
     monster_def: int
     def_reduction: float
+    frightened: bool
+    exposed_stacks: int
+    fortitude: bool
+    buff_mult: float
     cards: list[CardResult]
     total_damage: float
     total_effective_damage: float
@@ -174,6 +181,14 @@ def simulate_damage(body: SimulateDamageRequest):
     morale_mult = 1 + (body.morale * MORALE_PCT_PER_STACK / 100)
     # DEF damage reduction: same formula used for EHP (def / 300)
     def_reduction = 300 / (300 + body.monster_def)
+    # Combat status buff/debuff multipliers
+    buff_mult = 1.0
+    if body.frightened:
+        buff_mult *= 0.75   # cs00_0003: MATHSIGN_MULTIPLY_PCT 75
+    if body.exposed_stacks > 0:
+        buff_mult *= 1 + body.exposed_stacks * 0.5  # cs00_0002: MATHSIGN_ADD_HUND_MULTIPLY_PCT 50
+    if body.fortitude:
+        buff_mult *= 0.85   # cs00_0062: MATHSIGN_MULTIPLY_PCT 85
 
     # --- Load card DB ---
     card_lookup, eff_lookup, rspark_lookup = _load_card_db(db_path)
@@ -221,7 +236,7 @@ def simulate_damage(body: SimulateDamageRequest):
 
         base_dmg = atk * (eff_value / 100)
         avg_dmg = base_dmg * crit_factor
-        final_dmg = avg_dmg * morale_mult
+        final_dmg = avg_dmg * morale_mult * buff_mult
         effective_dmg = final_dmg * def_reduction
 
         results.append(CardResult(
@@ -249,6 +264,10 @@ def simulate_damage(body: SimulateDamageRequest):
         crit_factor=round(crit_factor, 3),
         monster_def=body.monster_def,
         def_reduction=round(def_reduction, 4),
+        frightened=body.frightened,
+        exposed_stacks=body.exposed_stacks,
+        fortitude=body.fortitude,
+        buff_mult=round(buff_mult, 4),
         cards=results,
         total_damage=round(total_dmg, 1),
         total_effective_damage=round(total_eff_dmg, 1),
