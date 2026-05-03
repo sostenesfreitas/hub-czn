@@ -188,6 +188,7 @@ export interface OptimizerConfig {
   excluded_heroes: string[]
   max_results: number
   stat_weights: Record<string, number> | null
+  allow_wildcards: boolean
 }
 
 export interface OptimizeProgress {

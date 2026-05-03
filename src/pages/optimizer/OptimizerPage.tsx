@@ -19,6 +19,7 @@ const DEFAULT_CONFIG: OptimizerConfig = {
   excluded_heroes: [],
   max_results: 10,
   stat_weights: null,
+  allow_wildcards: false,
 }
 
 export function OptimizerPage() {

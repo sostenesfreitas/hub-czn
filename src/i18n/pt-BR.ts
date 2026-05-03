@@ -272,6 +272,8 @@ const ptBR = {
     includeEquippedTip: 'Quando ativado, o gear já equipado em personagens também é avaliado. Útil para otimizar toda a coleção.',
     excludeCharsTip: 'O gear equipado em personagens excluídos é reservado e não será usado em builds.',
     statPriorityLabel: 'Prioridade de Stat (-1 a 3)',
+    allowWildcards: 'Peças coringa',
+    allowWildcardsTip: 'Quando ativado, os slots além dos mínimos de set são preenchidos com as melhores peças do inventário inteiro, independente de set. Não tem efeito quando todos os 6 slots já estão comprometidos pelos sets selecionados.',
   },
   about: {
     title: 'Sobre',

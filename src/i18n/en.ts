@@ -272,6 +272,8 @@ const en = {
     includeEquippedTip: 'When on, gear already equipped on characters is also evaluated. Useful when optimizing your full collection.',
     excludeCharsTip: 'Gear equipped on excluded characters is reserved and will not be used in builds.',
     statPriorityLabel: 'Stat Priority (-1 to 3)',
+    allowWildcards: 'Wildcard pieces',
+    allowWildcardsTip: 'When on, slots beyond the set minimums are filled with the highest-scoring pieces from your full inventory, regardless of set. Has no effect when all 6 slots are already committed to selected sets.',
   },
   about: {
     title: 'About',
