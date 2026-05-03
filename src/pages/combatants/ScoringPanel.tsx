@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -89,12 +89,12 @@ function PanelContent({
 }: ScoringPanelProps) {
   const { t } = useTranslation()
 
-  const STAT_TIPS: Record<string, string> = {
+  const STAT_TIPS = useMemo<Record<string, string>>(() => ({
     CRate: t('tips.crate'),
     CDmg: t('tips.cdmg'),
     'DoT%': t('tips.dot'),
     Ego: t('tips.ego'),
-  }
+  }), [t])
 
   const STAT_GROUPS = [
     { labelKey: 'scoring.group.offensive', stats: ['Flat ATK', 'ATK%', 'CRate', 'CDmg', 'Extra DMG%', 'DoT%'] },
