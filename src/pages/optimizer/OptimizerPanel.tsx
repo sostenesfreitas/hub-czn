@@ -119,7 +119,7 @@ export function OptimizerPanel({
     )
     const twoIds = preset.recommended_sets
       .filter((id) => sets.some((s) => s.id === id && s.pieces === 2))
-      .slice(0, 2)
+      .slice(0, 3)
     const m4 = (preset.main_stat_4.find((s) => SLOT_4_STATS.includes(s as typeof SLOT_4_STATS[number])) ?? null) as string | null
     const m5 = (preset.main_stat_5.find((s) => SLOT_5_STATS.includes(s as typeof SLOT_5_STATS[number])) ?? null) as string | null
     const m6 = (preset.main_stat_6.find((s) => SLOT_6_STATS.includes(s as typeof SLOT_6_STATS[number])) ?? null) as string | null
@@ -289,12 +289,27 @@ export function OptimizerPanel({
           options={twoPieceOptions}
           selected={config.two_piece_sets.map(String)}
           onChange={(ids) => patch({ two_piece_sets: ids.map(Number) })}
-          maxSelect={2}
+          maxSelect={3}
           placeholder={t('optimizer.noneOption')}
           disabled={disabled}
           isLoading={setsLoading}
         />
       </div>
+
+      {/* Wildcard toggle */}
+      <label className="flex items-center gap-2 cursor-pointer select-none border-t border-[#282828] pt-3 mt-1">
+        <input
+          type="checkbox"
+          checked={config.allow_wildcards}
+          onChange={(e) => patch({ allow_wildcards: e.target.checked })}
+          disabled={disabled}
+          className="accent-[#c084fc]"
+        />
+        <span className="text-xs text-[#ffffff] flex items-center gap-1">
+          {t('optimizer.allowWildcards')}
+          <InfoPopover content={t('optimizer.allowWildcardsTip')} />
+        </span>
+      </label>
 
       {/* Main stats */}
       {MAIN_STAT_SLOTS.map(({ labelKey, key, opts }) => (
