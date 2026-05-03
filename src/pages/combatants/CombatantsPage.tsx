@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { RefreshCw, User, Loader2, ChevronDown, ChevronRight } from 'lucide-react'
+import { RefreshCw, User, Loader2, ChevronDown, ChevronRight, Download } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
 import type { Combatant } from '@/lib/types'
 import { GearSlotCard, FinalStatsPanel } from './CombatantDetail'
+import { Button } from '@/components/ui/button'
 
 // ─── Attribute badge ───────────────────────────────────────────────────────
 
@@ -256,6 +257,24 @@ export function CombatantsPage() {
     setExpandedId((prev) => (prev === charId ? null : charId))
   }, [])
 
+  const [exporting, setExporting] = useState(false)
+
+  async function exportCombatants() {
+    setExporting(true)
+    try {
+      const data = await api.combatantsExport()
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'combatants.json'
+      a.click()
+      URL.revokeObjectURL(url)
+    } finally {
+      setExporting(false)
+    }
+  }
+
   if (error) {
     return (
       <div className="p-4">
@@ -293,16 +312,33 @@ export function CombatantsPage() {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-1.5">
-      {combatants.map((c, i) => (
-        <CombatantRow
-          key={c.char_id}
-          combatant={c}
-          rank={i + 1}
-          expanded={expandedId === c.char_id}
-          onToggle={() => handleToggle(c.char_id)}
-        />
-      ))}
+    <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex items-center justify-end px-4 pt-3 pb-1 shrink-0">
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={exporting}
+          onClick={exportCombatants}
+          className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff] disabled:opacity-40"
+        >
+          {exporting
+            ? <Loader2 size={13} className="mr-1 animate-spin" />
+            : <Download size={13} className="mr-1" />
+          }
+          {t('combatants.exportJson')}
+        </Button>
+      </div>
+      <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-1.5">
+        {combatants.map((c, i) => (
+          <CombatantRow
+            key={c.char_id}
+            combatant={c}
+            rank={i + 1}
+            expanded={expandedId === c.char_id}
+            onToggle={() => handleToggle(c.char_id)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

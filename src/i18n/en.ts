@@ -49,6 +49,7 @@ const en = {
     loading: 'Loading combatants',
     empty: 'No combatants found.',
     emptyHint: 'Load a capture file from the Fragments screen.',
+    exportJson: 'Export JSON',
     level: 'Lv. {{level}}',
     detail: {
       loading: 'Loading combatant data',
@@ -183,6 +184,7 @@ const en = {
     loadError: 'Failed to load records. Make sure the API is running.',
     empty: 'No records captured yet. Start capture and navigate to Rescue Records in the game.',
     refresh: 'Refresh',
+    exportJson: 'Export JSON',
     fiveStarRecent: 'Recent 5★ Pulls',
     fullHistory: 'Full History',
     filter: { all: 'All' },

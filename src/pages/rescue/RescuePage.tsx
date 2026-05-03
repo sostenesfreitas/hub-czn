@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import { User, RefreshCw } from 'lucide-react'
+import { User, RefreshCw, Download } from 'lucide-react'
 import { api } from '@/lib/api'
 import i18n from '@/i18n'
 import type { RescueBanner, RescuePull } from '@/lib/types'
@@ -222,6 +222,16 @@ function BannerView({ banner }: { banner: RescueBanner }) {
   )
 }
 
+function exportRescue(banners: RescueBanner[]) {
+  const blob = new Blob([JSON.stringify(banners, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'rescue_records.json'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 export function RescuePage() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
@@ -266,17 +276,28 @@ export function RescuePage() {
     <div className="p-6 flex flex-col gap-4 overflow-y-auto h-full">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-[#ffffff]">{t('rescue.title')}</h1>
-        {!capturing && (
+        <div className="flex items-center gap-2">
           <Button
             size="sm"
             variant="outline"
             className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
-            onClick={() => qc.invalidateQueries({ queryKey: ['rescue-records'] })}
+            onClick={() => exportRescue(banners)}
           >
-            <RefreshCw size={13} className="mr-1" />
-            {t('rescue.refresh')}
+            <Download size={13} className="mr-1" />
+            {t('rescue.exportJson')}
           </Button>
-        )}
+          {!capturing && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
+              onClick={() => qc.invalidateQueries({ queryKey: ['rescue-records'] })}
+            >
+              <RefreshCw size={13} className="mr-1" />
+              {t('rescue.refresh')}
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Banner tabs */}

@@ -49,6 +49,7 @@ const ptBR = {
     loading: 'Carregando combatentes',
     empty: 'Nenhum combatente encontrado.',
     emptyHint: 'Carregue um arquivo de captura na tela Fragmentos.',
+    exportJson: 'Exportar JSON',
     level: 'Nv. {{level}}',
     detail: {
       loading: 'Carregando dados do combatente',
@@ -183,6 +184,7 @@ const ptBR = {
     loadError: 'Falha ao carregar registros. Verifique se a API está em execução.',
     empty: 'Nenhum registro capturado ainda. Inicie a captura e navegue até Rescue Records no jogo.',
     refresh: 'Atualizar',
+    exportJson: 'Exportar JSON',
     fiveStarRecent: 'Pulls 5★ Recentes',
     fullHistory: 'Histórico Completo',
     filter: { all: 'Todos' },

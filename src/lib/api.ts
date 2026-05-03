@@ -83,6 +83,7 @@ export const api = {
 
   autoscrollStart: () => request<{ ok: boolean }>('/api/autoscroll/start', { method: 'POST' }),
   autoscrollStop:  () => request<{ ok: boolean }>('/api/autoscroll/stop',  { method: 'POST' }),
+  combatantsExport: () => request<unknown[]>('/api/combatants/export'),
 
   rescueRecords: () => request<RescueBanner[]>('/api/rescue/records'),
 
