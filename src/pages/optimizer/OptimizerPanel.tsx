@@ -220,12 +220,13 @@ export function OptimizerPanel({
 
       {/* Character */}
       <div className="space-y-1">
-        <label htmlFor="char-combobox-trigger" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
           {t('optimizer.character')}
         </label>
         <CharacterCombobox
           combatants={combatants}
           value={config.char_name}
+          ariaLabel={t('optimizer.character')}
           onChange={(charId) => {
             lastWeightInitRef.current = ''
             lastAutoFilledRef.current = ''
