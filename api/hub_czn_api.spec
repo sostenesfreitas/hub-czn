@@ -2,10 +2,24 @@
 # PyInstaller spec for the Hub CZN FastAPI sidecar.
 # Run from the repo root: pyinstaller api/hub_czn_api.spec --clean --noconfirm
 
+import sys
+import os
 from pathlib import Path
 
 repo_root = Path(SPECPATH).parent  # SPECPATH = .../api; parent = repo root
 vribbels = repo_root / 'Vribbels'
+
+# PyInstaller does not always auto-include the versioned Python DLL on Windows.
+# Collect both python3.dll (stable ABI stub) and pythonXYZ.dll explicitly.
+_py_home = os.path.dirname(sys.executable)
+_py_dlls = []
+for _name in (
+    f'python{sys.version_info.major}{sys.version_info.minor}.dll',
+    f'python{sys.version_info.major}.dll',
+):
+    _p = os.path.join(_py_home, _name)
+    if os.path.exists(_p):
+        _py_dlls.append((_p, '.'))
 
 a = Analysis(
     [str(repo_root / 'api' / 'main.py')],
@@ -14,7 +28,7 @@ a = Analysis(
         str(repo_root / 'api'),
         str(vribbels),
     ],
-    binaries=[],
+    binaries=_py_dlls,
     datas=[
         (str(vribbels / 'game_data'),        'game_data'),
         (str(vribbels / 'images'),           'images'),
@@ -55,8 +69,9 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    [],
-    exclude_binaries=True,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
     name='hub-czn-api',
     debug=False,
     bootloader_ignore_signals=False,
@@ -68,14 +83,4 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='hub-czn-api',
 )
