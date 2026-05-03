@@ -49,9 +49,9 @@ export function CharacterCombobox({
   const containerRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
-  const triggerId = useId()
-  const instanceId = useId()
-  const listboxId = useId()
+  const baseId = useId()
+  const triggerId = `${baseId}-trigger`
+  const listboxId = `${baseId}-listbox`
 
   useEffect(() => {
     if (!open) return
@@ -114,12 +114,12 @@ export function CharacterCombobox({
             <input
               ref={searchRef}
               role="combobox"
-              aria-expanded={true}
+              aria-expanded={open}
               aria-controls={listboxId}
               aria-autocomplete="list"
               aria-activedescendant={
                 activeIndex >= 0 && filtered[activeIndex]
-                  ? `${instanceId}-option-${filtered[activeIndex].char_id}`
+                  ? `${baseId}-option-${filtered[activeIndex].char_id}`
                   : undefined
               }
               aria-label="Buscar personagem"
@@ -157,7 +157,7 @@ export function CharacterCombobox({
             {filtered.map((c, i) => (
               <div
                 key={c.char_id}
-                id={`${instanceId}-option-${c.char_id}`}
+                id={`${baseId}-option-${c.char_id}`}
                 role="option"
                 aria-selected={c.char_id === value}
                 tabIndex={-1}
@@ -174,16 +174,16 @@ export function CharacterCombobox({
                   'w-full flex items-center gap-2 px-2.5 py-1.5 text-xs text-left cursor-pointer hover:bg-[#282828]',
                   c.char_id === value ? 'bg-[#c084fc]/10 text-[#c084fc]' : 'text-[#b3b3b3]',
                   activeIndex === i ? 'bg-[#282828]' : '',
-                ].join(' ')}
+                ].filter(Boolean).join(' ')}
               >
                 <CharAvatar combatant={c} />
                 <span className="truncate">{c.name}</span>
               </div>
             ))}
-            {filtered.length === 0 && (
-              <p className="px-3 py-2 text-xs text-[#444]">Nenhum personagem encontrado</p>
-            )}
           </div>
+          {filtered.length === 0 && (
+            <p className="px-3 py-2 text-xs text-[#444]">Nenhum personagem encontrado</p>
+          )}
         </div>
       )}
     </div>
