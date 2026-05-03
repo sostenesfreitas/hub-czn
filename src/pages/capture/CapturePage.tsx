@@ -19,6 +19,12 @@ const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
 
 const SKIP_MODAL_KEY = 'hub-czn:autoscroll-skip-modal'
 
+const AUTOSCROLL_MODAL_STEPS = [
+  { n: 1 as const, pre: 'capture.autoscroll.modal.step1Pre' as const, bold: 'capture.autoscroll.modal.step1Bold' as const, post: 'capture.autoscroll.modal.step1Post' as const },
+  { n: 2 as const, pre: 'capture.autoscroll.modal.step2Pre' as const, bold: 'capture.autoscroll.modal.step2Bold' as const, post: 'capture.autoscroll.modal.step2Post' as const },
+  { n: 3 as const, pre: 'capture.autoscroll.modal.step3Pre' as const, bold: 'capture.autoscroll.modal.step3Bold' as const, post: 'capture.autoscroll.modal.step3Post' as const },
+] as const
+
 function PrereqBadge({ ok, label }: { ok: boolean; label: string }) {
   return (
     <span className={`flex items-center gap-1 text-xs ${ok ? 'text-green-400' : 'text-red-400'}`}>
@@ -92,21 +98,18 @@ function AutoScrollConfirmModal({
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
         <Dialog.Content
           className="fixed left-1/2 top-1/2 z-50 w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-[#282828] bg-[#111] p-5 shadow-xl focus:outline-none"
-          aria-describedby={undefined}
         >
-          <Dialog.Title asChild>
-            <div>
-              <p className="text-[11px] text-[#666] uppercase tracking-wider mb-1">Auto-scroll de resgates</p>
-              <p className="text-sm font-semibold text-white mb-3">{t('capture.autoscroll.modal.title')}</p>
-            </div>
+          <Dialog.Title className="mb-3">
+            <p className="text-[11px] text-[#666] uppercase tracking-wider mb-1">Auto-scroll de resgates</p>
+            <p className="text-sm font-semibold text-white">{t('capture.autoscroll.modal.title')}</p>
           </Dialog.Title>
 
+          <Dialog.Description className="sr-only">
+            {t('capture.autoscroll.modal.step1Pre')} {t('capture.autoscroll.modal.step1Bold')} {t('capture.autoscroll.modal.step1Post')}
+          </Dialog.Description>
+
           <div className="flex flex-col gap-2 text-xs text-[#b3b3b3]">
-            {[
-              { n: 1, pre: 'capture.autoscroll.modal.step1Pre' as const, bold: 'capture.autoscroll.modal.step1Bold' as const, post: 'capture.autoscroll.modal.step1Post' as const },
-              { n: 2, pre: 'capture.autoscroll.modal.step2Pre' as const, bold: 'capture.autoscroll.modal.step2Bold' as const, post: 'capture.autoscroll.modal.step2Post' as const },
-              { n: 3, pre: 'capture.autoscroll.modal.step3Pre' as const, bold: 'capture.autoscroll.modal.step3Bold' as const, post: 'capture.autoscroll.modal.step3Post' as const },
-            ].map(({ n, pre, bold, post }) => (
+            {AUTOSCROLL_MODAL_STEPS.map(({ n, pre, bold, post }) => (
               <div key={n} className="flex gap-2.5 items-start">
                 <div className="w-5 h-5 rounded-full bg-[#c084fc] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                   {n}
