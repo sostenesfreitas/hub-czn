@@ -8,11 +8,21 @@ import { CharacterCombobox } from '@/components/ui/character-combobox'
 
 const MORALE_PCT = 20
 
-function StatPill({ label, value }: { label: string; value: string }) {
+// DEF presets derived from equip_stat_define@equip_stat_define.json
+const DEF_PRESETS = [
+  { label: 'WL1 (DEF 10)', value: 10 },
+  { label: 'Test (DEF 20)', value: 20 },
+  { label: 'WL2 (DEF 17)', value: 17 },
+  { label: 'WL3 (DEF 23)', value: 23 },
+  { label: 'WL4 (DEF 27)', value: 27 },
+  { label: 'WL5 (DEF 31)', value: 31 },
+]
+
+function StatPill({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <div className="flex flex-col items-center bg-[#222] rounded px-3 py-2 min-w-[80px]">
+    <div className={`flex flex-col items-center rounded px-3 py-2 min-w-[80px] ${highlight ? 'bg-[#1a2a1a]' : 'bg-[#222]'}`}>
       <span className="text-[#888] text-[10px] uppercase tracking-wide">{label}</span>
-      <span className="text-[#e5e7eb] font-bold text-sm mt-0.5">{value}</span>
+      <span className={`font-bold text-sm mt-0.5 ${highlight ? 'text-[#a3e635]' : 'text-[#e5e7eb]'}`}>{value}</span>
     </div>
   )
 }
@@ -38,10 +48,10 @@ function CardRow({ card }: { card: SimCardResult }) {
       </td>
       <td className="px-3 py-2 text-center text-[#e5e7eb] text-xs">{card.hits}</td>
       <td className="px-3 py-2 text-right text-[#e5e7eb] text-xs font-mono">
-        {card.base_damage.toLocaleString()}
+        {card.final_damage.toLocaleString()}
       </td>
       <td className="px-3 py-2 text-right text-[#a3e635] text-xs font-mono font-bold">
-        {card.final_damage.toLocaleString()}
+        {card.effective_damage.toLocaleString()}
       </td>
     </tr>
   )
@@ -53,6 +63,7 @@ export function SimulatorPage() {
   const [charName, setCharName] = useState('')
   const [morale, setMorale] = useState(0)
   const [useSparks, setUseSparks] = useState(true)
+  const [monsterDef, setMonsterDef] = useState(20)
   const [result, setResult] = useState<SimulateDamageResponse | null>(null)
 
   const { data: status } = useQuery({
@@ -70,13 +81,13 @@ export function SimulatorPage() {
 
   const mutation = useMutation({
     mutationFn: () =>
-      api.simulateDamage({ char_name: charName, morale, use_sparks: useSparks }),
+      api.simulateDamage({ char_name: charName, morale, use_sparks: useSparks, monster_def: monsterDef }),
     onSuccess: (data) => setResult(data),
   })
 
   const canRun = charName !== '' && !mutation.isPending && (status?.data_loaded ?? false)
-
   const moraleMultDisplay = `×${(1 + morale * MORALE_PCT / 100).toFixed(2)}`
+  const defReductionPreview = `${(300 / (300 + monsterDef) * 100).toFixed(1)}%`
 
   return (
     <div className="flex h-full overflow-hidden">
@@ -119,6 +130,40 @@ export function SimulatorPage() {
             <span>0</span>
             <span>10</span>
             <span>20</span>
+          </div>
+        </div>
+
+        {/* Monster DEF */}
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between items-center">
+            <label className="text-[#b3b3b3] text-xs">{t('simulator.monsterDef')}</label>
+            <span className="text-[#fb923c] text-xs font-mono">{defReductionPreview} {t('simulator.dmgPasses')}</span>
+          </div>
+          <div className="flex gap-1">
+            <input
+              type="number"
+              min={0}
+              max={9999}
+              value={monsterDef}
+              onChange={(e) => setMonsterDef(Math.max(0, Number(e.target.value)))}
+              className="flex-1 bg-[#222] border border-[#333] text-[#e5e7eb] text-xs rounded px-2 py-1 w-0 font-mono"
+            />
+          </div>
+          <div className="flex flex-wrap gap-1 mt-1">
+            {DEF_PRESETS.map((p) => (
+              <button
+                key={p.value}
+                type="button"
+                onClick={() => setMonsterDef(p.value)}
+                className={`text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+                  monsterDef === p.value
+                    ? 'bg-[#fb923c] text-white'
+                    : 'bg-[#2a2a2a] text-[#888] hover:text-[#e5e7eb]'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -182,15 +227,27 @@ export function SimulatorPage() {
                 <StatPill label="CDmg" value={`${result.cdmg.toFixed(1)}%`} />
                 <StatPill label={t('simulator.critFactor')} value={`×${result.crit_factor.toFixed(3)}`} />
                 <StatPill label={t('simulator.morale')} value={`${result.morale_stacks} (${result.morale_mult.toFixed(2)}×)`} />
+                <StatPill
+                  label={`DEF ${result.monster_def}`}
+                  value={`${(result.def_reduction * 100).toFixed(1)}%`}
+                />
               </div>
             </div>
 
-            {/* Total */}
-            <div className="bg-[#1e1e1e] rounded px-4 py-3 flex items-center justify-between">
-              <span className="text-[#b3b3b3] text-sm">{t('simulator.totalDeck')}</span>
-              <span className="text-[#a3e635] font-bold text-xl font-mono">
-                {result.total_damage.toLocaleString()}
-              </span>
+            {/* Totals */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-[#1e1e1e] rounded px-4 py-3 flex flex-col gap-0.5">
+                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalDeck')}</span>
+                <span className="text-[#e5e7eb] font-bold text-lg font-mono">
+                  {result.total_damage.toLocaleString()}
+                </span>
+              </div>
+              <div className="bg-[#1a2a1a] rounded px-4 py-3 flex flex-col gap-0.5">
+                <span className="text-[#888] text-[10px] uppercase tracking-wide">{t('simulator.totalEffective')}</span>
+                <span className="text-[#a3e635] font-bold text-lg font-mono">
+                  {result.total_effective_damage.toLocaleString()}
+                </span>
+              </div>
             </div>
 
             {/* Card table */}
@@ -205,13 +262,13 @@ export function SimulatorPage() {
                       <th className="px-3 py-2 text-center">{t('simulator.col.cost')}</th>
                       <th className="px-3 py-2 text-center">{t('simulator.col.coefficient')}</th>
                       <th className="px-3 py-2 text-center">{t('simulator.col.hits')}</th>
-                      <th className="px-3 py-2 text-right">{t('simulator.col.baseDmg')}</th>
                       <th className="px-3 py-2 text-right">{t('simulator.col.finalDmg')}</th>
+                      <th className="px-3 py-2 text-right">{t('simulator.col.effectiveDmg')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {result.cards
-                      .sort((a, b) => b.final_damage - a.final_damage)
+                      .sort((a, b) => b.effective_damage - a.effective_damage)
                       .map((card) => (
                         <CardRow key={`${card.card_id}-${card.spark_id}`} card={card} />
                       ))}

@@ -232,6 +232,7 @@ export interface SimulateRequest {
   char_name: string
   morale: number
   use_sparks: boolean
+  monster_def: number
 }
 
 export interface SimCardResult {
@@ -243,6 +244,7 @@ export interface SimCardResult {
   base_damage: number
   avg_damage: number
   final_damage: number
+  effective_damage: number
 }
 
 export interface SimulateDamageResponse {
@@ -253,6 +255,9 @@ export interface SimulateDamageResponse {
   morale_stacks: number
   morale_mult: number
   crit_factor: number
+  monster_def: number
+  def_reduction: number
   cards: SimCardResult[]
   total_damage: number
+  total_effective_damage: number
 }

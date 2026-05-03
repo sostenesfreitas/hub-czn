@@ -22,6 +22,7 @@ class SimulateDamageRequest(BaseModel):
     char_name: str
     morale: int = Field(default=0, ge=0, le=50)
     use_sparks: bool = True
+    monster_def: int = Field(default=20, ge=0, le=9999)
 
 
 class CardResult(BaseModel):
@@ -33,6 +34,7 @@ class CardResult(BaseModel):
     base_damage: float
     avg_damage: float
     final_damage: float
+    effective_damage: float
 
 
 class SimulateDamageResponse(BaseModel):
@@ -43,8 +45,11 @@ class SimulateDamageResponse(BaseModel):
     morale_stacks: int
     morale_mult: float
     crit_factor: float
+    monster_def: int
+    def_reduction: float
     cards: list[CardResult]
     total_damage: float
+    total_effective_damage: float
 
 
 # ---------------------------------------------------------------------------
@@ -167,6 +172,8 @@ def simulate_damage(body: SimulateDamageRequest):
     # Expected damage factor: (crit% × crit_dmg%) + (non-crit% × 100%)
     crit_factor = (crate / 100) * (cdmg / 100) + (1 - crate / 100)
     morale_mult = 1 + (body.morale * MORALE_PCT_PER_STACK / 100)
+    # DEF damage reduction: same formula used for EHP (def / 300)
+    def_reduction = 300 / (300 + body.monster_def)
 
     # --- Load card DB ---
     card_lookup, eff_lookup, rspark_lookup = _load_card_db(db_path)
@@ -215,6 +222,7 @@ def simulate_damage(body: SimulateDamageRequest):
         base_dmg = atk * (eff_value / 100)
         avg_dmg = base_dmg * crit_factor
         final_dmg = avg_dmg * morale_mult
+        effective_dmg = final_dmg * def_reduction
 
         results.append(CardResult(
             card_id=base_card_id,
@@ -225,9 +233,11 @@ def simulate_damage(body: SimulateDamageRequest):
             base_damage=round(base_dmg, 1),
             avg_damage=round(avg_dmg, 1),
             final_damage=round(final_dmg, 1),
+            effective_damage=round(effective_dmg, 1),
         ))
 
     total_dmg = sum(r.final_damage for r in results)
+    total_eff_dmg = sum(r.effective_damage for r in results)
 
     return SimulateDamageResponse(
         char_name=body.char_name,
@@ -237,8 +247,11 @@ def simulate_damage(body: SimulateDamageRequest):
         morale_stacks=body.morale,
         morale_mult=round(morale_mult, 3),
         crit_factor=round(crit_factor, 3),
+        monster_def=body.monster_def,
+        def_reduction=round(def_reduction, 4),
         cards=results,
         total_damage=round(total_dmg, 1),
+        total_effective_damage=round(total_eff_dmg, 1),
     )
 
 
