@@ -65,9 +65,9 @@ export function SimulatorPage() {
   const [morale, setMorale] = useState(0)
   const [useSparks, setUseSparks] = useState(true)
   const [monsterDef, setMonsterDef] = useState(20)
-  const [frightened, setFrightened] = useState(false)
-  const [exposedStacks, setExposedStacks] = useState(0)
-  const [fortitude, setFortitude] = useState(false)
+  const [weaken, setWeaken] = useState(false)
+  const [vulnerableStacks, setVulnerableStacks] = useState(0)
+  const [dmgReduction, setDmgReduction] = useState(false)
   const [result, setResult] = useState<SimulateDamageResponse | null>(null)
 
   const { data: status } = useQuery({
@@ -90,9 +90,9 @@ export function SimulatorPage() {
         morale,
         use_sparks: useSparks,
         monster_def: monsterDef,
-        frightened,
-        exposed_stacks: exposedStacks,
-        fortitude,
+        frightened: weaken,
+        exposed_stacks: vulnerableStacks,
+        fortitude: dmgReduction,
       }),
     onSuccess: (data) => setResult(data),
   })
@@ -185,46 +185,48 @@ export function SimulatorPage() {
 
           <div className="flex flex-col gap-1.5 bg-[#1e1e1e] rounded p-2">
             <div className="flex items-center justify-between">
-              <label className="text-[#f87171] text-xs cursor-pointer" htmlFor="frightened">
-                {t('simulator.frightened')}
-                <span className="ml-1 text-[#555] text-[10px]">×0.75 ATK</span>
+              <label className="text-[#f87171] text-xs cursor-pointer" htmlFor="weaken">
+                {t('simulator.weaken')}
+                <span className="ml-1 text-[#555] text-[10px]">{t('simulator.weakenHint')}</span>
               </label>
               <input
-                id="frightened"
+                id="weaken"
                 type="checkbox"
-                checked={frightened}
-                onChange={(e) => setFrightened(e.target.checked)}
+                checked={weaken}
+                onChange={(e) => setWeaken(e.target.checked)}
                 className="accent-[#f87171]"
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-[#34d399] text-xs cursor-pointer" htmlFor="fortitude">
-                {t('simulator.fortitude')}
-                <span className="ml-1 text-[#555] text-[10px]">×0.85 taken</span>
+              <label className="text-[#34d399] text-xs cursor-pointer" htmlFor="dmg-reduction">
+                {t('simulator.dmgReduction')}
+                <span className="ml-1 text-[#555] text-[10px]">{t('simulator.dmgReductionHint')}</span>
               </label>
               <input
-                id="fortitude"
+                id="dmg-reduction"
                 type="checkbox"
-                checked={fortitude}
-                onChange={(e) => setFortitude(e.target.checked)}
+                checked={dmgReduction}
+                onChange={(e) => setDmgReduction(e.target.checked)}
                 className="accent-[#34d399]"
               />
             </div>
 
             <div className="flex flex-col gap-0.5 mt-1">
               <div className="flex justify-between items-center">
-                <span className="text-[#facc15] text-xs">{t('simulator.exposed')}</span>
+                <span className="text-[#facc15] text-xs">{t('simulator.vulnerable')}</span>
                 <span className="text-[#facc15] text-xs font-mono">
-                  {exposedStacks > 0 ? `×${(1 + exposedStacks * 0.5).toFixed(1)} taken` : 'off'}
+                  {vulnerableStacks > 0
+                    ? t('simulator.vulnerableHint', { mult: (1 + vulnerableStacks * 0.5).toFixed(1) })
+                    : 'off'}
                 </span>
               </div>
               <input
                 type="range"
                 min={0}
                 max={5}
-                value={exposedStacks}
-                onChange={(e) => setExposedStacks(Number(e.target.value))}
+                value={vulnerableStacks}
+                onChange={(e) => setVulnerableStacks(Number(e.target.value))}
                 className="w-full accent-[#facc15]"
               />
               <div className="flex justify-between text-[#555] text-[10px]">

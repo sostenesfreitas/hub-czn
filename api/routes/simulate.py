@@ -23,9 +23,9 @@ class SimulateDamageRequest(BaseModel):
     morale: int = Field(default=0, ge=0, le=50)
     use_sparks: bool = True
     monster_def: int = Field(default=20, ge=0, le=9999)
-    frightened: bool = False          # player debuff: ×0.75 damage dealt (cs00_0003)
-    exposed_stacks: int = Field(default=0, ge=0, le=20)  # monster debuff: +50% dmg taken per stack (cs00_0002)
-    fortitude: bool = False           # monster buff: ×0.85 dmg taken (cs00_0062)
+    frightened: bool = False          # Weaken: player debuff ×0.75 damage dealt (cs00_0003)
+    exposed_stacks: int = Field(default=0, ge=0, le=20)  # Vulnerable: +50% dmg taken per stack (cs00_0002)
+    fortitude: bool = False           # Damage Reduction: monster buff ×0.85 dmg taken (cs00_0062)
 
 
 class CardResult(BaseModel):
@@ -184,11 +184,11 @@ def simulate_damage(body: SimulateDamageRequest):
     # Combat status buff/debuff multipliers
     buff_mult = 1.0
     if body.frightened:
-        buff_mult *= 0.75   # cs00_0003: MATHSIGN_MULTIPLY_PCT 75
+        buff_mult *= 0.75   # Weaken (cs00_0003): -25% damage dealt
     if body.exposed_stacks > 0:
-        buff_mult *= 1 + body.exposed_stacks * 0.5  # cs00_0002: MATHSIGN_ADD_HUND_MULTIPLY_PCT 50
+        buff_mult *= 1 + body.exposed_stacks * 0.5  # Vulnerable (cs00_0002): +50% dmg taken per stack
     if body.fortitude:
-        buff_mult *= 0.85   # cs00_0062: MATHSIGN_MULTIPLY_PCT 85
+        buff_mult *= 0.85   # Damage Reduction (cs00_0062): -15% dmg taken by monster
 
     # --- Load card DB ---
     card_lookup, eff_lookup, rspark_lookup = _load_card_db(db_path)
