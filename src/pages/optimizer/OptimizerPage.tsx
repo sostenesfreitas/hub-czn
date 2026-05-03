@@ -36,6 +36,27 @@ export function OptimizerPage() {
   const jobStateRef = useRef<JobState>('idle')
   jobStateRef.current = jobState
 
+  const configRef = useRef<OptimizerConfig>(DEFAULT_CONFIG)
+  configRef.current = config
+
+  // Restore last session state
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('czn_optimizer_state')
+      if (!raw) return
+      const saved = JSON.parse(raw) as {
+        config: OptimizerConfig
+        results: OptimizeResult[]
+        selectedRank: number | null
+      }
+      if (!saved.results?.length) return
+      setConfig(saved.config)
+      setResults(saved.results)
+      setSelectedRank(saved.selectedRank ?? null)
+      setJobState('done')
+    } catch { /* malformed — fall back to default */ }
+  }, [])
+
   // WebSocket: open on mount, reopen if port changes
   useEffect(() => {
     const ws = new WebSocket(`ws://127.0.0.1:${port}/ws`)
@@ -56,11 +77,19 @@ export function OptimizerPage() {
             found: msg.found as number,
           })
           break
-        case 'optimize.done':
-          setResults(msg.results as OptimizeResult[])
+        case 'optimize.done': {
+          const newResults = msg.results as OptimizeResult[]
+          setResults(newResults)
           setJobState('done')
           setProgress(null)
+          try {
+            localStorage.setItem(
+              'czn_optimizer_state',
+              JSON.stringify({ config: configRef.current, results: newResults, selectedRank: null })
+            )
+          } catch { /* storage quota — ignore */ }
           break
+        }
         case 'optimize.cancelled':
           setJobState('cancelled')
           setResults([])
