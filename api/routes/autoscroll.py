@@ -81,7 +81,7 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
             return
 
     asyncio.run_coroutine_threadsafe(
-        manager.broadcast({"type": "autoscroll.stopped", "pages": pages}),
+        manager.broadcast({"type": "autoscroll.stopped", "pages": pages, "records": last_count}),
         loop,
     )
 

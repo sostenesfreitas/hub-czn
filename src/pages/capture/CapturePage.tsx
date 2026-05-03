@@ -64,6 +64,7 @@ function AutoScrollPanel({ port }: { port: number }) {
             break
           case 'autoscroll.stopped':
             setPages(msg.pages as number)
+            setRecords(msg.records as number)
             setPhase('stopped')
             break
         }
