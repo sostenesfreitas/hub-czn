@@ -220,13 +220,16 @@ export function OptimizerPanel({
 
       {/* Character */}
       <div className="space-y-1">
-        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+        <label htmlFor="optimizer-char-combobox" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
           {t('optimizer.character')}
         </label>
         <CharacterCombobox
+          id="optimizer-char-combobox"
           combatants={combatants}
           value={config.char_name}
           ariaLabel={t('optimizer.character')}
+          searchPlaceholder={t('optimizer.searchChar')}
+          emptyLabel={t('optimizer.noCharFound')}
           onChange={(charId) => {
             lastWeightInitRef.current = ''
             lastAutoFilledRef.current = ''

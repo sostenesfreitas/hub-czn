@@ -274,6 +274,8 @@ const ptBR = {
     statPriorityLabel: 'Prioridade de Stat (-1 a 3)',
     allowWildcards: 'Peças coringa',
     allowWildcardsTip: 'Quando ativado, os slots além dos mínimos de set são preenchidos com as melhores peças do inventário inteiro, independente de set. Não tem efeito quando todos os 6 slots já estão comprometidos pelos sets selecionados.',
+    searchChar: 'Buscar...',
+    noCharFound: 'Nenhum personagem encontrado',
   },
   about: {
     title: 'Sobre',

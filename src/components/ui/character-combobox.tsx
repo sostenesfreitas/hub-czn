@@ -10,6 +10,9 @@ interface CharacterComboboxProps {
   disabled?: boolean
   placeholder?: string
   ariaLabel?: string
+  id?: string
+  searchPlaceholder?: string
+  emptyLabel?: string
 }
 
 function CharAvatar({ combatant }: { combatant: Combatant }) {
@@ -42,6 +45,9 @@ export function CharacterCombobox({
   disabled,
   placeholder = 'Selecionar...',
   ariaLabel,
+  id,
+  searchPlaceholder,
+  emptyLabel,
 }: CharacterComboboxProps) {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState('')
@@ -50,7 +56,7 @@ export function CharacterCombobox({
   const searchRef = useRef<HTMLInputElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const baseId = useId()
-  const triggerId = `${baseId}-trigger`
+  const triggerId = id ?? `${baseId}-trigger`
   const listboxId = `${baseId}-listbox`
 
   useEffect(() => {
@@ -120,10 +126,10 @@ export function CharacterCombobox({
                   ? `${baseId}-option-${filtered[activeIndex].char_id}`
                   : undefined
               }
-              aria-label="Buscar personagem"
+              aria-label={searchPlaceholder ?? 'Buscar personagem'}
               value={filter}
               onChange={(e) => { setFilter(e.target.value); setActiveIndex(-1) }}
-              placeholder="Buscar..."
+              placeholder={searchPlaceholder ?? 'Buscar...'}
               onKeyDown={(e) => {
                 if (e.key === 'ArrowDown') {
                   e.preventDefault()
@@ -179,7 +185,7 @@ export function CharacterCombobox({
             ))}
           </div>
           {filtered.length === 0 && (
-            <p className="px-3 py-2 text-xs text-[#444]">Nenhum personagem encontrado</p>
+            <p className="px-3 py-2 text-xs text-[#444]">{emptyLabel ?? 'Nenhum personagem encontrado'}</p>
           )}
         </div>
       )}
