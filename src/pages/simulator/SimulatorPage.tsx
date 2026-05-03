@@ -303,16 +303,6 @@ export function SimulatorPage() {
             <label className="text-[#b3b3b3] text-xs">{t('simulator.monsterDef')}</label>
             <span className="text-[#fb923c] text-xs font-mono">{defReductionPreview} {t('simulator.dmgPasses')}</span>
           </div>
-          <div className="flex gap-1">
-            <input
-              type="number"
-              min={0}
-              max={9999}
-              value={monsterDef}
-              onChange={(e) => { const v = Math.max(0, Number(e.target.value)); setMonsterDef(v); persist({ monsterDef: v }) }}
-              className="flex-1 bg-[#222] border border-[#333] text-[#e5e7eb] text-xs rounded px-2 py-1 w-0 font-mono"
-            />
-          </div>
           <div className="flex flex-col gap-2 mt-1">
             {DEF_PRESET_GROUPS.map((group) => (
               <div key={group.label}>
@@ -337,6 +327,16 @@ export function SimulatorPage() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex gap-1">
+            <input
+              type="number"
+              min={0}
+              max={9999}
+              value={monsterDef}
+              onChange={(e) => { const v = Math.max(0, Number(e.target.value)); setMonsterDef(v); persist({ monsterDef: v }) }}
+              className="flex-1 bg-[#222] border border-[#333] text-[#e5e7eb] text-xs rounded px-2 py-1 w-0 font-mono"
+            />
           </div>
         </div>
 
