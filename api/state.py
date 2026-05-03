@@ -25,6 +25,9 @@ class AppState:
         self.job_id: str | None = None
         self.cancel_flag: list[bool] = [False]
 
+        # Auto-scroll state
+        self.autoscroll_running: bool = False
+
         # CaptureManager is created lazily on first start
         self._capture_manager = None
 
