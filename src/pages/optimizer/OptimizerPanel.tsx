@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress, CharPreset } from '@/lib/types'
 import { InfoPopover } from '@/components/ui/info-popover'
+import { CharacterCombobox } from '@/components/ui/character-combobox'
 import { SetCombobox } from './SetCombobox'
 import type { ComboboxOption } from './SetCombobox'
 
@@ -219,14 +220,13 @@ export function OptimizerPanel({
 
       {/* Character */}
       <div className="space-y-1">
-        <label htmlFor="optimizer-char" className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+        <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
           {t('optimizer.character')}
         </label>
-        <select
-          id="optimizer-char"
+        <CharacterCombobox
+          combatants={combatants}
           value={config.char_name}
-          onChange={(e) => {
-            const charId = e.target.value
+          onChange={(charId) => {
             lastWeightInitRef.current = ''
             lastAutoFilledRef.current = ''
 
@@ -253,15 +253,8 @@ export function OptimizerPanel({
             }
           }}
           disabled={disabled || combatants.length === 0}
-          className="w-full bg-[#282828] border border-[#333333] rounded px-2.5 py-1.5 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <option value="">{t('optimizer.selectChar')}</option>
-          {combatants.map((c) => (
-            <option key={c.char_id} value={c.char_id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+          placeholder={t('optimizer.selectChar')}
+        />
       </div>
 
       {/* 4-piece set */}
