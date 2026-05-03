@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { Dialog } from 'radix-ui'
 import { NavLink } from 'react-router-dom'
 import { api } from '@/lib/api'
 import { useApiPort } from '@/hooks/useApiPort'
@@ -16,6 +17,14 @@ const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
   warning: '#fbbf24',
   info: '#b3b3b3',
 }
+
+const SKIP_MODAL_KEY = 'hub-czn:autoscroll-skip-modal'
+
+const AUTOSCROLL_MODAL_STEPS = [
+  { n: 1 as const, pre: 'capture.autoscroll.modal.step1Pre' as const, bold: 'capture.autoscroll.modal.step1Bold' as const, post: 'capture.autoscroll.modal.step1Post' as const },
+  { n: 2 as const, pre: 'capture.autoscroll.modal.step2Pre' as const, bold: 'capture.autoscroll.modal.step2Bold' as const, post: 'capture.autoscroll.modal.step2Post' as const },
+  { n: 3 as const, pre: 'capture.autoscroll.modal.step3Pre' as const, bold: 'capture.autoscroll.modal.step3Bold' as const, post: 'capture.autoscroll.modal.step3Post' as const },
+] as const
 
 function PrereqBadge({ ok, label, tip }: { ok: boolean; label: string; tip?: string }) {
   return (
@@ -34,15 +43,132 @@ function MutationError({ error }: { error: unknown }) {
   return <p className="text-[#f3727f] text-xs mt-1">{msg}</p>
 }
 
+function MiniPaginationPreview() {
+  return (
+    <div className="bg-[#1a1a1a] border border-[#333] rounded-md p-3 my-3">
+      <p className="text-[10px] text-[#555] mb-2">Tela do jogo — botão alvo:</p>
+      <div className="flex flex-col gap-1 mb-3 opacity-50">
+        {[0, 1, 2].map(row => (
+          <div key={row} className="grid grid-cols-4 gap-1">
+            {[0, 1, 2, 3].map(col => (
+              <div
+                key={col}
+                className="h-2 rounded-sm"
+                style={{ background: row === 1 && col === 1 ? '#3a2a5a' : '#222' }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-center gap-3">
+        <div className="w-6 h-6 flex items-center justify-center rounded bg-[#333] text-[#888] text-sm">‹</div>
+        <span className="text-[11px] text-[#555]">1</span>
+        <div className="relative">
+          <div className="w-6 h-6 flex items-center justify-center rounded bg-[#c084fc] text-white text-sm font-bold ring-2 ring-[#c084fc]/40">›</div>
+          <span className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-[#c084fc] font-semibold">cursor aqui</span>
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-sm select-none">🖱️</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AutoScrollConfirmModal({
+  open,
+  onClose,
+  onConfirm,
+}: {
+  open: boolean
+  onClose: () => void
+  onConfirm: () => void
+}) {
+  const { t } = useTranslation()
+  const [skipChecked, setSkipChecked] = useState(false)
+
+  useEffect(() => {
+    if (open) setSkipChecked(false)
+  }, [open])
+
+  function handleConfirm() {
+    if (skipChecked) localStorage.setItem(SKIP_MODAL_KEY, 'true')
+    onConfirm()
+  }
+
+  return (
+    <Dialog.Root open={open} onOpenChange={v => { if (!v) onClose() }}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
+        <Dialog.Content
+          className="fixed left-1/2 top-1/2 z-50 w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-[#282828] bg-[#111] p-5 shadow-xl focus:outline-none"
+        >
+          <Dialog.Title className="mb-3">
+            <p className="text-[11px] text-[#666] uppercase tracking-wider mb-1">Auto-scroll de resgates</p>
+            <p className="text-sm font-semibold text-white">{t('capture.autoscroll.modal.title')}</p>
+          </Dialog.Title>
+
+          <Dialog.Description className="sr-only">
+            {t('capture.autoscroll.modal.step1Pre')} {t('capture.autoscroll.modal.step1Bold')} {t('capture.autoscroll.modal.step1Post')}
+          </Dialog.Description>
+
+          <div className="flex flex-col gap-2 text-xs text-[#b3b3b3]">
+            {AUTOSCROLL_MODAL_STEPS.map(({ n, pre, bold, post }) => (
+              <div key={n} className="flex gap-2.5 items-start">
+                <div className="w-5 h-5 rounded-full bg-[#c084fc] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  {n}
+                </div>
+                <span className="leading-5">
+                  {t(pre)}{' '}
+                  <strong className={n === 2 ? 'text-[#c084fc]' : 'text-white'}>{t(bold)}</strong>{' '}
+                  {t(post)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <MiniPaginationPreview />
+
+          <label className="flex items-center gap-2 mb-4 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={skipChecked}
+              onChange={e => setSkipChecked(e.target.checked)}
+              className="accent-[#c084fc]"
+            />
+            <span className="text-xs text-[#666]">{t('capture.autoscroll.modal.skipLabel')}</span>
+          </label>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-1.5 text-xs text-[#b3b3b3] border border-[#282828] rounded-md hover:text-white transition-colors"
+            >
+              {t('capture.autoscroll.modal.cancel')}
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="flex-1 py-1.5 text-xs font-semibold text-white bg-[#c084fc] rounded-md hover:bg-[#9333ea] transition-colors"
+            >
+              {t('capture.autoscroll.modal.confirm')}
+            </button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
+}
+
 type AutoScrollPhase = 'idle' | 'countdown' | 'running' | 'done' | 'stopped'
 
 function AutoScrollPanel({ port }: { port: number }) {
   const { t } = useTranslation()
   const [phase, setPhase] = useState<AutoScrollPhase>('idle')
-  const [countdown, setCountdown] = useState(3)
+  const [countdown, setCountdown] = useState(5)
   const [pages, setPages] = useState(0)
   const [records, setRecords] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
     const ws = new WebSocket(`ws://127.0.0.1:${port}/ws`)
@@ -93,6 +219,14 @@ function AutoScrollPanel({ port }: { port: number }) {
     }
   }
 
+  function handleStartClick() {
+    if (localStorage.getItem(SKIP_MODAL_KEY) === 'true') {
+      start()
+    } else {
+      setModalOpen(true)
+    }
+  }
+
   return (
     <div className="p-3 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-2">
       <p className="text-xs text-[#666666] uppercase tracking-wider">{t('capture.autoscroll.title')}</p>
@@ -100,7 +234,7 @@ function AutoScrollPanel({ port }: { port: number }) {
       {phase === 'idle' && (
         <button
           type="button"
-          onClick={start}
+          onClick={handleStartClick}
           className="bg-[#c084fc] hover:bg-[#9333ea] text-white text-xs rounded px-3 py-1.5 text-left transition-colors"
         >
           {t('capture.autoscroll.start')}
@@ -162,6 +296,15 @@ function AutoScrollPanel({ port }: { port: number }) {
       )}
 
       {error && <p className="text-xs text-[#f3727f]">{error}</p>}
+
+      <AutoScrollConfirmModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={() => {
+          setModalOpen(false)
+          start()
+        }}
+      />
     </div>
   )
 }
