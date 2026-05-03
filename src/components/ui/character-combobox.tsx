@@ -50,6 +50,8 @@ export function CharacterCombobox({
   const searchRef = useRef<HTMLInputElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const triggerId = useId()
+  const instanceId = useId()
+  const listboxId = useId()
 
   useEffect(() => {
     if (!open) return
@@ -71,8 +73,9 @@ export function CharacterCombobox({
   }, [open])
 
   const selected = combatants.find((c) => c.char_id === value)
+  const nf = normalize(filter)
   const filtered = filter
-    ? combatants.filter((c) => normalize(c.name).includes(normalize(filter)))
+    ? combatants.filter((c) => normalize(c.name).includes(nf))
     : combatants
 
   return (
@@ -110,18 +113,26 @@ export function CharacterCombobox({
           <div className="p-1.5 border-b border-[#282828]">
             <input
               ref={searchRef}
+              role="combobox"
+              aria-expanded={true}
+              aria-controls={listboxId}
+              aria-autocomplete="list"
+              aria-activedescendant={
+                activeIndex >= 0 && filtered[activeIndex]
+                  ? `${instanceId}-option-${filtered[activeIndex].char_id}`
+                  : undefined
+              }
+              aria-label="Buscar personagem"
               value={filter}
               onChange={(e) => { setFilter(e.target.value); setActiveIndex(-1) }}
               placeholder="Buscar..."
-              aria-label="Buscar personagem"
-              aria-activedescendant={activeIndex >= 0 && filtered[activeIndex] ? `char-option-${filtered[activeIndex].char_id}` : undefined}
               onKeyDown={(e) => {
                 if (e.key === 'ArrowDown') {
                   e.preventDefault()
                   setActiveIndex((i) => Math.min(i + 1, filtered.length - 1))
                 } else if (e.key === 'ArrowUp') {
                   e.preventDefault()
-                  setActiveIndex((i) => Math.max(i - 1, 0))
+                  setActiveIndex((i) => Math.max(i - 1, -1))
                 } else if (e.key === 'Enter') {
                   e.preventDefault()
                   if (activeIndex >= 0 && activeIndex < filtered.length) {
@@ -142,15 +153,16 @@ export function CharacterCombobox({
               className="w-full bg-transparent text-xs text-[#b3b3b3] outline-none placeholder:text-[#444]"
             />
           </div>
-          <div role="listbox" className="overflow-y-auto max-h-48">
+          <div id={listboxId} role="listbox" className="overflow-y-auto max-h-48">
             {filtered.map((c, i) => (
               <div
                 key={c.char_id}
-                id={`char-option-${c.char_id}`}
+                id={`${instanceId}-option-${c.char_id}`}
                 role="option"
                 aria-selected={c.char_id === value}
                 tabIndex={-1}
                 onClick={() => {
+                  if (disabled) return
                   onChange(c.char_id)
                   setOpen(false)
                   setFilter('')
