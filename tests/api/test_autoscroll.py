@@ -29,6 +29,7 @@ def test_autoscroll_start_success():
         with patch("api.routes.autoscroll.threading.Thread") as mock_thread:
             mock_thread.return_value.start = MagicMock()
             r = client.post("/api/autoscroll/start")
+            mock_thread.return_value.start.assert_called_once()
         assert r.status_code == 200
         assert r.json()["ok"] is True
         assert state.autoscroll_running is True

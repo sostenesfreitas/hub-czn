@@ -11,6 +11,7 @@ from api.state import state
 from api.routes.ws import manager
 
 router = APIRouter()
+_start_lock = threading.Lock()
 
 
 def _read_rescue_count() -> int:
@@ -33,6 +34,8 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
     import pyautogui
 
     for i in range(3, 0, -1):
+        if not state.autoscroll_running:
+            return
         asyncio.run_coroutine_threadsafe(
             manager.broadcast({"type": "autoscroll.countdown", "seconds": i}),
             loop,
@@ -87,9 +90,10 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
 async def autoscroll_start():
     if not state.capture_running:
         raise HTTPException(status_code=422, detail="Capture must be running")
-    if state.autoscroll_running:
-        raise HTTPException(status_code=409, detail="Auto-scroll already running")
-    state.autoscroll_running = True
+    with _start_lock:
+        if state.autoscroll_running:
+            raise HTTPException(status_code=409, detail="Auto-scroll already running")
+        state.autoscroll_running = True
     loop = asyncio.get_running_loop()
     threading.Thread(target=_autoscroll_loop, args=(loop,), daemon=True).start()
     return {"ok": True}
