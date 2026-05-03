@@ -14,7 +14,7 @@ def get() -> dict:
         if _BUNDLED_PATH.exists():
             try:
                 _cache = json.loads(_BUNDLED_PATH.read_text(encoding="utf-8"))
-            except Exception:
+            except (json.JSONDecodeError, OSError):
                 _cache = {}
         else:
             _cache = {}
