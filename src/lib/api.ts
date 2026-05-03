@@ -81,6 +81,9 @@ export const api = {
   captureOpenSnapshots: () =>
     request<SetupActionResponse>('/api/capture/open-snapshots', { method: 'POST' }),
 
+  autoscrollStart: () => request<{ ok: boolean }>('/api/autoscroll/start', { method: 'POST' }),
+  autoscrollStop:  () => request<{ ok: boolean }>('/api/autoscroll/stop',  { method: 'POST' }),
+
   rescueRecords: () => request<RescueBanner[]>('/api/rescue/records'),
 
   combatants: () => request<Combatant[]>('/api/combatants'),

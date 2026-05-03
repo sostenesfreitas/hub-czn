@@ -6,7 +6,7 @@ import { api } from '@/lib/api'
 import { useApiPort } from '@/hooks/useApiPort'
 import { useCaptureLog } from '@/hooks/useCaptureLog'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, XCircle, Radio, Square, FolderOpen, Download } from 'lucide-react'
+import { CheckCircle, XCircle, Radio, Square, FolderOpen, Download, Loader2 } from 'lucide-react'
 import type { CaptureLogMessage, CaptureStatus } from '@/lib/types'
 
 const LEVEL_COLOR: Record<CaptureLogMessage['level'], string> = {
@@ -30,6 +30,137 @@ function MutationError({ error }: { error: unknown }) {
   if (!error) return null
   const msg = error instanceof Error ? error.message : t('common.unexpectedError')
   return <p className="text-[#f3727f] text-xs mt-1">{msg}</p>
+}
+
+type AutoScrollPhase = 'idle' | 'countdown' | 'running' | 'done' | 'stopped'
+
+function AutoScrollPanel({ port, captureRunning }: { port: number; captureRunning: boolean }) {
+  const [phase, setPhase] = useState<AutoScrollPhase>('idle')
+  const [countdown, setCountdown] = useState(3)
+  const [pages, setPages] = useState(0)
+  const [records, setRecords] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!captureRunning) setPhase('idle')
+  }, [captureRunning])
+
+  useEffect(() => {
+    const ws = new WebSocket(`ws://127.0.0.1:${port}/ws`)
+    ws.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data as string) as Record<string, unknown>
+        switch (msg.type) {
+          case 'autoscroll.countdown':
+            setCountdown(msg.seconds as number)
+            setPhase('countdown')
+            break
+          case 'autoscroll.progress':
+            setPages(msg.pages as number)
+            setRecords(msg.records as number)
+            setPhase('running')
+            break
+          case 'autoscroll.done':
+            setPages(msg.pages as number)
+            setRecords(msg.records as number)
+            setPhase('done')
+            break
+          case 'autoscroll.stopped':
+            setPages(msg.pages as number)
+            setPhase('stopped')
+            break
+        }
+      } catch { /* ignore */ }
+    }
+    return () => ws.close()
+  }, [port])
+
+  if (!captureRunning) return null
+
+  async function start() {
+    setError(null)
+    try {
+      await api.autoscrollStart()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erro ao iniciar auto-scroll')
+    }
+  }
+
+  async function stop() {
+    await api.autoscrollStop().catch(() => {})
+  }
+
+  return (
+    <div className="p-3 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-2">
+      <p className="text-xs text-[#666666] uppercase tracking-wider">Auto-Scroll</p>
+
+      {phase === 'idle' && (
+        <button
+          type="button"
+          onClick={start}
+          className="bg-[#c084fc] hover:bg-[#9333ea] text-white text-xs rounded px-3 py-1.5 text-left transition-colors"
+        >
+          Iniciar Auto-Scroll
+        </button>
+      )}
+
+      {phase === 'countdown' && (
+        <p className="text-xs text-[#b3b3b3]">
+          Posicione o cursor sobre o '&gt;' no jogo...{' '}
+          <span className="text-[#c084fc] font-bold">{countdown}</span>
+        </p>
+      )}
+
+      {phase === 'running' && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs text-[#b3b3b3] flex items-center gap-1.5">
+            <Loader2 size={10} className="animate-spin shrink-0" />
+            Página {pages} · {records} registros
+          </span>
+          <button
+            type="button"
+            onClick={stop}
+            className="text-xs text-red-400 hover:text-red-300 transition-colors shrink-0"
+          >
+            Parar
+          </button>
+        </div>
+      )}
+
+      {phase === 'done' && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs text-[#4ade80] flex items-center gap-1">
+            <CheckCircle size={10} className="shrink-0" />
+            Concluído! {pages} páginas · {records} registros
+          </span>
+          <button
+            type="button"
+            onClick={() => setPhase('idle')}
+            className="text-xs text-[#b3b3b3] hover:text-[#ffffff] shrink-0"
+          >
+            Reiniciar
+          </button>
+        </div>
+      )}
+
+      {phase === 'stopped' && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs text-[#b3b3b3]">
+            Parado. {pages} páginas · {records} registros
+          </span>
+          <button
+            type="button"
+            onClick={() => setPhase('idle')}
+            className="text-xs text-[#b3b3b3] hover:text-[#ffffff] shrink-0"
+          >
+            Reiniciar
+          </button>
+        </div>
+      )}
+
+      {error && <p className="text-xs text-[#f3727f]">{error}</p>}
+    </div>
+  )
 }
 
 export function CapturePage() {
@@ -224,6 +355,7 @@ export function CapturePage() {
             {t('capture.loadLatest')}
           </Button>
         </div>
+        <AutoScrollPanel port={port} captureRunning={running} />
       </div>
 
       {/* Right: log panel */}
