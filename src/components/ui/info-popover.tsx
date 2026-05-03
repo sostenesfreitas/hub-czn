@@ -4,15 +4,16 @@ import { Popover } from 'radix-ui'
 interface InfoPopoverProps {
   content: React.ReactNode
   className?: string
+  ariaLabel?: string
 }
 
-export function InfoPopover({ content, className }: InfoPopoverProps) {
+export function InfoPopover({ content, className, ariaLabel = 'More information' }: InfoPopoverProps) {
   return (
     <Popover.Root>
       <Popover.Trigger
         type="button"
-        className={`text-[#666] hover:text-[#999] cursor-pointer text-sm leading-none bg-transparent border-none p-0 inline-flex items-center ${className ?? ''}`}
-        aria-label="More information"
+        className={`text-[#666] hover:text-[#999] cursor-pointer text-sm leading-none bg-transparent border-none p-0 inline-flex items-center${className ? ` ${className}` : ''}`}
+        aria-label={ariaLabel}
       >
         ⓘ
       </Popover.Trigger>
