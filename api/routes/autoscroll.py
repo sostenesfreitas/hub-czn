@@ -33,7 +33,7 @@ def _read_rescue_count() -> int:
 def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
     import pyautogui
 
-    for i in range(3, 0, -1):
+    for i in range(5, 0, -1):
         if not state.autoscroll_running:
             return
         asyncio.run_coroutine_threadsafe(
