@@ -161,10 +161,10 @@ If any field fails validation → entire frame discarded silently. The next 1500
 **Fields stored additionally:** partner name (from screen), capture timestamp
 
 **UI:**
-- Header: title "Combatentes" + badge with count + "↓ JSON" button (exports local Room data)
+- Header: title "Combatentes" + badge with count + "↓ JSON" button (exports local Room data) + "☁ Cloud" button (opens `https://hub-czn.lovable.app` via `Intent.ACTION_VIEW`)
 - Scrollable list of combatant rows, each showing:
   - Rank (1-based index)
-  - Character avatar: colored circle with name initials (attribute color) — no server-loaded portraits in V1
+  - Character portrait: `res_id`-based image bundled in APK assets (`game/faces/bookmark_face_character_map_{res_id}.png`). 72 PNGs, 896KB total. Same files already in `api/assets/game/faces/`.
   - Name + "Lv.{level}" + attribute badge + ego badge (if E > 0)
   - Gear Score (right-aligned, purple)
   - Expand chevron
@@ -258,12 +258,12 @@ Tank: DEF%=10, HP%=10, FlatDEF=8, FlatHP=8, rest=1
 **Fields extracted:** character name, rarity (★ count), pity count, banner name, featured status, timestamp
 
 **UI:**
-- Header: "Rescue Records" + "↓ JSON" button (exports local Room data)
+- Header: "Rescue Records" + "↓ JSON" button (exports local Room data) + "☁ Cloud" button (opens `https://hub-czn.lovable.app` via `Intent.ACTION_VIEW`)
 - **Banner tabs** (horizontal scroll): one tab per banner name, active tab has purple underline
 - **Stats panel** (active banner):
   - Left: stat rows — total pulls, recursos gastos, 5★ count, 4★ count, pity médio 5★, pity médio 4★, win rate 50/50
   - Right: donut chart (Compose Canvas) — 5★ / 4★ / 3★ distribution, colors: `#C084FC` / `#8B5CF6` / `#B3B3B3`
-- **5★ portrait grid**: horizontal row of 36×36dp colored-initial circles (same as Combatentes), each showing pity number (bottom-left, color-coded by pity scale)
+- **5★ portrait grid**: horizontal row of 36×36dp character portrait images (same bundled assets as Combatentes), each showing pity number (bottom-left, color-coded by pity scale)
 - **Filter buttons**: Todos / 5★ / 4★
 - **Pull history table** (horizontal scroll):
 
