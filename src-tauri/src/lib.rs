@@ -1,4 +1,5 @@
 use std::sync::Mutex;
+use tauri::Manager;
 use tauri_plugin_shell::process::CommandChild;
 
 struct ApiPort(Mutex<u16>);
@@ -23,7 +24,6 @@ pub fn run() {
             // In dev, run `python -m api.main` manually.
             #[cfg(not(debug_assertions))]
             {
-                use tauri::Manager;
                 use tauri_plugin_shell::ShellExt;
                 use tauri_plugin_shell::process::CommandEvent;
 
