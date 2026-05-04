@@ -1,7 +1,1 @@
-"""
-Application version information.
-
-This module provides the single source of truth for the current application version.
-"""
-
-__version__ = "0.2.1"
+from hub_czn_version import __version__  # noqa: F401

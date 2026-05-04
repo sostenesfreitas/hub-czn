@@ -6,7 +6,7 @@ add_vribbels_to_path()
 from fastapi import APIRouter
 
 try:
-    from version import __version__
+    from hub_czn_version import __version__
 except ImportError:
     __version__ = "unknown"
 

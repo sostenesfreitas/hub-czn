@@ -36,6 +36,7 @@ a = Analysis(
         (str(repo_root / 'api' / 'assets'),  'assets'),
     ],
     hiddenimports=[
+        'hub_czn_version',
         'uvicorn.logging',
         'uvicorn.loops',
         'uvicorn.loops.auto',

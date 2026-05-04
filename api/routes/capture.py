@@ -13,10 +13,26 @@ router = APIRouter()
 
 
 def _is_admin() -> bool:
+    # IsUserAnAdmin() is unreliable in PyInstaller context; query the token elevation directly.
     try:
-        return bool(ctypes.windll.shell32.IsUserAnAdmin())
+        TOKEN_QUERY = 0x0008
+        TokenElevation = 20
+        hProcess = ctypes.windll.kernel32.GetCurrentProcess()
+        hToken = ctypes.c_void_p()
+        if ctypes.windll.advapi32.OpenProcessToken(hProcess, TOKEN_QUERY, ctypes.byref(hToken)):
+            elevation = ctypes.c_ulong()
+            size = ctypes.c_ulong()
+            if ctypes.windll.advapi32.GetTokenInformation(
+                hToken, TokenElevation, ctypes.byref(elevation),
+                ctypes.sizeof(elevation), ctypes.byref(size)
+            ):
+                result = bool(elevation.value)
+                ctypes.windll.kernel32.CloseHandle(hToken)
+                return result
+            ctypes.windll.kernel32.CloseHandle(hToken)
     except Exception:
-        return False
+        pass
+    return False
 
 
 class StartRequest(BaseModel):

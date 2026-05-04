@@ -309,7 +309,7 @@ export function CombatantsPage() {
 
   if (combatants.length === 0) {
     return (
-      <div role="status" className="flex-1 flex flex-col items-center justify-center gap-3 text-[#b3b3b3]">
+      <div role="status" className="h-full flex flex-col items-center justify-center gap-3 text-[#b3b3b3]">
         <User size={40} className="opacity-30" />
         <p className="text-sm">{t('combatants.empty')}</p>
         <p className="text-xs">{t('combatants.emptyHint')}</p>
