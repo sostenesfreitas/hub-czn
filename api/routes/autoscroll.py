@@ -61,12 +61,27 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
         click_time = time.time()
         pyautogui.click(pos.x, pos.y)
         pages += 1
-        time.sleep(2.0)
 
-        # Use mtime to detect whether the game sent rescue data after this click.
-        # Record-count comparison fails when records were already in the file from a
-        # prior session (dedup keeps count constant even though the game responded).
-        if _read_rescue_file_mtime() > click_time:
+        # Poll for the rescue file mtime to advance after each click.
+        # Fixed 2 s sleep was too short on slow connections — the response could arrive
+        # just after the check, causing three false "no new data" misses in a row.
+        # Polling up to 4 s exits early when data arrives quickly and stays tolerant
+        # of slow network paths.
+        got_response = False
+        deadline = click_time + 4.0
+        while time.time() < deadline:
+            if not state.autoscroll_running:
+                break
+            if _read_rescue_file_mtime() > click_time:
+                got_response = True
+                break
+            time.sleep(0.4)
+
+        # Allow the game to finish rendering the next page before the next click.
+        if state.autoscroll_running:
+            time.sleep(1.0)
+
+        if got_response:
             consecutive_no_new = 0
         else:
             consecutive_no_new += 1
