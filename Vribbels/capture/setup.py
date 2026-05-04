@@ -87,24 +87,26 @@ def check_prerequisites() -> PrerequisiteStatus:
     Returns:
         PrerequisiteStatus object with current status of all requirements
     """
-    # Check admin privileges (Windows only)
-    # Use TokenElevation instead of the deprecated IsUserAnAdmin(),
-    # which can return False even when elevated in some PyInstaller contexts.
+    # Check admin privileges (Windows only) using TokenElevation.
     is_admin = False
     try:
-        TOKEN_QUERY = 0x0008
-        TokenElevation = 20
-        hProcess = ctypes.windll.kernel32.GetCurrentProcess()
-        hToken = ctypes.c_void_p()
-        if ctypes.windll.advapi32.OpenProcessToken(hProcess, TOKEN_QUERY, ctypes.byref(hToken)):
-            elevation = ctypes.c_ulong()
-            size = ctypes.c_ulong()
-            if ctypes.windll.advapi32.GetTokenInformation(
-                hToken, TokenElevation, ctypes.byref(elevation),
-                ctypes.sizeof(elevation), ctypes.byref(size)
-            ):
-                is_admin = bool(elevation.value)
-            ctypes.windll.kernel32.CloseHandle(hToken)
+        import ctypes.wintypes as wintypes
+        OpenProcessToken = ctypes.windll.advapi32.OpenProcessToken
+        OpenProcessToken.restype = wintypes.BOOL
+        OpenProcessToken.argtypes = [wintypes.HANDLE, wintypes.DWORD, ctypes.POINTER(wintypes.HANDLE)]
+        GetTokenInformation = ctypes.windll.advapi32.GetTokenInformation
+        GetTokenInformation.restype = wintypes.BOOL
+        GetTokenInformation.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD, ctypes.POINTER(wintypes.DWORD)]
+
+        hToken = wintypes.HANDLE()
+        if OpenProcessToken(ctypes.windll.kernel32.GetCurrentProcess(), 0x0008, ctypes.byref(hToken)):
+            try:
+                elevated = wintypes.DWORD(0)
+                size = wintypes.DWORD(0)
+                if GetTokenInformation(hToken, 20, ctypes.byref(elevated), ctypes.sizeof(elevated), ctypes.byref(size)):
+                    is_admin = bool(elevated.value)
+            finally:
+                ctypes.windll.kernel32.CloseHandle(hToken)
     except Exception:
         pass
 

@@ -5,6 +5,16 @@ use tauri_plugin_shell::process::CommandChild;
 struct ApiPort(Mutex<u16>);
 struct SidecarChild(Mutex<Option<CommandChild>>);
 
+impl Drop for SidecarChild {
+    fn drop(&mut self) {
+        if let Ok(mut guard) = self.0.lock() {
+            if let Some(child) = guard.take() {
+                let _ = child.kill();
+            }
+        }
+    }
+}
+
 #[tauri::command]
 fn get_api_port(state: tauri::State<'_, ApiPort>) -> u16 {
     *state.0.lock().unwrap()
