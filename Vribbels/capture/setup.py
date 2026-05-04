@@ -142,29 +142,58 @@ def check_prerequisites() -> PrerequisiteStatus:
     )
 
 
+def _find_python() -> Optional[str]:
+    """Find a Python interpreter suitable for running pip.
+
+    When the sidecar runs elevated via UAC, the user's PATH may not include
+    Python Scripts directories. We search known install locations explicitly.
+    """
+    # If not frozen, use the current interpreter directly.
+    if not getattr(sys, 'frozen', False):
+        return sys.executable
+
+    if sys.platform != "win32":
+        return shutil.which("python3") or shutil.which("python")
+
+    # On elevated processes, shutil.which may miss user-PATH entries,
+    # but let's try — filter out Windows App Execution Aliases (stubs that
+    # don't work elevated).
+    for name in ("python", "python3"):
+        path = shutil.which(name)
+        if path and "WindowsApps" not in path:
+            return path
+
+    # Search user Python installations (most common for non-admin installs).
+    user_root = Path.home() / "AppData" / "Local" / "Programs" / "Python"
+    if user_root.exists():
+        for python_dir in sorted(user_root.glob("Python3*"), reverse=True):
+            exe = python_dir / "python.exe"
+            if exe.exists():
+                return str(exe)
+
+    # Search system-wide Python installations.
+    for base in (Path("C:\\"), Path("C:\\Program Files"), Path("C:\\Program Files (x86)")):
+        for python_dir in sorted(base.glob("Python3*"), reverse=True):
+            exe = python_dir / "python.exe"
+            if exe.exists():
+                return str(exe)
+
+    return None
+
+
 def install_mitmproxy(timeout: int = 120) -> bool:
-    """
-    Install mitmproxy via pip.
+    """Install mitmproxy, using the system Python interpreter even when elevated."""
+    python = _find_python()
+    if python:
+        cmd = [python, "-m", "pip", "install", "mitmproxy"]
+    else:
+        # Last resort: rely on pip being on PATH.
+        cmd = ["pip", "install", "mitmproxy"]
 
-    Args:
-        timeout: Maximum time in seconds to wait for installation
-
-    Returns:
-        True if installation succeeded, False otherwise
-
-    Raises:
-        subprocess.TimeoutExpired: If installation takes longer than timeout
-        Exception: If installation fails for other reasons
-    """
-    result = subprocess.run(
-        ["pip", "install", "mitmproxy"],
-        capture_output=True,
-        text=True,
-        timeout=timeout
-    )
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
 
     if result.returncode != 0:
-        raise Exception(f"Installation failed: {result.stderr}")
+        raise Exception(f"Installation failed: {result.stderr or result.stdout}")
 
     return True
 

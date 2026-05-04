@@ -84,4 +84,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    uac_admin=True,  # embed requireAdministrator so the sidecar is always elevated on Windows 10/11
 )
