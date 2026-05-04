@@ -3,16 +3,28 @@ use tauri::Manager;
 use tauri_plugin_shell::process::CommandChild;
 
 struct ApiPort(Mutex<u16>);
-struct SidecarChild(Mutex<Option<CommandChild>>);
+// Store child handle and PID together so both cleanup paths can kill the full tree.
+struct SidecarChild(Mutex<Option<(CommandChild, u32)>>);
 
 impl Drop for SidecarChild {
     fn drop(&mut self) {
         if let Ok(mut guard) = self.0.lock() {
-            if let Some(child) = guard.take() {
+            if let Some((child, pid)) = guard.take() {
                 let _ = child.kill();
+                kill_process_tree(pid);
             }
         }
     }
+}
+
+// Kill the process and all its children (/T) forcefully (/F) by PID.
+// This ensures mitmdump.exe and any other subprocesses spawned by the
+// sidecar are also terminated when the app exits.
+fn kill_process_tree(pid: u32) {
+    #[cfg(target_os = "windows")]
+    let _ = std::process::Command::new("taskkill")
+        .args(["/F", "/T", "/PID", &pid.to_string()])
+        .output();
 }
 
 #[tauri::command]
@@ -44,8 +56,8 @@ pub fn run() {
                 let (mut rx, child) = sidecar.spawn()
                     .expect("Failed to spawn hub-czn-api sidecar");
 
-                // Keep the child handle alive in app state so it is killed on exit.
-                *app.state::<SidecarChild>().0.lock().unwrap() = Some(child);
+                let pid = child.pid();
+                *app.state::<SidecarChild>().0.lock().unwrap() = Some((child, pid));
 
                 let handle = app.handle().clone();
 
@@ -68,7 +80,7 @@ pub fn run() {
         })
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::Destroyed = event {
-                if let Some(child) = window
+                if let Some((child, pid)) = window
                     .app_handle()
                     .state::<SidecarChild>()
                     .0
@@ -77,6 +89,7 @@ pub fn run() {
                     .take()
                 {
                     let _ = child.kill();
+                    kill_process_tree(pid);
                 }
             }
         })
