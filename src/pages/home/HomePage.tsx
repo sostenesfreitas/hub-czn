@@ -26,7 +26,7 @@ function OnboardingView({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <p className="text-xs text-[#333333] uppercase tracking-wider">{t('home.howToStart')}</p>
+        <p className="text-xs text-[#ffffff] uppercase tracking-wider">{t('home.howToStart')}</p>
 
         <div className="flex flex-col gap-2">
           <div className="p-4 rounded-lg bg-[#181818] border border-[#282828] flex items-start gap-4">
@@ -40,7 +40,7 @@ function OnboardingView({ onDone }: { onDone: () => void }) {
             <button
               type="button"
               onClick={handleStart}
-              className="shrink-0 text-xs px-3 py-1.5 rounded bg-[#c084fc] hover:bg-[#9333ea] text-white transition-colors"
+              className="shrink-0 text-xs px-3 py-1.5 rounded bg-[#c084fc] hover:bg-[#9333ea] text-[#ffffff] transition-colors"
             >
               {t('home.step1.cta')}
             </button>
@@ -55,7 +55,7 @@ function OnboardingView({ onDone }: { onDone: () => void }) {
               key={n}
               className="p-4 rounded-lg bg-[#181818] border border-[#282828] flex items-start gap-4"
             >
-              <span className="text-[#333333] font-bold text-sm shrink-0 w-4">{n}</span>
+              <span className="text-[#ffffff] font-bold text-sm shrink-0 w-4">{n}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-[#ffffff] font-medium text-sm">{t(titleKey)}</p>
                 <p className="text-[#b3b3b3] text-xs mt-0.5">{t(detailKey)}</p>
@@ -85,7 +85,7 @@ function StatusCard({
       className="p-4 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-2
                  hover:border-[#c084fc44] hover:bg-[#282828] transition-colors"
     >
-      <p className="text-xs text-[#333333] uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-[#ffffff] uppercase tracking-wider">{label}</p>
       <p className={`text-sm font-medium ${accent ? 'text-[#c084fc]' : 'text-[#ffffff]'}`}>
         {value}
       </p>
@@ -154,7 +154,7 @@ function DashboardView({ onReset }: { onReset: () => void }) {
           localStorage.removeItem(ONBOARDING_KEY)
           onReset()
         }}
-        className="text-xs text-[#333333] hover:text-[#b3b3b3] transition-colors self-start"
+        className="text-xs text-[#ffffff] hover:text-[#b3b3b3] transition-colors self-start"
       >
         {t('home.viewGuide')}
       </button>
