@@ -138,9 +138,10 @@ const ptBR = {
     loadLatest: 'Carregar Último',
     autoscroll: {
       title: 'Auto-Scroll',
+      pagesLabel: 'Páginas:',
       start: 'Iniciar Auto-Scroll',
       position: "Posicione o cursor sobre o '>' no jogo...",
-      progress: 'Página {{pages}} · {{records}} registros',
+      progress: 'Página {{pages}} de {{target}} · {{records}} registros',
       stop: 'Parar',
       done: 'Concluído! {{pages}} páginas · {{records}} registros',
       stopped: 'Parado. {{pages}} páginas · {{records}} registros',

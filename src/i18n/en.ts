@@ -138,9 +138,10 @@ const en = {
     loadLatest: 'Load Latest',
     autoscroll: {
       title: 'Auto-Scroll',
+      pagesLabel: 'Pages:',
       start: 'Start Auto-Scroll',
       position: "Position cursor over '>' in the game...",
-      progress: 'Page {{pages}} · {{records}} records',
+      progress: 'Page {{pages}} of {{target}} · {{records}} records',
       stop: 'Stop',
       done: 'Done! {{pages}} pages · {{records}} records captured',
       stopped: 'Stopped. {{pages}} pages · {{records}} records',

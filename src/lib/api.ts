@@ -83,7 +83,7 @@ export const api = {
   captureOpenSnapshots: () =>
     request<SetupActionResponse>('/api/capture/open-snapshots', { method: 'POST' }),
 
-  autoscrollStart: () => request<{ ok: boolean }>('/api/autoscroll/start', { method: 'POST' }),
+  autoscrollStart: (pagesCount: number) => request<{ ok: boolean }>('/api/autoscroll/start', { method: 'POST', body: JSON.stringify({ pages_count: pagesCount }) }),
   autoscrollStop:  () => request<{ ok: boolean }>('/api/autoscroll/stop',  { method: 'POST' }),
   combatantsExport: () => request<unknown[]>('/api/combatants/export'),
 

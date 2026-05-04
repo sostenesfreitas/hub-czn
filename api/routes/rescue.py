@@ -50,6 +50,8 @@ def _banner_name(gacha_id: str) -> str:
         return "Seasonal Combatant Rescue Rate-Up"
     if "pickup_partner" in gacha_id:
         return "Seasonal Partner Rescue Rate-Up"
+    if "pickup_supporter" in gacha_id or "supporter" in gacha_id:
+        return "Gacha Pickup Supporter"
     if "free" in gacha_id:
         return "Free Rescue"
     if "standard" in gacha_id or "normal" in gacha_id:

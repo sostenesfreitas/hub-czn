@@ -6,12 +6,17 @@ import threading
 import time
 
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
 from api.state import state
 from api.routes.ws import manager
 
 router = APIRouter()
 _start_lock = threading.Lock()
+
+
+class _StartBody(BaseModel):
+    pages_count: int = 10
 
 
 def _read_rescue_count() -> int:
@@ -30,18 +35,7 @@ def _read_rescue_count() -> int:
         return 0
 
 
-def _read_rescue_file_mtime() -> float:
-    # _save_rescue_data always rewrites the file even when all records deduplicate,
-    # so mtime advancing means the game sent data; frozen mtime means end of history.
-    try:
-        from capture.constants import OUTPUT_DIR
-        files = list(OUTPUT_DIR.glob("rescue_records_*.json"))
-        return max(f.stat().st_mtime for f in files) if files else 0.0
-    except Exception:
-        return 0.0
-
-
-def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
+def _autoscroll_loop(loop: asyncio.AbstractEventLoop, pages_target: int) -> None:
     import pyautogui
 
     for i in range(5, 0, -1):
@@ -54,68 +48,45 @@ def _autoscroll_loop(loop: asyncio.AbstractEventLoop) -> None:
         time.sleep(1)
 
     pos = pyautogui.position()
-    consecutive_no_new = 0
     pages = 0
 
-    while state.autoscroll_running:
-        click_time = time.time()
+    while state.autoscroll_running and pages < pages_target:
         pyautogui.click(pos.x, pos.y)
         pages += 1
-
-        # Poll for the rescue file mtime to advance after each click.
-        # Fixed 2 s sleep was too short on slow connections — the response could arrive
-        # just after the check, causing three false "no new data" misses in a row.
-        # Polling up to 4 s exits early when data arrives quickly and stays tolerant
-        # of slow network paths.
-        got_response = False
-        deadline = click_time + 4.0
-        while time.time() < deadline:
-            if not state.autoscroll_running:
-                break
-            if _read_rescue_file_mtime() > click_time:
-                got_response = True
-                break
-            time.sleep(0.4)
-
-        # Allow the game to finish rendering the next page before the next click.
-        if state.autoscroll_running:
-            time.sleep(1.0)
-
-        if got_response:
-            consecutive_no_new = 0
-        else:
-            consecutive_no_new += 1
 
         current_count = _read_rescue_count()
         asyncio.run_coroutine_threadsafe(
             manager.broadcast({
                 "type": "autoscroll.progress",
                 "pages": pages,
+                "target": pages_target,
                 "records": current_count,
             }),
             loop,
         )
 
-        if consecutive_no_new >= 3:
-            state.autoscroll_running = False
-            asyncio.run_coroutine_threadsafe(
-                manager.broadcast({
-                    "type": "autoscroll.done",
-                    "pages": pages,
-                    "records": current_count,
-                }),
-                loop,
-            )
-            return
+        if pages < pages_target:
+            time.sleep(2.0)
 
-    asyncio.run_coroutine_threadsafe(
-        manager.broadcast({"type": "autoscroll.stopped", "pages": pages, "records": _read_rescue_count()}),
-        loop,
-    )
+    if state.autoscroll_running:
+        state.autoscroll_running = False
+        asyncio.run_coroutine_threadsafe(
+            manager.broadcast({
+                "type": "autoscroll.done",
+                "pages": pages,
+                "records": _read_rescue_count(),
+            }),
+            loop,
+        )
+    else:
+        asyncio.run_coroutine_threadsafe(
+            manager.broadcast({"type": "autoscroll.stopped", "pages": pages, "records": _read_rescue_count()}),
+            loop,
+        )
 
 
 @router.post("/autoscroll/start")
-async def autoscroll_start():
+async def autoscroll_start(body: _StartBody = _StartBody()):
     if not state.capture_running:
         raise HTTPException(status_code=422, detail="Capture must be running")
     with _start_lock:
@@ -123,7 +94,7 @@ async def autoscroll_start():
             raise HTTPException(status_code=409, detail="Auto-scroll already running")
         state.autoscroll_running = True
     loop = asyncio.get_running_loop()
-    threading.Thread(target=_autoscroll_loop, args=(loop,), daemon=True).start()
+    threading.Thread(target=_autoscroll_loop, args=(loop, max(1, body.pages_count)), daemon=True).start()
     return {"ok": True}
 
 
