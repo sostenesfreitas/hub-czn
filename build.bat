@@ -6,8 +6,16 @@ echo  Hub CZN - Build Script
 echo ============================================
 echo.
 
+:: ---- Step 0: Sync version from tauri.conf.json ----
+echo [0/4] Syncing version...
+python sync_version.py
+if errorlevel 1 (
+    echo ERROR: sync_version.py failed.
+    pause & exit /b 1
+)
+
 :: ---- Step 1: Python sidecar ----
-echo [1/3] Building Python sidecar...
+echo [1/4] Building Python sidecar...
 pip install -r requirements.txt
 if errorlevel 1 (
     echo ERROR: pip install failed.
@@ -30,7 +38,7 @@ if errorlevel 1 (
 
 :: ---- Step 2: Frontend ----
 echo.
-echo [2/3] Building frontend...
+echo [2/4] Building frontend...
 npm install
 if errorlevel 1 (
     echo ERROR: npm install failed.
@@ -45,7 +53,7 @@ if errorlevel 1 (
 
 :: ---- Step 3: Tauri bundle ----
 echo.
-echo [3/3] Building Tauri MSI...
+echo [3/4] Building Tauri app...
 npm run tauri build
 if errorlevel 1 (
     echo ERROR: npm run tauri build failed.
