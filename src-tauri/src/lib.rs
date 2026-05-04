@@ -1,6 +1,8 @@
 use std::sync::Mutex;
+use tauri_plugin_shell::process::CommandChild;
 
 struct ApiPort(Mutex<u16>);
+struct SidecarChild(Mutex<Option<CommandChild>>);
 
 #[tauri::command]
 fn get_api_port(state: tauri::State<'_, ApiPort>) -> u16 {
@@ -15,6 +17,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .manage(ApiPort(Mutex::new(7842)))
+        .manage(SidecarChild(Mutex::new(None)))
         .setup(|app| {
             // Only spawn sidecar in production builds.
             // In dev, run `python -m api.main` manually.
@@ -28,8 +31,11 @@ pub fn run() {
                 let sidecar = shell.sidecar("hub-czn-api")
                     .expect("hub-czn-api sidecar not found in binaries/");
 
-                let (mut rx, _child) = sidecar.spawn()
+                let (mut rx, child) = sidecar.spawn()
                     .expect("Failed to spawn hub-czn-api sidecar");
+
+                // Keep the child handle alive in app state so it is killed on exit.
+                *app.state::<SidecarChild>().0.lock().unwrap() = Some(child);
 
                 let handle = app.handle().clone();
 
@@ -49,6 +55,20 @@ pub fn run() {
             #[cfg(debug_assertions)]
             let _ = app;
             Ok(())
+        })
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::Destroyed = event {
+                if let Some(child) = window
+                    .app_handle()
+                    .state::<SidecarChild>()
+                    .0
+                    .lock()
+                    .unwrap()
+                    .take()
+                {
+                    let _ = child.kill();
+                }
+            }
         })
         .invoke_handler(tauri::generate_handler![get_api_port])
         .run(tauri::generate_context!())
