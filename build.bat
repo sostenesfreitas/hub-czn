@@ -22,7 +22,7 @@ if errorlevel 1 (
 
 :: Tauri expects the sidecar at src-tauri/binaries/<name>-<target-triple>.exe
 set TARGET_TRIPLE=x86_64-pc-windows-msvc
-copy /Y "dist\hub-czn-api\hub-czn-api.exe" "src-tauri\binaries\hub-czn-api-%TARGET_TRIPLE%.exe"
+copy /Y "dist\hub-czn-api.exe" "src-tauri\binaries\hub-czn-api-%TARGET_TRIPLE%.exe"
 if errorlevel 1 (
     echo ERROR: Failed to copy sidecar binary.
     pause & exit /b 1
@@ -46,9 +46,9 @@ if errorlevel 1 (
 :: ---- Step 3: Tauri bundle ----
 echo.
 echo [3/3] Building Tauri MSI...
-cargo tauri build
+npm run tauri build
 if errorlevel 1 (
-    echo ERROR: cargo tauri build failed.
+    echo ERROR: npm run tauri build failed.
     pause & exit /b 1
 )
 
