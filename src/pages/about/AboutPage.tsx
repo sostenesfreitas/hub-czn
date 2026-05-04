@@ -69,7 +69,7 @@ export function AboutPage() {
         ) : hasUpdate ? (
           <button
             type="button"
-            onClick={() => releaseUrl && openUrl(releaseUrl)}
+            onClick={() => releaseUrl && openExternal(releaseUrl)}
             className="flex items-center gap-3 w-full p-3 rounded-lg bg-[#c084fc]/10 border border-[#c084fc]/40
                        text-left hover:bg-[#c084fc]/20 transition-colors group"
           >
