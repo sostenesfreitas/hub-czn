@@ -4,21 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { ExternalLink, GitFork, Bug, BookOpen, Download, CheckCircle, Loader2 } from 'lucide-react'
 import { api } from '@/lib/api'
 import { useUpdateCheck } from '@/hooks/useUpdateCheck'
-
-async function openUrl(url: string) {
-  try {
-    const { openUrl } = await import('@tauri-apps/plugin-opener')
-    await openUrl(url)
-  } catch {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
-}
+import { openExternal } from '@/lib/browser'
 
 function LinkRow({ icon, label, url }: { icon: ReactNode; label: string; url: string }) {
   return (
     <button
       type="button"
-      onClick={() => openUrl(url)}
+      onClick={() => openExternal(url)}
       className="flex items-center gap-3 w-full p-3 rounded-lg bg-[#181818] border border-[#282828]
                  text-left hover:border-[#c084fc44] hover:bg-[#282828] transition-colors group"
     >
