@@ -88,9 +88,23 @@ def check_prerequisites() -> PrerequisiteStatus:
         PrerequisiteStatus object with current status of all requirements
     """
     # Check admin privileges (Windows only)
+    # Use TokenElevation instead of the deprecated IsUserAnAdmin(),
+    # which can return False even when elevated in some PyInstaller contexts.
     is_admin = False
     try:
-        is_admin = ctypes.windll.shell32.IsUserAnAdmin()
+        TOKEN_QUERY = 0x0008
+        TokenElevation = 20
+        hProcess = ctypes.windll.kernel32.GetCurrentProcess()
+        hToken = ctypes.c_void_p()
+        if ctypes.windll.advapi32.OpenProcessToken(hProcess, TOKEN_QUERY, ctypes.byref(hToken)):
+            elevation = ctypes.c_ulong()
+            size = ctypes.c_ulong()
+            if ctypes.windll.advapi32.GetTokenInformation(
+                hToken, TokenElevation, ctypes.byref(elevation),
+                ctypes.sizeof(elevation), ctypes.byref(size)
+            ):
+                is_admin = bool(elevation.value)
+            ctypes.windll.kernel32.CloseHandle(hToken)
     except Exception:
         pass
 
