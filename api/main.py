@@ -59,6 +59,10 @@ def _find_free_port(start: int = 7842) -> int:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--version":
+        from hub_czn_version import __version__
+        print(__version__, flush=True)
+        sys.exit(0)
     try:
         port = _find_free_port()
         print(f"PORT:{port}", flush=True)
