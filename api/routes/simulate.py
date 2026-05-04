@@ -274,7 +274,7 @@ def simulate_damage(body: SimulateDamageRequest):
             card_lookup.get(effective_card_id, {}).get("sct_name")
             or card_lookup.get(base_card_id, {}).get("sct_name")
         )
-        icon_path = f"/assets/cards/{sct_name}.png" if sct_name else None
+        icon_path = f"/assets/cards/{sct_name}.webp" if sct_name else None
 
         # dmg_revise_rate=0.36 from constant_meta(stat_formula): this is the default lookup key
         # into the powerstep_define table, which stores per-power-step monster stat multipliers
