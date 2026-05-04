@@ -15,6 +15,7 @@ import { HomePage } from './pages/home/HomePage'
 import { ScoringPage } from './pages/scoring/ScoringPage'
 import { SimulatorPage } from './pages/simulator/SimulatorPage'
 import { CardsPage } from './pages/cards/CardsPage'
+import { BattlePage } from './pages/battle/BattlePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ function AppRoutes() {
           <Route path="capture"    element={<CapturePage />} />
           <Route path="setup"      element={<SetupPage />} />
           <Route path="rescue"     element={<RescuePage />} />
+          <Route path="battle"     element={<BattlePage />} />
           <Route path="about"      element={<AboutPage />} />
           <Route path="*"          element={<Navigate to="/fragments" replace />} />
         </Route>

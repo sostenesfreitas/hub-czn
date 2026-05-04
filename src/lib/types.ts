@@ -285,6 +285,92 @@ export interface SimCardResult {
   icon_path: string | null
 }
 
+export interface BattlePlayerChar {
+  res_id: number | string
+  atk: number
+  def: number
+  cri: number
+  cri_dmg: number
+}
+
+export interface BattleRecord {
+  capture_time: string
+  enemy_def: number
+  enemy_atk: number
+  enemy_dmg_decrease: number
+  battle_result: string | null
+  mvp_res_id: string | null
+  char_dpt: Record<string, number>
+  player_chars: BattlePlayerChar[]
+}
+
+export interface CharAnalysis {
+  res_id: string
+  scale_stat: 'atk' | 'def'
+  atk: number
+  crate: number
+  cdmg: number
+  crit_factor: number
+  dmg_per_100coeff: number
+  priority: 'crate' | 'cdmg' | 'atk' | 'balanced'
+  tip: string
+  crate_gain_10pp: number
+  cdmg_gain_30pct: number
+  atk_gain_10pct: number
+}
+
+export interface BattleAnalytics {
+  capture_time: string
+  enemy_def: number
+  def_factor: number
+  battle_result: string | null
+  chars: CharAnalysis[]
+}
+
+export interface OverviewSummary {
+  total: number
+  win_rate: number
+  avg_enemy_def: number
+  avg_team_dmg: number
+  last_battle_time: string | null
+}
+
+export interface InsightCard {
+  level: 'urgent' | 'warning' | 'positive'
+  title: string
+  description: string
+  action: string
+  char_res_id: string | null
+}
+
+export interface CharTrend {
+  res_id: string
+  battle_count: number
+  avg_dpt: number
+  dpt_trend_pct: number
+  dpt_sparkline: number[]
+  latest_atk: number
+  latest_crate: number
+  latest_cdmg: number
+  priority: 'crate' | 'cdmg' | 'atk' | 'balanced'
+  breakeven_delta: number
+}
+
+export interface RecentResult {
+  capture_time: string
+  battle_result: string | null
+  enemy_def: number
+  total_team_dmg: number
+  mvp_res_id: string | null
+}
+
+export interface BattleOverview {
+  summary: OverviewSummary
+  insights: InsightCard[]
+  chars: CharTrend[]
+  recent: RecentResult[]
+}
+
 export interface SimulateDamageResponse {
   char_name: string
   deck_id: number

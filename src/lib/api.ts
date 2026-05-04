@@ -5,7 +5,8 @@ import type {
   Combatant, CombatantStats, ScoringPriorities,
   OptimizerConfig, EquipmentSet, AboutInfo, CharPreset,
   SimulateRequest, SimulateDamageResponse, DeckInfo,
-  CardEntry, CardCharacter,
+  CardEntry, CardCharacter, BattleRecord, BattleAnalytics,
+  BattleOverview,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -130,6 +131,15 @@ export const api = {
     const qs = charResId != null ? `?char_res_id=${charResId}` : ''
     return request<CardEntry[]>(`/api/cards${qs}`)
   },
+
+  battleLatest: () => request<BattleRecord>('/api/battle/latest'),
+
+  battleHistory: (limit = 20) =>
+    request<BattleRecord[]>(`/api/battle/history?limit=${limit}`),
+
+  battleAnalytics: () => request<BattleAnalytics>('/api/battle/analytics'),
+
+  battleOverview: () => request<BattleOverview>('/api/battle/overview'),
 
   charPreset: (charId: number) =>
     request<CharPreset>(`/api/scoring/char-preset/${charId}`),

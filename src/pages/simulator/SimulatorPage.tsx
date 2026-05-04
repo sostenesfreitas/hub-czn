@@ -1,40 +1,64 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Play, Zap } from 'lucide-react'
+import { Play, Zap, Shield } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
 import type { Combatant, SimulateDamageResponse, SimCardResult, DeckInfo } from '@/lib/types'
 import { CharacterCombobox } from '@/components/ui/character-combobox'
 
 const MORALE_PCT = 20
 
-// DEF values: WL = s_def from equip_stat_define; Tower = s_def × boss_powerstep/205 (WL5 ref).
-// F30-F120 share boss_powerstep=323 (→36/49); F150 escalates to 391 (Soul Collector).
+// DEF values from mon_stat@mon_stat.json (game data files)
 const DEF_PRESET_GROUPS = [
   {
-    label: 'simulator.presetGroupWorld',
+    label: 'simulator.presetGroupCombat',
     presets: [
-      { label: 'WL1', value: 10 },
-      { label: 'WL2', value: 17 },
-      { label: 'WL3', value: 23 },
-      { label: 'WL4', value: 27 },
-      { label: 'WL5', value: 31 },
+      { label: 'Lv5', value: 322 },
+      { label: 'Lv7', value: 220 },
+      { label: 'Lv8', value: 266 },
+      { label: 'Lv10', value: 370 },
     ],
   },
   {
-    label: 'simulator.presetGroupTower',
+    label: 'simulator.presetGroupGold',
     presets: [
-      { label: 'F30', value: 36 },
-      { label: 'F60', value: 49 },
-      { label: 'F90', value: 49 },
-      { label: 'F120', value: 49 },
-      { label: 'F150', value: 59 },
+      { label: 'Lv5', value: 322 },
+      { label: 'Lv7', value: 459 },
+      { label: 'Lv8', value: 556 },
+      { label: 'Lv10', value: 772 },
+    ],
+  },
+  {
+    label: 'simulator.presetGroupPiece',
+    presets: [
+      { label: 'Lv5', value: 357 },
+      { label: 'Lv7', value: 558 },
+      { label: 'Lv8', value: 615 },
+      { label: 'Lv10', value: 751 },
+    ],
+  },
+  {
+    label: 'simulator.presetGroupHyperspace',
+    presets: [
+      { label: 'All', value: 112 },
     ],
   },
   {
     label: 'simulator.presetGroupBoss',
     presets: [
-      { label: 'Soul Collector (F150)', value: 59 },
+      { label: 'Lv5', value: 258 },
+      { label: 'Lv7', value: 431 },
+      { label: 'Lv8', value: 488 },
+      { label: 'Lv10', value: 624 },
+    ],
+  },
+  {
+    label: 'simulator.presetGroupDisaster',
+    presets: [
+      { label: 'S1', value: 89 },
+      { label: 'S2', value: 122 },
+      { label: 'S3', value: 200 },
+      { label: 'S4', value: 219 },
     ],
   },
 ]
@@ -198,6 +222,19 @@ export function SimulatorPage() {
     onSuccess: (data) => { setResult(data); persist({ result: data }) },
   })
 
+  // Apply DEF value passed from Battle History page via sessionStorage
+  useEffect(() => {
+    const saved = sessionStorage.getItem('czn_battle_def')
+    if (saved) {
+      sessionStorage.removeItem('czn_battle_def')
+      const v = parseInt(saved, 10)
+      if (!isNaN(v) && v >= 0) {
+        setMonsterDef(v)
+        persist({ monsterDef: v })
+      }
+    }
+  }, [])
+
   const canRun = charName !== '' && !mutation.isPending && (status?.data_loaded ?? false)
   const moraleMultDisplay = `×${(1 + morale * MORALE_PCT / 100).toFixed(2)}`
   const defReductionPreview = `${(300 / (300 + monsterDef) * 100).toFixed(1)}%`
@@ -336,6 +373,19 @@ export function SimulatorPage() {
               onChange={(e) => { const v = Math.max(0, Number(e.target.value)); setMonsterDef(v); persist({ monsterDef: v }) }}
               className="flex-1 bg-[#222] border border-[#333] text-[#e5e7eb] text-xs rounded px-2 py-1 w-0 font-mono"
             />
+            <button
+              type="button"
+              title="Load DEF from last captured battle"
+              onClick={() =>
+                api.battleLatest()
+                  .then(b => { const v = Math.round(b.enemy_def); setMonsterDef(v); persist({ monsterDef: v }) })
+                  .catch(() => {})
+              }
+              className="flex items-center gap-1 px-2 py-1 rounded bg-[#c084fc]/15 text-[#c084fc] text-[10px] hover:bg-[#c084fc]/25 transition-colors shrink-0"
+            >
+              <Shield size={10} />
+              Battle
+            </button>
           </div>
         </div>
 

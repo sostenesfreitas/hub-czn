@@ -113,6 +113,7 @@ def _load_card_db_from_folder(db_path: Path) -> tuple[dict, dict, dict]:
                         "cost": int(entry.get("cost", 0)),
                         "link_skill_eff_id": _parse_list(entry.get("link_skill_eff_id", "[]")),
                         "sct_name": sct if sct and sct != "none" else None,
+                        "sort": entry.get("sort", ""),
                     }
         elif eff_re.match(name):
             for entry in data:
@@ -155,6 +156,147 @@ def _resolve_card_db() -> tuple[dict, dict, dict]:
     return {}, {}, {}
 
 
+def _load_node_effects_from_folder(db_path: Path) -> dict:
+    p = db_path / "potential_node@potential_node_effect.json"
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    relevant = {
+        "NODE_CARD_R_SPARK", "NODE_REINFORCE_CARD_START",
+        "NODE_REINFORCE_CARD_NEUTRAL", "NODE_REINFORCE_CARD_UNIQUE",
+        "NODE_STAT_ADD_SKILL_EFF_VALUE",
+    }
+    result: dict = {}
+    for e in data:
+        ntype = e.get("node_type", "")
+        if ntype not in relevant:
+            continue
+        nid = e.get("id", "")
+        if not nid:
+            continue
+        check_raw = e.get("check_link_stat_list_id", "none")
+        result[nid] = {
+            "type": ntype,
+            "cards": _parse_list(e.get("link_card_id", "[]")),
+            "val": int(float(e.get("value", 0))),
+            "limit": int(e.get("stat_add_limit", 0)),
+            "check": check_raw if check_raw != "none" else None,
+            "thresh": int(e.get("stat_check_threshold", 0)),
+            "excess": e.get("stat_check_use_excess", "FALSE") == "TRUE",
+        }
+    return result
+
+
+def _resolve_node_effects() -> dict:
+    bundled = game_db.get()
+    if bundled.get("node_effects"):
+        return bundled["node_effects"]
+    db_path = _find_extracted_folder("db")
+    if db_path:
+        return _load_node_effects_from_folder(db_path)
+    return {}
+
+
+_REINFORCE_TO_SORTS: dict[str, frozenset] = {
+    "NODE_REINFORCE_CARD_START":   frozenset({"SORT_START"}),
+    "NODE_REINFORCE_CARD_NEUTRAL": frozenset({"SORT_COLLAPSE", "SORT_COLLAPSE_SKILL"}),
+    "NODE_REINFORCE_CARD_UNIQUE":  frozenset({"SORT_UNIQUE"}),
+}
+
+_STAT_KEY_MAP: dict[str, str] = {
+    "S_ATK": "ATK", "S_DEF": "DEF",
+    "S_CRI": "CRate", "S_CRI_DMG_RATE": "CDmg",
+}
+
+
+def _decode_node_id(node_int: int) -> str:
+    s = f"{node_int:08d}"
+    return f"{s[:4]}_{s[4]}_{s[5]}_{int(s[6:8])}"
+
+
+def _get_char_potential_nodes(res_id: int, raw_data: dict) -> list[int]:
+    chars = raw_data.get("characters", {}).get("characters", [])
+    for c in chars:
+        if c.get("res_id") == res_id:
+            nodes = c.get("potential_node_ids")
+            if not nodes:
+                return []
+            if isinstance(nodes, str):
+                try:
+                    return json.loads(nodes)
+                except Exception:
+                    return []
+            return list(nodes)
+    return []
+
+
+def _calc_stat_add_bonus(effect: dict, stats: dict) -> int:
+    limit = effect["limit"]
+    check = effect.get("check")
+    thresh = effect.get("thresh", 0)
+    excess = effect.get("excess", False)
+    val = effect.get("val", 0)
+
+    if not check:
+        return limit
+
+    stat_key = _STAT_KEY_MAP.get(check)
+    if not stat_key:
+        return 0
+    stat_val = float(stats.get(stat_key, 0))
+
+    if excess:
+        usable = max(0.0, stat_val - thresh)
+    else:
+        if stat_val < thresh:
+            return 0
+        usable = stat_val
+
+    if val <= 0:
+        return limit
+    return min(int(usable / val), limit)
+
+
+def _compute_node_bonuses(
+    node_ids: list[int], node_effects: dict, stats: dict
+) -> tuple[dict[str, int], set[str], dict[str, int]]:
+    """
+    Returns:
+        card_specific_bonus: {card_id -> per-execution eff_value bonus}
+        pot_cards: base card IDs that should use the _pot variant
+        sort_bonus: {sort_string -> per-execution eff_value bonus}
+    """
+    card_specific: dict[str, int] = {}
+    pot_cards: set[str] = set()
+    sort_bonus: dict[str, int] = {}
+
+    for node_int in node_ids:
+        node_key = _decode_node_id(node_int)
+        effect = node_effects.get(node_key)
+        if not effect:
+            continue
+        ntype = effect["type"]
+
+        if ntype == "NODE_CARD_R_SPARK":
+            for cid in effect["cards"]:
+                pot_cards.add(cid)
+
+        elif ntype in _REINFORCE_TO_SORTS:
+            for sort in _REINFORCE_TO_SORTS[ntype]:
+                sort_bonus[sort] = sort_bonus.get(sort, 0) + effect["val"]
+
+        elif ntype == "NODE_STAT_ADD_SKILL_EFF_VALUE":
+            bonus = _calc_stat_add_bonus(effect, stats)
+            if bonus:
+                for cid in effect["cards"]:
+                    card_specific[cid] = card_specific.get(cid, 0) + bonus
+
+    return card_specific, pot_cards, sort_bonus
+
+
 def _get_card_name(card_id: str) -> str:
     bundled = game_db.get()
     if bundled.get("names"):
@@ -168,7 +310,13 @@ def _get_card_name(card_id: str) -> str:
 
 
 def _card_damage(card_id: str, card_lookup: dict, eff_lookup: dict) -> tuple[int, int, int]:
-    """Return (total_eff_value, total_hits, cost) for a card; eff_value is summed across all DMG effects."""
+    """Return (total_eff_value, total_hits, cost).
+
+    total_eff_value = Σ(eff_value × hit_count) across all SKILL_EFF_DMG effects.
+    This is the base card coefficient before per-execution node bonuses are added.
+    Node bonuses (REINFORCE, STAT_ADD) apply per execution: bonus × total_hits is
+    added by the caller to get the final coefficient.
+    """
     entry = card_lookup.get(card_id)
     if not entry:
         return 0, 0, 0
@@ -178,8 +326,9 @@ def _card_damage(card_id: str, card_lookup: dict, eff_lookup: dict) -> tuple[int
     for eid in entry["link_skill_eff_id"]:
         eff = eff_lookup.get(eid)
         if eff and eff["eff"] == "SKILL_EFF_DMG":
-            total_eff += eff["eff_value"]
-            total_hits += eff["eff_count_value"]
+            hits = eff["eff_count_value"]
+            total_eff += eff["eff_value"] * hits
+            total_hits += hits
     return total_eff, total_hits, cost
 
 
@@ -225,10 +374,17 @@ def simulate_damage(body: SimulateDamageRequest):
             detail="Card data not available. Bundled game_db.json not found and no extracted db/ folder detected.",
         )
 
+    # --- Load node effects and compute per-card bonuses ---
+    node_effects = _resolve_node_effects()
+    res_id = char_info.res_id
+    char_node_ids = _get_char_potential_nodes(res_id, state.optimizer.raw_data)
+    card_specific_bonus, pot_cards, sort_bonus = _compute_node_bonuses(
+        char_node_ids, node_effects, stats
+    )
+
     # --- Get character's card deck from save data ---
     savedata: list = state.optimizer.raw_data.get("inventory", {}).get("savedata", [])
 
-    res_id = char_info.res_id
     char_decks = [e for e in savedata if e.get("char_res_id") == res_id and e.get("card_datas")]
     if not char_decks:
         raise HTTPException(status_code=422, detail=f"No deck data found for {body.char_name} (res_id {res_id})")
@@ -250,8 +406,15 @@ def simulate_damage(body: SimulateDamageRequest):
             continue
 
         rspark_id: str | None = cd.get("r_spark_res_id") if body.use_sparks else None
-        effective_card_id = base_card_id
 
+        # Apply NODE_CARD_R_SPARK (potential node pot transform) before rspark item
+        effective_card_id = base_card_id
+        if base_card_id in pot_cards:
+            pot_id = base_card_id + "_pot"
+            if card_lookup.get(pot_id):
+                effective_card_id = pot_id
+
+        # Apply r_spark item
         if rspark_id:
             changed = rspark_lookup.get(rspark_id, "")
             if changed:
@@ -259,7 +422,7 @@ def simulate_damage(body: SimulateDamageRequest):
 
         eff_value, hits, cost = _card_damage(effective_card_id, card_lookup, eff_lookup)
 
-        # Fallback to base card if spark variant not found
+        # Fallback to base card if spark/pot variant not found
         if eff_value == 0 and effective_card_id != base_card_id:
             eff_value, hits, cost = _card_damage(base_card_id, card_lookup, eff_lookup)
             effective_card_id = base_card_id
@@ -267,6 +430,12 @@ def simulate_damage(body: SimulateDamageRequest):
 
         if eff_value == 0:
             continue  # non-damage card
+
+        # Apply node bonuses (per execution, so multiply per-execution bonus by total hits)
+        card_sort = card_lookup.get(effective_card_id, {}).get("sort", "")
+        per_exec_bonus = sort_bonus.get(card_sort, 0) + card_specific_bonus.get(effective_card_id, 0)
+        if per_exec_bonus and hits:
+            eff_value += per_exec_bonus * hits
 
         card_name = _get_card_name(effective_card_id) or _get_card_name(base_card_id)
         # spark variant may lack sct_name; fall back to base card illustration

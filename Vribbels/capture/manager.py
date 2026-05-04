@@ -84,6 +84,8 @@ class Addon:
         self.character_data = None
         self.saved_path = None
         self.rescue_path = None
+        self.battle_path = None
+        self.battle_data: dict = {}
         self.zstd_dict = None
         self.zstd_dctx = None
 
@@ -289,6 +291,14 @@ class Addon:
                     self._save_rescue_data(key, data[key])
                     break
 
+            # Capture battle data
+            if "battle_info" in data:
+                self._on_battle_info(data["battle_info"])
+            if "return_info" in data:
+                self._on_return_info(data["return_info"])
+            if "snapshot" in data:
+                self._on_snapshot(data["snapshot"])
+
         except Exception as e:
             self.log_callback(f"Error: {e}")
 
@@ -417,6 +427,76 @@ class Addon:
         self.log_callback(
             f"[RESCUE] Saved: {len(new_records)} rescue records -> {self.rescue_path.name}"
         )
+
+    def _on_battle_info(self, battle_info: dict):
+        """Save enemy stats when a new battle begins."""
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.battle_path = self.output_dir / f"battle_{ts}.json"
+        monster_stat = battle_info.get("monsterStat", {}).get("info", {})
+        chars = battle_info.get("chars", [])
+        self.battle_data = {
+            "capture_time": datetime.now().isoformat(),
+            "enemy_def": monster_stat.get("S_DEF", 0),
+            "enemy_atk": monster_stat.get("S_ATK", 0),
+            "enemy_dmg_decrease": monster_stat.get("S_DMG_DECREASE_RATE", 0.0),
+            "battle_result": None,
+            "mvp_res_id": None,
+            "char_dpt": {},
+            "player_chars": [
+                {
+                    "res_id": c.get("res_id"),
+                    "atk": c.get("status", {}).get("info", {}).get("S_ATK", 0),
+                    "def": c.get("status", {}).get("info", {}).get("S_DEF", 0),
+                    "cri": c.get("status", {}).get("info", {}).get("S_CRI", 0),
+                    "cri_dmg": c.get("status", {}).get("info", {}).get("S_CRI_DMG_RATE", 0),
+                }
+                for c in chars
+            ],
+        }
+        self._write_battle_file()
+        self.log_callback(
+            f"[BATTLE] Started: enemy DEF={self.battle_data['enemy_def']} ATK={self.battle_data['enemy_atk']}"
+        )
+
+    def _on_return_info(self, return_info: dict):
+        """Update battle result on battle end."""
+        if not self.battle_data:
+            return
+        result = return_info.get("result", "")
+        mvp = str(return_info.get("mvp") or "")
+        self.battle_data["battle_result"] = result
+        self.battle_data["mvp_res_id"] = mvp
+        self._write_battle_file()
+        self.log_callback(f"[BATTLE] Result: {result}, MVP res_id={mvp}")
+
+    def _on_snapshot(self, snapshot: dict):
+        """Update per-character DPT from snapshot if non-zero data is available."""
+        if not self.battle_data:
+            return
+        dpt = snapshot.get("cache", {}).get("battle_wt", {}).get("dpt", {})
+        char_stats = dpt.get("char_stats", {})
+        if not char_stats:
+            return
+        if any(v.get("damage", 0) > 0 for v in char_stats.values() if isinstance(v, dict)):
+            self.battle_data["char_dpt"] = {
+                str(k): int(v.get("damage", 0))
+                for k, v in char_stats.items()
+                if isinstance(v, dict)
+            }
+            self._write_battle_file()
+
+    def _write_battle_file(self):
+        """Write current battle data to timestamped file and battle_latest.json."""
+        if not self.battle_path or not self.battle_data:
+            return
+        try:
+            with open(self.battle_path, "w", encoding="utf-8") as f:
+                json.dump(self.battle_data, f, indent=2)
+            latest_path = self.output_dir / "battle_latest.json"
+            with open(latest_path, "w", encoding="utf-8") as f:
+                json.dump(self.battle_data, f, indent=2)
+        except Exception as e:
+            self.log_callback(f"[BATTLE] Write error: {e}")
 
     def done(self):
         """Cleanup on shutdown."""

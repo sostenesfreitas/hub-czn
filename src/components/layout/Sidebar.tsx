@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   Home, Swords, Layers, Users, BarChart2,
-  Radio, Settings, Gift, Info, Zap,
+  Radio, Settings, Gift, Info, Zap, Sword,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import i18n from '@/i18n'
@@ -15,6 +15,7 @@ const NAV = [
   { to: '/combatants', key: 'nav.combatants',  icon: Users },
   { to: '/scoring',    key: 'nav.scoring',     icon: BarChart2 },
   { to: '/simulator',  key: 'nav.simulator',   icon: Zap,  beta: true },
+  { to: '/battle',     key: 'nav.battle',      icon: Sword, beta: true },
   { to: '/capture',    key: 'nav.capture',     icon: Radio },
   { to: '/rescue',     key: 'nav.rescue',      icon: Gift },
   { to: '/setup',      key: 'nav.setup',       icon: Settings },
