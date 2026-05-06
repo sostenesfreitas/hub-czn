@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CZN Scanner</string>
+    <string name="accessibility_service_description">Automates navigation in Chaos Zero Nightmare to scan game data</string>
+</resources>
