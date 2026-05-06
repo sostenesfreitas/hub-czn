@@ -49,8 +49,10 @@ class MemoryFragmentScanner(
                     fromY = bitmap.height * 0.7f,
                     toY = bitmap.height * 0.3f
                 )
-                // After scroll, tap first visible item
-                val firstItem = findFirstGridItem(blocks)
+                // Re-capture after scroll to get fresh block positions
+                val freshBitmap = screenshotManager.capture() ?: break
+                val freshBlocks = ocrEngine.recognizeBlocks(freshBitmap)
+                val firstItem = findFirstGridItem(freshBlocks)
                 if (firstItem != null) {
                     gestures.tap(firstItem.first, firstItem.second)
                 } else {
