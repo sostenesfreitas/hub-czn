@@ -13,11 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
 class FloatingOverlay(
     private val context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val savedStateRegistryOwner: SavedStateRegistryOwner,
     private val onScanRescue: () -> Unit,
     private val onScanFragments: () -> Unit,
     private val onScanCombatants: () -> Unit
@@ -35,6 +39,8 @@ class FloatingOverlay(
         ).apply { gravity = Gravity.TOP or Gravity.START; x = 0; y = 200 }
 
         composeView = ComposeView(context).apply {
+            setViewTreeLifecycleOwner(lifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(savedStateRegistryOwner)
             setContent {
                 var expanded by remember { mutableStateOf(false) }
                 var status by remember { mutableStateOf("") }

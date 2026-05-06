@@ -13,6 +13,7 @@ import com.hubczn.optimizer.data.repository.JSONExporter
 import com.hubczn.optimizer.logic.CombatantScanner
 import com.hubczn.optimizer.logic.MemoryFragmentScanner
 import com.hubczn.optimizer.logic.RescueRecordScanner
+import com.hubczn.optimizer.ui.components.FloatingOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -24,6 +25,8 @@ class CaptureService : Service() {
     private var projection: MediaProjection? = null
     private var screenshotManager: ScreenshotManager? = null
     private var ocrEngine: MLKitOCREngine? = null
+    private val serviceLifecycleOwner = ServiceLifecycleOwner()
+    private var overlay: FloatingOverlay? = null
 
     enum class ScanType { RESCUE_RECORDS, MEMORY_FRAGMENTS, COMBATANTS }
 
@@ -33,6 +36,17 @@ class CaptureService : Service() {
         super.onCreate()
         startForeground(NOTIF_ID, buildNotification("CZN Scanner running"))
         ocrEngine = MLKitOCREngine()
+        serviceLifecycleOwner.start()
+
+        overlay = FloatingOverlay(
+            context = this,
+            lifecycleOwner = serviceLifecycleOwner,
+            savedStateRegistryOwner = serviceLifecycleOwner,
+            onScanRescue = { startScan(ScanType.RESCUE_RECORDS) },
+            onScanFragments = { startScan(ScanType.MEMORY_FRAGMENTS) },
+            onScanCombatants = { startScan(ScanType.COMBATANTS) }
+        )
+        overlay?.show()
     }
 
     @Suppress("DEPRECATION")
@@ -53,6 +67,25 @@ class CaptureService : Service() {
             return START_NOT_STICKY
         }
 
+        startScan(scanType)
+        instance = this
+        return START_NOT_STICKY
+    }
+
+    private fun startScan(scanType: ScanType) {
+        val accessibilityService = CZNAccessibilityService.instance ?: run {
+            notifyStatus("Accessibility Service not enabled")
+            return
+        }
+        val sm = screenshotManager ?: run {
+            notifyStatus("ScreenshotManager not ready")
+            return
+        }
+        val ocr = ocrEngine ?: run {
+            notifyStatus("OCR engine not ready")
+            return
+        }
+
         val gestures = GestureDispatcher(accessibilityService)
         val exporter = JSONExporter(this)
 
@@ -60,21 +93,21 @@ class CaptureService : Service() {
             try {
                 when (scanType) {
                     ScanType.RESCUE_RECORDS -> {
-                        val records = RescueRecordScanner(screenshotManager!!, ocrEngine!!, gestures) {
+                        val records = RescueRecordScanner(sm, ocr, gestures) {
                             notifyStatus(it)
                         }.scan()
                         val file = exporter.exportRescueRecords(records, "")
                         notifyStatus("Exported ${records.size} records to ${file.name}")
                     }
                     ScanType.MEMORY_FRAGMENTS -> {
-                        val fragments = MemoryFragmentScanner(screenshotManager!!, ocrEngine!!, gestures) {
+                        val fragments = MemoryFragmentScanner(sm, ocr, gestures) {
                             notifyStatus(it)
                         }.scan()
                         val file = exporter.exportFragments(fragments)
                         notifyStatus("Exported ${fragments.size} fragments to ${file.name}")
                     }
                     ScanType.COMBATANTS -> {
-                        val combatants = CombatantScanner(screenshotManager!!, ocrEngine!!, gestures) {
+                        val combatants = CombatantScanner(sm, ocr, gestures) {
                             notifyStatus(it)
                         }.scan()
                         val file = exporter.exportCombatants(combatants)
@@ -89,12 +122,11 @@ class CaptureService : Service() {
                 instance = null
             }
         }
-
-        instance = this
-        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
+        overlay?.dismiss()
+        serviceLifecycleOwner.stop()
         screenshotManager?.stop()
         projection?.stop()
         ocrEngine?.close()
