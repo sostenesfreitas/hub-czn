@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 repo_root = Path(SPECPATH).parent  # SPECPATH = .../api; parent = repo root
-vribbels = repo_root / 'Vribbels'
+api_dir = repo_root / 'api'
 
 # PyInstaller does not always auto-include the versioned Python DLL on Windows.
 # Collect both python3.dll (stable ABI stub) and pythonXYZ.dll explicitly.
@@ -25,15 +25,13 @@ a = Analysis(
     [str(repo_root / 'api' / 'main.py')],
     pathex=[
         str(repo_root),
-        str(repo_root / 'api'),
-        str(vribbels),
+        str(api_dir),
     ],
     binaries=_py_dlls,
     datas=[
-        (str(vribbels / 'game_data'),        'game_data'),
-        (str(vribbels / 'images'),           'images'),
-        (str(vribbels / 'zstd_dictionary.bin'), '.'),
-        (str(repo_root / 'api' / 'assets'),  'assets'),
+        (str(api_dir / 'game_data'),           'game_data'),
+        (str(api_dir / 'zstd_dictionary.bin'), '.'),
+        (str(api_dir / 'assets'),              'assets'),
     ],
     hiddenimports=[
         'hub_czn_version',

@@ -24,7 +24,7 @@ ROOT = Path(__file__).parent
 conf_path = ROOT / "src-tauri" / "tauri.conf.json"
 expected = json.loads(conf_path.read_text(encoding="utf-8"))["version"]
 
-version_file = ROOT / "Vribbels" / "hub_czn_version.py"
+version_file = ROOT / "api" / "hub_czn_version.py"
 sidecar     = ROOT / "src-tauri" / "binaries" / "hub-czn-api-x86_64-pc-windows-msvc.exe"
 
 if not sidecar.exists():

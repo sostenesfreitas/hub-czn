@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'Vribbels'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'api'))
 from game_data.constants import ALL_STAT_NAMES
 
 

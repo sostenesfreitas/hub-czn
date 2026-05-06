@@ -12,7 +12,7 @@ ROOT = Path(__file__).parent
 conf = ROOT / "src-tauri" / "tauri.conf.json"
 version = json.loads(conf.read_text(encoding="utf-8"))["version"]
 
-py_file = ROOT / "Vribbels" / "hub_czn_version.py"
+py_file = ROOT / "api" / "hub_czn_version.py"
 py_file.write_text(f'__version__ = "{version}"\n', encoding="utf-8")
 
 cargo_file = ROOT / "src-tauri" / "Cargo.toml"
