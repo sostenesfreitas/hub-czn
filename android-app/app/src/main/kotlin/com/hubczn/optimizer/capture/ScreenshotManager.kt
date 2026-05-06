@@ -18,6 +18,7 @@ class ScreenshotManager(
     private var imageReader: ImageReader? = null
     private var virtualDisplay: VirtualDisplay? = null
 
+    @Suppress("DEPRECATION")
     private val metrics: DisplayMetrics by lazy {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         DisplayMetrics().also { wm.defaultDisplay.getRealMetrics(it) }
