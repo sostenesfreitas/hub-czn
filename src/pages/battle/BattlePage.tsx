@@ -97,25 +97,31 @@ const INSIGHT_STYLE: Record<string, { border: string; bg: string; text: string }
 }
 
 function InsightCardComp({ card, combatants }: { card: InsightCard; combatants: Combatant[] }) {
+  const { t } = useTranslation()
   const style = INSIGHT_STYLE[card.level] ?? INSIGHT_STYLE.warning
   const combatant = card.char_res_id ? findCombatant(card.char_res_id, combatants) : undefined
+  const k = card.insight_key
+  const title       = k ? t(`battle.insight.${k}.title`)                    : card.title
+  const description = k ? t(`battle.insight.${k}.description`, card.params) : card.description
+  const action      = k ? t(`battle.insight.${k}.action`)                   : card.action
   return (
     <div className={`flex gap-3 rounded-lg border-l-4 p-3 ${style.border} ${style.bg}`}>
       {combatant && <CharAvatar combatant={combatant} size={32} />}
       <div className="flex flex-col gap-1 flex-1 min-w-0">
-        <span className={`text-xs font-bold ${style.text}`}>{card.title}</span>
-        <span className="text-[#b3b3b3] text-[11px] leading-relaxed">{card.description}</span>
-        <span className={`text-[10px] font-medium self-start mt-0.5 ${style.text}`}>→ {card.action}</span>
+        <span className={`text-xs font-bold ${style.text}`}>{title}</span>
+        <span className="text-[#b3b3b3] text-[11px] leading-relaxed">{description}</span>
+        <span className={`text-[10px] font-medium self-start mt-0.5 ${style.text}`}>→ {action}</span>
       </div>
     </div>
   )
 }
 
 const TREND_PRIORITY_BADGE: Record<string, string> = {
-  crate:    'bg-[#1a1f2e] text-[#60a5fa]',
-  cdmg:     'bg-[#1e1a2e] text-[#a78bfa]',
-  atk:      'bg-[#2a1e10] text-[#fb923c]',
-  balanced: 'bg-[#1a2a1a] text-[#a3e635]',
+  crate:     'bg-[#1a1f2e] text-[#60a5fa]',
+  crate_low: 'bg-[#2a1a1a] text-[#f87171]',
+  cdmg:      'bg-[#1e1a2e] text-[#a78bfa]',
+  atk:       'bg-[#2a1e10] text-[#fb923c]',
+  balanced:  'bg-[#1a2a1a] text-[#a3e635]',
 }
 
 function CharTrendCard({ trend, combatants }: { trend: CharTrend; combatants: Combatant[] }) {
@@ -131,7 +137,7 @@ function CharTrendCard({ trend, combatants }: { trend: CharTrend; combatants: Co
         <CharAvatar combatant={combatant} size={28} />
         <div className="flex-1 min-w-0">
           <div className="text-[#e5e7eb] text-xs font-bold truncate">{name}</div>
-          <div className="text-[#555] text-[10px]">{trend.battle_count} batalhas</div>
+          <div className="text-[#555] text-[10px]">{t('battle.overview.battlesCount', { count: trend.battle_count })}</div>
         </div>
         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${badgeClass}`}>
           {t(`battle.overview.priority.${trend.priority}`)}
@@ -423,10 +429,11 @@ function BattleCard({
 // ── Analytics tab ─────────────────────────────────────────────────────────────
 
 const PRIORITY_COLOR: Record<string, string> = {
-  crate:    'text-[#60a5fa] bg-[#1a1f2e]',
-  cdmg:     'text-[#a78bfa] bg-[#1e1a2e]',
-  atk:      'text-[#fb923c] bg-[#2a1e10]',
-  balanced: 'text-[#a3e635] bg-[#1a2a1a]',
+  crate_low: 'text-[#f87171] bg-[#2a1a1a]',
+  crate:     'text-[#60a5fa] bg-[#1a1f2e]',
+  cdmg:      'text-[#a78bfa] bg-[#1e1a2e]',
+  atk:       'text-[#fb923c] bg-[#2a1e10]',
+  balanced:  'text-[#a3e635] bg-[#1a2a1a]',
 }
 
 function MiniBar({ value, max, color }: { value: number; max: number; color: string }) {
@@ -516,7 +523,11 @@ function CharAnalyticsCard({ analysis, combatants }: { analysis: CharAnalysis; c
 
       {/* Tip */}
       <div className="bg-[#1e1e1e] rounded px-3 py-2 text-[10px] text-[#b3b3b3] leading-relaxed border-l-2 border-[#c084fc]/40">
-        {analysis.tip}
+        {t(`battle.tip.${analysis.priority}`, {
+          crate: analysis.crate.toFixed(0),
+          cdmg: analysis.cdmg.toFixed(0),
+          stat: analysis.scale_stat === 'def' ? 'DEF' : 'ATK',
+        })}
       </div>
     </div>
   )

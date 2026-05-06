@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { api } from '@/lib/api'
 import { CheckCircle, XCircle, Loader2, ChevronDown, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { openExternal } from '@/lib/browser'
 
 function StatusIcon({ ok }: { ok: boolean }) {
   return ok
@@ -59,11 +60,6 @@ export function SetupPage() {
     refetchInterval: 5000,
   })
 
-  const installMutation = useMutation({
-    mutationFn: () => api.installMitmproxy(),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['setup-status'] }),
-  })
-
   const certMutation = useMutation({
     mutationFn: () => api.generateCert(),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['setup-status'] }),
@@ -106,16 +102,14 @@ export function SetupPage() {
             ? t('setup.mitmproxy.ok', { version: status.mitmproxy_version })
             : t('setup.mitmproxy.fail')
         }
-        error={installMutation.isError ? installMutation.error : undefined}
         action={
           !status.mitmproxy && (
             <Button
               size="sm"
-              onClick={() => installMutation.mutate()}
-              disabled={installMutation.isPending}
+              onClick={() => openExternal('https://apps.microsoft.com/detail/9nwndlqmnzd7?hl=en-US&gl=US')}
               className="bg-[#c084fc] hover:bg-[#9333ea] text-white shrink-0"
             >
-              {installMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : t('setup.mitmproxy.install')}
+              {t('setup.mitmproxy.install')}
             </Button>
           )
         }

@@ -35,6 +35,8 @@ class OptimizeStartRequest(BaseModel):
     max_results: int = Field(default=10, ge=1, le=50)
     stat_weights: dict[str, int] | None = None
     allow_wildcards: bool = False
+    min_priority_substats: int = Field(default=0, ge=0, le=4)
+    stat_constraints: dict[str, float] | None = None
 
 
 def _format_results(results: list) -> list[dict]:
@@ -50,7 +52,7 @@ def _format_results(results: list) -> list[dict]:
                 "level": p.level,
                 "main_stat": f"{p.main_stat.name} {p.main_stat.format_value()}" if p.main_stat else None,
                 "substats": [
-                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count}
+                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count, "efficiency": s.get_efficiency()}
                     for s in p.substats
                 ],
                 "score": round(p.gear_score, 1),
@@ -125,6 +127,8 @@ async def optimize_start(body: OptimizeStartRequest):
         "max_results": body.max_results,
         "stat_weights": body.stat_weights,
         "allow_wildcards": body.allow_wildcards,
+        "min_priority_substats": body.min_priority_substats,
+        "stat_constraints": body.stat_constraints,
     }
 
     loop = asyncio.get_running_loop()

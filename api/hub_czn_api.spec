@@ -30,6 +30,7 @@ a = Analysis(
     binaries=_py_dlls,
     datas=[
         (str(api_dir / 'game_data'),           'game_data'),
+        (str(api_dir / 'data'),                'data'),
         (str(api_dir / 'zstd_dictionary.bin'), '.'),
         (str(api_dir / 'assets'),              'assets'),
     ],

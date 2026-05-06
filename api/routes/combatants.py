@@ -133,6 +133,7 @@ def get_combatants_export():
                         "name": s.name,
                         "value": s.format_value(),
                         "roll_count": s.roll_count,
+                        "efficiency": s.get_efficiency(),
                     }
                     for s in f.substats
                 ] if f else [],
@@ -188,7 +189,7 @@ def get_combatant_stats(char_id: str):
                 "set_name": f.set_name, "set_id": f.set_id, "level": f.level,
                 "main_stat": f"{f.main_stat.name} {f.main_stat.format_value()}" if f.main_stat else None,
                 "substats": [
-                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count}
+                    {"text": f"{s.name} {s.format_value()}", "name": s.name, "value": s.format_value(), "roll_count": s.roll_count, "efficiency": s.get_efficiency()}
                     for s in f.substats
                 ],
                 "score": round(f.gear_score, 1),

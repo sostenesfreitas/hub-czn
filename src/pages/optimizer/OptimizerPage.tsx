@@ -20,6 +20,8 @@ const DEFAULT_CONFIG: OptimizerConfig = {
   max_results: 10,
   stat_weights: null,
   allow_wildcards: false,
+  min_priority_substats: 0,
+  stat_constraints: null,
 }
 
 export function OptimizerPage() {
@@ -58,6 +60,15 @@ export function OptimizerPage() {
         setJobState('done')
       }
     } catch { /* malformed — fall back to default */ }
+  }, [])
+
+  // Cancel any in-progress job when the user navigates away
+  useEffect(() => {
+    return () => {
+      if (jobStateRef.current === 'running') {
+        api.optimizeCancel().catch(() => {})
+      }
+    }
   }, [])
 
   // WebSocket: open on mount, reopen if port changes

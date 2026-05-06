@@ -211,7 +211,8 @@ class GearOptimizer:
                          exclude_char: str = None, excluded_heroes: list[str] = None,
                          required_sets: list[int] = None,
                          required_main: list[str] = None, top_percent: float = 100,
-                         use_priority_score: bool = False, min_rarity: int = 2) -> list[MemoryFragment]:
+                         use_priority_score: bool = False, min_rarity: int = 2,
+                         priority_stats: set = None, min_priority_substats: int = 0) -> list[MemoryFragment]:
         """
         Get filtered and ranked gear for a specific slot.
 
@@ -242,6 +243,12 @@ class GearOptimizer:
 
         if required_main and slot_num in [4, 5, 6]:
             candidates = [f for f in candidates if f.main_stat and f.main_stat.name in required_main]
+
+        if min_priority_substats > 0 and priority_stats:
+            candidates = [
+                f for f in candidates
+                if sum(1 for s in f.substats if s.name in priority_stats) >= min_priority_substats
+            ]
 
         if use_priority_score:
             candidates.sort(key=lambda f: -f.priority_score)
@@ -462,6 +469,10 @@ class GearOptimizer:
         excluded_heroes = settings.get("excluded_heroes", [])
         max_results = settings.get("max_results", 100)
         allow_wildcards = settings.get("allow_wildcards", False)
+        min_priority_substats = settings.get("min_priority_substats", 0)
+        stat_weights_raw = settings.get("stat_weights") or {}
+        stat_constraints = {k: v for k, v in (settings.get("stat_constraints") or {}).items() if v and v > 0}
+        priority_stats = {k for k, v in stat_weights_raw.items() if v > 0} if min_priority_substats > 0 else None
 
         # Combine all required sets for initial filtering
         all_required_sets = []
@@ -491,7 +502,9 @@ class GearOptimizer:
                 required_main=main_filter,
                 top_percent=top_percent,
                 use_priority_score=use_priority,
-                min_rarity=3  # Only Rare+ for optimizer
+                min_rarity=3,  # Only Rare+ for optimizer
+                priority_stats=priority_stats,
+                min_priority_substats=min_priority_substats,
             )
             slot_candidates[slot_num] = candidates if candidates else []
 
@@ -540,6 +553,19 @@ class GearOptimizer:
             else:
                 total_score = sum(p.gear_score for p in combo)
             stats = self.calculate_build_stats(list(combo), char_name)
+
+            if stat_constraints:
+                constraint_map = {
+                    "CRate": stats.get("CRate", 0),
+                    "CDmg": stats.get("CDmg", 0),
+                    "ATK": stats.get("ATK", 0),
+                    "DEF": stats.get("DEF", 0),
+                    "HP": stats.get("HP", 0),
+                    "EHP": stats.get("EHP", 0),
+                    "AvgDMG": stats.get("Avg DMG", 0),
+                }
+                if any(constraint_map.get(k, 0) < v for k, v in stat_constraints.items()):
+                    continue
 
             results.append((list(combo), total_score, stats))
 

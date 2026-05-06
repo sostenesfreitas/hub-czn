@@ -40,3 +40,12 @@ class Stat:
             normalized = self.value / (max_roll * self.roll_count)
             return normalized * self.roll_count * 10
         return 0.0
+
+    def get_efficiency(self) -> int:
+        """Roll efficiency as 0-100 integer: actual value vs max possible for roll count."""
+        from game_data import STATS
+        stat_info = STATS.get(self.raw_name, (self.name, self.name, self.is_percentage, 1.0, 0.5))
+        max_roll = stat_info[3]
+        if max_roll > 0 and self.roll_count > 0:
+            return round(self.value / (max_roll * self.roll_count) * 100)
+        return 0

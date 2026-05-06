@@ -84,6 +84,8 @@ class InsightCard(BaseModel):
     description: str
     action: str
     char_res_id: str | None
+    insight_key: str = ""
+    params: dict = {}
 
 
 class CharTrend(BaseModel):
@@ -155,7 +157,7 @@ def _analyze_char(char: dict, enemy_def: float) -> CharAnalysis:
     MARGIN = 1.20  # need 20% lead to call a clear winner
 
     if crate < 20:
-        priority = "crate"
+        priority = "crate_low"
         tip = (
             f"CRate {crate:.0f}% extremamente baixa — quase sem criticos. "
             f"Priorize CRate urgentemente. +10pp CRate = +{crate_gain:.1f}% dano"
@@ -344,6 +346,8 @@ def _compute_insights(records: list[dict], chars: list[CharTrend]) -> list[Insig
                 description=f"CRate {char.latest_crate:.0f}% — quase sem críticos. Priorize CRate urgentemente.",
                 action="Mire em pelo menos 50% de CRate",
                 char_res_id=char.res_id,
+                insight_key="crate_low",
+                params={"crate": round(char.latest_crate, 0)},
             ))
             if len(insights) >= 4:
                 return insights
@@ -360,6 +364,8 @@ def _compute_insights(records: list[dict], chars: list[CharTrend]) -> list[Insig
                 ),
                 action="Priorize CRate no próximo upgrade",
                 char_res_id=char.res_id,
+                insight_key="cdmg_breakeven",
+                params={"cdmg": round(char.latest_cdmg, 0), "crate": round(char.latest_crate, 0), "delta": round(char.breakeven_delta, 0)},
             ))
             if len(insights) >= 4:
                 return insights
@@ -380,6 +386,8 @@ def _compute_insights(records: list[dict], chars: list[CharTrend]) -> list[Insig
                         ),
                         action="Melhore os demais membros do time",
                         char_res_id=char.res_id,
+                        insight_key="carry_dependency",
+                        params={"share": round(share * 100, 0)},
                     ))
                     if len(insights) >= 4:
                         return insights
@@ -402,6 +410,8 @@ def _compute_insights(records: list[dict], chars: list[CharTrend]) -> list[Insig
                 ),
                 action="Revise a DEF do inimigo no Simulador",
                 char_res_id=None,
+                insight_key="harder_enemies",
+                params={"avg_last": round(avg_last_3, 0), "pct": round(pct_increase, 0), "avg_prior": round(avg_prior, 0)},
             ))
             if len(insights) >= 4:
                 return insights
@@ -415,6 +425,8 @@ def _compute_insights(records: list[dict], chars: list[CharTrend]) -> list[Insig
                 description=f"+{char.dpt_trend_pct:.0f}% de melhoria de DPT detectada. Continue investindo!",
                 action="Mantenha o ritmo de upgrade",
                 char_res_id=char.res_id,
+                insight_key="improving",
+                params={"pct": round(char.dpt_trend_pct, 0)},
             ))
             if len(insights) >= 4:
                 return insights

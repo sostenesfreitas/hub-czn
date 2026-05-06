@@ -1,6 +1,8 @@
+import { useState, useRef, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { InfoPopover } from '@/components/ui/info-popover'
 import { api, assetUrl } from '@/lib/api'
 import type { OptimizeResult, OptimizeProgress, CombatantStats, FinalStats, Combatant } from '@/lib/types'
 import { GearSlotCard } from '../combatants/CombatantDetail'
@@ -26,13 +28,17 @@ function StatsComparison({
   current: FinalStats
   build: FinalStats
 }) {
-  const rows: Array<{ label: string; cur: number; next: number; pct?: boolean }> = [
+  const { t } = useTranslation()
+  const rows: Array<{ label: string; cur: number; next: number; pct?: boolean; tip?: string }> = [
     { label: 'ATK', cur: current.ATK, next: build.ATK },
     { label: 'DEF', cur: current.DEF, next: build.DEF },
     { label: 'HP', cur: current.HP, next: build.HP },
     { label: 'CRate', cur: current.CRate, next: build.CRate, pct: true },
     { label: 'CDmg', cur: current.CDmg, next: build.CDmg, pct: true },
-    { label: 'EHP', cur: current.EHP, next: build.EHP },
+    { label: 'EHP', cur: current.EHP, next: build.EHP, tip: t('combatants.detail.ehpTip') },
+    ...((build.ExtraDMG ?? 0) > 0 || (current.ExtraDMG ?? 0) > 0
+      ? [{ label: 'Extra DMG%', cur: current.ExtraDMG ?? 0, next: build.ExtraDMG ?? 0, pct: true }]
+      : []),
   ]
 
   return (
@@ -46,7 +52,7 @@ function StatsComparison({
         <span className="text-right">Build</span>
         <span className="text-right">Delta</span>
       </div>
-      {rows.map(({ label, cur, next, pct }) => {
+      {rows.map(({ label, cur, next, pct, tip }) => {
         const delta = next - cur
         const sign = delta > 0 ? '+' : ''
         const deltaColor =
@@ -60,7 +66,10 @@ function StatsComparison({
             className="grid text-xs px-3 py-1 odd:bg-[#121212]"
             style={{ gridTemplateColumns: '4rem 1fr 1fr 1fr' }}
           >
-            <span className="text-[#b3b3b3]">{label}</span>
+            <span className="flex items-center gap-1 text-[#b3b3b3]">
+              {label}
+              {tip && <InfoPopover content={tip} />}
+            </span>
             <span className="text-right text-[#ffffff]">{fmt(cur)}</span>
             <span className="text-right text-[#c084fc]">{fmt(next)}</span>
             <span className={`text-right font-semibold ${deltaColor}`}>{fmtDelta(delta)}</span>
@@ -114,9 +123,70 @@ function ExpandedBuild({
   )
 }
 
+// ─── Current build pinned row ─────────────────────────────────────────────────
+
+function CurrentBuildRow({
+  currentStats,
+  activeCols,
+  hasExtraDmg,
+}: {
+  currentStats: CombatantStats
+  activeCols: string
+  hasExtraDmg: boolean
+}) {
+  const score = currentStats.gear_slots.reduce(
+    (sum, s) => sum + ((s.priority_score != null && s.priority_score > 0 ? s.priority_score : s.score) ?? 0),
+    0,
+  )
+  const setCounts: Record<string, number> = {}
+  for (const s of currentStats.gear_slots) {
+    if (s.set_name) setCounts[s.set_name] = (setCounts[s.set_name] ?? 0) + 1
+  }
+  const setSummary = Object.entries(setCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([n, c]) => `${c}×${n}`)
+    .join(' + ')
+  const fs = currentStats.final_stats
+
+  return (
+    <div className="bg-[#1a1a2e] border border-[#c084fc]/40 rounded-lg overflow-hidden mb-2">
+      <div
+        className="grid gap-2 px-3 py-2.5 text-xs"
+        style={{ gridTemplateColumns: activeCols }}
+      >
+        <span className="text-[#c084fc] font-bold text-[10px]">NOW</span>
+        <span className="text-[#c084fc] font-semibold">{score.toFixed(1)}</span>
+        <span className="text-[#888888] truncate text-[10px]">{setSummary || '—'}</span>
+        <span className="text-[#b3b3b3]">{fs.ATK.toLocaleString()}</span>
+        <span className="text-[#b3b3b3]">{fs.CRate.toFixed(1)}%</span>
+        <span className="text-[#b3b3b3]">{fs.CDmg.toFixed(1)}%</span>
+        <span className="text-[#b3b3b3]">{fs.EHP.toLocaleString()}</span>
+        <span className="text-[#b3b3b3]">{fs.AvgDMG.toLocaleString()}</span>
+        {hasExtraDmg && (
+          <span className="text-[#b3b3b3]">
+            {(fs.ExtraDMG ?? 0) > 0 ? `+${fs.ExtraDMG!.toFixed(1)}%` : '—'}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Sort helpers ─────────────────────────────────────────────────────────────
+
+type SortKey = 'rank' | 'score' | 'atk' | 'crate' | 'cdmg' | 'ehp' | 'avgdmg' | 'extradmg'
+
+function SortIcon({ col, sortKey, sortDir }: { col: SortKey; sortKey: SortKey; sortDir: 'asc' | 'desc' }) {
+  if (col !== sortKey) return <ChevronsUpDown size={10} className="text-[#555555] inline ml-0.5" />
+  return sortDir === 'asc'
+    ? <ChevronUp size={10} className="text-[#c084fc] inline ml-0.5" />
+    : <ChevronDown size={10} className="text-[#c084fc] inline ml-0.5" />
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const COLS = '2rem 3.5rem minmax(0,2fr) 1fr 1fr 1fr 1fr'
+const COLS      = '2rem 3rem minmax(0,1.5fr) 1fr 1fr 1fr 1fr 1fr'
+const COLS_XDMG = '2rem 3rem minmax(0,1.5fr) 1fr 1fr 1fr 1fr 1fr 1fr'
 
 export function ResultsArea({
   jobState,
@@ -128,6 +198,34 @@ export function ResultsArea({
   charId,
 }: ResultsAreaProps) {
   const { t } = useTranslation()
+  const [sortKey, setSortKey] = useState<SortKey>('avgdmg')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
+  const startTimeRef = useRef<number | null>(null)
+  const [eta, setEta] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (jobState === 'running') {
+      if (startTimeRef.current === null) startTimeRef.current = Date.now()
+      if (progress && progress.checked > 0 && progress.total > 0) {
+        const elapsed = (Date.now() - startTimeRef.current) / 1000
+        const rate = progress.checked / elapsed
+        const remaining = (progress.total - progress.checked) / rate
+        setEta(remaining > 1 ? `~${Math.ceil(remaining)}s` : null)
+      }
+    } else {
+      startTimeRef.current = null
+      setEta(null)
+    }
+  }, [jobState, progress])
+
+  function handleSort(col: SortKey) {
+    if (sortKey === col) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortKey(col)
+      setSortDir(col === 'rank' ? 'asc' : 'desc')
+    }
+  }
 
   const { data: combatants = [] } = useQuery<Combatant[]>({
     queryKey: ['combatants'],
@@ -163,6 +261,17 @@ export function ResultsArea({
               })
             : t('optimizer.starting')}
         </p>
+        {eta && (
+          <p className="text-xs text-[#666666]">{eta} {t('optimizer.remaining')}</p>
+        )}
+        {progress && progress.total > 0 && (
+          <div className="w-48 bg-[#282828] rounded-full h-1">
+            <div
+              className="bg-[#c084fc] h-1 rounded-full transition-all"
+              style={{ width: `${Math.round(progress.checked / progress.total * 100)}%` }}
+            />
+          </div>
+        )}
       </div>
     )
   }
@@ -193,23 +302,63 @@ export function ResultsArea({
     )
   }
 
+  const hasExtraDmg = results.some(r => (r.final_stats.ExtraDMG ?? 0) > 0)
+  const activeCols = hasExtraDmg ? COLS_XDMG : COLS
+
+  const getValue = (r: OptimizeResult, k: SortKey) => {
+    if (k === 'rank')     return r.rank
+    if (k === 'score')    return r.score
+    if (k === 'atk')      return r.final_stats.ATK
+    if (k === 'crate')    return r.final_stats.CRate
+    if (k === 'cdmg')     return r.final_stats.CDmg
+    if (k === 'avgdmg')   return r.final_stats.AvgDMG
+    if (k === 'extradmg') return r.final_stats.ExtraDMG ?? 0
+    return r.final_stats.EHP
+  }
+  const sorted = [...results].sort((a, b) => {
+    const diff = getValue(a, sortKey) - getValue(b, sortKey)
+    return sortDir === 'asc' ? diff : -diff
+  })
+
+  const topScore = results.reduce((max, r) => Math.max(max, r.score), 1)
+
+  const colBtn = (col: SortKey, label: string) => (
+    <button
+      type="button"
+      onClick={() => handleSort(col)}
+      className="flex items-center gap-0.5 hover:text-[#ffffff] transition-colors cursor-pointer select-none"
+    >
+      {label}<SortIcon col={col} sortKey={sortKey} sortDir={sortDir} />
+    </button>
+  )
+
   return (
     <div className="flex-1 overflow-y-auto p-4">
       <div
         className="grid gap-2 px-3 py-1 text-[10px] uppercase tracking-wider text-[#b3b3b3] mb-1"
-        style={{ gridTemplateColumns: COLS }}
+        style={{ gridTemplateColumns: activeCols }}
       >
-        <span>#</span>
-        <span>Score</span>
+        {colBtn('rank', '#')}
+        {colBtn('score', 'Score')}
         <span>Sets</span>
-        <span>ATK</span>
-        <span>CRate</span>
-        <span>CDmg</span>
-        <span>EHP</span>
+        {colBtn('atk', 'ATK')}
+        {colBtn('crate', 'CRate')}
+        {colBtn('cdmg', 'CDmg')}
+        {colBtn('ehp', 'EHP')}
+        {colBtn('avgdmg', 'AvgDMG')}
+        {hasExtraDmg && colBtn('extradmg', 'xDMG%')}
       </div>
 
+      {currentStats && (
+        <CurrentBuildRow
+          currentStats={currentStats}
+          activeCols={activeCols}
+          hasExtraDmg={hasExtraDmg}
+        />
+      )}
+
       <div className="space-y-1">
-        {results.map((r) => {
+        {sorted.map((r) => {
           const expanded = selectedRank === r.rank
           return (
             <div
@@ -224,17 +373,26 @@ export function ResultsArea({
                   'w-full grid gap-2 px-3 py-2.5 text-xs text-left transition-colors',
                   expanded ? 'bg-[#c084fc]/10 border-b border-[#282828]' : 'hover:bg-[#282828]',
                 ].join(' ')}
-                style={{ gridTemplateColumns: COLS }}
+                style={{ gridTemplateColumns: activeCols }}
               >
                 <span className={`font-semibold ${expanded ? 'text-[#c084fc]' : 'text-[#b3b3b3]'}`}>
                   {r.rank}
                 </span>
-                <span className="text-[#ffffff] font-semibold">{r.score.toFixed(1)}</span>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[#ffffff] font-semibold">{r.score.toFixed(1)}</span>
+                  <span className="text-[9px] text-[#666666]">{Math.round(r.score / topScore * 100)}%</span>
+                </div>
                 <span className="text-[#b3b3b3] truncate text-[10px]">{r.set_summary}</span>
                 <span className="text-[#ffffff]">{r.final_stats.ATK.toLocaleString()}</span>
                 <span className="text-[#ffffff]">{r.final_stats.CRate.toFixed(1)}%</span>
                 <span className="text-[#ffffff]">{r.final_stats.CDmg.toFixed(1)}%</span>
                 <span className="text-[#ffffff]">{r.final_stats.EHP.toLocaleString()}</span>
+                <span className="text-[#a3e635] font-semibold">{r.final_stats.AvgDMG.toLocaleString()}</span>
+                {hasExtraDmg && (
+                  <span className="text-[#ffffff]">
+                    {(r.final_stats.ExtraDMG ?? 0) > 0 ? `+${r.final_stats.ExtraDMG!.toFixed(1)}%` : '—'}
+                  </span>
+                )}
               </button>
 
               {expanded && (

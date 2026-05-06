@@ -200,6 +200,7 @@ export function ScoringPage() {
       setLocalWeights(null)
       queryClient.invalidateQueries({ queryKey: ['scoring/priorities'] })
       queryClient.invalidateQueries({ queryKey: ['combatants'] })
+      queryClient.invalidateQueries({ queryKey: ['fragments'] })
     },
     onError: (e: Error) => setSaveError(e.message),
   })
@@ -211,6 +212,7 @@ export function ScoringPage() {
       setLocalWeights(null)
       queryClient.invalidateQueries({ queryKey: ['scoring/char-weights', selectedCharId] })
       queryClient.invalidateQueries({ queryKey: ['combatants'] })
+      queryClient.invalidateQueries({ queryKey: ['fragments'] })
     },
     onError: (e: Error) => setSaveError(e.message),
   })
@@ -222,6 +224,7 @@ export function ScoringPage() {
       setLocalWeights(null)
       queryClient.invalidateQueries({ queryKey: ['scoring/char-weights', selectedCharId] })
       queryClient.invalidateQueries({ queryKey: ['combatants'] })
+      queryClient.invalidateQueries({ queryKey: ['fragments'] })
     },
     onError: (e: Error) => setSaveError(e.message),
   })

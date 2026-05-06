@@ -70,6 +70,7 @@ const en = {
       empty: 'Empty',
       finalStats: 'Final Stats',
       baseStats: 'Base Stats',
+      ehpTip: 'Effective HP — how much raw damage the character can absorb before dying, factoring in DEF reduction.',
     },
   },
   scoring: {
@@ -265,6 +266,7 @@ const en = {
     cancel: 'Cancel',
     idle: 'Configure the parameters and click Optimize.',
     running: 'Checking {{checked}} / {{total}} combinations · {{found}} builds found',
+    remaining: 'remaining',
     starting: 'Starting optimization...',
     cancelled: 'Optimization cancelled.',
     error: 'Error during optimization.',
@@ -275,6 +277,10 @@ const en = {
       weightScale: 'Weight scale: -1 = penalize, 0 = ignored, 1 = normal, 2 = double, 3 = triple weight.',
     },
     topPercentTip: 'Only consider gear in the top X% by Gear Score. Lower % = faster search but may exclude viable pieces. 60% is a safe default.',
+    minPrioritySubstats: 'Min priority substats',
+    minPrioritySubstatsTip: 'Only consider pieces that have at least N substats matching your priority stats (weight > 0). Drastically reduces permutations without sacrificing relevant builds.',
+    statConstraints: 'Min stat requirements',
+    statConstraintsTip: 'Filter out builds that do not meet these minimum final-stat values. Leave a field empty or at 0 to skip that constraint.',
     maxResultsTip: 'Maximum number of builds to display. Lower values are faster to browse.',
     includeEquippedTip: 'When on, gear already equipped on characters is also evaluated. Useful when optimizing your full collection.',
     excludeCharsTip: 'Gear equipped on excluded characters is reserved and will not be used in builds.',
@@ -393,10 +399,17 @@ const en = {
     atkGain: '+10% ATK',
     defGain: '+10% DEF',
     priority: {
+      crate_low: 'Critical CRate',
       crate: 'Prioritize CRate',
       cdmg: 'Prioritize CDmg',
       atk: 'Prioritize ATK',
       balanced: 'Balanced',
+    },
+    tip: {
+      crate_low: 'CRate {{crate}}% extremely low — almost no crits. Prioritize CRate urgently.',
+      crate: 'CRate {{crate}}% yields more per roll than CDmg {{cdmg}}%.',
+      cdmg: 'CDmg {{cdmg}}% yields more per roll than CRate {{crate}}%.',
+      balanced: 'CRate {{crate}}% and CDmg {{cdmg}}% are near balanced — focus on {{stat}} or improve your deck.',
     },
     tab: {
       overview: 'Overview',
@@ -415,9 +428,38 @@ const en = {
       noData: 'No battles captured yet.',
       priority: {
         crate: 'CRate',
+        crate_low: 'Low CRate',
         cdmg: 'CDmg',
         atk: 'ATK',
         balanced: 'Balanced',
+      },
+      battlesCount: '{{count}} battles',
+    },
+    insight: {
+      crate_low: {
+        title: 'Critical CRate',
+        description: 'CRate {{crate}}% — almost no crits. Prioritize CRate urgently.',
+        action: 'Aim for at least 50% CRate',
+      },
+      cdmg_breakeven: {
+        title: 'CDmg above breakeven',
+        description: 'CDmg {{cdmg}}% vs CRate {{crate}}%: {{delta}}pp above breakeven. CRate yields more now.',
+        action: 'Prioritize CRate on next upgrade',
+      },
+      carry_dependency: {
+        title: 'Carry dependency',
+        description: 'One character responsible for {{share}}% of avg team DMG. Upgrading others would improve consistency.',
+        action: 'Improve other team members',
+      },
+      harder_enemies: {
+        title: 'Harder enemies',
+        description: 'Avg DEF of last 3 battles ({{avg_last}}) is {{pct}}% higher than before ({{avg_prior}}).',
+        action: 'Check enemy DEF in Simulator',
+      },
+      improving: {
+        title: 'Character improving',
+        description: '+{{pct}}% DPT improvement detected. Keep investing!',
+        action: 'Keep up the upgrade pace',
       },
     },
   },

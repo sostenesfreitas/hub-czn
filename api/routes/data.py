@@ -72,6 +72,7 @@ def _to_dict(f) -> dict:
         "locked": f.locked,
         "equipped_to": f.equipped_to,
         "gear_score": f.gear_score,
+        "priority_score": f.priority_score,
         "potential_low": f.potential_low,
         "potential_high": f.potential_high,
         "main_stat": _stat_dict(f.main_stat) if f.main_stat else None,

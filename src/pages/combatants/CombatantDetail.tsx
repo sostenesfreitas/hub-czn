@@ -4,17 +4,21 @@ import { useTranslation } from 'react-i18next'
 import { Loader2, User } from 'lucide-react'
 import { api, assetUrl } from '@/lib/api'
 import type { GearSlot, FinalStats, BaseStats } from '@/lib/types'
+import { InfoPopover } from '@/components/ui/info-popover'
 
 // ─── Grade helpers ─────────────────────────────────────────────────────────
 
+// Graded against the Legendary theoretical max (~70 = 7 roll-units × 10).
+// Uses potential_high so unupgraded pieces reflect their ceiling, not current state.
+// Scale: SSS ≥ 93% · SS+ ≥ 86% · SS ≥ 79% · S ≥ 70% · A ≥ 61% · B ≥ 53% · C otherwise
 function scoreGrade(score: number): { label: string; color: string } {
-  if (score >= 41) return { label: 'SSS', color: 'text-[#ffd700]' }
-  if (score >= 38) return { label: 'SS+', color: 'text-[#ff9d00]' }
-  if (score >= 35) return { label: 'SS', color: 'text-[#ff6b6b]' }
-  if (score >= 30) return { label: 'S', color: 'text-[#c084fc]' }
-  if (score >= 25) return { label: 'A', color: 'text-[#60a5fa]' }
-  if (score >= 20) return { label: 'B', color: 'text-[#4ade80]' }
-  return { label: 'C', color: 'text-[#94a3b8]' }
+  if (score >= 65) return { label: 'SSS', color: 'text-[#ffd700]' }
+  if (score >= 60) return { label: 'SS+', color: 'text-[#ff9d00]' }
+  if (score >= 55) return { label: 'SS',  color: 'text-[#ff6b6b]' }
+  if (score >= 49) return { label: 'S',   color: 'text-[#c084fc]' }
+  if (score >= 43) return { label: 'A',   color: 'text-[#60a5fa]' }
+  if (score >= 37) return { label: 'B',   color: 'text-[#4ade80]' }
+  return                   { label: 'C',   color: 'text-[#94a3b8]' }
 }
 
 function RollArrows({ count }: { count: number }) {
@@ -83,7 +87,14 @@ export function GearSlotCard({
     )
   }
 
-  const grade = slot.score != null ? scoreGrade(slot.score) : null
+  const displayScore =
+    slot.priority_score != null && slot.priority_score > 0
+      ? slot.priority_score
+      : slot.score
+  // Grade based on potential_high so it reflects the piece ceiling (consistent across upgrade levels).
+  // Falls back to gear_score if potential_high is absent (e.g. optimizer results).
+  const gradeBase = slot.potential_high ?? slot.score
+  const grade = gradeBase != null ? scoreGrade(gradeBase) : null
   const hasPieceImg = slot.set_id != null && slot.slot_num != null
 
   return (
@@ -129,24 +140,33 @@ export function GearSlotCard({
 
       {/* Substats */}
       <div className="px-3 py-2 space-y-1">
-        {slot.substats.map((s, i) => (
-          <div key={i} className="flex items-center justify-between text-[11px]">
-            <div className="flex items-center text-[#b3b3b3]">
-              <RollArrows count={s.roll_count} />
-              <span>{s.name}</span>
+        {slot.substats.map((s, i) => {
+          const eff = s.efficiency
+          const effColor = eff == null ? '' : eff >= 80 ? 'text-[#4ade80]' : eff >= 60 ? 'text-[#facc15]' : 'text-[#f87171]'
+          return (
+            <div key={i} className="flex items-center justify-between text-[11px]">
+              <div className="flex items-center text-[#b3b3b3]">
+                <RollArrows count={s.roll_count} />
+                <span>{s.name}</span>
+              </div>
+              <div className="flex items-center gap-1.5 tabular-nums">
+                <span className="text-[#ffffff] font-medium">{s.value}</span>
+                {eff != null && (
+                  <span className={`text-[9px] ${effColor}`}>{eff}%</span>
+                )}
+              </div>
             </div>
-            <span className="text-[#ffffff] font-medium tabular-nums">{s.value}</span>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Score */}
-      {slot.score != null && (
+      {displayScore != null && (
         <div className="px-3 pb-3 pt-1 border-t border-[#1e1e1e] mt-1">
           <div className="flex items-center justify-between text-xs">
             <span className="text-[#555555]">Score</span>
             <div className="flex items-center gap-1.5">
-              <span className="text-[#c084fc] font-bold">{slot.score.toFixed(1)}</span>
+              <span className="text-[#c084fc] font-bold">{displayScore.toFixed(1)}</span>
               {grade && (
                 <span className={`text-[10px] font-bold ${grade.color}`}>({grade.label})</span>
               )}
@@ -161,14 +181,15 @@ export function GearSlotCard({
 export function FinalStatsPanel({ stats, compact = false }: { stats: FinalStats; compact?: boolean }) {
   const { t } = useTranslation()
 
-  const rows: Array<{ label: string; value: string }> = [
+  const rows: Array<{ label: string; value: string; tip?: string }> = [
     { label: 'ATK', value: stats.ATK.toLocaleString() },
     { label: 'DEF', value: stats.DEF.toLocaleString() },
     { label: 'HP', value: stats.HP.toLocaleString() },
     { label: 'CRate', value: `${stats.CRate.toFixed(1)}%` },
     { label: 'CDmg', value: `${stats.CDmg.toFixed(1)}%` },
-    { label: 'EHP', value: stats.EHP.toLocaleString() },
+    { label: 'EHP', value: stats.EHP.toLocaleString(), tip: t('combatants.detail.ehpTip') },
     { label: 'Avg DMG', value: stats.AvgDMG.toLocaleString() },
+    ...(stats.ExtraDMG && stats.ExtraDMG > 0 ? [{ label: 'Extra DMG%', value: `+${stats.ExtraDMG.toFixed(1)}%` }] : []),
     ...(stats.Ego && stats.Ego > 0 ? [{ label: 'Ego', value: stats.Ego.toLocaleString() }] : []),
   ]
   return (
@@ -179,7 +200,10 @@ export function FinalStatsPanel({ stats, compact = false }: { stats: FinalStats;
       <div className={`grid grid-cols-2 ${compact ? 'gap-x-4 gap-y-0.5' : 'gap-x-6 gap-y-2'}`}>
         {rows.map(r => (
           <div key={r.label} className={`flex justify-between ${compact ? 'text-[11px]' : 'text-sm'}`}>
-            <span className="text-[#b3b3b3]">{r.label}</span>
+            <span className="flex items-center gap-1 text-[#b3b3b3]">
+              {r.label}
+              {r.tip && <InfoPopover content={r.tip} />}
+            </span>
             <span className="text-[#c084fc] font-semibold">{r.value}</span>
           </div>
         ))}

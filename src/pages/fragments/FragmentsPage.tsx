@@ -1,6 +1,7 @@
+import { useState } from 'react'
+import type React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import type { ReactNode } from 'react'
 import { api, assetUrl } from '@/lib/api'
 import type { MemoryFragment, SetInfo } from '@/lib/types'
 import {
@@ -9,17 +10,19 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { InfoPopover } from '@/components/ui/info-popover'
+import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
 
 const RARITY_COLOR: Record<number, string> = {
-  1: '#a8a29e',  // Common    — stone
-  2: '#84cc16',  // Uncommon  — lime
-  3: '#3b82f6',  // Rare      — blue
-  4: '#c084fc',  // Legendary — purple
+  1: '#a8a29e',
+  2: '#84cc16',
+  3: '#3b82f6',
+  4: '#c084fc',
 }
 
-function GsCell({ value }: { value: number }) {
+function GsCell({ gearScore, priorityScore }: { gearScore: number; priorityScore: number }) {
+  const score = priorityScore > 0 ? priorityScore : gearScore
   return (
-    <span className="font-mono text-[#c084fc]">{value.toFixed(1)}</span>
+    <span className="font-mono text-[#c084fc]">{score.toFixed(1)}</span>
   )
 }
 
@@ -40,8 +43,36 @@ function PieceThumb({ setId, slotNum }: { setId: number; slotNum: number }) {
   )
 }
 
+type SortDir = 'asc' | 'desc'
+
+function getSortValue(f: MemoryFragment, key: string): string | number {
+  switch (key) {
+    case 'slot':      return f.slot_num
+    case 'set':       return f.set_name
+    case 'level':     return f.level
+    case 'main':      return f.main_stat?.formatted ?? ''
+    case 'sub1':      return f.substats[0]?.formatted ?? ''
+    case 'sub2':      return f.substats[1]?.formatted ?? ''
+    case 'sub3':      return f.substats[2]?.formatted ?? ''
+    case 'sub4':      return f.substats[3]?.formatted ?? ''
+    case 'gs':        return f.priority_score > 0 ? f.priority_score : f.gear_score
+    case 'potential': return f.potential_low
+    case 'equipped':  return f.equipped_to ?? ''
+    default:          return ''
+  }
+}
+
+function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
+  if (!active) return <ChevronsUpDown size={12} className="text-[#404040]" />
+  return dir === 'asc'
+    ? <ChevronUp size={12} className="text-[#c084fc]" />
+    : <ChevronDown size={12} className="text-[#c084fc]" />
+}
+
 export function FragmentsPage() {
   const { t } = useTranslation()
+  const [sortKey, setSortKey] = useState<string | null>(null)
+  const [sortDir, setSortDir] = useState<SortDir>('asc')
 
   const { data: fragments = [], isLoading, error } = useQuery({
     queryKey: ['fragments'],
@@ -61,6 +92,28 @@ export function FragmentsPage() {
     }
   }
 
+  function handleSort(key: string) {
+    if (sortKey === key) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortKey(key)
+      setSortDir('asc')
+    }
+  }
+
+  const sorted = sortKey
+    ? [...fragments].sort((a, b) => {
+        const av = getSortValue(a, sortKey)
+        const bv = getSortValue(b, sortKey)
+        if (typeof av === 'number' && typeof bv === 'number') {
+          return sortDir === 'asc' ? av - bv : bv - av
+        }
+        return sortDir === 'asc'
+          ? String(av).localeCompare(String(bv))
+          : String(bv).localeCompare(String(av))
+      })
+    : fragments
+
   if (isLoading) {
     return <div className="p-8 text-[#b3b3b3]">{t('fragments.loading')}</div>
   }
@@ -73,7 +126,7 @@ export function FragmentsPage() {
     )
   }
 
-  const COLS: { key: string; label: ReactNode }[] = [
+  const COLS: { key: string; label: string; info?: React.ReactNode }[] = [
     { key: 'slot',      label: t('fragments.col.slot') },
     { key: 'set',       label: t('fragments.col.set') },
     { key: 'level',     label: t('fragments.col.level') },
@@ -82,8 +135,8 @@ export function FragmentsPage() {
     { key: 'sub2',      label: t('fragments.col.sub2') },
     { key: 'sub3',      label: t('fragments.col.sub3') },
     { key: 'sub4',      label: t('fragments.col.sub4') },
-    { key: 'gs',        label: <span className="flex items-center gap-1">{t('fragments.col.gs')}<InfoPopover content={t('tips.gs')} /></span> },
-    { key: 'potential', label: <span className="flex items-center gap-1">{t('fragments.col.potential')}<InfoPopover content={t('tips.potential')} /></span> },
+    { key: 'gs',        label: t('fragments.col.gs'),        info: <InfoPopover content={t('tips.gs')} /> },
+    { key: 'potential', label: t('fragments.col.potential'), info: <InfoPopover content={t('tips.potential')} /> },
     { key: 'equipped',  label: t('fragments.col.equipped') },
   ]
 
@@ -101,14 +154,23 @@ export function FragmentsPage() {
           <TableHeader>
             <TableRow className="bg-[#121212] hover:bg-[#121212] border-[#282828]">
               {COLS.map(col => (
-                <TableHead key={col.key} className="text-[#b3b3b3] text-xs font-medium h-9">
-                  {col.label}
+                <TableHead key={col.key} className="text-[#b3b3b3] text-xs font-medium h-9 px-3">
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => handleSort(col.key)}
+                      className="flex items-center gap-1 hover:text-[#ffffff] transition-colors"
+                    >
+                      {col.label}
+                      <SortIcon active={sortKey === col.key} dir={sortDir} />
+                    </button>
+                    {col.info}
+                  </div>
                 </TableHead>
               ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fragments.map((f: MemoryFragment) => (
+            {sorted.map((f: MemoryFragment) => (
               <TableRow
                 key={f.id}
                 className="border-[#282828] hover:bg-[#282828] cursor-default h-7"
@@ -130,7 +192,7 @@ export function FragmentsPage() {
                   </TableCell>
                 ))}
                 <TableCell className="py-1">
-                  <GsCell value={f.gear_score} />
+                  <GsCell gearScore={f.gear_score} priorityScore={f.priority_score} />
                 </TableCell>
                 <TableCell className="text-[#b3b3b3] font-mono text-xs py-1">
                   {f.potential_low.toFixed(1)}–{f.potential_high.toFixed(1)}

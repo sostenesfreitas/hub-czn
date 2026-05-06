@@ -400,6 +400,70 @@ export function OptimizerPanel({
         </div>
 
         <div className="space-y-1">
+          <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
+            {t('optimizer.minPrioritySubstats')}
+            <InfoPopover content={t('optimizer.minPrioritySubstatsTip')} />
+          </label>
+          <div className="flex gap-1">
+            {([0, 1, 2, 3] as const).map((n) => (
+              <button
+                key={n}
+                type="button"
+                disabled={disabled}
+                onClick={() => patch({ min_priority_substats: n })}
+                className={[
+                  'flex-1 text-xs py-1 rounded border transition-colors disabled:opacity-50',
+                  config.min_priority_substats === n
+                    ? 'bg-[#c084fc]/20 border-[#c084fc] text-[#c084fc] font-semibold'
+                    : 'bg-[#282828] border-[#333333] text-[#b3b3b3] hover:border-[#555555]',
+                ].join(' ')}
+              >
+                {n === 0 ? 'Any' : `${n}+`}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
+            {t('optimizer.statConstraints')}
+            <InfoPopover content={t('optimizer.statConstraintsTip')} />
+          </label>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-1.5">
+            {(
+              [
+                { key: 'CRate', label: 'CRate %', placeholder: '0' },
+                { key: 'CDmg',  label: 'CDmg %',  placeholder: '0' },
+                { key: 'ATK',   label: 'ATK',      placeholder: '0' },
+                { key: 'HP',    label: 'HP',       placeholder: '0' },
+                { key: 'EHP',   label: 'EHP',      placeholder: '0' },
+                { key: 'AvgDMG',label: 'AvgDMG',   placeholder: '0' },
+              ] as const
+            ).map(({ key, label, placeholder }) => {
+              const val = config.stat_constraints?.[key] ?? 0
+              return (
+                <div key={key} className="flex items-center gap-1">
+                  <span className="text-[9px] text-[#555555] w-12 shrink-0">{label}</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={val || ''}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    onChange={(e) => {
+                      const num = Number(e.target.value)
+                      const next = { ...(config.stat_constraints ?? {}), [key]: num }
+                      patch({ stat_constraints: Object.values(next).every(v => !v) ? null : next })
+                    }}
+                    className="w-full bg-[#282828] border border-[#333333] rounded px-1.5 py-1 text-[11px] text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="space-y-1">
           <label htmlFor="optimizer-max-results" className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
             {t('optimizer.maxResults')}
             <InfoPopover content={t('optimizer.maxResultsTip')} />

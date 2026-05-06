@@ -18,6 +18,7 @@ export interface MemoryFragment {
   locked: boolean
   equipped_to: string | null
   gear_score: number
+  priority_score: number
   potential_low: number
   potential_high: number
   main_stat: Stat | null
@@ -123,6 +124,7 @@ export interface SubstatInfo {
   name: string
   value: string
   roll_count: number
+  efficiency?: number
 }
 
 export interface GearSlot {
@@ -198,6 +200,8 @@ export interface OptimizerConfig {
   max_results: number
   stat_weights: Record<string, number> | null
   allow_wildcards: boolean
+  min_priority_substats: number
+  stat_constraints: Record<string, number> | null
 }
 
 export interface OptimizeProgress {
@@ -341,6 +345,8 @@ export interface InsightCard {
   description: string
   action: string
   char_res_id: string | null
+  insight_key?: string
+  params?: Record<string, number>
 }
 
 export interface CharTrend {
