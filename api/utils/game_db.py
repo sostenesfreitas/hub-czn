@@ -1,9 +1,19 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 import json
 
-_BUNDLED_PATH = Path(__file__).parent.parent / "data" / "game_db.json"
+
+def _resolve_bundled_path() -> Path:
+    # In PyInstaller frozen mode, data files live under sys._MEIPASS.
+    # __file__ parent-walking is unreliable for frozen modules.
+    if getattr(sys, "frozen", False):
+        return Path(sys._MEIPASS) / "data" / "game_db.json"  # type: ignore[attr-defined]
+    return Path(__file__).parent.parent / "data" / "game_db.json"
+
+
+_BUNDLED_PATH = _resolve_bundled_path()
 _cache: dict | None = None
 
 
