@@ -2,6 +2,7 @@
 @rem ##########################################################################
 @rem  Gradle startup script for Windows
 @rem ##########################################################################
+
 @set DIRNAME=%~dp0
 @set APP_BASE_NAME=%~n0
 @set APP_HOME=%DIRNAME%
@@ -19,4 +20,4 @@ set JAVA_HOME=%JAVA_HOME:"=%
 set JAVA_EXE=%JAVA_HOME%/bin/java.exe
 
 :execute
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% -jar "%APP_HOME%\lib\gradle-launcher-8.6.jar" %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% -classpath "%APP_HOME%gradle\wrapper\gradle-wrapper.jar" "-Dorg.gradle.appname=%APP_BASE_NAME%" org.gradle.wrapper.GradleWrapperMain %*
