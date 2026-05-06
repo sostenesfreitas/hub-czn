@@ -57,7 +57,7 @@ object FragmentParser {
             val (value, type) = StatParser.parseStatValue(valueText) ?: return@forEachIndexed
 
             stats.add(StatEntry(
-                slot = rowIndex,   // 0 = topmost = main stat
+                slot = stats.size,   // 0 = first stat added = main stat
                 stat = statName,
                 type = type,
                 value = value,
