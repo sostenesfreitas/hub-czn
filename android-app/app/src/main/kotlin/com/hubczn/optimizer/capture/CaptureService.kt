@@ -5,8 +5,10 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.hubczn.optimizer.data.repository.JSONExporter
@@ -34,7 +36,6 @@ class CaptureService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(NOTIF_ID, buildNotification("CZN Scanner running"))
         ocrEngine = MLKitOCREngine()
         serviceLifecycleOwner.start()
 
@@ -53,22 +54,21 @@ class CaptureService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val projectionResultCode = intent?.getIntExtra(EXTRA_RESULT_CODE, -1) ?: return START_NOT_STICKY
         val projectionData = intent.getParcelableExtra<Intent>(EXTRA_PROJECTION_DATA) ?: return START_NOT_STICKY
-        val scanType = intent.getSerializableExtra(EXTRA_SCAN_TYPE) as? ScanType ?: return START_NOT_STICKY
+
+        val notification = buildNotification("CZN Scanner running")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIF_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
+        } else {
+            startForeground(NOTIF_ID, notification)
+        }
 
         val projectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         projection = projectionManager.getMediaProjection(projectionResultCode, projectionData)
 
         screenshotManager = ScreenshotManager(this, projection!!).also { it.start() }
 
-        val accessibilityService = CZNAccessibilityService.instance
-        if (accessibilityService == null) {
-            notifyStatus("Accessibility Service not enabled")
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
-        startScan(scanType)
         instance = this
+        notifyStatus("Ready — tap overlay to scan")
         return START_NOT_STICKY
     }
 
@@ -93,11 +93,11 @@ class CaptureService : Service() {
             try {
                 when (scanType) {
                     ScanType.RESCUE_RECORDS -> {
+                        // TODO(A7): wire up DB-backed export via exportRescueRecordsFromDb()
                         val records = RescueRecordScanner(sm, ocr, gestures) {
                             notifyStatus(it)
                         }.scan()
-                        val file = exporter.exportRescueRecords(records, "")
-                        notifyStatus("Exported ${records.size} records to ${file.name}")
+                        notifyStatus("Scanned ${records.size} records (export wired in A7)")
                     }
                     ScanType.MEMORY_FRAGMENTS -> {
                         val fragments = MemoryFragmentScanner(sm, ocr, gestures) {
@@ -160,5 +160,7 @@ class CaptureService : Service() {
         const val NOTIF_ID = 1001
         var instance: CaptureService? = null
         var statusCallback: ((String) -> Unit)? = null
+        var calibratedNextX: Float? = null
+        var calibratedNextY: Float? = null
     }
 }
