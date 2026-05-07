@@ -51,9 +51,11 @@ class CaptureService : Service() {
             context = this,
             lifecycleOwner = serviceLifecycleOwner,
             savedStateRegistryOwner = serviceLifecycleOwner,
-            onScanRescue = { startScan(ScanType.RESCUE_RECORDS) },
-            onScanFragments = { startScan(ScanType.MEMORY_FRAGMENTS) },
-            onScanCombatants = { startScan(ScanType.COMBATANTS) }
+            configStore = configStore,
+            onScanRescue = { bannerIndex, pageLimit -> startScan(ScanType.RESCUE_RECORDS, bannerIndex, pageLimit) },
+            onScanFragments = { pageLimit -> startScan(ScanType.MEMORY_FRAGMENTS, pageLimit = pageLimit) },
+            onScanCombatants = { pageLimit -> startScan(ScanType.COMBATANTS, pageLimit = pageLimit) },
+            onClose = { stopSelf() }
         )
         overlay?.show()
     }
