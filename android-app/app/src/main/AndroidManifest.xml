@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:exported="false" />
+
         <service
             android:name=".capture.CaptureService"
             android:foregroundServiceType="mediaProjection"
