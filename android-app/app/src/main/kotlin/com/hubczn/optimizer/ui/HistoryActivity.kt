@@ -60,9 +60,10 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
 
     var filterRarity by remember { mutableStateOf(0) } // 0=All, 5=5★, 4=4★
 
-    val bannerRecords = viewModel.recordsForBanner(selectedBannerIdx)
+    val bannerRecords = remember(allRecords, selectedBannerIdx) { viewModel.recordsForBanner(selectedBannerIdx) }
     val stats = remember(bannerRecords) { HistoryViewModel.computeStats(bannerRecords) }
     val fiveStars = remember(bannerRecords) { HistoryViewModel.fiveStarRecords(bannerRecords) }
+    val pityMap = remember(bannerRecords) { HistoryViewModel.computePityMap(bannerRecords) }
     val filtered = remember(bannerRecords, filterRarity) {
         if (filterRarity == 0) bannerRecords.sortedByDescending { it.pullNumber }
         else bannerRecords.filter { it.rarity == filterRarity }.sortedByDescending { it.pullNumber }
@@ -176,7 +177,7 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
                     item {
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             items(fiveStars) { r ->
-                                PortraitTile(r, size = 52)
+                                PortraitTile(r, pity = pityMap[r.id] ?: 0, size = 52)
                             }
                         }
                     }
@@ -200,7 +201,7 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
 
                 // Pull list
                 items(filtered, key = { it.id }) { r ->
-                    PullRow(r)
+                    PullRow(r, pity = pityMap[r.id] ?: 0)
                 }
             }
         }
@@ -230,7 +231,7 @@ private fun DonutChart(fiveStar: Int, fourStar: Int, total: Int, modifier: Modif
 }
 
 @Composable
-private fun PortraitTile(record: RescueRecordEntity, size: Int) {
+private fun PortraitTile(record: RescueRecordEntity, pity: Int, size: Int) {
     val context = LocalContext.current
     val bitmap = remember(record.resId) {
         runCatching {
@@ -263,13 +264,13 @@ private fun PortraitTile(record: RescueRecordEntity, size: Int) {
                 .background(Color(0xCCE87A2D), RoundedCornerShape(topStart = 4.dp))
                 .padding(horizontal = 3.dp, vertical = 1.dp)
         ) {
-            Text("${record.duplicateIdx + 1}", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+            Text("$pity", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
-private fun PullRow(record: RescueRecordEntity) {
+private fun PullRow(record: RescueRecordEntity, pity: Int) {
     val borderColor = when (record.rarity) {
         5 -> Color(0xFFFFD700)
         4 -> Color(0xFFB39DDB)
@@ -322,7 +323,7 @@ private fun PullRow(record: RescueRecordEntity) {
 
         val pityColor = if (record.rarity == 5) Color(0xFFFFD700) else Color(0xFFE87A2D)
         Text(
-            "${record.duplicateIdx + 1}",
+            "$pity",
             color = pityColor, fontSize = 11.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.width(24.dp)
         )

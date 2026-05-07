@@ -62,7 +62,7 @@ object RescueRecordParser {
     fun deduplicate(records: List<RescueRecord>): List<RescueRecord> {
         val seen = mutableSetOf<String>()
         return records.filter { r ->
-            val key = "${r.name}|${r.createAt}|${r.type}"
+            val key = "${r.bannerName}|${r.name}|${r.createAt}|${r.type}"
             seen.add(key)
         }
     }

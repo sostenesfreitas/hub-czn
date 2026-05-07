@@ -80,5 +80,17 @@ class HistoryViewModel(app: Application) : AndroidViewModel(app) {
 
         fun fiveStarRecords(records: List<RescueRecordEntity>): List<RescueRecordEntity> =
             records.filter { it.rarity == 5 }.sortedByDescending { it.pullNumber }
+
+        /** Returns a map of record.id → pity value (pulls since last 5★, inclusive). */
+        fun computePityMap(records: List<RescueRecordEntity>): Map<Long, Int> {
+            val result = mutableMapOf<Long, Int>()
+            var pity = 0
+            for (r in records.sortedBy { it.pullNumber }) {
+                pity++
+                result[r.id] = pity
+                if (r.rarity == 5) pity = 0
+            }
+            return result
+        }
     }
 }

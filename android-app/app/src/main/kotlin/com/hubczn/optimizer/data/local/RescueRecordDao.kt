@@ -30,6 +30,18 @@ interface RescueRecordDao {
         createAt: String, rescueType: String, isFeatured: Boolean
     ): Int
 
+    @Query("""
+        SELECT COUNT(*) FROM rescue_records
+        WHERE bannerName = :bannerName AND name = :name AND type = :type
+          AND createAt = :createAt AND rescueType = :rescueType AND isFeatured = :isFeatured
+          AND duplicateIdx = :duplicateIdx
+    """)
+    suspend fun countWithDupIdx(
+        bannerName: String, name: String, type: String,
+        createAt: String, rescueType: String, isFeatured: Boolean,
+        duplicateIdx: Int
+    ): Int
+
     @Query("SELECT COALESCE(MAX(pullNumber), 0) FROM rescue_records")
     suspend fun maxPullNumber(): Long
 

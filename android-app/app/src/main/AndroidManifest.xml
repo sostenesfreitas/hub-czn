@@ -25,7 +25,8 @@
 
         <activity
             android:name=".ui.HistoryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <service
             android:name=".capture.CaptureService"

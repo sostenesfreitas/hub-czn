@@ -116,13 +116,18 @@ class CaptureService : Service() {
 
                         // Upsert to DB with pull_number assignment
                         val dao = db.rescueRecordDao()
-                        val maxPull = dao.maxPullNumber()
                         val sorted = records.sortedWith(compareBy({ it.createAt }, { records.indexOf(it) }))
-                        val entities = sorted.mapIndexed { idx, r ->
-                            val info = charRepo.lookup(r.name)
-                            val dupIdx = dao.countDuplicates(
-                                r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured
-                            )
+
+                        // Build (record, dupIdx, charInfo) triples; filter to records not yet in DB
+                        val candidates = sorted.map { r ->
+                            Triple(r, dao.countDuplicates(r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured), charRepo.lookup(r.name))
+                        }
+                        val newCandidates = candidates.filter { (r, dupIdx, _) ->
+                            dao.countWithDupIdx(r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured, dupIdx) == 0
+                        }
+
+                        val maxPull = dao.maxPullNumber()
+                        val entities = newCandidates.mapIndexed { idx, (r, dupIdx, info) ->
                             RescueRecordEntity(
                                 bannerName = r.bannerName,
                                 name = r.name,
