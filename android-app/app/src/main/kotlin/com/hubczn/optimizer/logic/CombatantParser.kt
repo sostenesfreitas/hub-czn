@@ -69,4 +69,73 @@ object CombatantParser {
             )
         )
     }
+
+    /**
+     * Parses the right-side detail panel that appears after tapping an
+     * equipped Memory Fragment slot. Returns null when the slot is empty
+     * (no rarity badge or title visible). Reuses the existing FragmentParser
+     * primitives so behaviour matches the inventory scanner.
+     *
+     * Caller is expected to filter `blocks` to the right panel area before
+     * passing in, but the function tolerates extra blocks from elsewhere on
+     * the screen — the rarity / title / stat detection is keyword-based.
+     */
+    fun parseFragmentPanel(
+        blocks: List<com.hubczn.optimizer.model.OcrBlock>,
+        slotNum: Int,
+        equippedCharName: String
+    ): com.hubczn.optimizer.model.MemoryFragment? {
+        // Rarity: first block whose text is a known rarity keyword.
+        val rarityBlock = blocks.firstOrNull { FragmentParser.RARITY_MAP.containsKey(it.text.trim()) }
+            ?: return null
+        val rarity = rarityBlock.text.trim()
+        val rarityNum = FragmentParser.parseRarity(rarity)
+
+        // Level: a "+N" block on (or near) the same row as the rarity badge.
+        val rowTol = 30
+        val levelBlock = blocks.firstOrNull { b ->
+            kotlin.math.abs(b.bounds.top - rarityBlock.bounds.top) < rowTol &&
+                Regex("""^\+\d+$""").matches(b.text.trim())
+        }
+        val level = levelBlock?.let { FragmentParser.parseUpgradeLevel(it.text) } ?: 0
+
+        // Title row sits immediately below the rarity row. We greedy-merge
+        // any blocks on that row to recover multi-word set names like
+        // "Executioner's Tool" that ML Kit may split. The slot-type word
+        // (Shock/Suppression/...) is the last token; everything before is
+        // the set name.
+        val titleAnchor = blocks
+            .filter { it.bounds.top >= rarityBlock.bounds.bottom }
+            .minByOrNull { it.bounds.top }
+            ?: return null
+        val titleBlocks = blocks
+            .filter { kotlin.math.abs(it.bounds.top - titleAnchor.bounds.top) < rowTol }
+            .sortedBy { it.bounds.left }
+        if (titleBlocks.isEmpty()) return null
+        val titleText = titleBlocks.joinToString(" ") { it.text.trim() }.trim()
+        val titleParts = titleText.split(Regex("""\s+"""))
+        if (titleParts.size < 2) return null
+        val setName = titleParts.dropLast(1).joinToString(" ")
+
+        // Stats: blocks below the title and above the "Set Effect" header.
+        val setEffectTop = blocks.firstOrNull { it.text.trim() == "Set Effect" }?.bounds?.top
+            ?: Int.MAX_VALUE
+        val statsBlocks = blocks.filter {
+            it.bounds.top > titleBlocks.last().bounds.bottom && it.bounds.top < setEffectTop
+        }
+        val statList = FragmentParser.parseStats(statsBlocks)
+        if (statList.isEmpty()) return null
+
+        return com.hubczn.optimizer.model.MemoryFragment(
+            id = 0,
+            slotNum = slotNum,
+            setName = setName,
+            rarity = rarity,
+            rarityNum = rarityNum,
+            level = level,
+            locked = false,
+            equippedCharName = equippedCharName,
+            statList = statList
+        )
+    }
 }

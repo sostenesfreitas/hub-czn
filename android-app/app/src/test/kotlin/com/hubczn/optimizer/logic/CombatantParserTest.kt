@@ -55,4 +55,63 @@ class CombatantParserTest {
         assertEquals(0, level)
         assertEquals(0, max)
     }
+
+    // Simulates the right panel for Heidemarie's Slot I (Executioner's Tool Shock).
+    // The right panel only fills the right ~30% of the screen, so all blocks
+    // have left >= ~900 in our 1280-wide mock.
+    private val panelBlocks = listOf(
+        block("Legendary",          top = 270, left = 940),
+        block("+5",                 top = 270, left = 1080),
+        block("Executioner's Tool", top = 320, left = 940),
+        block("Shock",              top = 320, left = 1130),
+        block("Attack",             top = 370, left = 940),
+        block("+22",                top = 370, left = 1200),
+        block("Defense",            top = 410, left = 940),
+        block("0.9%",               top = 410, left = 1200),
+        block("Extra Damage +1",    top = 450, left = 940),
+        block("+6.6%",              top = 450, left = 1200),
+        block("Critical Chance +2", top = 490, left = 940),
+        block("+5.3%",              top = 490, left = 1200),
+        block("Critical Damage +1", top = 530, left = 940),
+        block("+5.8%",              top = 530, left = 1200),
+        block("Set Effect",         top = 575, left = 940),
+        block("Executioner's Tool (2)", top = 620, left = 940),
+        block("2 Set: +25% Critical Damage", top = 660, left = 940),
+    )
+
+    @Test fun `parseFragmentPanel extracts set, rarity, level and stats`() {
+        val frag = CombatantParser.parseFragmentPanel(
+            blocks = panelBlocks,
+            slotNum = 1,
+            equippedCharName = "Heidemarie"
+        )
+        assertNotNull(frag)
+        assertEquals("Executioner's Tool", frag!!.setName)
+        assertEquals("Legendary", frag.rarity)
+        assertEquals(5, frag.rarityNum)
+        assertEquals(5, frag.level)
+        assertEquals(1, frag.slotNum)
+        assertEquals("Heidemarie", frag.equippedCharName)
+
+        // First entry is main stat (Attack +22, flat)
+        val main = frag.statList[0]
+        assertEquals("Attack", main.stat)
+        assertEquals("flat", main.type)
+        assertEquals(22.0, main.value, 0.001)
+
+        // Sub-stats include the Critical Chance with extraRolls=2
+        val cc = frag.statList.firstOrNull { it.stat == "Critical Chance" }
+        assertNotNull(cc)
+        assertEquals(2, cc!!.extraRolls)
+        assertEquals(5.3, cc.value, 0.001)
+        assertEquals("percent", cc.type)
+    }
+
+    @Test fun `parseFragmentPanel returns null for empty slot`() {
+        val emptyBlocks = listOf(
+            block("Set Effect", top = 575, left = 940)
+            // No rarity, no title — empty equipped slot
+        )
+        assertNull(CombatantParser.parseFragmentPanel(emptyBlocks, slotNum = 3, equippedCharName = "X"))
+    }
 }
