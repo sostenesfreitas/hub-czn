@@ -282,8 +282,3 @@ private fun LangChip(label: String, selected: Boolean, onClick: () -> Unit) {
         Text(label, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal)
     }
 }
-
-// Temporary stub — will be replaced by the real HistoryActivity in Plan C Task 4
-class HistoryActivity : ComponentActivity() {
-    override fun onCreate(s: Bundle?) { super.onCreate(s); finish() }
-}
