@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CZN Scanner</string>
+    <string name="accessibility_service_description">Automatiza a navegação em Chaos Zero Nightmare para escanear dados do jogo</string>
+
+    <!-- MainActivity -->
+    <string name="title_czn_scanner">CZN Scanner</string>
+    <string name="subtitle_chaos_zero">Chaos Zero Nightmare</string>
+    <string name="label_permissions">Permissões do Sistema</string>
+    <string name="perm_overlay">Exibir sobre outros apps</string>
+    <string name="perm_accessibility">Serviço de Acessibilidade</string>
+    <string name="status_granted">Concedido</string>
+    <string name="status_pending">Pendente</string>
+    <string name="btn_grant">Conceder</string>
+    <string name="label_preferences">Preferências</string>
+    <string name="label_language">Idioma</string>
+    <string name="btn_view_history">📊 Ver Histórico</string>
+    <string name="btn_start_scanner">▶  Iniciar Scanner</string>
+    <string name="label_output_folder">Pasta de saída</string>
+    <string name="btn_change">Alterar</string>
+    <string name="folder_default">Downloads/CZN-Scanner</string>
+
+    <!-- ScanOptionsOverlay -->
+    <string name="label_banner">Banner</string>
+    <string name="label_page_limit">Limite de páginas</string>
+    <string name="hint_page_limit">∞</string>
+    <string name="label_no_limit">Vazio = sem limite</string>
+    <string name="label_calibration">Calibração</string>
+    <string name="label_next_page_btn">Botão próx. página</string>
+    <string name="btn_recalibrate">Recalibrar</string>
+    <string name="status_not_calibrated">⬜ Não calibrado</string>
+    <string name="btn_start_scan">▶  Iniciar Scan</string>
+
+    <!-- FloatingOverlay -->
+    <string name="menu_rescue_records">🎯 Rescue Records</string>
+    <string name="menu_memory_fragments">🧩 Memory Fragments</string>
+    <string name="menu_combatants">⚔️ Combatants</string>
+    <string name="overlay_ready">Pronto — toque para escanear</string>
+
+    <!-- Banners -->
+    <string name="banner_seasonal">Seasonal Combatant</string>
+    <string name="banner_general">Gacha General</string>
+    <string name="banner_pickup">Gacha Pickup Supporter</string>
+</resources>
