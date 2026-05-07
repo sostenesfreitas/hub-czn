@@ -19,6 +19,7 @@ import com.hubczn.optimizer.data.repository.JSONExporter
 import com.hubczn.optimizer.logic.CombatantScanner
 import com.hubczn.optimizer.logic.MemoryFragmentScanner
 import com.hubczn.optimizer.logic.RescueRecordScanner
+import com.hubczn.optimizer.model.RescueRecord
 import com.hubczn.optimizer.ui.components.FloatingOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -111,23 +112,50 @@ class CaptureService : Service() {
                             pageLimit = pageLimit,
                             calibX = store.calibRescueX,
                             calibY = store.calibRescueY,
-                            onProgress = { notifyStatus(it) }
+                            onProgress = { notifyStatus(it) },
+                            saveDebugBitmap = { bmp, label ->
+                                runCatching {
+                                    val file = java.io.File(filesDir, "$label.png")
+                                    java.io.FileOutputStream(file).use { fos ->
+                                        bmp.compress(android.graphics.Bitmap.CompressFormat.PNG, 90, fos)
+                                    }
+                                    android.util.Log.i("CZNScanner", "Saved debug bitmap: ${file.absolutePath} (${bmp.width}x${bmp.height})")
+                                }.onFailure { android.util.Log.e("CZNScanner", "Failed to save debug bitmap: ${it.message}") }
+                            }
                         ).scan()
 
-                        // Upsert to DB with pull_number assignment
+                        // Upsert to DB with pull_number assignment.
+                        //
+                        // Dedup rule: a "pull" is uniquely identified by
+                        // (bannerName, name, type, createAt, rescueType, isFeatured).
+                        // The same player may legitimately have N pulls of one
+                        // character at the same second (10-pull, etc.), so we keep
+                        // multiple via duplicateIdx 0..N-1. Across scans, however,
+                        // the same pull must NOT be added again.
+                        //
+                        // Algorithm: group this scan's records by the natural key,
+                        // compare its size to what is already in the DB for that key,
+                        // and only insert the missing surplus (if any).
                         val dao = db.rescueRecordDao()
                         val sorted = records.sortedWith(compareBy({ it.createAt }, { records.indexOf(it) }))
 
-                        // Build (record, dupIdx, charInfo) triples; filter to records not yet in DB
-                        val candidates = sorted.map { r ->
-                            Triple(r, dao.countDuplicates(r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured), charRepo.lookup(r.name))
-                        }
-                        val newCandidates = candidates.filter { (r, dupIdx, _) ->
-                            dao.countWithDupIdx(r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured, dupIdx) == 0
+                        data class Key(val banner: String, val name: String, val type: String, val createAt: String, val rescueType: String, val isFeatured: Boolean)
+                        val groups = sorted.groupBy { Key(it.bannerName, it.name, it.type, it.createAt, it.rescueType, it.isFeatured) }
+
+                        val toInsert = mutableListOf<Pair<RescueRecord, Int>>() // record -> dupIdx
+                        for ((key, occurrences) in groups) {
+                            val existing = dao.countDuplicates(key.banner, key.name, key.type, key.createAt, key.rescueType, key.isFeatured)
+                            val surplus = occurrences.size - existing
+                            if (surplus <= 0) continue
+                            // Insert the last `surplus` occurrences (arbitrary; they're equivalent)
+                            occurrences.takeLast(surplus).forEachIndexed { i, rec ->
+                                toInsert += rec to (existing + i)
+                            }
                         }
 
                         val maxPull = dao.maxPullNumber()
-                        val entities = newCandidates.mapIndexed { idx, (r, dupIdx, info) ->
+                        val entities = toInsert.mapIndexed { idx, (r, dupIdx) ->
+                            val info = charRepo.lookup(r.name)
                             RescueRecordEntity(
                                 bannerName = r.bannerName,
                                 name = r.name,
@@ -142,6 +170,10 @@ class CaptureService : Service() {
                             )
                         }
                         dao.upsertAll(entities)
+                        // Renumber so pullNumber reflects chronological order
+                        // even when multiple partial scans inserted records out of order.
+                        dao.renumberPullNumbersByCreateAt()
+                        android.util.Log.i("CZNScanner", "DB upsert: scan=${records.size} groups=${groups.size} inserted=${entities.size} skipped=${records.size - entities.size}")
 
                         val dbExporter = JSONExporter(this@CaptureService, dao, store.outputFolderUri)
                         val filename = dbExporter.exportRescueRecordsFromDb()
@@ -155,20 +187,25 @@ class CaptureService : Service() {
                         notifyStatus("Exported ${fragments.size} fragments to ${file.name}")
                     }
                     ScanType.COMBATANTS -> {
-                        val combatants = CombatantScanner(sm, ocr, gestures) {
-                            notifyStatus(it)
-                        }.scan()
+                        val store = configStore
+                        val combatants = CombatantScanner(
+                            sm, ocr, gestures,
+                            rosterX = store.calibCombatantsX ?: 40f,
+                            firstThumbnailY = store.calibCombatantsY ?: 200f,
+                            onProgress = { notifyStatus(it) }
+                        ).scan()
                         val file = exporter.exportCombatants(combatants)
                         notifyStatus("Exported ${combatants.size} combatants to ${file.name}")
                     }
                 }
             } catch (e: Exception) {
                 notifyStatus("Error: ${e.message}")
-            } finally {
-                screenshotManager?.stop()
-                projection?.stop()
-                instance = null
             }
+            // NOTE: do NOT stop screenshotManager/projection here.
+            // The capture session must stay alive across multiple scans so
+            // the floating overlay can trigger another scan without forcing
+            // the user to re-grant the screen capture permission.
+            // Resources are released in onDestroy when the service is killed.
         }
     }
 
@@ -183,6 +220,7 @@ class CaptureService : Service() {
     }
 
     private fun notifyStatus(message: String) {
+        android.util.Log.i("CZNScanner", message)
         val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         nm.notify(NOTIF_ID, buildNotification(message))
         statusCallback?.invoke(message)
@@ -210,6 +248,7 @@ class CaptureService : Service() {
         var statusCallback: ((String) -> Unit)? = null
         val BANNER_NAMES = listOf(
             "Seasonal Combatant Rescue Rate-Up",
+            "Seasonal Partner Rescue Rate-Up",
             "Gacha General",
             "Gacha Pickup Supporter"
         )
