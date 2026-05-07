@@ -19,5 +19,5 @@ data class Combatant(
     @SerialName("max_level") val maxLevel: Int,
     val stars: Int,
     val stats: CombatantStats,
-    @SerialName("equipped_fragments") val equippedFragments: List<Int> = emptyList()
+    @SerialName("equipped_fragments") val equippedFragments: List<MemoryFragment> = emptyList()
 )
