@@ -11,6 +11,10 @@ import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.hubczn.optimizer.data.local.RescueRecordDatabase
+import com.hubczn.optimizer.data.local.RescueRecordEntity
+import com.hubczn.optimizer.data.local.ScanConfigStore
+import com.hubczn.optimizer.data.repository.CharacterRepository
 import com.hubczn.optimizer.data.repository.JSONExporter
 import com.hubczn.optimizer.logic.CombatantScanner
 import com.hubczn.optimizer.logic.MemoryFragmentScanner
@@ -29,6 +33,10 @@ class CaptureService : Service() {
     private var ocrEngine: MLKitOCREngine? = null
     private val serviceLifecycleOwner = ServiceLifecycleOwner()
     private var overlay: FloatingOverlay? = null
+
+    private val configStore by lazy { ScanConfigStore(this) }
+    private val charRepo by lazy { CharacterRepository(this) }
+    private val db by lazy { RescueRecordDatabase.getInstance(this) }
 
     enum class ScanType { RESCUE_RECORDS, MEMORY_FRAGMENTS, COMBATANTS }
 
@@ -72,7 +80,7 @@ class CaptureService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun startScan(scanType: ScanType) {
+    private fun startScan(scanType: ScanType, bannerIndex: Int = 0, pageLimit: Int? = null) {
         val accessibilityService = CZNAccessibilityService.instance ?: run {
             notifyStatus("Accessibility Service not enabled")
             return
@@ -93,11 +101,44 @@ class CaptureService : Service() {
             try {
                 when (scanType) {
                     ScanType.RESCUE_RECORDS -> {
-                        // TODO(A7): wire up DB-backed export via exportRescueRecordsFromDb()
-                        val records = RescueRecordScanner(sm, ocr, gestures) {
-                            notifyStatus(it)
-                        }.scan()
-                        notifyStatus("Scanned ${records.size} records (export wired in A7)")
+                        val bannerName = BANNER_NAMES[bannerIndex]
+                        val store = configStore
+                        val records = RescueRecordScanner(
+                            sm, ocr, gestures,
+                            selectedBanner = bannerName,
+                            pageLimit = pageLimit,
+                            calibX = store.calibRescueX,
+                            calibY = store.calibRescueY,
+                            onProgress = { notifyStatus(it) }
+                        ).scan()
+
+                        // Upsert to DB with pull_number assignment
+                        val dao = db.rescueRecordDao()
+                        val maxPull = dao.maxPullNumber()
+                        val sorted = records.sortedWith(compareBy({ it.createAt }, { records.indexOf(it) }))
+                        val entities = sorted.mapIndexed { idx, r ->
+                            val info = charRepo.lookup(r.name)
+                            val dupIdx = dao.countDuplicates(
+                                r.bannerName, r.name, r.type, r.createAt, r.rescueType, r.isFeatured
+                            )
+                            RescueRecordEntity(
+                                bannerName = r.bannerName,
+                                name = r.name,
+                                type = r.type,
+                                createAt = r.createAt,
+                                rescueType = r.rescueType,
+                                isFeatured = r.isFeatured,
+                                duplicateIdx = dupIdx,
+                                resId = info?.resId,
+                                rarity = info?.rarity,
+                                pullNumber = maxPull + idx + 1
+                            )
+                        }
+                        dao.upsertAll(entities)
+
+                        val dbExporter = JSONExporter(this@CaptureService, dao, store.outputFolderUri)
+                        val filename = dbExporter.exportRescueRecordsFromDb()
+                        notifyStatus("Exported to $filename")
                     }
                     ScanType.MEMORY_FRAGMENTS -> {
                         val fragments = MemoryFragmentScanner(sm, ocr, gestures) {
@@ -160,7 +201,10 @@ class CaptureService : Service() {
         const val NOTIF_ID = 1001
         var instance: CaptureService? = null
         var statusCallback: ((String) -> Unit)? = null
-        var calibratedNextX: Float? = null
-        var calibratedNextY: Float? = null
+        val BANNER_NAMES = listOf(
+            "Seasonal Combatant Rescue Rate-Up",
+            "Gacha General",
+            "Gacha Pickup Supporter"
+        )
     }
 }

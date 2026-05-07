@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import com.hubczn.optimizer.capture.CaptureService
+import com.hubczn.optimizer.data.local.ScanConfigStore
+import com.hubczn.optimizer.ui.components.CalibrationOverlay
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -28,6 +31,7 @@ class FloatingOverlay(
 ) {
     private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private var composeView: ComposeView? = null
+    private val configStore = ScanConfigStore(context)
 
     fun show() {
         val params = WindowManager.LayoutParams(
@@ -43,7 +47,12 @@ class FloatingOverlay(
             setViewTreeSavedStateRegistryOwner(savedStateRegistryOwner)
             setContent {
                 var expanded by remember { mutableStateOf(false) }
-                var status by remember { mutableStateOf("") }
+                var status by remember { mutableStateOf("Ready") }
+
+                DisposableEffect(Unit) {
+                    CaptureService.statusCallback = { msg -> status = msg }
+                    onDispose { CaptureService.statusCallback = null }
+                }
 
                 Column(
                     modifier = Modifier
@@ -54,19 +63,28 @@ class FloatingOverlay(
                         Text("CZN ${if (expanded) "▲" else "▼"}", color = Color.White)
                     }
                     if (expanded) {
-                        TextButton(onClick = { onScanRescue(); status = "Scanning rescue..." }) {
+                        TextButton(onClick = { expanded = false; onScanRescue() }) {
                             Text("Rescue Records", color = Color.White)
                         }
-                        TextButton(onClick = { onScanFragments(); status = "Scanning fragments..." }) {
+                        TextButton(onClick = { expanded = false; onScanFragments() }) {
                             Text("Memory Fragments", color = Color.White)
                         }
-                        TextButton(onClick = { onScanCombatants(); status = "Scanning combatants..." }) {
+                        TextButton(onClick = { expanded = false; onScanCombatants() }) {
                             Text("Combatants", color = Color.White)
                         }
+                        val calDone = configStore.calibRescueX != null
+                        TextButton(onClick = {
+                            expanded = false
+                            CalibrationOverlay(context) { x, y ->
+                                configStore.calibRescueX = x
+                                configStore.calibRescueY = y
+                                CaptureService.statusCallback?.invoke("Calibrated: next page at (${x.toInt()}, ${y.toInt()})")
+                            }.show()
+                        }) {
+                            Text(if (calDone) "✅ Cal >" else "⬜ Cal >", color = Color.White)
+                        }
                     }
-                    if (status.isNotEmpty()) {
-                        Text(status, color = Color(0xFFE87A2D), style = MaterialTheme.typography.labelSmall)
-                    }
+                    Text(status, color = Color(0xFFE87A2D), style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
