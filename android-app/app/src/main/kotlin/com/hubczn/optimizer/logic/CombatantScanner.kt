@@ -4,87 +4,171 @@ import com.hubczn.optimizer.capture.GestureDispatcher
 import com.hubczn.optimizer.capture.MLKitOCREngine
 import com.hubczn.optimizer.capture.ScreenshotManager
 import com.hubczn.optimizer.model.Combatant
+import com.hubczn.optimizer.model.MemoryFragment
+import kotlinx.coroutines.delay
 
+/**
+ * Walks the combatant roster on the left edge of the combatant detail
+ * screen, capturing Stats values and the 6 equipped Memory Fragments per
+ * combatant. Output is a list of fully populated Combatant objects with
+ * embedded fragment lists.
+ *
+ * Preconditions on entry:
+ *  - Game is on the combatant detail screen of any combatant.
+ *  - Stats tab is selected (the right panel shows Attack/Defense/...).
+ *  - Floating overlay is visible.
+ *
+ * Termination:
+ *  - Same combatant name read twice in a row immediately after a
+ *    roster swipe (slider hit the bottom).
+ *  - 5 consecutive iterations failed to produce a parseable Combatant.
+ *  - Iteration count >= MAX_ITERATIONS (hard cap).
+ */
 class CombatantScanner(
     private val screenshotManager: ScreenshotManager,
     private val ocrEngine: MLKitOCREngine,
     private val gestures: GestureDispatcher,
+    private val rosterX: Float = 40f,        // calib_combatants_x default
+    private val firstThumbnailY: Float = 200f, // calib_combatants_y default
     private val onProgress: (String) -> Unit = {}
 ) {
-    private val combatants = mutableListOf<Combatant>()
+
+    companion object {
+        private const val MAX_ITERATIONS = 100
+        private const val THUMB_PITCH_PX = 80
+        private const val ANIM_PANEL_MS = 600L  // tab / page change
+        private const val ANIM_SLOT_MS = 400L   // slot select
+    }
+
+    private val results = mutableListOf<Combatant>()
 
     suspend fun scan(): List<Combatant> {
-        combatants.clear()
+        results.clear()
+        var thumbY = firstThumbnailY
+        var lastName: String? = null
+        var consecutiveFails = 0
+        var swipedThisIter = false
 
-        var consecutiveNewCount = 0
-        var charIndex = 0
-        val seenNames = mutableSetOf<String>()
-
-        // Scan characters by tapping each thumbnail position, scrolling when needed
-        while (true) {
-            val thumbnailY = getThumbnailY(charIndex)
-            val rosterBitmap = screenshotManager.capture() ?: break
-            val rosterBlocks = ocrEngine.recognizeBlocks(rosterBitmap)
-
-            // Check if this thumbnail position is still within the visible list
-            // by looking for sidebar content at this Y position
-            val hasThumbnailHere = rosterBlocks.any {
-                it.bounds.left < 80 && kotlin.math.abs(it.bounds.top - thumbnailY) < 50
-            }
-
-            if (!hasThumbnailHere) {
-                // Scroll the character list down and reset index to first visible position
-                gestures.swipeUp(x = 40f, fromY = rosterBitmap.height * 0.8f, toY = rosterBitmap.height * 0.2f)
-                val afterScrollBitmap = screenshotManager.capture() ?: break
-                val afterScrollBlocks = ocrEngine.recognizeBlocks(afterScrollBitmap)
-                val hasAnySidebar = afterScrollBlocks.any { it.bounds.left < 80 }
-                if (!hasAnySidebar) break  // no more characters
-                charIndex = 0
-                consecutiveNewCount = 0
+        for (iter in 0 until MAX_ITERATIONS) {
+            // 1. Read combatant Stats panel.
+            val stats = readStats()
+            if (stats == null) {
+                consecutiveFails++
+                if (consecutiveFails >= 5) {
+                    onProgress("Stopping: 5 consecutive stat-read failures.")
+                    return results
+                }
+                val (advY, advSwiped) = advanceRoster(thumbY)
+                thumbY = advY
+                swipedThisIter = advSwiped
                 continue
             }
 
-            gestures.tap(x = 40f, y = thumbnailY.toFloat())
-
-            // Navigate to Stats tab
-            val detailBitmap = screenshotManager.capture() ?: continue
-            val detailBlocks = ocrEngine.recognizeBlocks(detailBitmap)
-            val statsTab = detailBlocks.firstOrNull { it.text == "Stats" }
-            if (statsTab != null) {
-                gestures.tap(statsTab.bounds.exactCenterX(), statsTab.bounds.exactCenterY())
+            // 2. Detect end-of-roster: same name twice immediately after a swipe.
+            if (stats.name == lastName && swipedThisIter) {
+                onProgress("Done: end of roster (name '${stats.name}' repeated after swipe).")
+                return results
             }
 
-            val statsBitmap = screenshotManager.capture() ?: continue
-            val statsBlocks = ocrEngine.recognizeBlocks(statsBitmap)
-            val combatant = CombatantParser.parseStats(statsBlocks)
+            // 3. Read fragments.
+            val fragments = readEquippedFragments(stats.name)
+            results.add(stats.copy(equippedFragments = fragments))
+            onProgress("Captured ${results.size}: ${stats.name} (+${fragments.size} fragments)")
 
-            if (combatant != null && combatant.name !in seenNames) {
-                seenNames.add(combatant.name)
-                combatants.add(combatant)
-                onProgress("Scanned ${combatants.size}: ${combatant.name}")
-                consecutiveNewCount = 0
-            } else {
-                consecutiveNewCount++
-                if (consecutiveNewCount >= 5) break  // 5 consecutive known/failed = done
-            }
+            lastName = stats.name
+            consecutiveFails = 0
 
-            // Navigate back to roster
-            val backBitmap = screenshotManager.capture() ?: continue
-            val backBlocks = ocrEngine.recognizeBlocks(backBitmap)
-            val backButton = backBlocks.firstOrNull { it.text == "◀" || it.text == "<" }
-            if (backButton != null) {
-                gestures.tap(backButton.bounds.exactCenterX(), backButton.bounds.exactCenterY())
-            }
-
-            charIndex++
+            // 4. Move on.
+            val (nextY, swiped) = advanceRoster(thumbY + THUMB_PITCH_PX)
+            thumbY = nextY
+            swipedThisIter = swiped
         }
 
-        onProgress("Done: ${combatants.size} combatants")
-        return combatants
+        onProgress("Stopping: hit MAX_ITERATIONS=$MAX_ITERATIONS.")
+        return results
     }
 
-    private fun getThumbnailY(index: Int): Int {
-        // Thumbnails start at ~200px top, each is ~80px tall
-        return 200 + index * 80
+    /** Captures the Stats screen and parses it. Does NOT navigate. */
+    private suspend fun readStats(): Combatant? {
+        val bmp = screenshotManager.capture() ?: return null
+        val blocks = ocrEngine.recognizeBlocks(bmp)
+        return CombatantParser.parseStats(blocks)
+    }
+
+    /**
+     * Navigates Stats -> Memory Fragments, taps each available slot, OCRs
+     * the right panel, then navigates back to Stats. Returns the list of
+     * fragments that parsed successfully (skips empty / unparseable slots).
+     */
+    private suspend fun readEquippedFragments(charName: String): List<MemoryFragment> {
+        // Tap "Memory Fragments" tab.
+        val tabsBmp = screenshotManager.capture() ?: return emptyList()
+        val tabsBlocks = ocrEngine.recognizeBlocks(tabsBmp)
+        val mfTab = CombatantSidebar.findTab(tabsBlocks, "Memory Fragments")
+            ?: run {
+                onProgress("Could not find 'Memory Fragments' tab.")
+                return emptyList()
+            }
+        gestures.tap(mfTab.first, mfTab.second)
+        delay(ANIM_PANEL_MS)
+
+        // OCR the page once to find the 6 slot icons.
+        val pageBmp = screenshotManager.capture() ?: return emptyList()
+        val pageBlocks = ocrEngine.recognizeBlocks(pageBmp)
+        val slotTargets = CombatantSidebar.findSlotTapTargets(pageBlocks)
+        if (slotTargets.isEmpty()) {
+            onProgress("No slot numerals found on Memory Fragments page.")
+        }
+
+        val collected = mutableListOf<MemoryFragment>()
+        for (slot in 1..6) {
+            val target = slotTargets[slot] ?: continue
+            gestures.tap(target.first, target.second)
+            delay(ANIM_SLOT_MS)
+            val panelBmp = screenshotManager.capture() ?: continue
+            val panelBlocks = ocrEngine.recognizeBlocks(panelBmp)
+            // Filter to the right ~30% of the screen to reduce false matches.
+            val rightPanel = panelBlocks.filter {
+                it.bounds.left > panelBmp.width * 0.65
+            }
+            val frag = CombatantParser.parseFragmentPanel(rightPanel, slot, charName)
+            if (frag != null) collected.add(frag)
+        }
+
+        // Navigate back to Stats so the next iteration can re-read stats.
+        val backBmp = screenshotManager.capture() ?: return collected
+        val backBlocks = ocrEngine.recognizeBlocks(backBmp)
+        val statsTab = CombatantSidebar.findTab(backBlocks, "Stats")
+        if (statsTab != null) {
+            gestures.tap(statsTab.first, statsTab.second)
+            delay(ANIM_PANEL_MS)
+        }
+        return collected
+    }
+
+    /**
+     * Taps the next thumbnail in the vertical roster. If [nextY] is past
+     * the visible area, swipes the roster up first and returns the reset
+     * Y coordinate. Returns the actually-tapped Y and a flag indicating
+     * whether a swipe was performed in this call.
+     */
+    private suspend fun advanceRoster(nextY: Float): Pair<Float, Boolean> {
+        val bmp = screenshotManager.capture() ?: return nextY to false
+        val maxVisibleY = bmp.height * 0.85f
+        var y = nextY
+        var swiped = false
+        if (y > maxVisibleY) {
+            gestures.swipeUp(
+                x = rosterX,
+                fromY = bmp.height * 0.80f,
+                toY = bmp.height * 0.20f
+            )
+            delay(ANIM_PANEL_MS)
+            y = firstThumbnailY
+            swiped = true
+        }
+        gestures.tap(rosterX, y)
+        delay(ANIM_PANEL_MS)
+        return y to swiped
     }
 }
