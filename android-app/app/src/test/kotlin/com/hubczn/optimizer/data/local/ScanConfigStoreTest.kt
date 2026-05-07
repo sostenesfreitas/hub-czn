@@ -3,6 +3,7 @@ package com.hubczn.optimizer.data.local
 import android.app.Application
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,12 +21,21 @@ class ScanConfigStoreTest {
         store = ScanConfigStore(ctx)
     }
 
+    @After
+    fun tearDown() {
+        val ctx = ApplicationProvider.getApplicationContext<Application>()
+        ctx.getSharedPreferences("czn_config", android.content.Context.MODE_PRIVATE)
+            .edit().clear().commit()
+    }
+
     @Test
     fun `calib coords default to null`() {
         assertNull(store.calibRescueX)
         assertNull(store.calibRescueY)
         assertNull(store.calibFragmentsX)
+        assertNull(store.calibFragmentsY)
         assertNull(store.calibCombatantsX)
+        assertNull(store.calibCombatantsY)
     }
 
     @Test
@@ -58,5 +68,10 @@ class ScanConfigStoreTest {
     fun `lastBannerIndex round-trip`() {
         store.lastBannerIndex = 2
         assertEquals(2, store.lastBannerIndex)
+    }
+
+    @Test
+    fun `outputFolderUri defaults to null`() {
+        assertNull(store.outputFolderUri)
     }
 }
