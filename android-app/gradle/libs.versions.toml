@@ -10,6 +10,7 @@ kotlinxSerializationJson = "1.7.0"
 coroutines = "1.8.1"
 junit = "4.13.2"
 robolectric = "4.12.2"
+androidxTestCore = "1.6.1"
 ksp = "2.0.0-1.0.21"
 room = "2.6.1"
 
@@ -25,6 +26,7 @@ mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition"
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }

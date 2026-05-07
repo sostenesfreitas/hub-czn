@@ -59,4 +59,5 @@ dependencies {
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
 }
