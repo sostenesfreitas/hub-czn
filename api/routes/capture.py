@@ -71,6 +71,7 @@ def post_capture_start(body: StartRequest):
 
     state.capture_region = body.region
     mgr = state.get_capture_manager()
+    mgr.set_region(body.region)
 
     def _run():
         try:

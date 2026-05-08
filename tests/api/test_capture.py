@@ -70,6 +70,24 @@ def test_capture_start_success():
     state.reset_capture_manager()
 
 
+def test_capture_start_propagates_region_to_manager():
+    """Regression: /capture/start must call mgr.set_region(body.region) so the
+    manager resolves hosts for the chosen server. Without this, picking Asia
+    silently captured Global servers (no traffic intercepted)."""
+    mock_mgr = MagicMock()
+    with patch("api.routes.capture._is_admin", return_value=True), \
+         patch("api.state.AppState.get_capture_manager", return_value=mock_mgr), \
+         patch("threading.Thread") as mock_thread:
+        mock_thread.return_value.start = MagicMock()
+        r = client.post("/api/capture/start", json={"region": "asia", "debug": False})
+    assert r.status_code == 200
+    mock_mgr.set_region.assert_called_once_with("asia")
+    # cleanup
+    from api.state import state
+    state.capture_running = False
+    state.reset_capture_manager()
+
+
 def test_capture_stop_success():
     from api.state import state
     state.capture_running = True
