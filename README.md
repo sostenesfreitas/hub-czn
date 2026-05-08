@@ -2,7 +2,10 @@
 
 > Gear management, build optimization, rescue records and damage simulation for **Chaos Zero Nightmare** — inspired by [Fribbels Epic 7 Optimizer](https://github.com/fribbels/Fribbels-Epic-7-Optimizer).
 
-A desktop app (Windows) that intercepts the game's network traffic to extract your inventory, rescue records and character data in real time — then helps you build the best gear sets for every combatant.
+Two ways to use it:
+
+- **Desktop (Windows)** — intercepts the game's network traffic via mitmproxy to extract your inventory, rescue records and character data in real time. Full optimizer + damage simulator + scoring controls.
+- **Android companion app** — for players who run the game directly on their phone (no mitmproxy possible). Uses on-device OCR to scan the Combatant List, the Memory Fragments inventory and Rescue Records straight from the game UI, then exports everything as JSON compatible with the desktop format. Includes its own combatants viewer, fragments list, and a minimal optimizer.
 
 ---
 
@@ -21,7 +24,41 @@ A desktop app (Windows) that intercepts the game's network traffic to extract yo
 
 ---
 
-## Requirements
+## Mobile (Android)
+
+The Android companion app is for players who run **Chaos Zero Nightmare on a phone or tablet**, where the desktop's network-interception flow is not possible. Instead of reading the game's traffic, it:
+
+- **Scans the on-screen UI via OCR** (Google ML Kit) using a floating overlay on top of the game
+- **Auto-navigates** the Combatant List grid, the Memory Fragments inventory, and the Rescue Records pages by tapping the in-game arrows / cards through Android's Accessibility Service
+- **Exports JSON files** to `Downloads/CZN-Scanner/` in the same shape the desktop optimizer consumes, so you can transfer them to PC and load them in the desktop app
+- **Includes built-in views** for the captured combatants, fragments inventory, and a minimal per-character gear optimizer with final-stat preview and 2-piece set bonuses
+- **Manual edit** for any field the OCR misses — tap an ego badge, the stats panel, or any gear card to override values; persisted in `combatants_overrides.json`
+
+### Install
+
+- Download the latest **`hub-czn-android-*.apk`** from the [Releases page](https://github.com/sostenesfreitas/hub-czn/releases)
+- On the phone: enable *Install from unknown sources* for your browser/file manager → tap the APK
+- After install, grant the three permissions the app asks for:
+  1. **Display over other apps** (the floating scan controls)
+  2. **Screen capture** (one-time prompt every session — Android system requirement)
+  3. **Accessibility Service** (so the scanner can tap the > arrows / cards on its own)
+
+### Limits vs the desktop
+
+The mobile app does NOT capture *partner equipment*, *potential nodes*, or *friendship bonuses* — those are not visible at-a-glance in the game UI it scans. The optimizer's final-stats calculation reflects only character base stats + gear (main + substats + 2-piece set bonuses). Build rankings are still meaningful; absolute numbers will differ slightly from the desktop's full computation.
+
+### Build from source
+
+```bash
+cd android-app
+./gradlew :app:assembleDebug   # APK at app/build/outputs/apk/debug/app-debug.apk
+```
+
+Requires JDK 17 and the Android SDK (compileSdk 35, minSdk 26).
+
+---
+
+## Requirements (Desktop)
 
 - **Windows 10 / 11**
 - **Administrator privileges** (required to redirect game traffic via hosts file)
