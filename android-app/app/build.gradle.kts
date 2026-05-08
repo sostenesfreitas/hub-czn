@@ -58,6 +58,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.documentfile)
     implementation(libs.androidx.appcompat)
+    implementation(libs.icons.lucide)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.room.runtime)

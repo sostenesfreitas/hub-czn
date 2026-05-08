@@ -19,5 +19,8 @@ data class Combatant(
     @SerialName("max_level") val maxLevel: Int,
     val stars: Int,
     val stats: CombatantStats,
+    /** Ego Manifestation level shown on the grid card (0..6). 0 means
+     *  not unlocked (the card displays "00"). */
+    val ego: Int = 0,
     @SerialName("equipped_fragments") val equippedFragments: List<MemoryFragment> = emptyList()
 )

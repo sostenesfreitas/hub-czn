@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubczn.optimizer.data.local.RescueRecordDatabase
 import com.hubczn.optimizer.data.local.RescueRecordEntity
+import com.hubczn.optimizer.data.local.ScanConfigStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,28 +21,47 @@ data class BannerStats(
 
 class HistoryViewModel(app: Application) : AndroidViewModel(app) {
     private val dao = RescueRecordDatabase.getInstance(app).rescueRecordDao()
+    private val configStore = ScanConfigStore(app)
 
     private val _records = MutableStateFlow<List<RescueRecordEntity>>(emptyList())
     val records: StateFlow<List<RescueRecordEntity>> = _records
 
-    private val _selectedBannerIdx = MutableStateFlow(0)
+    private val _selectedBannerIdx = MutableStateFlow(configStore.lastBannerIndex)
     val selectedBannerIdx: StateFlow<Int> = _selectedBannerIdx
 
     val bannerNames = listOf(
         "Seasonal Combatant Rescue Rate-Up",
+        "Seasonal Partner Rescue Rate-Up",
         "Gacha General",
         "Gacha Pickup Supporter"
     )
 
     init {
+        android.util.Log.i("CZNScanner", "HistoryVM init: selectedBannerIdx=${_selectedBannerIdx.value}, bannerNames=$bannerNames")
         loadRecords()
     }
 
-    fun selectBanner(idx: Int) { _selectedBannerIdx.value = idx }
+    fun selectBanner(idx: Int) {
+        android.util.Log.i("CZNScanner", "HistoryVM selectBanner($idx) -> '${bannerNames.getOrNull(idx)}'")
+        _selectedBannerIdx.value = idx
+    }
 
     private fun loadRecords() {
         viewModelScope.launch {
-            _records.value = dao.getAllOrderedByPullNumber()
+            // Renumber pullNumber by chronological order — corrects past
+            // out-of-order inserts from multi-pass scans (older pulls captured
+            // after newer ones). Non-destructive.
+            //
+            // We deliberately do NOT run deleteDuplicatesByNaturalKey() here:
+            // legitimate batch duplicates (10-pull with 2+ identical chars at
+            // the same timestamp) share the natural key and would be wiped on
+            // every history open, conflicting with the per-scan dedup logic
+            // in CaptureService.
+            dao.renumberPullNumbersByCreateAt()
+            val all = dao.getAllOrderedByPullNumber()
+            val byBanner = all.groupingBy { it.bannerName }.eachCount()
+            android.util.Log.i("CZNScanner", "HistoryVM loadRecords: total=${all.size}, byBanner=$byBanner")
+            _records.value = all
         }
     }
 
@@ -49,7 +69,9 @@ class HistoryViewModel(app: Application) : AndroidViewModel(app) {
 
     fun recordsForBanner(bannerIdx: Int): List<RescueRecordEntity> {
         val name = bannerNames.getOrNull(bannerIdx) ?: return emptyList()
-        return _records.value.filter { it.bannerName == name }
+        val matches = _records.value.filter { it.bannerName == name }
+        android.util.Log.i("CZNScanner", "HistoryVM recordsForBanner($bannerIdx -> '$name'): ${matches.size}/${_records.value.size}")
+        return matches
     }
 
     companion object {

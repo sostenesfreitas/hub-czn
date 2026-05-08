@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.composables.icons.lucide.Check
+import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.Play
+import com.composables.icons.lucide.Puzzle
+import com.composables.icons.lucide.Swords
+import com.composables.icons.lucide.Target
+import com.composables.icons.lucide.X
 import com.hubczn.optimizer.R
 import com.hubczn.optimizer.capture.CaptureService
 import com.hubczn.optimizer.data.local.ScanConfigStore
@@ -43,6 +51,7 @@ class ScanOptionsOverlay(
 
     private val bannerNames = listOf(
         context.getString(R.string.banner_seasonal),
+        context.getString(R.string.banner_partner),
         context.getString(R.string.banner_general),
         context.getString(R.string.banner_pickup)
     )
@@ -88,12 +97,20 @@ class ScanOptionsOverlay(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val title = when (scanType) {
-                            CaptureService.ScanType.RESCUE_RECORDS -> "🎯 Rescue Records"
-                            CaptureService.ScanType.MEMORY_FRAGMENTS -> "🧩 Memory Fragments"
-                            CaptureService.ScanType.COMBATANTS -> "⚔️ Combatants"
+                        val titleIcon: ImageVector = when (scanType) {
+                            CaptureService.ScanType.RESCUE_RECORDS -> Lucide.Target
+                            CaptureService.ScanType.MEMORY_FRAGMENTS -> Lucide.Puzzle
+                            CaptureService.ScanType.COMBATANTS -> Lucide.Swords
                         }
-                        Text(title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        val titleRes: Int = when (scanType) {
+                            CaptureService.ScanType.RESCUE_RECORDS -> R.string.menu_rescue_records
+                            CaptureService.ScanType.MEMORY_FRAGMENTS -> R.string.menu_memory_fragments
+                            CaptureService.ScanType.COMBATANTS -> R.string.menu_combatants
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Icon(titleIcon, contentDescription = null, tint = Color(0xFFE87A2D), modifier = Modifier.size(16.dp))
+                            Text(stringResource(titleRes), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        }
                         Box(
                             modifier = Modifier
                                 .size(24.dp)
@@ -101,7 +118,7 @@ class ScanOptionsOverlay(
                                 .clickable { dismiss() },
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("✕", color = Color(0xFF666666), fontSize = 12.sp)
+                            Icon(Lucide.X, contentDescription = "Close", tint = Color(0xFF666666), modifier = Modifier.size(12.dp))
                         }
                     }
 
@@ -145,6 +162,12 @@ class ScanOptionsOverlay(
                             }
                         }
 
+                        // Page limit is rescue-only — the rescue scanner
+                        // bounds its tap loop by it. Memory fragments
+                        // and combatants auto-detect end-of-list by
+                        // consecutive duplicates / empty swipes, so the
+                        // limit is meaningless for them.
+                        if (scanType == CaptureService.ScanType.RESCUE_RECORDS) {
                         // Page limit
                         SectionLabel(stringResource(R.string.label_page_limit))
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -165,8 +188,12 @@ class ScanOptionsOverlay(
                             )
                             Text(stringResource(R.string.label_no_limit), color = Color(0xFF555555), fontSize = 10.sp)
                         }
+                        }  // end of `if (scanType == RESCUE_RECORDS)` for page limit
 
-                        // Calibration
+                        // Calibration is needed for rescue records (next-
+                        // page tap) and memory fragments (next-fragment
+                        // arrow tap). Combatants self-navigate.
+                        if (scanType != CaptureService.ScanType.COMBATANTS) {
                         SectionLabel(stringResource(R.string.label_calibration))
                         Row(
                             modifier = Modifier
@@ -179,22 +206,39 @@ class ScanOptionsOverlay(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(stringResource(R.string.label_next_page_btn), color = Color(0xFFCCCCCC), fontSize = 11.sp)
-                                Text(
-                                    if (isCalibrated) "✓ Saved" else stringResource(R.string.status_not_calibrated),
-                                    color = if (isCalibrated) Color(0xFF4CAF50) else Color(0xFF555555),
-                                    fontSize = 9.sp
-                                )
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                                    if (isCalibrated) {
+                                        Icon(Lucide.Check, contentDescription = null, tint = Color(0xFF4CAF50), modifier = Modifier.size(10.dp))
+                                    }
+                                    Text(
+                                        if (isCalibrated) "Saved" else stringResource(R.string.status_not_calibrated),
+                                        color = if (isCalibrated) Color(0xFF4CAF50) else Color(0xFF555555),
+                                        fontSize = 9.sp
+                                    )
+                                }
                             }
                             TextButton(
                                 onClick = {
+                                    if (scanType == CaptureService.ScanType.RESCUE_RECORDS) {
+                                        configStore.lastBannerIndex = selectedBanner
+                                    }
                                     dismiss()
-                                    CalibrationOverlay(context) { x, y ->
+                                    val prompt = when (scanType) {
+                                        CaptureService.ScanType.RESCUE_RECORDS -> "Tap the  >  (next page) button now"
+                                        CaptureService.ScanType.MEMORY_FRAGMENTS -> "Tap the  >  (next page) button now"
+                                        CaptureService.ScanType.COMBATANTS -> "Tap the FIRST combatant thumbnail in the left roster"
+                                    }
+                                    CalibrationOverlay(context, promptText = prompt) { x, y ->
                                         when (scanType) {
                                             CaptureService.ScanType.RESCUE_RECORDS -> { configStore.calibRescueX = x; configStore.calibRescueY = y }
                                             CaptureService.ScanType.MEMORY_FRAGMENTS -> { configStore.calibFragmentsX = x; configStore.calibFragmentsY = y }
                                             CaptureService.ScanType.COMBATANTS -> { configStore.calibCombatantsX = x; configStore.calibCombatantsY = y }
                                         }
                                         CaptureService.statusCallback?.invoke("Calibrated: (${x.toInt()}, ${y.toInt()})")
+                                        ScanOptionsOverlay(
+                                            context, lifecycleOwner, savedStateRegistryOwner,
+                                            configStore, scanType, onStart
+                                        ).show()
                                     }.show()
                                 },
                                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 3.dp),
@@ -203,6 +247,7 @@ class ScanOptionsOverlay(
                                 Text(stringResource(R.string.btn_recalibrate), fontSize = 10.sp)
                             }
                         }
+                        }  // end of `if (scanType != COMBATANTS)` for calibration
 
                         // Start button
                         Button(
@@ -217,6 +262,8 @@ class ScanOptionsOverlay(
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE87A2D))
                         ) {
+                            Icon(Lucide.Play, contentDescription = null, modifier = Modifier.size(14.dp))
+                            Spacer(Modifier.width(6.dp))
                             Text(stringResource(R.string.btn_start_scan), fontWeight = FontWeight.Bold)
                         }
                     }

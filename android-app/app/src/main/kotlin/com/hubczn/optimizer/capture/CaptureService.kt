@@ -41,6 +41,26 @@ class CaptureService : Service() {
 
     enum class ScanType { RESCUE_RECORDS, MEMORY_FRAGMENTS, COMBATANTS }
 
+    /**
+     * Apply the user's saved language override to the service's base
+     * Context BEFORE any resources are accessed. Without this, the
+     * floating overlay's stringResource(...) calls (and getString(...) in
+     * notifications) fall back to the system default and ignore the
+     * Portuguese/English toggle the user set in MainActivity.
+     */
+    override fun attachBaseContext(newBase: android.content.Context) {
+        val lang = ScanConfigStore(newBase).languageOverride
+        if (lang.isNullOrEmpty()) {
+            super.attachBaseContext(newBase)
+            return
+        }
+        val locale = java.util.Locale.forLanguageTag(lang)
+        java.util.Locale.setDefault(locale)
+        val config = android.content.res.Configuration(newBase.resources.configuration)
+        config.setLocale(locale)
+        super.attachBaseContext(newBase.createConfigurationContext(config))
+    }
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
@@ -180,18 +200,19 @@ class CaptureService : Service() {
                         notifyStatus("Exported to $filename")
                     }
                     ScanType.MEMORY_FRAGMENTS -> {
-                        val fragments = MemoryFragmentScanner(sm, ocr, gestures) {
-                            notifyStatus(it)
-                        }.scan()
+                        val store = configStore
+                        val fragments = MemoryFragmentScanner(
+                            sm, ocr, gestures,
+                            nextX = store.calibFragmentsX,
+                            nextY = store.calibFragmentsY,
+                            onProgress = { notifyStatus(it) },
+                        ).scan()
                         val file = exporter.exportFragments(fragments)
                         notifyStatus("Exported ${fragments.size} fragments to ${file.name}")
                     }
                     ScanType.COMBATANTS -> {
-                        val store = configStore
                         val combatants = CombatantScanner(
                             sm, ocr, gestures,
-                            rosterX = store.calibCombatantsX ?: 40f,
-                            firstThumbnailY = store.calibCombatantsY ?: 200f,
                             onProgress = { notifyStatus(it) }
                         ).scan()
                         val file = exporter.exportCombatants(combatants)
@@ -210,6 +231,11 @@ class CaptureService : Service() {
     }
 
     override fun onDestroy() {
+        // Cancel any in-flight scan coroutines BEFORE tearing the rest of
+        // the service down. Without this, a scan that was mid-tap when the
+        // user closed the overlay continues running and dispatches phantom
+        // taps onto whatever app is now in the foreground.
+        scope.coroutineContext[kotlinx.coroutines.Job]?.cancel()
         overlay?.dismiss()
         serviceLifecycleOwner.stop()
         screenshotManager?.stop()

@@ -9,8 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.composables.icons.lucide.CircleCheck
+import com.composables.icons.lucide.Circle
+import com.composables.icons.lucide.Lucide
 
 data class PermissionItem(
     val label: String,
@@ -38,7 +42,11 @@ fun PermissionsScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(if (perm.granted) "✅" else "⬜")
+                if (perm.granted) {
+                    Icon(Lucide.CircleCheck, contentDescription = "Granted", tint = Color(0xFF4CAF50), modifier = Modifier.size(20.dp))
+                } else {
+                    Icon(Lucide.Circle, contentDescription = "Not granted", tint = Color(0xFF888888), modifier = Modifier.size(20.dp))
+                }
                 Text(perm.label, modifier = Modifier.weight(1f))
                 if (!perm.granted) {
                     TextButton(onClick = { perm.onRequest(context) }) { Text("Grant") }

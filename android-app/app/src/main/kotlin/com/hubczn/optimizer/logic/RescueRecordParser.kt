@@ -59,11 +59,15 @@ object RescueRecordParser {
         else                                                 -> "standard"
     }
 
-    fun deduplicate(records: List<RescueRecord>): List<RescueRecord> {
-        val seen = mutableSetOf<String>()
-        return records.filter { r ->
-            val key = "${r.bannerName}|${r.name}|${r.createAt}|${r.type}"
-            seen.add(key)
-        }
-    }
+    /**
+     * Pass-through. Previously this collapsed records by natural key, but
+     * legitimate batch duplicates (e.g. a 10-pull with two identical 3★ at the
+     * same second) share that key and were being silently discarded, leading
+     * to undercounted pity values vs. the desktop dataset.
+     *
+     * Re-read protection (same page scanned twice) is already handled in
+     * RescueRecordScanner via the `records == previousPageRecords` early-stop,
+     * so a separate dedup here would only destroy real data.
+     */
+    fun deduplicate(records: List<RescueRecord>): List<RescueRecord> = records
 }

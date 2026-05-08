@@ -4,17 +4,27 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,12 +33,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.composables.icons.lucide.Cloud
+import com.composables.icons.lucide.Download
+import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.Upload
 import com.hubczn.optimizer.data.local.RescueRecordDatabase
 import com.hubczn.optimizer.data.local.RescueRecordEntity
 import com.hubczn.optimizer.data.repository.JSONExporter
@@ -69,8 +84,13 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
         else bannerRecords.filter { it.rarity == filterRarity }.sortedByDescending { it.pullNumber }
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color(0xFF0D0D1A))) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0D0D1A))
+            .windowInsetsPadding(WindowInsets.systemBars),
+        verticalArrangement = Arrangement.Top
+    ) {
 
             // Top bar
             Column(
@@ -85,20 +105,41 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Rescue Records", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+
+                    // Holds the JSON content while we wait for the user to pick a save location.
+                    var pendingJson by remember { mutableStateOf<String?>(null) }
+                    val saveJsonLauncher = rememberLauncherForActivityResult(
+                        ActivityResultContracts.CreateDocument("application/json")
+                    ) { uri: Uri? ->
+                        val content = pendingJson
+                        pendingJson = null
+                        if (uri == null || content == null) return@rememberLauncherForActivityResult
+                        scope.launch {
+                            try {
+                                context.contentResolver.openOutputStream(uri)?.use { it.write(content.toByteArray()) }
+                                Toast.makeText(context, "Exportado: ${uri.lastPathSegment}", Toast.LENGTH_SHORT).show()
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Erro ao salvar: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         ActionChip(
-                            label = "⬇ Export JSON",
+                            icon = Lucide.Download,
+                            label = "Export JSON",
                             color = Color(0xFFE87A2D)
                         ) {
                             scope.launch {
                                 val db = RescueRecordDatabase.getInstance(context)
-                                val store = ScanConfigStore(context)
-                                val exporter = JSONExporter(context, db.rescueRecordDao(), store.outputFolderUri)
-                                exporter.exportRescueRecordsFromDb()
+                                val exporter = JSONExporter(context, db.rescueRecordDao(), null)
+                                pendingJson = exporter.buildRescueRecordsJsonString()
+                                saveJsonLauncher.launch(exporter.suggestRescueRecordsFilename())
                             }
                         }
                         ActionChip(
-                            label = "☁ Save to Cloud",
+                            icon = Lucide.Cloud,
+                            label = "Save to Cloud",
                             color = Color(0xFF7C9FE8)
                         ) {
                             context.startActivity(
@@ -108,103 +149,124 @@ private fun HistoryScreen(viewModel: HistoryViewModel) {
                     }
                 }
 
-                // Banner tabs
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    viewModel.bannerNames.forEachIndexed { idx, name ->
-                        val shortName = when (idx) {
-                            0 -> "Seasonal Combatant"
-                            1 -> "Gacha General"
-                            else -> "Pickup Supporter"
-                        }
-                        val active = idx == selectedBannerIdx
-                        Column(
-                            modifier = Modifier
-                                .clickable { viewModel.selectBanner(idx) }
-                                .padding(horizontal = 10.dp, vertical = 8.dp)
-                        ) {
-                            Text(
-                                shortName,
-                                color = if (active) Color(0xFFE87A2D) else Color(0xFF666666),
-                                fontSize = 11.sp,
-                                fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal
-                            )
-                            if (active) {
-                                Spacer(Modifier.height(3.dp))
-                                Box(Modifier.height(2.dp).fillMaxWidth().background(Color(0xFFE87A2D)))
+                // Banner tabs — only show banners that have records
+                val nonEmptyBanners = remember(allRecords) {
+                    viewModel.bannerNames.mapIndexedNotNull { idx, _ ->
+                        if (viewModel.recordsForBanner(idx).isNotEmpty()) idx else null
+                    }
+                }
+                if (nonEmptyBanners.isNotEmpty()) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        nonEmptyBanners.forEach { idx ->
+                            val shortName = when (idx) {
+                                0 -> "Seasonal Combatant"
+                                1 -> "Seasonal Partner"
+                                2 -> "Gacha General"
+                                else -> "Pickup Supporter"
+                            }
+                            val active = idx == selectedBannerIdx
+                            Column(
+                                modifier = Modifier
+                                    .clickable { viewModel.selectBanner(idx) }
+                                    .padding(horizontal = 10.dp, vertical = 8.dp)
+                                    .width(IntrinsicSize.Min)
+                            ) {
+                                Text(
+                                    shortName,
+                                    color = if (active) Color(0xFFE87A2D) else Color(0xFF666666),
+                                    fontSize = 11.sp,
+                                    fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal
+                                )
+                                if (active) {
+                                    Spacer(Modifier.height(3.dp))
+                                    Box(Modifier.height(2.dp).fillMaxWidth().background(Color(0xFFE87A2D)))
+                                }
                             }
                         }
                     }
                 }
             }
 
+            // Everything below the top bar lives in a single LazyColumn so
+            // stats, the 5★ grid, the filter row, and the full history list
+            // all share one vertical scroll.
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(10.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
                 // Stats card
                 item {
-                    Row(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color(0xFF1A1A2E), RoundedCornerShape(12.dp))
                             .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        Column(verticalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.weight(1f)) {
-                            StatRow("Total Pulls", "${stats.total}", Color.White)
-                            StatRow("Resources Spent", "${stats.resourcesSpent}", Color(0xFFE87A2D))
-                            StatRow("5★ Pulls", "${stats.fiveStar}", Color(0xFFFFD700))
-                            StatRow("4★ Pulls", "${stats.fourStar}", Color(0xFFB39DDB))
-                            StatRow("Avg 5★ Pity", "${"%.1f".format(stats.avgPity5)}", Color.White)
-                            StatRow("Avg 4★ Pity", "${"%.1f".format(stats.avgPity4)}", Color.White)
-                        }
-                        DonutChart(
-                            fiveStar = stats.fiveStar,
-                            fourStar = stats.fourStar,
-                            total = stats.total,
-                            modifier = Modifier.size(70.dp)
-                        )
+                        StatRow("Total Pulls", "${stats.total}", Color.White)
+                        StatRow("Resources Spent", "${stats.resourcesSpent}", Color(0xFFE87A2D))
+                        StatRow("5★ Pulls", "${stats.fiveStar}", Color(0xFFFFD700))
+                        StatRow("4★ Pulls", "${stats.fourStar}", Color(0xFFB39DDB))
+                        StatRow("Avg 5★ Pity", "${"%.1f".format(stats.avgPity5)}", Color.White)
+                        StatRow("Avg 4★ Pity", "${"%.1f".format(stats.avgPity4)}", Color.White)
                     }
                 }
 
-                // 5★ portrait grid
-                if (fiveStars.isNotEmpty()) {
+                if (bannerRecords.isEmpty()) {
                     item {
-                        SectionLabel("Recent 5★ Pulls")
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 80.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                "No records for this banner yet.",
+                                color = Color(0xFF666666),
+                                fontSize = 13.sp
+                            )
+                        }
                     }
-                    item {
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            items(fiveStars) { r ->
-                                PortraitTile(r, pity = pityMap[r.id] ?: 0, size = 52)
+                } else {
+                    if (fiveStars.isNotEmpty()) {
+                        item { SectionLabel("Recent 5★ Pulls") }
+                        item {
+                            @OptIn(ExperimentalLayoutApi::class)
+                            FlowRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                fiveStars.forEach { r ->
+                                    PortraitTile(r, pity = pityMap[r.id] ?: 0, size = 68)
+                                }
                             }
                         }
                     }
-                }
 
-                // Filter row
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        SectionLabel("Full History")
-                        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                            FilterChip("All", filterRarity == 0) { filterRarity = 0 }
-                            FilterChip("5★", filterRarity == 5) { filterRarity = 5 }
-                            FilterChip("4★", filterRarity == 4) { filterRarity = 4 }
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            SectionLabel("Full History")
+                            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                                FilterChip("All", filterRarity == 0) { filterRarity = 0 }
+                                FilterChip("5★", filterRarity == 5) { filterRarity = 5 }
+                                FilterChip("4★", filterRarity == 4) { filterRarity = 4 }
+                            }
                         }
                     }
-                }
 
-                // Pull list
-                items(filtered, key = { it.id }) { r ->
-                    PullRow(r, pity = pityMap[r.id] ?: 0)
+                    items(filtered, key = { it.id }) { r ->
+                        PullRow(r, pity = pityMap[r.id] ?: 0)
+                    }
                 }
             }
-        }
     }
 }
 
@@ -216,18 +278,13 @@ private fun StatRow(label: String, value: String, valueColor: Color) {
     }
 }
 
-@Composable
-private fun DonutChart(fiveStar: Int, fourStar: Int, total: Int, modifier: Modifier) {
-    Box(
-        modifier = modifier.background(Color(0xFF2a2a4a), RoundedCornerShape(50)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            if (total > 0) "${"%.0f".format(fiveStar * 100f / total)}%"
-            else "0%",
-            color = Color(0xFFFFD700), fontSize = 11.sp, fontWeight = FontWeight.Bold
-        )
-    }
+
+/** Color tier for pity (max=70). Green → yellow → orange → red as it grows. */
+private fun pityColor(pity: Int): Color = when {
+    pity >= 70 -> Color(0xFFE53935) // max — guaranteed
+    pity >= 51 -> Color(0xFFE87A2D) // high
+    pity >= 26 -> Color(0xFFFBC02D) // medium
+    else       -> Color(0xFF4CAF50) // low / lucky
 }
 
 @Composable
@@ -240,31 +297,46 @@ private fun PortraitTile(record: RescueRecordEntity, pity: Int, size: Int) {
         }.getOrNull()
     }
 
+    val ring = pityColor(pity)
+    val ringWidth = 2.dp
+
     Box(modifier = Modifier.size(size.dp)) {
-        if (bitmap != null) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = record.name,
-                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFF1A1A2E), RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("?", color = Color(0xFF555555), fontSize = 18.sp)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .border(ringWidth, ring, CircleShape)
+        ) {
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = record.name,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(ringWidth)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(ringWidth)
+                        .clip(CircleShape)
+                        .background(Color(0xFF1A1A2E)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("?", color = Color(0xFF555555), fontSize = 18.sp)
+                }
             }
         }
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .background(Color(0xCCE87A2D), RoundedCornerShape(topStart = 4.dp))
-                .padding(horizontal = 3.dp, vertical = 1.dp)
+                .background(ring, CircleShape)
+                .padding(horizontal = 5.dp, vertical = 1.dp)
         ) {
-            Text("$pity", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+            Text("$pity", color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -362,15 +434,17 @@ private fun FilterChip(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun ActionChip(label: String, color: Color, onClick: () -> Unit) {
-    Text(
-        label,
-        color = color,
-        fontSize = 9.sp,
+private fun ActionChip(icon: ImageVector, label: String, color: Color, onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
             .background(color.copy(alpha = 0.1f), RoundedCornerShape(6.dp))
             .border(1.dp, color.copy(alpha = 0.3f), RoundedCornerShape(6.dp))
             .clickable { onClick() }
             .padding(horizontal = 8.dp, vertical = 4.dp)
-    )
+    ) {
+        Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(11.dp))
+        Text(label, color = color, fontSize = 9.sp)
+    }
 }

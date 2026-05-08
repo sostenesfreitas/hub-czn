@@ -2,11 +2,14 @@ package com.hubczn.optimizer.ui
 
 import android.app.Activity
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import java.util.Locale
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,15 +18,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import com.composables.icons.lucide.Accessibility
+import com.composables.icons.lucide.Check
+import com.composables.icons.lucide.Folder
+import com.composables.icons.lucide.History
+import com.composables.icons.lucide.Languages
+import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.Monitor
+import com.composables.icons.lucide.Play
+import com.composables.icons.lucide.Puzzle
+import com.composables.icons.lucide.Sparkles
+import com.composables.icons.lucide.Users
 import com.hubczn.optimizer.R
 import com.hubczn.optimizer.capture.CaptureService
 import com.hubczn.optimizer.capture.CZNAccessibilityService
@@ -82,8 +99,26 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun applyLanguage(lang: String) {
+        if (configStore.languageOverride == lang) return
         configStore.languageOverride = lang
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(lang))
+        // ComponentActivity does not auto-rewrap its base Context with the new locale,
+        // so a plain recreate() would re-render with the OLD locale resources.
+        // attachBaseContext below picks up the new languageOverride on the recreated activity.
+        recreate()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val lang = ScanConfigStore(newBase).languageOverride
+        if (lang.isNullOrEmpty()) {
+            super.attachBaseContext(newBase)
+            return
+        }
+        val locale = Locale.forLanguageTag(lang)
+        Locale.setDefault(locale)
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(locale)
+        super.attachBaseContext(newBase.createConfigurationContext(config))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,10 +154,14 @@ class MainActivity : ComponentActivity() {
                             Box(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .background(Color(0xFFE87A2D), RoundedCornerShape(10.dp)),
+                                    .background(Color.Black, RoundedCornerShape(10.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("C", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                                Image(
+                                    painter = painterResource(R.drawable.ic_czn_logo),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(28.dp)
+                                )
                             }
                             Column {
                                 Text(
@@ -143,7 +182,7 @@ class MainActivity : ComponentActivity() {
                         Spacer(Modifier.height(8.dp))
 
                         PermissionCard(
-                            icon = "🖥️",
+                            icon = Lucide.Monitor,
                             label = stringResource(R.string.perm_overlay),
                             granted = overlayGranted,
                             onGrant = {
@@ -152,7 +191,7 @@ class MainActivity : ComponentActivity() {
                         )
                         Spacer(Modifier.height(6.dp))
                         PermissionCard(
-                            icon = "♿",
+                            icon = Lucide.Accessibility,
                             label = stringResource(R.string.perm_accessibility),
                             granted = accessibilityGranted,
                             onGrant = { startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
@@ -165,7 +204,7 @@ class MainActivity : ComponentActivity() {
                         Spacer(Modifier.height(8.dp))
 
                         // Language toggle
-                        SettingCard(icon = "🌐", label = stringResource(R.string.label_language)) {
+                        SettingCard(icon = Lucide.Languages, label = stringResource(R.string.label_language)) {
                             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 LangChip("EN", currentLang == "en") { applyLanguage("en") }
                                 LangChip("PT-BR", currentLang == "pt") { applyLanguage("pt") }
@@ -175,7 +214,7 @@ class MainActivity : ComponentActivity() {
                         Spacer(Modifier.height(6.dp))
 
                         // Output folder
-                        SettingCard(icon = "📁", label = stringResource(R.string.label_output_folder)) {
+                        SettingCard(icon = Lucide.Folder, label = stringResource(R.string.label_output_folder)) {
                             Column(horizontalAlignment = Alignment.End) {
                                 Text(folderLabel, color = Color(0xFF888888), fontSize = 10.sp)
                                 TextButton(
@@ -196,7 +235,51 @@ class MainActivity : ComponentActivity() {
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFE87A2D)),
                             border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x55E87A2D))
                         ) {
+                            Icon(Lucide.History, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
                             Text(stringResource(R.string.btn_view_history))
+                        }
+
+                        Spacer(Modifier.height(6.dp))
+
+                        // Combatants button
+                        OutlinedButton(
+                            onClick = { startActivity(Intent(this@MainActivity, CombatantsActivity::class.java)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC084FC)),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x55C084FC))
+                        ) {
+                            Icon(Lucide.Users, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("View Combatants")
+                        }
+
+                        Spacer(Modifier.height(6.dp))
+
+                        // Memory Fragments button
+                        OutlinedButton(
+                            onClick = { startActivity(Intent(this@MainActivity, FragmentsActivity::class.java)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC084FC)),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x55C084FC))
+                        ) {
+                            Icon(Lucide.Puzzle, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("View Fragments")
+                        }
+
+                        Spacer(Modifier.height(6.dp))
+
+                        // Optimizer button
+                        OutlinedButton(
+                            onClick = { startActivity(Intent(this@MainActivity, OptimizerActivity::class.java)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC084FC)),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x55C084FC))
+                        ) {
+                            Icon(Lucide.Sparkles, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("Optimizer")
                         }
 
                         Spacer(Modifier.height(8.dp))
@@ -204,10 +287,21 @@ class MainActivity : ComponentActivity() {
                         // Start Scanner button
                         if (allGranted) {
                             Button(
-                                onClick = { projectionLauncher.launch(projectionManager.createScreenCaptureIntent()) },
+                                onClick = {
+                                    // The game runs in landscape; force this Activity to
+                                    // landscape BEFORE asking for screen-capture permission
+                                    // so MediaProjection is granted with landscape dimensions.
+                                    // Without this, MainActivity is portrait, MediaProjection
+                                    // captures portrait frames, and tap coords are mis-mapped
+                                    // once the user switches to the landscape game.
+                                    requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                                    projectionLauncher.launch(projectionManager.createScreenCaptureIntent())
+                                },
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE87A2D))
                             ) {
+                                Icon(Lucide.Play, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Spacer(Modifier.width(8.dp))
                                 Text(stringResource(R.string.btn_start_scanner), fontWeight = FontWeight.Bold)
                             }
                         }
@@ -226,7 +320,7 @@ private fun SectionLabel(text: String) {
 }
 
 @Composable
-private fun PermissionCard(icon: String, label: String, granted: Boolean, onGrant: () -> Unit) {
+private fun PermissionCard(icon: ImageVector, label: String, granted: Boolean, onGrant: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -235,13 +329,19 @@ private fun PermissionCard(icon: String, label: String, granted: Boolean, onGran
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(icon, fontSize = 16.sp)
+        Icon(icon, contentDescription = null, tint = Color(0xFFE87A2D), modifier = Modifier.size(18.dp))
         Text(label, color = Color(0xFFCCCCCC), fontSize = 12.sp, modifier = Modifier.weight(1f))
         if (granted) {
-            Text("✓ OK", color = Color(0xFF4CAF50), fontSize = 10.sp,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(3.dp),
                 modifier = Modifier
                     .background(Color(0xFF1D3A1D), RoundedCornerShape(4.dp))
-                    .padding(horizontal = 8.dp, vertical = 3.dp))
+                    .padding(horizontal = 8.dp, vertical = 3.dp)
+            ) {
+                Icon(Lucide.Check, contentDescription = null, tint = Color(0xFF4CAF50), modifier = Modifier.size(12.dp))
+                Text("OK", color = Color(0xFF4CAF50), fontSize = 10.sp)
+            }
         } else {
             TextButton(onClick = onGrant, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
                 Text("Grant", color = Color(0xFFE87A2D), fontSize = 11.sp)
@@ -251,7 +351,7 @@ private fun PermissionCard(icon: String, label: String, granted: Boolean, onGran
 }
 
 @Composable
-private fun SettingCard(icon: String, label: String, trailing: @Composable () -> Unit) {
+private fun SettingCard(icon: ImageVector, label: String, trailing: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,7 +360,7 @@ private fun SettingCard(icon: String, label: String, trailing: @Composable () ->
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(icon, fontSize = 14.sp)
+        Icon(icon, contentDescription = null, tint = Color(0xFFE87A2D), modifier = Modifier.size(16.dp))
         Text(label, color = Color(0xFFCCCCCC), fontSize = 12.sp, modifier = Modifier.weight(1f))
         trailing()
     }

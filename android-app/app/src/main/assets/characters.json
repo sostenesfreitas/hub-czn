@@ -2,381 +2,373 @@
   "Nia": {
     "res_id": 1003,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Controller",
+    "base_atk": 392,
+    "base_def": 186,
+    "base_hp": 313,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Luke": {
     "res_id": 1004,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Hunter",
+    "base_atk": 491,
+    "base_def": 155,
+    "base_hp": 329,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Selena": {
     "res_id": 1005,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Ranger",
+    "base_atk": 482,
+    "base_def": 133,
+    "base_hp": 293,
+    "base_crit_rate": 3,
+    "base_crit_dmg": 125.0
   },
   "Khalipe": {
     "res_id": 1008,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Vanguard",
+    "base_atk": 407,
+    "base_def": 183,
+    "base_hp": 423,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Tressa": {
     "res_id": 1009,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Psionic",
+    "base_atk": 414,
+    "base_def": 158,
+    "base_hp": 333,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Magna": {
     "res_id": 1010,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Justice",
+    "class": "Vanguard",
+    "base_atk": 407,
+    "base_def": 183,
+    "base_hp": 423,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Amir": {
     "res_id": 1017,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Vanguard",
+    "base_atk": 382,
+    "base_def": 172,
+    "base_hp": 392,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Rin": {
     "res_id": 1018,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Striker",
+    "base_atk": 467,
+    "base_def": 155,
+    "base_hp": 376,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Lucas": {
     "res_id": 1021,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Hunter",
+    "base_atk": 460,
+    "base_def": 147,
+    "base_hp": 305,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Orlea": {
     "res_id": 1024,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Controller",
+    "base_atk": 419,
+    "base_def": 197,
+    "base_hp": 336,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Mei Lin": {
     "res_id": 1027,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Striker",
+    "base_atk": 467,
+    "base_def": 155,
+    "base_hp": 376,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Maribell": {
     "res_id": 1028,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Vanguard",
+    "base_atk": 382,
+    "base_def": 172,
+    "base_hp": 392,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Veronica": {
     "res_id": 1033,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Ranger",
+    "base_atk": 515,
+    "base_def": 141,
+    "base_hp": 317,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Mika": {
     "res_id": 1039,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Justice",
+    "class": "Controller",
+    "base_atk": 401,
+    "base_def": 176,
+    "base_hp": 318,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Beryl": {
     "res_id": 1040,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Justice",
+    "class": "Ranger",
+    "base_atk": 482,
+    "base_def": 133,
+    "base_hp": 293,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Renoa": {
     "res_id": 1041,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Hunter",
+    "base_atk": 491,
+    "base_def": 155,
+    "base_hp": 329,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Hugo": {
     "res_id": 1043,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Ranger",
+    "base_atk": 505,
+    "base_def": 146,
+    "base_hp": 320,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Cassius": {
     "res_id": 1049,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Controller",
+    "base_atk": 392,
+    "base_def": 186,
+    "base_hp": 313,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Owen": {
     "res_id": 1050,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Striker",
+    "base_atk": 438,
+    "base_def": 147,
+    "base_hp": 348,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Narja": {
     "res_id": 1052,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Controller",
+    "base_atk": 419,
+    "base_def": 197,
+    "base_hp": 336,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Rei": {
     "res_id": 1056,
     "rarity": 4,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Controller",
+    "base_atk": 392,
+    "base_def": 186,
+    "base_hp": 313,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Yuki": {
     "res_id": 1057,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Striker",
+    "base_atk": 467,
+    "base_def": 155,
+    "base_hp": 376,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Chizuru": {
     "res_id": 1060,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Psionic",
+    "base_atk": 443,
+    "base_def": 169,
+    "base_hp": 356,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Diana": {
     "res_id": 1061,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Hunter",
+    "base_atk": 491,
+    "base_def": 155,
+    "base_hp": 329,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Haru": {
     "res_id": 1062,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Justice",
+    "class": "Striker",
+    "base_atk": 467,
+    "base_def": 155,
+    "base_hp": 376,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Kayron": {
     "res_id": 1064,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Void",
+    "class": "Psionic",
+    "base_atk": 443,
+    "base_def": 169,
+    "base_hp": 356,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Nine": {
     "res_id": 30047,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Vanguard",
+    "base_atk": 407,
+    "base_def": 178,
+    "base_hp": 411,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Sereniel": {
     "res_id": 30075,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Instinct",
+    "class": "Hunter",
+    "base_atk": 491,
+    "base_def": 155,
+    "base_hp": 329,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Tiphera": {
     "res_id": 30084,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Order",
+    "class": "Controller",
+    "base_atk": 419,
+    "base_def": 197,
+    "base_hp": 336,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Heidemarie": {
     "res_id": 30093,
     "rarity": 5,
-    "kind": "Combatant"
+    "kind": "Combatant",
+    "attribute": "Passion",
+    "class": "Ranger",
+    "base_atk": 515,
+    "base_def": 141,
+    "base_hp": 317,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   },
   "Rita": {
     "res_id": 30097,
     "rarity": 5,
-    "kind": "Combatant"
-  },
-  "Ivy": {
-    "res_id": 1025,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Solia": {
-    "res_id": 1058,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Arwen": {
-    "res_id": 20001,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Gaya": {
-    "res_id": 20002,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Alyssa": {
-    "res_id": 20003,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Janet": {
-    "res_id": 20004,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Eishlen": {
-    "res_id": 20005,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Nyx": {
-    "res_id": 20006,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Akad": {
-    "res_id": 20007,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Anteia": {
-    "res_id": 20008,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Zeta": {
-    "res_id": 20009,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Nakia": {
-    "res_id": 20010,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Daisy": {
-    "res_id": 20011,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Zatera": {
-    "res_id": 20012,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Raidel": {
-    "res_id": 20013,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Serithea": {
-    "res_id": 20014,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Douglas": {
-    "res_id": 20015,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Yuri": {
-    "res_id": 20016,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Priscilla": {
-    "res_id": 20019,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Bria": {
-    "res_id": 20021,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Blanche": {
-    "res_id": 20023,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Capri": {
-    "res_id": 20028,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Wilhelmina": {
-    "res_id": 20024,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Rosaria": {
-    "res_id": 20025,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Yvonne": {
-    "res_id": 20026,
-    "rarity": 3,
-    "kind": "Partner"
-  },
-  "Eloise": {
-    "res_id": 20027,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Kiara": {
-    "res_id": 20030,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Rachel": {
-    "res_id": 20032,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Lillian": {
-    "res_id": 20033,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Scarlet": {
-    "res_id": 20034,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Ritochka": {
-    "res_id": 20035,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Carroty": {
-    "res_id": 20036,
-    "rarity": 4,
-    "kind": "Partner"
-  },
-  "Marianne": {
-    "res_id": 20037,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Tina": {
-    "res_id": 20038,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Westmacott": {
-    "res_id": 30044,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Asteria": {
-    "res_id": 30045,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Itsuku": {
-    "res_id": 30046,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Marin": {
-    "res_id": 30051,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Noel": {
-    "res_id": 30052,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Sophia": {
-    "res_id": 30053,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Erica": {
-    "res_id": 30054,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Peko": {
-    "res_id": 30076,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Tiana": {
-    "res_id": 30085,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Alcea": {
-    "res_id": 30091,
-    "rarity": 5,
-    "kind": "Partner"
-  },
-  "Sylvia": {
-    "res_id": 30094,
-    "rarity": 5,
-    "kind": "Partner"
+    "kind": "Combatant",
+    "attribute": "Justice",
+    "class": "Psionic",
+    "base_atk": 443,
+    "base_def": 169,
+    "base_hp": 356,
+    "base_crit_rate": 3.0,
+    "base_crit_dmg": 125.0
   }
 }

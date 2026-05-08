@@ -5,112 +5,153 @@ import com.hubczn.optimizer.capture.MLKitOCREngine
 import com.hubczn.optimizer.capture.ScreenshotManager
 import com.hubczn.optimizer.model.MemoryFragment
 import com.hubczn.optimizer.model.OcrBlock
+import kotlinx.coroutines.delay
 
+/**
+ * Walks the player's Memory Fragment INVENTORY by tapping the
+ * calibrated `>` (next) arrow on the fragment-detail dialog. Each
+ * iteration: capture → parse the currently-shown fragment → record
+ * if new → tap next.
+ *
+ * Preconditions on entry:
+ *  - The user has opened the inventory and tapped the FIRST fragment,
+ *    so the detail dialog is showing fragment #1.
+ *  - The user has calibrated the `>` button position (passed as
+ *    [nextX] / [nextY]).
+ *
+ * Termination:
+ *  - 3 consecutive iterations produce the same fragment signature (no
+ *    advance happened — we wrapped or hit the end).
+ *  - 5 consecutive parse failures.
+ *  - MAX_ITERATIONS hard cap.
+ *
+ * Calibration coords are required: without them the scanner cannot
+ * advance through the inventory.
+ */
 class MemoryFragmentScanner(
     private val screenshotManager: ScreenshotManager,
     private val ocrEngine: MLKitOCREngine,
     private val gestures: GestureDispatcher,
-    private val onProgress: (String) -> Unit = {}
+    private val nextX: Float?,
+    private val nextY: Float?,
+    private val onProgress: (String) -> Unit = {},
 ) {
-    private val fragments = mutableListOf<MemoryFragment>()
-    private var idCounter = 1
+
+    companion object {
+        private const val MAX_ITERATIONS = 5000  // huge inventories possible
+        private const val ANIM_NEXT_MS = 350L
+        private const val MAX_DUPLICATE_STREAK = 3
+        private const val MAX_PARSE_FAILS = 5
+    }
 
     suspend fun scan(): List<MemoryFragment> {
-        fragments.clear()
-        idCounter = 1
+        if (nextX == null || nextY == null) {
+            onProgress("Memory Fragments scan needs calibration: tap Calibrate first.")
+            return emptyList()
+        }
 
-        // First item is already open (user opened inventory and tapped first item)
-        var consecutiveEmpty = 0
+        val results = mutableListOf<MemoryFragment>()
+        val seenSignatures = mutableSetOf<String>()
+        var lastSignature: String? = null
+        var duplicateStreak = 0
+        var parseFails = 0
 
-        while (true) {
-            val bitmap = screenshotManager.capture() ?: break
-            val blocks = ocrEngine.recognizeBlocks(bitmap)
+        for (iter in 0 until MAX_ITERATIONS) {
+            val bmp = screenshotManager.capture() ?: break
+            val blocks = ocrEngine.recognizeBlocks(bmp)
 
-            val fragment = parseFragment(blocks)
-            if (fragment != null) {
-                fragments.add(fragment)
-                onProgress("Scanned ${fragments.size} fragments")
-                consecutiveEmpty = 0
-            } else {
-                consecutiveEmpty++
-                if (consecutiveEmpty >= 3) break
+            // The fragment detail dialog occupies the right ~half of
+            // the screen. Filter out the left thumbnail strip / row
+            // of fragment thumbnails at the bottom so they don't
+            // pollute the title-row detection.
+            val rightPanel = blocks.filter { it.bounds.left > bmp.width * 0.30 && it.bounds.top < bmp.height * 0.85 }
+
+            val frag = CombatantParser.parseFragmentPanel(rightPanel, slotNum = 0, equippedCharName = "")
+
+            // Diagnostic: when a Legendary fragment ends up with fewer
+            // than 5 stat entries (1 main + 4 substats), dump the right-
+            // panel block list so we can see which row was lost.
+            if (frag != null && frag.rarityNum >= 5 && frag.statList.size < 5) {
+                val all = rightPanel.joinToString(" | ") { b ->
+                    "'${b.text.trim()}'@(${b.bounds.left},${b.bounds.top},${b.bounds.right},${b.bounds.bottom})"
+                }
+                val parsed = frag.statList.joinToString(", ") { s ->
+                    "${s.stat}=${s.value}${if (s.type == "percent") "%" else ""}"
+                }
+                onProgress("  iter $iter SHORT statList (${frag.statList.size}/5) ${frag.setName} +${frag.level}. parsed=[$parsed]. rightPanel=[$all]")
             }
 
-            // Find ">" arrow to advance to next item
-            // In the fragment detail, ">" appears at the right edge of the screen
-            val nextArrow = blocks
-                .filter { it.text == ">" && it.bounds.left > bitmap.width * 0.7f }
-                .maxByOrNull { it.bounds.left }
+            if (frag == null) {
+                parseFails++
+                onProgress("  parse fail $parseFails/$MAX_PARSE_FAILS at iter $iter")
+                if (parseFails >= MAX_PARSE_FAILS) {
+                    onProgress("Stopping: $MAX_PARSE_FAILS consecutive parse failures.")
+                    break
+                }
+                gestures.tap(nextX, nextY)
+                delay(ANIM_NEXT_MS)
+                continue
+            }
+            parseFails = 0
 
-            if (nextArrow == null) {
-                // Try scrolling down in the inventory grid to load more items
-                gestures.swipeUp(
-                    x = bitmap.width / 2f,
-                    fromY = bitmap.height * 0.7f,
-                    toY = bitmap.height * 0.3f
-                )
-                // Re-capture after scroll to get fresh block positions
-                val freshBitmap = screenshotManager.capture() ?: break
-                val freshBlocks = ocrEngine.recognizeBlocks(freshBitmap)
-                val firstItem = findFirstGridItem(freshBlocks)
-                if (firstItem != null) {
-                    gestures.tap(firstItem.first, firstItem.second)
-                } else {
+            // We now have the fragment's set + level + rarity + stats.
+            // The slot_num came back as 0 (we passed 0 since we're
+            // scanning inventory rather than a per-slot tap). Re-derive
+            // it from the Roman numeral that should be visible on the
+            // detail dialog (the slot icon at top-left of the panel).
+            val slotNum = blocks.firstNotNullOfOrNull {
+                FragmentParser.parseSlot(it.text).takeIf { s -> s in 1..6 }
+            } ?: frag.slotNum
+
+            val correctedFrag = frag.copy(slotNum = slotNum)
+
+            val sig = signature(correctedFrag)
+            if (sig in seenSignatures) {
+                duplicateStreak++
+                onProgress("  duplicate ($duplicateStreak/$MAX_DUPLICATE_STREAK): ${correctedFrag.setName} ${correctedFrag.rarity} +${correctedFrag.level}")
+                if (duplicateStreak >= MAX_DUPLICATE_STREAK) {
+                    onProgress("Done: $MAX_DUPLICATE_STREAK consecutive duplicates (total ${results.size}).")
                     break
                 }
             } else {
-                gestures.tap(nextArrow.bounds.exactCenterX(), nextArrow.bounds.exactCenterY())
+                duplicateStreak = 0
+                seenSignatures.add(sig)
+                results.add(correctedFrag.copy(id = results.size + 1))
+                onProgress("Captured ${results.size}: slot ${correctedFrag.slotNum} ${correctedFrag.setName} ${correctedFrag.rarity} +${correctedFrag.level}")
             }
+
+            // Also bail if the panel didn't change at all (signature
+            // match + duplicate streak handles wrap; this guards the
+            // case where the first hit IS already a duplicate of a
+            // recent one).
+            if (sig == lastSignature) {
+                duplicateStreak++
+                if (duplicateStreak >= MAX_DUPLICATE_STREAK) {
+                    onProgress("Done: panel stuck on the same fragment ${MAX_DUPLICATE_STREAK}× (total ${results.size}).")
+                    break
+                }
+            }
+            lastSignature = sig
+
+            gestures.tap(nextX, nextY)
+            delay(ANIM_NEXT_MS)
         }
-
-        onProgress("Done: ${fragments.size} fragments")
-        return fragments
+        onProgress("Done: ${results.size} fragments")
+        return results
     }
 
-    private fun parseFragment(blocks: List<OcrBlock>): MemoryFragment? {
-        val rarityText = blocks.firstOrNull { FragmentParser.RARITY_MAP.containsKey(it.text) }?.text
-            ?: return null
-        val rarityNum = FragmentParser.parseRarity(rarityText)
-
-        val slotText = blocks.firstOrNull { FragmentParser.SLOT_MAP.containsKey(it.text) }?.text
-            ?: return null
-        val slotNum = FragmentParser.parseSlot(slotText)
-
-        val upgradeText = blocks.firstOrNull { it.text.matches(Regex("""\+\d+""")) }?.text ?: "+0"
-        val level = FragmentParser.parseUpgradeLevel(upgradeText)
-
-        // Set name is in "Set Effect" section — the line after the text "Set Effect"
-        val setEffectIdx = blocks.indexOfFirst { it.text == "Set Effect" }
-        val setName = if (setEffectIdx >= 0 && setEffectIdx + 1 < blocks.size)
-            blocks[setEffectIdx + 1].text else ""
-
-        // Fragment name is near the top of the panel, to the right of the item image
-        val name = blocks.filter { it.bounds.top < 200 && it.bounds.left > 400 }
-            .sortedBy { it.bounds.top }
-            .firstOrNull()?.text ?: ""
-
-        // Stats section: blocks between the stat area divider and "Set Effect"
-        val statsBlocks = if (setEffectIdx >= 0) blocks.take(setEffectIdx) else blocks
-        val statList = FragmentParser.parseStats(statsBlocks)
-
-        if (statList.isEmpty()) return null
-
-        return MemoryFragment(
-            id = idCounter++,
-            slotNum = slotNum,
-            setName = setName,
-            rarity = rarityText,
-            rarityNum = rarityNum,
-            level = level,
-            statList = statList
-        )
-    }
-
-    private fun findFirstGridItem(blocks: List<OcrBlock>): Pair<Float, Float>? {
-        // After closing detail / scrolling, we're back at the grid
-        // Tap the first slot visible — approximate by finding inventory item text blocks
-        val gridItem = blocks.filter { it.bounds.top > 100 && it.bounds.left < 200 }
-            .minByOrNull { it.bounds.top } ?: return null
-        return Pair(gridItem.bounds.exactCenterX(), gridItem.bounds.exactCenterY())
+    /**
+     * Identity of an inventory fragment for dedup purposes. Fragments
+     * are unique when (slot, set, rarity, level, full statlist) match.
+     */
+    private fun signature(f: MemoryFragment): String = buildString {
+        append(f.slotNum); append('|')
+        append(f.setName); append('|')
+        append(f.rarity); append('|')
+        append(f.level)
+        for (s in f.statList) {
+            append('|'); append(s.stat); append(':')
+            append(s.type); append(':'); append(s.value); append(':'); append(s.extraRolls)
+        }
     }
 }

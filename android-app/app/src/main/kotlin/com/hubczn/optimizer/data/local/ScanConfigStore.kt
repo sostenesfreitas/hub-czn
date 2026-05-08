@@ -50,6 +50,14 @@ class ScanConfigStore(context: Context) {
         get() = prefs.getInt(KEY_BANNER_IDX, 0)
         set(v) = prefs.edit().putInt(KEY_BANNER_IDX, v).apply()
 
+    var overlayX: Int
+        get() = prefs.getInt(KEY_OVERLAY_X, 0)
+        set(v) = prefs.edit().putInt(KEY_OVERLAY_X, v).apply()
+
+    var overlayY: Int
+        get() = prefs.getInt(KEY_OVERLAY_Y, 200)
+        set(v) = prefs.edit().putInt(KEY_OVERLAY_Y, v).apply()
+
     companion object {
         private const val KEY_CALIB_X_RESCUE = "calib_x_rescue"
         private const val KEY_CALIB_Y_RESCUE = "calib_y_rescue"
@@ -60,5 +68,7 @@ class ScanConfigStore(context: Context) {
         private const val KEY_OUTPUT_URI = "output_folder_uri"
         private const val KEY_LANGUAGE = "language_override"
         private const val KEY_BANNER_IDX = "last_banner_index"
+        private const val KEY_OVERLAY_X = "overlay_x"
+        private const val KEY_OVERLAY_Y = "overlay_y"
     }
 }

@@ -47,4 +47,49 @@ interface RescueRecordDao {
 
     @Query("SELECT DISTINCT bannerName FROM rescue_records")
     suspend fun allBannerNames(): List<String>
+
+    /**
+     * Removes records that are duplicates by natural key
+     * (bannerName, name, type, createAt, rescueType, isFeatured),
+     * keeping only the lowest-id row per group. Returns the number of rows deleted.
+     */
+    @Query("""
+        DELETE FROM rescue_records
+        WHERE id NOT IN (
+            SELECT MIN(id) FROM rescue_records
+            GROUP BY bannerName, name, type, createAt, rescueType, isFeatured
+        )
+    """)
+    suspend fun deleteDuplicatesByNaturalKey(): Int
+
+    /** Reset all duplicateIdx values to 0 after cleanup. */
+    @Query("UPDATE rescue_records SET duplicateIdx = 0")
+    suspend fun resetDuplicateIdx()
+
+    /**
+     * Re-assign pullNumber per banner so that pullNumber=1 is the OLDEST
+     * pull (lowest createAt) and pullNumber=N is the NEWEST. This restores
+     * a consistent chronological order even after multiple partial scans
+     * inserted records out of order.
+     *
+     * Uses a correlated COUNT subquery (O(N^2)) instead of ROW_NUMBER() OVER
+     * because Room's SQL parser does not handle window functions reliably.
+     */
+    @Query("""
+        UPDATE rescue_records
+        SET pullNumber = 1 + (
+            SELECT COUNT(*) FROM rescue_records AS other
+            WHERE other.bannerName = rescue_records.bannerName
+              AND (
+                other.createAt < rescue_records.createAt
+                OR (other.createAt = rescue_records.createAt AND other.duplicateIdx < rescue_records.duplicateIdx)
+                OR (other.createAt = rescue_records.createAt AND other.duplicateIdx = rescue_records.duplicateIdx AND other.id < rescue_records.id)
+              )
+        )
+    """)
+    suspend fun renumberPullNumbersByCreateAt()
+
+    /** Wipes the table — used by the "Import JSON" debug action. */
+    @Query("DELETE FROM rescue_records")
+    suspend fun deleteAll()
 }

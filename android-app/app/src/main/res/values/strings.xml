@@ -14,8 +14,8 @@
     <string name="btn_grant">Grant</string>
     <string name="label_preferences">Preferences</string>
     <string name="label_language">Language</string>
-    <string name="btn_view_history">📊 View History</string>
-    <string name="btn_start_scanner">▶  Start Scanner</string>
+    <string name="btn_view_history">View History</string>
+    <string name="btn_start_scanner">Start Scanner</string>
     <string name="label_output_folder">Output folder</string>
     <string name="btn_change">Change</string>
     <string name="folder_default">Downloads/CZN-Scanner</string>
@@ -28,17 +28,18 @@
     <string name="label_calibration">Calibration</string>
     <string name="label_next_page_btn">Next page button</string>
     <string name="btn_recalibrate">Recalibrate</string>
-    <string name="status_not_calibrated">⬜ Not calibrated</string>
-    <string name="btn_start_scan">▶  Start Scan</string>
+    <string name="status_not_calibrated">Not calibrated</string>
+    <string name="btn_start_scan">Start Scan</string>
 
     <!-- FloatingOverlay -->
-    <string name="menu_rescue_records">🎯 Rescue Records</string>
-    <string name="menu_memory_fragments">🧩 Memory Fragments</string>
-    <string name="menu_combatants">⚔️ Combatants</string>
+    <string name="menu_rescue_records">Rescue Records</string>
+    <string name="menu_memory_fragments">Memory Fragments</string>
+    <string name="menu_combatants">Combatants</string>
     <string name="overlay_ready">Ready — tap to scan</string>
 
     <!-- Banners -->
     <string name="banner_seasonal">Seasonal Combatant</string>
+    <string name="banner_partner">Seasonal Partner</string>
     <string name="banner_general">Gacha General</string>
     <string name="banner_pickup">Gacha Pickup Supporter</string>
 </resources>
