@@ -158,9 +158,14 @@ export function SetupPage() {
               disabled={installCertMutation.isPending}
               className="bg-[#c084fc] hover:bg-[#9333ea] text-white self-start"
             >
-              {installCertMutation.isPending
-                ? <Loader2 size={14} className="animate-spin" />
-                : t('setup.installCert.button')}
+              {installCertMutation.isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin mr-2" />
+                  {t('setup.installCert.installing')}
+                </>
+              ) : (
+                t('setup.installCert.button')
+              )}
             </Button>
             {installCertMutation.isError && (
               <p className="text-[#f3727f] text-xs">
@@ -186,7 +191,7 @@ export function SetupPage() {
               <p className="text-[#f3727f] text-xs">
                 {openCertMutation.error instanceof Error
                   ? openCertMutation.error.message
-                  : t('setup.installCert.error')}
+                  : t('setup.installCert.openError')}
               </p>
             )}
           </div>

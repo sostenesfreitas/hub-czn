@@ -218,6 +218,7 @@ const en = {
       manualLink: 'Or install manually if blocked by antivirus',
       manualHint: 'Choose Local Machine → Trusted Root Certification Authorities.',
       error: 'Failed to install certificate.',
+      openError: 'Could not open the certificate.',
     },
     howItWorks: 'How does it work?',
     howItWorksDetail: 'The app uses mitmproxy as a local reverse proxy. When capture starts, it redirects game traffic through the proxy via the Windows hosts file. The proxy intercepts WebSocket messages from the server and extracts inventory and rescue data in real time. No data is sent outside — everything stays local.',

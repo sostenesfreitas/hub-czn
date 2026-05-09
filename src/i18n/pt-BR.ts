@@ -218,6 +218,7 @@ const ptBR = {
       manualLink: 'Ou instalar manualmente se for bloqueado pelo antivírus',
       manualHint: 'Escolha Computador Local → Autoridades de Certificação Raiz Confiáveis.',
       error: 'Falha ao instalar o certificado.',
+      openError: 'Não foi possível abrir o certificado.',
     },
     howItWorks: 'Como funciona?',
     howItWorksDetail: 'O app usa mitmproxy como proxy reverso local. Ao iniciar a captura, ele redireciona o tráfego do jogo para o proxy via arquivo hosts do Windows. O proxy intercepta as mensagens WebSocket do servidor e extrai os dados de inventário e rescue em tempo real. Nenhum dado é enviado para fora — tudo fica local.',
