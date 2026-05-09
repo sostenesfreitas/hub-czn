@@ -18,6 +18,7 @@ def get_setup_status():
         "mitmproxy": s.has_mitmproxy,
         "mitmproxy_version": s.mitmproxy_version,
         "certificate": s.has_certificate,
+        "certificate_trusted": s.certificate_trusted,
     }
 
 

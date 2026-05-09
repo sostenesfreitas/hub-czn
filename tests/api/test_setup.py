@@ -225,6 +225,23 @@ def test_check_prerequisites_includes_certificate_trusted(tmp_path, monkeypatch)
     assert status.certificate_trusted is True
 
 
+def test_setup_status_response_includes_certificate_trusted():
+    mock_status = MagicMock(
+        is_admin=True,
+        has_mitmproxy=True,
+        mitmproxy_version="10.1.1",
+        has_certificate=True,
+        certificate_path=Path("/fake/cert.cer"),
+        certificate_trusted=True,
+    )
+    with patch("api.routes.setup.check_prerequisites", return_value=mock_status):
+        r = client.get("/api/setup/status")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["certificate"] is True
+    assert body["certificate_trusted"] is True
+
+
 def test_check_prerequisites_certificate_trusted_false_when_no_file(tmp_path, monkeypatch):
     from api.capture import setup as setup_module
     monkeypatch.setattr(setup_module, "find_mitmdump", lambda: None)
