@@ -5,8 +5,14 @@ from api.frozen_path import add_vribbels_to_path
 add_vribbels_to_path()
 
 from fastapi import APIRouter, HTTPException
-from capture.setup import check_prerequisites, install_mitmproxy, setup_certificate, open_certificate
-from api.capture.setup import install_certificate, CertificateInstallError
+from api.capture.setup import (
+    check_prerequisites,
+    install_mitmproxy,
+    setup_certificate,
+    open_certificate,
+    install_certificate,
+    CertificateInstallError,
+)
 
 router = APIRouter()
 
