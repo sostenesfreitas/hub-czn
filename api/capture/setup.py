@@ -70,6 +70,29 @@ def find_mitmdump() -> Optional[str]:
     return None
 
 
+def get_certificate_thumbprint(cert_path: Path) -> Optional[str]:
+    """
+    Compute the SHA-1 thumbprint of a certificate file (uppercase hex).
+    Handles both PEM (mitmproxy's default for .cer) and DER encodings.
+    Returns None if the file is missing or cannot be parsed.
+    """
+    try:
+        data = cert_path.read_bytes()
+    except (FileNotFoundError, OSError):
+        return None
+
+    try:
+        from cryptography import x509
+        from cryptography.hazmat.primitives import hashes
+        try:
+            cert = x509.load_pem_x509_certificate(data)
+        except ValueError:
+            cert = x509.load_der_x509_certificate(data)
+        return cert.fingerprint(hashes.SHA1()).hex().upper()
+    except Exception:
+        return None
+
+
 @dataclass
 class PrerequisiteStatus:
     """Status of capture system prerequisites."""
