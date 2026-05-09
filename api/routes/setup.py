@@ -6,6 +6,7 @@ add_vribbels_to_path()
 
 from fastapi import APIRouter, HTTPException
 from capture.setup import check_prerequisites, install_mitmproxy, setup_certificate, open_certificate
+from api.capture.setup import install_certificate, CertificateInstallError
 
 router = APIRouter()
 
@@ -50,3 +51,17 @@ def post_open_cert():
         return {"ok": True}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/setup/install-certificate")
+def post_install_certificate():
+    s = check_prerequisites()
+    if not s.is_admin:
+        raise HTTPException(status_code=403, detail="Administrator privileges required.")
+    if not s.has_certificate or s.certificate_path is None:
+        raise HTTPException(status_code=404, detail="Certificate not found. Generate it first.")
+    try:
+        install_certificate(s.certificate_path)
+        return {"ok": True}
+    except CertificateInstallError as exc:
+        return {"ok": False, "error": str(exc)}

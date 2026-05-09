@@ -204,6 +204,58 @@ def test_install_certificate_raises_when_certutil_missing(tmp_path, monkeypatch)
     assert "certutil" in str(exc.value).lower()
 
 
+def test_install_certificate_endpoint_success():
+    mock_status = MagicMock(
+        is_admin=True,
+        has_certificate=True,
+        certificate_path=Path("/fake/cert.cer"),
+    )
+    with patch("api.routes.setup.check_prerequisites", return_value=mock_status), \
+         patch("api.routes.setup.install_certificate") as install:
+        r = client.post("/api/setup/install-certificate")
+    assert r.status_code == 200
+    assert r.json() == {"ok": True}
+    install.assert_called_once_with(Path("/fake/cert.cer"))
+
+
+def test_install_certificate_endpoint_returns_error_on_failure():
+    from api.capture.setup import CertificateInstallError
+    mock_status = MagicMock(
+        is_admin=True,
+        has_certificate=True,
+        certificate_path=Path("/fake/cert.cer"),
+    )
+    with patch("api.routes.setup.check_prerequisites", return_value=mock_status), \
+         patch("api.routes.setup.install_certificate", side_effect=CertificateInstallError("antivirus blocked")):
+        r = client.post("/api/setup/install-certificate")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is False
+    assert "antivirus blocked" in body["error"]
+
+
+def test_install_certificate_endpoint_403_when_not_admin():
+    mock_status = MagicMock(
+        is_admin=False,
+        has_certificate=True,
+        certificate_path=Path("/fake/cert.cer"),
+    )
+    with patch("api.routes.setup.check_prerequisites", return_value=mock_status):
+        r = client.post("/api/setup/install-certificate")
+    assert r.status_code == 403
+
+
+def test_install_certificate_endpoint_404_when_no_cert_file():
+    mock_status = MagicMock(
+        is_admin=True,
+        has_certificate=False,
+        certificate_path=None,
+    )
+    with patch("api.routes.setup.check_prerequisites", return_value=mock_status):
+        r = client.post("/api/setup/install-certificate")
+    assert r.status_code == 404
+
+
 def test_check_prerequisites_includes_certificate_trusted(tmp_path, monkeypatch):
     from api.capture import setup as setup_module
     cert_path, _ = _write_pem_cert(tmp_path)
