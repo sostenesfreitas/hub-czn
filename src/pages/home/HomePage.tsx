@@ -114,7 +114,7 @@ function DashboardView({ onReset }: { onReset: () => void }) {
   })
 
   const setupComplete = setup
-    ? setup.admin && setup.mitmproxy && setup.certificate
+    ? setup.admin && setup.mitmproxy && setup.certificate_trusted
     : null
 
   return (

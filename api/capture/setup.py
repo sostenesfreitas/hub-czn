@@ -14,6 +14,11 @@ from pathlib import Path
 from typing import Optional
 
 
+class CertificateInstallError(Exception):
+    """Raised when certificate installation fails."""
+    pass
+
+
 def find_mitmdump() -> Optional[str]:
     """
     Find the mitmdump executable, checking multiple locations.
@@ -70,6 +75,76 @@ def find_mitmdump() -> Optional[str]:
     return None
 
 
+def get_certificate_thumbprint(cert_path: Path) -> Optional[str]:
+    """
+    Compute the SHA-1 thumbprint of a certificate file (uppercase hex).
+    Handles both PEM (mitmproxy's default for .cer) and DER encodings.
+    Returns None if the file is missing or cannot be parsed.
+    """
+    try:
+        data = cert_path.read_bytes()
+    except (FileNotFoundError, OSError):
+        return None
+
+    try:
+        from cryptography import x509
+        from cryptography.hazmat.primitives import hashes
+        try:
+            cert = x509.load_pem_x509_certificate(data)
+        except ValueError:
+            cert = x509.load_der_x509_certificate(data)
+        return cert.fingerprint(hashes.SHA1()).hex().upper()
+    except Exception:
+        return None
+
+
+def is_certificate_trusted(cert_path: Path) -> bool:
+    """
+    Check whether the certificate's SHA-1 thumbprint exists in the Windows
+    LocalMachine\\Root store via 'certutil -verifystore Root <thumbprint>'.
+    Returns False on any failure (missing file, missing certutil, timeout,
+    non-zero exit). Never raises.
+    """
+    thumbprint = get_certificate_thumbprint(cert_path)
+    if not thumbprint:
+        return False
+    try:
+        result = subprocess.run(
+            ["certutil", "-verifystore", "Root", thumbprint],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+        return False
+    return result.returncode == 0
+
+
+def install_certificate(cert_path: Path) -> None:
+    """
+    Install the certificate into Windows LocalMachine\\Root via
+    'certutil -addstore -f Root <path>'. Idempotent. Requires admin rights.
+    Raises CertificateInstallError on any failure (missing file, missing certutil,
+    non-zero exit) with the diagnostic message in the exception text.
+    """
+    if not cert_path.exists():
+        raise CertificateInstallError(f"Certificate file not found: {cert_path}")
+    try:
+        result = subprocess.run(
+            ["certutil", "-addstore", "-f", "Root", str(cert_path)],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except FileNotFoundError:
+        raise CertificateInstallError("certutil.exe not found on PATH")
+    except subprocess.TimeoutExpired:
+        raise CertificateInstallError("certutil timed out installing the certificate")
+    if result.returncode != 0:
+        msg = (result.stderr or result.stdout or "unknown error").strip()
+        raise CertificateInstallError(msg)
+
+
 @dataclass
 class PrerequisiteStatus:
     """Status of capture system prerequisites."""
@@ -78,6 +153,7 @@ class PrerequisiteStatus:
     mitmproxy_version: Optional[str]
     has_certificate: bool
     certificate_path: Optional[Path]
+    certificate_trusted: bool
 
 
 def check_prerequisites() -> PrerequisiteStatus:
@@ -132,13 +208,15 @@ def check_prerequisites() -> PrerequisiteStatus:
     # Check certificate
     cert_path = Path.home() / ".mitmproxy" / "mitmproxy-ca-cert.cer"
     has_certificate = cert_path.exists()
+    certificate_trusted = is_certificate_trusted(cert_path) if has_certificate else False
 
     return PrerequisiteStatus(
         is_admin=is_admin,
         has_mitmproxy=has_mitmproxy,
         mitmproxy_version=mitmproxy_version,
         has_certificate=has_certificate,
-        certificate_path=cert_path if has_certificate else None
+        certificate_path=cert_path if has_certificate else None,
+        certificate_trusted=certificate_trusted,
     )
 
 

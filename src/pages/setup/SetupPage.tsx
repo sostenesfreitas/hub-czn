@@ -50,9 +50,6 @@ export function SetupPage() {
   const { t } = useTranslation()
   const qc = useQueryClient()
   const [howOpen, setHowOpen] = useState(false)
-  const [certImported, setCertImported] = useState(
-    () => localStorage.getItem('setup.cert_imported') === 'true'
-  )
 
   const { data: status, isLoading, isError, error } = useQuery({
     queryKey: ['setup-status'],
@@ -67,6 +64,11 @@ export function SetupPage() {
 
   const openCertMutation = useMutation({
     mutationFn: () => api.openCert(),
+  })
+
+  const installCertMutation = useMutation({
+    mutationFn: () => api.installCertificate(),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['setup-status'] }),
   })
 
   if (isLoading) {
@@ -116,12 +118,14 @@ export function SetupPage() {
       />
 
       <Row
-        ok={status.certificate}
+        ok={status.certificate_trusted}
         label={t('setup.certificate.label')}
         detail={
-          status.certificate
-            ? t('setup.certificate.ok')
-            : t('setup.certificate.fail')
+          status.certificate_trusted
+            ? t('setup.certificate.trustedOk')
+            : status.certificate
+              ? t('setup.certificate.trustedFail')
+              : t('setup.certificate.fail')
         }
         error={certMutation.isError ? certMutation.error : undefined}
         action={
@@ -138,46 +142,59 @@ export function SetupPage() {
         }
       />
 
-      {status.certificate && (
+      {status.certificate && !status.certificate_trusted && (
         <div className="p-4 rounded-lg bg-[#181818] border border-[#282828] flex flex-col gap-3">
           <div className="flex items-start gap-4">
-            <StatusIcon ok={certImported} />
+            <StatusIcon ok={false} />
             <div className="flex-1">
-              <p className="text-[#ffffff] font-medium text-sm">{t('setup.importCert.label')}</p>
-              <p className="text-[#b3b3b3] text-xs mt-0.5">
-                {t('setup.importCert.detail')}
-              </p>
+              <p className="text-[#ffffff] font-medium text-sm">{t('setup.installCert.label')}</p>
+              <p className="text-[#b3b3b3] text-xs mt-0.5">{t('setup.installCert.detail')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 pl-8">
+          <div className="flex flex-col gap-2 pl-8">
             <Button
               size="sm"
-              variant="outline"
-              onClick={() => openCertMutation.mutate()}
-              className="border-[#282828] text-[#b3b3b3] hover:text-[#ffffff]"
+              onClick={() => installCertMutation.mutate()}
+              disabled={installCertMutation.isPending}
+              className="bg-[#c084fc] hover:bg-[#9333ea] text-white self-start"
             >
-              {t('setup.importCert.open')}
+              {installCertMutation.isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin mr-2" />
+                  {t('setup.installCert.installing')}
+                </>
+              ) : (
+                t('setup.installCert.button')
+              )}
             </Button>
-            <label className="flex items-center gap-2 text-xs text-[#b3b3b3] cursor-pointer">
-              <input
-                type="checkbox"
-                checked={certImported}
-                onChange={e => {
-                  setCertImported(e.target.checked)
-                  localStorage.setItem('setup.cert_imported', String(e.target.checked))
-                }}
-                className="accent-[#c084fc]"
-              />
-              {t('setup.importCert.confirm')}
-            </label>
+            {installCertMutation.isError && (
+              <p className="text-[#f3727f] text-xs">
+                {installCertMutation.error instanceof Error
+                  ? installCertMutation.error.message
+                  : t('setup.installCert.error')}
+              </p>
+            )}
+            {installCertMutation.data && installCertMutation.data.ok === false && (
+              <p className="text-[#f3727f] text-xs">
+                {installCertMutation.data.error ?? t('setup.installCert.error')}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => openCertMutation.mutate()}
+              className="text-xs text-[#b3b3b3] hover:text-[#ffffff] underline self-start"
+            >
+              {t('setup.installCert.manualLink')}
+            </button>
+            <p className="text-xs text-[#666666]">{t('setup.installCert.manualHint')}</p>
+            {openCertMutation.isError && (
+              <p className="text-[#f3727f] text-xs">
+                {openCertMutation.error instanceof Error
+                  ? openCertMutation.error.message
+                  : t('setup.installCert.openError')}
+              </p>
+            )}
           </div>
-          {openCertMutation.isError && (
-            <p className="text-[#f3727f] text-xs pl-8">
-              {openCertMutation.error instanceof Error
-                ? openCertMutation.error.message
-                : t('setup.importCert.error')}
-            </p>
-          )}
         </div>
       )}
 
