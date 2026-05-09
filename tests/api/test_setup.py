@@ -1,4 +1,5 @@
 # tests/api/test_setup.py
+import subprocess
 from unittest.mock import patch, MagicMock
 from pathlib import Path
 from fastapi.testclient import TestClient
@@ -107,3 +108,55 @@ def test_thumbprint_returns_none_for_garbage_file(tmp_path):
     p = tmp_path / "garbage.cer"
     p.write_bytes(b"not a certificate at all")
     assert get_certificate_thumbprint(p) is None
+
+
+def test_is_trusted_false_when_thumbprint_unknown(tmp_path, monkeypatch):
+    from api.capture.setup import is_certificate_trusted
+    # Garbage file → thumbprint is None → must short-circuit to False without subprocess
+    p = tmp_path / "garbage.cer"
+    p.write_bytes(b"x")
+    called = {"n": 0}
+    def fake_run(*a, **kw):
+        called["n"] += 1
+        return subprocess.CompletedProcess(args=[], returncode=0)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    assert is_certificate_trusted(p) is False
+    assert called["n"] == 0
+
+
+def test_is_trusted_true_on_zero_exit(tmp_path, monkeypatch):
+    from api.capture.setup import is_certificate_trusted
+    cert_path, _ = _write_pem_cert(tmp_path)
+    monkeypatch.setattr(
+        subprocess, "run",
+        lambda *a, **kw: subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+    )
+    assert is_certificate_trusted(cert_path) is True
+
+
+def test_is_trusted_false_on_nonzero_exit(tmp_path, monkeypatch):
+    from api.capture.setup import is_certificate_trusted
+    cert_path, _ = _write_pem_cert(tmp_path)
+    monkeypatch.setattr(
+        subprocess, "run",
+        lambda *a, **kw: subprocess.CompletedProcess(args=[], returncode=1, stdout="", stderr="not found")
+    )
+    assert is_certificate_trusted(cert_path) is False
+
+
+def test_is_trusted_false_when_certutil_missing(tmp_path, monkeypatch):
+    from api.capture.setup import is_certificate_trusted
+    cert_path, _ = _write_pem_cert(tmp_path)
+    def boom(*a, **kw):
+        raise FileNotFoundError("certutil")
+    monkeypatch.setattr(subprocess, "run", boom)
+    assert is_certificate_trusted(cert_path) is False
+
+
+def test_is_trusted_false_on_timeout(tmp_path, monkeypatch):
+    from api.capture.setup import is_certificate_trusted
+    cert_path, _ = _write_pem_cert(tmp_path)
+    def boom(*a, **kw):
+        raise subprocess.TimeoutExpired(cmd="certutil", timeout=5)
+    monkeypatch.setattr(subprocess, "run", boom)
+    assert is_certificate_trusted(cert_path) is False

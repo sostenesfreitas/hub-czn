@@ -93,6 +93,28 @@ def get_certificate_thumbprint(cert_path: Path) -> Optional[str]:
         return None
 
 
+def is_certificate_trusted(cert_path: Path) -> bool:
+    """
+    Check whether the certificate's SHA-1 thumbprint exists in the Windows
+    LocalMachine\\Root store via 'certutil -verifystore Root <thumbprint>'.
+    Returns False on any failure (missing file, missing certutil, timeout,
+    non-zero exit). Never raises.
+    """
+    thumbprint = get_certificate_thumbprint(cert_path)
+    if not thumbprint:
+        return False
+    try:
+        result = subprocess.run(
+            ["certutil", "-verifystore", "Root", thumbprint],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+        return False
+    return result.returncode == 0
+
+
 @dataclass
 class PrerequisiteStatus:
     """Status of capture system prerequisites."""
