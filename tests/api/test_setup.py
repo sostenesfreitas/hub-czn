@@ -1,5 +1,6 @@
 # tests/api/test_setup.py
 from unittest.mock import patch, MagicMock
+from pathlib import Path
 from fastapi.testclient import TestClient
 from api.main import app
 
@@ -64,17 +65,13 @@ def test_generate_cert_failure():
     assert "mitmdump not found" in body["error"]
 
 
-import tempfile
-from pathlib import Path
-
-
 def _write_pem_cert(tmp_path: Path) -> tuple[Path, str]:
     """Generate a self-signed cert in PEM format. Returns (path, expected_sha1_thumbprint_hex_uppercase)."""
     from cryptography import x509
     from cryptography.x509.oid import NameOID
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import rsa
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone
 
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "test-ca")])
@@ -84,8 +81,8 @@ def _write_pem_cert(tmp_path: Path) -> tuple[Path, str]:
         .issuer_name(name)
         .public_key(key.public_key())
         .serial_number(x509.random_serial_number())
-        .not_valid_before(datetime.utcnow())
-        .not_valid_after(datetime.utcnow() + timedelta(days=1))
+        .not_valid_before(datetime.now(timezone.utc))
+        .not_valid_after(datetime.now(timezone.utc) + timedelta(days=1))
         .sign(key, hashes.SHA256())
     )
     pem_path = tmp_path / "test-cert.cer"
