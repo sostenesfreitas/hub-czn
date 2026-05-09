@@ -14,6 +14,11 @@ from pathlib import Path
 from typing import Optional
 
 
+class CertificateInstallError(Exception):
+    """Raised when certificate installation fails."""
+    pass
+
+
 def find_mitmdump() -> Optional[str]:
     """
     Find the mitmdump executable, checking multiple locations.
@@ -113,6 +118,31 @@ def is_certificate_trusted(cert_path: Path) -> bool:
     except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
         return False
     return result.returncode == 0
+
+
+def install_certificate(cert_path: Path) -> None:
+    """
+    Install the certificate into Windows LocalMachine\\Root via
+    'certutil -addstore -f Root <path>'. Idempotent. Requires admin rights.
+    Raises CertificateInstallError on any failure (missing file, missing certutil,
+    non-zero exit) with the diagnostic message in the exception text.
+    """
+    if not cert_path.exists():
+        raise CertificateInstallError(f"Certificate file not found: {cert_path}")
+    try:
+        result = subprocess.run(
+            ["certutil", "-addstore", "-f", "Root", str(cert_path)],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except FileNotFoundError:
+        raise CertificateInstallError("certutil.exe not found on PATH")
+    except subprocess.TimeoutExpired:
+        raise CertificateInstallError("certutil timed out installing the certificate")
+    if result.returncode != 0:
+        msg = (result.stderr or result.stdout or "unknown error").strip()
+        raise CertificateInstallError(msg)
 
 
 @dataclass

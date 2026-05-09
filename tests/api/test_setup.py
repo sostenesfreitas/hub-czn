@@ -1,5 +1,6 @@
 # tests/api/test_setup.py
 import subprocess
+import pytest
 from unittest.mock import patch, MagicMock
 from pathlib import Path
 from fastapi.testclient import TestClient
@@ -160,3 +161,43 @@ def test_is_trusted_false_on_timeout(tmp_path, monkeypatch):
         raise subprocess.TimeoutExpired(cmd="certutil", timeout=5)
     monkeypatch.setattr(subprocess, "run", boom)
     assert is_certificate_trusted(cert_path) is False
+
+
+def test_install_certificate_succeeds_on_zero_exit(tmp_path, monkeypatch):
+    from api.capture.setup import install_certificate
+    cert_path, _ = _write_pem_cert(tmp_path)
+    monkeypatch.setattr(
+        subprocess, "run",
+        lambda *a, **kw: subprocess.CompletedProcess(args=[], returncode=0, stdout="ok", stderr="")
+    )
+    install_certificate(cert_path)  # must not raise
+
+
+def test_install_certificate_raises_on_nonzero_exit(tmp_path, monkeypatch):
+    from api.capture.setup import install_certificate, CertificateInstallError
+    cert_path, _ = _write_pem_cert(tmp_path)
+    monkeypatch.setattr(
+        subprocess, "run",
+        lambda *a, **kw: subprocess.CompletedProcess(args=[], returncode=1, stdout="", stderr="access denied")
+    )
+    with pytest.raises(CertificateInstallError) as exc:
+        install_certificate(cert_path)
+    assert "access denied" in str(exc.value)
+
+
+def test_install_certificate_raises_when_file_missing(tmp_path):
+    from api.capture.setup import install_certificate, CertificateInstallError
+    with pytest.raises(CertificateInstallError) as exc:
+        install_certificate(tmp_path / "nope.cer")
+    assert "not found" in str(exc.value).lower()
+
+
+def test_install_certificate_raises_when_certutil_missing(tmp_path, monkeypatch):
+    from api.capture.setup import install_certificate, CertificateInstallError
+    cert_path, _ = _write_pem_cert(tmp_path)
+    def boom(*a, **kw):
+        raise FileNotFoundError("certutil")
+    monkeypatch.setattr(subprocess, "run", boom)
+    with pytest.raises(CertificateInstallError) as exc:
+        install_certificate(cert_path)
+    assert "certutil" in str(exc.value).lower()
