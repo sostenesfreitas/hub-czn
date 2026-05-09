@@ -411,7 +411,7 @@ export function CapturePage() {
 
   const running = captureStatus?.running ?? false
   const isAdmin = captureStatus?.admin ?? false
-  const prereqsOk = isAdmin && (setupStatus?.mitmproxy ?? false) && (setupStatus?.certificate ?? false)
+  const prereqsOk = isAdmin && (setupStatus?.mitmproxy ?? false) && (setupStatus?.certificate_trusted ?? false)
 
   return (
     <div className="p-6 flex gap-6 h-full">
@@ -424,7 +424,7 @@ export function CapturePage() {
           <div className="flex items-center gap-3 flex-wrap">
             <PrereqBadge ok={isAdmin} label={t('capture.prereq.admin')} tip={t('capture.prereq.adminTip')} />
             <PrereqBadge ok={setupStatus?.mitmproxy ?? false} label={t('capture.prereq.mitmproxy')} tip={t('capture.prereq.mitmproxyTip')} />
-            <PrereqBadge ok={setupStatus?.certificate ?? false} label={t('capture.prereq.certificate')} />
+            <PrereqBadge ok={setupStatus?.certificate_trusted ?? false} label={t('capture.prereq.certificate')} />
           </div>
           {!prereqsOk && (
             <NavLink to="/setup" className="text-xs text-[#c084fc] hover:underline mt-1">
