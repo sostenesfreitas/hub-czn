@@ -16,6 +16,7 @@ def test_setup_status_returns_expected_shape():
         mitmproxy_version="10.1.1",
         has_certificate=False,
         certificate_path=None,
+        certificate_trusted=False,
     )
     with patch("api.routes.setup.check_prerequisites", return_value=mock_status):
         r = client.get("/api/setup/status")
@@ -201,3 +202,41 @@ def test_install_certificate_raises_when_certutil_missing(tmp_path, monkeypatch)
     with pytest.raises(CertificateInstallError) as exc:
         install_certificate(cert_path)
     assert "certutil" in str(exc.value).lower()
+
+
+def test_check_prerequisites_includes_certificate_trusted(tmp_path, monkeypatch):
+    from api.capture import setup as setup_module
+    cert_path, _ = _write_pem_cert(tmp_path)
+
+    monkeypatch.setattr(setup_module, "find_mitmdump", lambda: None)
+    monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))
+    # mitmproxy expects ~/.mitmproxy/mitmproxy-ca-cert.cer
+    mitmproxy_dir = tmp_path / ".mitmproxy"
+    mitmproxy_dir.mkdir()
+    (mitmproxy_dir / "mitmproxy-ca-cert.cer").write_bytes(cert_path.read_bytes())
+
+    monkeypatch.setattr(
+        subprocess, "run",
+        lambda *a, **kw: subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+    )
+
+    status = setup_module.check_prerequisites()
+    assert status.has_certificate is True
+    assert status.certificate_trusted is True
+
+
+def test_check_prerequisites_certificate_trusted_false_when_no_file(tmp_path, monkeypatch):
+    from api.capture import setup as setup_module
+    monkeypatch.setattr(setup_module, "find_mitmdump", lambda: None)
+    monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))
+    # No cert file at all → must NOT shell out, must return False
+    called = {"n": 0}
+    def fake_run(*a, **kw):
+        called["n"] += 1
+        return subprocess.CompletedProcess(args=[], returncode=0)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    status = setup_module.check_prerequisites()
+    assert status.has_certificate is False
+    assert status.certificate_trusted is False
+    assert called["n"] == 0

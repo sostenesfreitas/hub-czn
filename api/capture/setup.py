@@ -153,6 +153,7 @@ class PrerequisiteStatus:
     mitmproxy_version: Optional[str]
     has_certificate: bool
     certificate_path: Optional[Path]
+    certificate_trusted: bool
 
 
 def check_prerequisites() -> PrerequisiteStatus:
@@ -207,13 +208,15 @@ def check_prerequisites() -> PrerequisiteStatus:
     # Check certificate
     cert_path = Path.home() / ".mitmproxy" / "mitmproxy-ca-cert.cer"
     has_certificate = cert_path.exists()
+    certificate_trusted = is_certificate_trusted(cert_path) if has_certificate else False
 
     return PrerequisiteStatus(
         is_admin=is_admin,
         has_mitmproxy=has_mitmproxy,
         mitmproxy_version=mitmproxy_version,
         has_certificate=has_certificate,
-        certificate_path=cert_path if has_certificate else None
+        certificate_path=cert_path if has_certificate else None,
+        certificate_trusted=certificate_trusted,
     )
 
 
