@@ -71,6 +71,9 @@ export const api = {
   openCert: () =>
     request<SetupActionResponse>('/api/setup/open-cert', { method: 'POST' }),
 
+  installCertificate: () =>
+    request<SetupActionResponse>('/api/setup/install-certificate', { method: 'POST' }),
+
   captureStatus: () => request<CaptureStatus>('/api/capture/status'),
 
   captureStart: (body: CaptureStartRequest) =>

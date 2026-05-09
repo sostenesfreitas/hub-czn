@@ -60,6 +60,7 @@ export interface SetupStatus {
   mitmproxy: boolean
   mitmproxy_version: string | null
   certificate: boolean
+  certificate_trusted: boolean
 }
 
 export interface SetupActionResponse {
