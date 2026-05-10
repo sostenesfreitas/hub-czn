@@ -407,6 +407,7 @@ export interface DeckBuilderCard {
 
 export interface DeckBuilderCombatantResponse {
   char_res_id: number
+  character_name: string | null
   starting_cards: DeckBuilderCard[]
   epiphany_cards: DeckBuilderCard[]
   ego_skill: DeckBuilderCard | null

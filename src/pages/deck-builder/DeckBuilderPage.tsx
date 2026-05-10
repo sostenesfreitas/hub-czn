@@ -1,9 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Copy, Plus, Trash2, Users, X } from 'lucide-react'
+import { Copy, Plus, Sparkles, Trash2, X } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { CardCharacter, CardEntry } from '@/lib/types'
+import type {
+  CardCharacter,
+  CardEntry,
+  DeckBuilderCard as ApiDeckBuilderCard,
+} from '@/lib/types'
 
 type DeckCardInstance = {
   instanceId: string
@@ -13,13 +17,11 @@ type DeckCardInstance = {
 type SquadSlot = {
   combatantId: number | null
   cards: DeckCardInstance[]
+  epiphanyCards: ApiDeckBuilderCard[]
+  egoSkill: ApiDeckBuilderCard | null
+  isLoading: boolean
+  error: string | null
 }
-
-const INITIAL_SQUAD: SquadSlot[] = [
-  { combatantId: null, cards: [] },
-  { combatantId: null, cards: [] },
-  { combatantId: null, cards: [] },
-]
 
 const TYPE_COLORS: Record<string, string> = {
   DMG: 'bg-[#7f1d1d] text-[#fca5a5]',
@@ -32,6 +34,25 @@ const TYPE_COLORS: Record<string, string> = {
   Change: 'bg-[#1c2a3a] text-[#7dd3fc]',
   Copy: 'bg-[#1c2a3a] text-[#7dd3fc]',
   Use: 'bg-[#2a1c1c] text-[#fca5a5]',
+}
+
+function createEmptySlot(): SquadSlot {
+  return {
+    combatantId: null,
+    cards: [],
+    epiphanyCards: [],
+    egoSkill: null,
+    isLoading: false,
+    error: null,
+  }
+}
+
+function createInitialSquad(): SquadSlot[] {
+  return [
+    createEmptySlot(),
+    createEmptySlot(),
+    createEmptySlot(),
+  ]
 }
 
 function createCardInstance(card: CardEntry): DeckCardInstance {
@@ -94,7 +115,7 @@ function DeckCard({
 
         <div className="min-w-0">
           <h3 className="line-clamp-2 text-sm font-bold text-white">
-            {card.name}
+            {card.name || 'Unnamed card'}
           </h3>
 
           <p className="mt-0.5 text-[10px] text-[#666] font-mono truncate">
@@ -127,7 +148,7 @@ function DeckCard({
         <div className="rounded-md bg-[#0f0f14] px-2 py-2">
           <p className="text-[9px] uppercase text-[#666]">Spark</p>
           <p className="text-xs font-bold text-[#facc15]">
-            {card.spark_count > 0 ? `✦${card.spark_count}` : '—'}
+            {card.spark_count > 0 ? `+${card.spark_count}` : '—'}
           </p>
         </div>
       </div>
@@ -135,23 +156,75 @@ function DeckCard({
   )
 }
 
+function EpiphanyCardButton({
+  item,
+  onAdd,
+}: {
+  item: ApiDeckBuilderCard
+  onAdd: () => void
+}) {
+  const card = item.card
+
+  return (
+    <button
+      type="button"
+      onClick={onAdd}
+      className="rounded-lg border border-[#333348] bg-[#15151f] p-2 text-left transition-colors hover:border-[#c084fc] hover:bg-[#1f1b2e]"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-xs font-bold text-white">
+            {card.name}
+          </p>
+
+          <p className="mt-0.5 truncate text-[10px] font-mono text-[#666]">
+            {card.card_id}
+          </p>
+        </div>
+
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
+          {card.cost}
+        </span>
+      </div>
+
+      <div className="mt-2 flex items-center justify-between text-[10px]">
+        <span className="text-[#888]">
+          {card.eff_value > 0 ? `${card.eff_value}% dano` : 'suporte'}
+        </span>
+
+        <span className="font-semibold text-[#c084fc]">
+          + adicionar
+        </span>
+      </div>
+    </button>
+  )
+}
+
 function CombatantDeckColumn({
   slotIndex,
   slot,
   characters,
-  availableCards,
+  epiphanyCards,
+  egoSkill,
+  isLoading,
+  error,
   onSelectCombatant,
   onDuplicateCard,
   onRemoveCard,
+  onAddEpiphanyCard,
   onClearDeck,
 }: {
   slotIndex: number
   slot: SquadSlot
   characters: CardCharacter[]
-  availableCards: CardEntry[]
+  epiphanyCards: ApiDeckBuilderCard[]
+  egoSkill: ApiDeckBuilderCard | null
+  isLoading: boolean
+  error: string | null
   onSelectCombatant: (combatantId: number | null) => void
   onDuplicateCard: (instanceId: string) => void
   onRemoveCard: (instanceId: string) => void
+  onAddEpiphanyCard: (item: ApiDeckBuilderCard) => void
   onClearDeck: () => void
 }) {
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
@@ -203,8 +276,8 @@ function CombatantDeckColumn({
           </div>
 
           <div className="rounded-lg bg-[#101018] px-3 py-2">
-            <p className="text-[9px] uppercase text-[#666]">Base</p>
-            <p className="text-sm font-bold text-[#93c5fd]">{availableCards.length}</p>
+            <p className="text-[9px] uppercase text-[#666]">Epiphany</p>
+            <p className="text-sm font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
           </div>
         </div>
 
@@ -216,14 +289,26 @@ function CombatantDeckColumn({
       </header>
 
       <div className="h-[calc(100vh-330px)] min-h-[420px] overflow-y-auto p-3">
-        {slot.cards.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
+        {error && (
+          <div className="mb-3 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 p-3 text-xs text-[#fca5a5]">
+            {error}
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
+            Carregando cartas do combatente...
+          </div>
+        ) : slot.cards.length === 0 ? (
+          <div className="flex h-[360px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
             <Plus className="text-[#555]" size={32} />
             <p className="mt-3 text-sm font-medium text-[#aaa]">
-              Nenhum combatente selecionado
+              {selectedCombatant ? 'Nenhuma carta no deck' : 'Nenhum combatente selecionado'}
             </p>
             <p className="mt-1 max-w-[220px] text-xs text-[#666]">
-              Selecione um combatente para carregar as cartas base dele.
+              {selectedCombatant
+                ? 'Adicione cartas Epiphany ou selecione outro combatente para recarregar o deck inicial.'
+                : 'Selecione um combatente para carregar as cartas base dele.'}
             </p>
           </div>
         ) : (
@@ -238,6 +323,57 @@ function CombatantDeckColumn({
             ))}
           </div>
         )}
+
+        {epiphanyCards.length > 0 && (
+          <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Sparkles size={14} className="text-[#c084fc]" />
+                <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                  Epiphany Cards
+                </h3>
+              </div>
+
+              <span className="text-[10px] text-[#777]">
+                {epiphanyCards.length} disponíveis
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {epiphanyCards.map(item => (
+                <EpiphanyCardButton
+                  key={item.card.card_id}
+                  item={item}
+                  onAdd={() => onAddEpiphanyCard(item)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {egoSkill && (
+          <section className="mt-4 rounded-xl border border-[#3b2f1d] bg-[#1a1410] p-3">
+            <p className="text-[10px] uppercase tracking-wide text-[#fbbf24]">
+              Ego Skill
+            </p>
+
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-white">
+                  {egoSkill.card.name}
+                </p>
+
+                <p className="text-[10px] font-mono text-[#777]">
+                  {egoSkill.card.card_id}
+                </p>
+              </div>
+
+              <span className="rounded-lg bg-[#0f0f14] px-3 py-1 text-sm font-bold text-[#fb923c]">
+                {egoSkill.card.cost}
+              </span>
+            </div>
+          </section>
+        )}
       </div>
     </section>
   )
@@ -245,7 +381,7 @@ function CombatantDeckColumn({
 
 export function DeckBuilderPage() {
   const { t } = useTranslation()
-  const [squad, setSquad] = useState<SquadSlot[]>(INITIAL_SQUAD)
+  const [squad, setSquad] = useState<SquadSlot[]>(createInitialSquad)
 
   const { data: characters = [], isLoading: loadingCharacters } = useQuery<CardCharacter[]>({
     queryKey: ['deck-builder-card-characters'],
@@ -253,67 +389,86 @@ export function DeckBuilderPage() {
     staleTime: Infinity,
   })
 
-  const { data: allCards = [], isLoading: loadingCards } = useQuery<CardEntry[]>({
-    queryKey: ['deck-builder-cards'],
-    queryFn: () => api.cards(),
-    staleTime: Infinity,
-  })
-
-  const cardsByCharacter = useMemo(() => {
-    const map = new Map<number, CardEntry[]>()
-
-    for (const card of allCards) {
-      if (card.char_res_id == null) continue
-      if (!card.name.trim()) continue
-
-      const current = map.get(card.char_res_id) ?? []
-      current.push(card)
-      map.set(card.char_res_id, current)
-    }
-
-    return map
-  }, [allCards])
-
   const totalCards = squad.reduce((sum, slot) => sum + slot.cards.length, 0)
+
   const totalCost = squad.reduce(
     (sum, slot) => sum + slot.cards.reduce((slotSum, item) => slotSum + item.card.cost, 0),
     0,
   )
+
   const selectedCombatants = squad.filter(slot => slot.combatantId != null).length
 
-async function selectCombatant(slotIndex: number, combatantId: number | null) {
-  if (combatantId == null) {
+  async function selectCombatant(slotIndex: number, combatantId: number | null) {
+    if (combatantId == null) {
+      setSquad(current =>
+        current.map((slot, index) => {
+          if (index !== slotIndex) return slot
+
+          return createEmptySlot()
+        }),
+      )
+
+      return
+    }
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
 
         return {
-          combatantId: null,
+          ...slot,
+          combatantId,
           cards: [],
+          epiphanyCards: [],
+          egoSkill: null,
+          isLoading: true,
+          error: null,
         }
       }),
     )
 
-    return
+    try {
+      const deckBuilderData = await api.deckBuilderCombatant(combatantId)
+
+      const cards = deckBuilderData.starting_cards.flatMap(item =>
+        Array.from({ length: item.copies }, () => createCardInstance(item.card)),
+      )
+
+      setSquad(current =>
+        current.map((slot, index) => {
+          if (index !== slotIndex) return slot
+
+          return {
+            ...slot,
+            combatantId,
+            cards,
+            epiphanyCards: deckBuilderData.epiphany_cards,
+            egoSkill: deckBuilderData.ego_skill,
+            isLoading: false,
+            error: null,
+          }
+        }),
+      )
+    } catch (error) {
+      setSquad(current =>
+        current.map((slot, index) => {
+          if (index !== slotIndex) return slot
+
+          return {
+            ...slot,
+            combatantId,
+            cards: [],
+            epiphanyCards: [],
+            egoSkill: null,
+            isLoading: false,
+            error: error instanceof Error
+              ? error.message
+              : 'Erro ao carregar cartas do combatente.',
+          }
+        }),
+      )
+    }
   }
-
-  const deckBuilderData = await api.deckBuilderCombatant(combatantId)
-
-  const cards = deckBuilderData.starting_cards.flatMap(item =>
-    Array.from({ length: item.copies }, () => createCardInstance(item.card)),
-  )
-
-  setSquad(current =>
-    current.map((slot, index) => {
-      if (index !== slotIndex) return slot
-
-      return {
-        combatantId,
-        cards,
-      }
-    }),
-  )
-}
 
   function duplicateCard(slotIndex: number, instanceId: string) {
     setSquad(current =>
@@ -344,6 +499,22 @@ async function selectCombatant(slotIndex: number, combatantId: number | null) {
     )
   }
 
+  function addEpiphanyCard(slotIndex: number, item: ApiDeckBuilderCard) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          cards: [
+            ...slot.cards,
+            createCardInstance(item.card),
+          ],
+        }
+      }),
+    )
+  }
+
   function clearDeck(slotIndex: number) {
     setSquad(current =>
       current.map((slot, index) => {
@@ -358,10 +529,10 @@ async function selectCombatant(slotIndex: number, combatantId: number | null) {
   }
 
   function resetBuilder() {
-    setSquad(INITIAL_SQUAD)
+    setSquad(createInitialSquad())
   }
 
-  const isLoading = loadingCharacters || loadingCards
+  const isLoading = loadingCharacters
 
   return (
     <div className="min-h-full bg-[#0f0f14] text-[#ffffff]">
@@ -419,7 +590,7 @@ async function selectCombatant(slotIndex: number, combatantId: number | null) {
 
       {isLoading ? (
         <div className="flex h-[calc(100vh-180px)] items-center justify-center text-sm text-[#888]">
-          Carregando cartas e combatentes...
+          Carregando combatentes...
         </div>
       ) : (
         <main className="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3">
@@ -429,10 +600,14 @@ async function selectCombatant(slotIndex: number, combatantId: number | null) {
               slotIndex={index}
               slot={slot}
               characters={characters}
-              availableCards={slot.combatantId == null ? [] : cardsByCharacter.get(slot.combatantId) ?? []}
+              epiphanyCards={slot.epiphanyCards}
+              egoSkill={slot.egoSkill}
+              isLoading={slot.isLoading}
+              error={slot.error}
               onSelectCombatant={combatantId => selectCombatant(index, combatantId)}
               onDuplicateCard={instanceId => duplicateCard(index, instanceId)}
               onRemoveCard={instanceId => removeCard(index, instanceId)}
+              onAddEpiphanyCard={item => addEpiphanyCard(index, item)}
               onClearDeck={() => clearDeck(index)}
             />
           ))}
