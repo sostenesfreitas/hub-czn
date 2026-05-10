@@ -1,0 +1,18 @@
+export const TYPE_COLORS: Record<string, string> = {
+  DMG: 'bg-[#7f1d1d] text-[#fca5a5]',
+  Draw: 'bg-[#1e3a5f] text-[#93c5fd]',
+  Buff: 'bg-[#14532d] text-[#86efac]',
+  Cost: 'bg-[#3b1f6e] text-[#c4b5fd]',
+  Discard: 'bg-[#292524] text-[#a8a29e]',
+  Exhaust: 'bg-[#292524] text-[#a8a29e]',
+  Get: 'bg-[#1a2e1a] text-[#86efac]',
+  Change: 'bg-[#1c2a3a] text-[#7dd3fc]',
+  Copy: 'bg-[#1c2a3a] text-[#7dd3fc]',
+  Use: 'bg-[#2a1c1c] text-[#fca5a5]',
+  Attack: 'bg-[#7f1d1d] text-[#fca5a5]',
+  Skill: 'bg-[#1e3a5f] text-[#93c5fd]',
+  Upgrade: 'bg-[#14532d] text-[#86efac]',
+  Haste: 'bg-[#4c1d95] text-[#d8b4fe]',
+  Unique: 'bg-[#78350f] text-[#fde68a]',
+  Initiation: 'bg-[#0f766e] text-[#99f6e4]',
+}

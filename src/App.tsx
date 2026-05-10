@@ -16,6 +16,7 @@ import { ScoringPage } from './pages/scoring/ScoringPage'
 import { SimulatorPage } from './pages/simulator/SimulatorPage'
 import { CardsPage } from './pages/cards/CardsPage'
 import { BattlePage } from './pages/battle/BattlePage'
+import { DeckBuilderPage } from './pages/deck-builder/DeckBuilderPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,7 @@ function AppRoutes() {
           <Route path="combatants" element={<CombatantsPage />} />
           <Route path="scoring"    element={<ScoringPage />} />
           <Route path="cards"      element={<CardsPage />} />
+          <Route path="deck-builder" element={<DeckBuilderPage />} />
           <Route path="simulator"  element={<SimulatorPage />} />
           <Route path="capture"    element={<CapturePage />} />
           <Route path="setup"      element={<SetupPage />} />
