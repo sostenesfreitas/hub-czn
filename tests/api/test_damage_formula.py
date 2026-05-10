@@ -48,7 +48,11 @@ def test_fit_def_curve_empty_input_raises():
         fit_def_curve([])
 
 
-from api.capture.validate_damage import predict_damage_h1, validate_against_hits
+from api.capture.validate_damage import (
+    predict_damage_h1,
+    predict_damage_empirical,
+    validate_against_hits,
+)
 
 
 def test_predict_damage_h1_basic():
@@ -68,3 +72,10 @@ def test_validate_against_hits_returns_coverage_metrics():
     assert result["coverage"] == 0.5
     assert result["n_hits"] == 2
     assert result["n_within_tolerance"] == 1
+
+
+def test_predict_damage_empirical_matches_b3_verified_hit():
+    """Hit verified in B3 doc: ATK=1087, eff_value=75, def_reduce=0.334, no crit
+    -> predicted dmg = 1087 x 0.75 x 0.666 = 543 vs observed 547 (0.7% error)."""
+    predicted = predict_damage_empirical(atk=1087, eff_value=75, def_reduce=0.334, crit_factor=1.0)
+    assert predicted == pytest.approx(543.0, rel=0.01)

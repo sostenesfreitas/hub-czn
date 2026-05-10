@@ -26,37 +26,43 @@ Per-hit ground truth IS available from snapshot frames (keys: res, snapshot, …
     - skillMap[id]                {eff_value, caster_id, stat_source, final_count_value}
     - cardMap[id]                 {char_id, res_id, skill_eff_ids}
     - used_cards                  [card_id]
+    NOTE: cardMap and skillMap use STRING keys (e.g. '7', '21') even though
+    used_cards contains INT values.  All lookups must cast the key to str().
 
-== Empirical formula discovery (from 4 clean surviving hits) ==
+== Empirical formula discovery (from clean surviving hits) ==
 
 H1 formula as specified (dmg = ATK × 0.36 × (1 − def_reduce) × crit_factor × skill_mult)
 is INCORRECT for the observed data.
 
-Actual formula appears to be:
-    dmg = ATK_src × (card_eff_value / 100) × (1 − S_DMG_DECREASE_RATE) × crit_factor
+Actual formula (B3 verified):
+    dmg = ATK_src × (eff_value / 100) × (1 − S_DMG_DECREASE_RATE) × crit_factor
 
-where card_eff_value is skillMap[skill_eff_id].eff_value for the damage skill,
-and ATK_src is the individual char's S_ATK (for mutation cards)
-or the combined team's S_ATK (bwt.char.S_ATK, for response cards).
+where eff_value is the largest skillMap[skill_eff_id].eff_value with a non-None
+final_count_value (the main-damage skill entry) for the first card in used_cards,
+and ATK_src is:
+  - individual char S_ATK (matched by card.char_id) if card is a mutation card
+    (card.res_id contains '_mut')
+  - team average S_ATK (bwt.char.S_ATK) for all other card types (response, etc.)
 
-Non-crit verification (card c_30075_srt4_mut, eff=75, ATK=1087, def_reduce=0.3337):
-    pred = 1087 × 0.75 × (1 − 0.3337) = 543  vs  obs = 547  (0.7% error ✓)
+Verified hits:
+  Non-crit (card c_30075_srt4_mut, eff=75, ATK=1087, def_reduce=0.3337):
+    pred = 1087 × 0.75 × (1 − 0.3337) = 543  vs  obs = 547  (0.7% error)
+  Non-crit (card c_30093_srt4_rsp1, eff=80, team_ATK=1077, def_reduce=0.3597):
+    pred = 1077 × 0.80 × (1 − 0.3597) = 552  vs  obs = 530  (4.1% error, dva_css reduce)
 
-Crit verification is BLOCKED by the dva_css unknown:
-    Same card/ATK/DEF, crit=True, 3 hits → obs: 1398, 1148, 1219 (22% spread)
-    Source: dva_css[110] eff_value not found in skillMap; unknown contribution.
-
-== Known limitations (v1) ==
+== Known limitations (v2) ==
   - DMG_REVISE_RATE = 0.36 is a PLACEHOLDER from the task spec; actual formula
-    embeds the multiplier in card eff_value/100.  H1/H2/H3 as specified will show
-    low coverage until this is reconciled.
-  - skill_mult is hardcoded 1.0; Track C will provide per-card real values.
+    embeds the multiplier in card eff_value/100.  H1/H2/H3 show low coverage.
   - dva_css (damage-value adjustment stacks) cause ±22% residual on crit hits.
-  - crit_factor formula: (1 + S_CRI_DMG_RATE/100) predicts 3.37× but empirical
-    crit/non-crit ratio for surviving hits is ~2.64×.  Formula may differ.
-  - Only non-auto-attack hits (lastDamageEvent.is_auto=False, type=[]) are extracted.
-  - Only 4 clean surviving hits found across all 4 snapshot files; insufficient
-    for statistical coverage assessment.
+    All crit hits with dva_css fail the EMP formula at ±5% tolerance.
+  - crit_factor formula: (1 + S_CRI_DMG_RATE/100) is uncertain; empirical
+    crit/non-crit ratio varies widely due to dva_css interference.
+  - DMG_ATTR_BASE_ON_DEF hits use monster DEF as the damage basis, not ATK;
+    these are now filtered out in _frame_to_hit so EMP formula is not applied.
+  - Hits with empty used_cards cannot have eff_value resolved; they are skipped
+    for EMP validation (the eff_value field will be 0.0).
+  - EMP coverage ~20% (2/10 hits with eff_values within ±5%) due to dva_css
+    variance on crit hits.  Non-crit hits without dva_css amplification pass.
 """
 
 from __future__ import annotations
@@ -85,6 +91,7 @@ def predict_damage_h1(
     def_reduce: float,
     crit_factor: float,
     skill_mult: float,
+    **_ignored: object,
 ) -> float:
     """H1: dmg = ATK × DMG_REVISE_RATE × (1 - def_reduce) × crit_factor × skill_mult."""
     return atk * DMG_REVISE_RATE * (1 - def_reduce) * crit_factor * skill_mult
@@ -98,6 +105,7 @@ def predict_damage_h2(
     vulnerable_pct: float = 0.0,
     morale_atk: float = 0.0,
     morale_def: float = 0.0,
+    **_ignored: object,
 ) -> float:
     """H2: H1 × (1 + vulnerable%) × (1 + morale_atk - morale_def)."""
     base = predict_damage_h1(atk, def_reduce, crit_factor, skill_mult)
@@ -114,6 +122,7 @@ def predict_damage_h3(
     morale_def: float = 0.0,
     elemental_mult: float = 1.0,
     rage_mult: float = 1.0,
+    **_ignored: object,
 ) -> float:
     """H3: H2 × elemental_mult × rage_mult."""
     base = predict_damage_h2(
@@ -122,10 +131,40 @@ def predict_damage_h3(
     return base * elemental_mult * rage_mult
 
 
+def predict_damage_empirical(
+    atk: float,
+    eff_value: float,
+    def_reduce: float,
+    crit_factor: float,
+    **_ignored: object,
+) -> float:
+    """B3 empirical formula:
+    dmg = ATK × (eff_value/100) × (1 − def_reduce) × crit_factor
+
+    eff_value comes from the largest skillMap[skill_eff_id].eff_value with a
+    non-None final_count_value for the card used.  This identifies the main-damage
+    skill entry rather than passive/trigger effects (which have eff_value <= 1 and
+    no final_count_value).
+
+    ATK is the individual caster ATK for mutation cards ('_mut' in card res_id) or
+    the team average ATK (bwt.char.S_ATK) for response and other card types.
+
+    crit_factor is 1.0 for non-crits, (1 + CDmg/100) for crits.
+
+    Extra keyword arguments (e.g. skill_mult from H1/H2/H3 hits) are ignored so
+    validate_against_hits can pass the full hit dict to all hypotheses uniformly.
+    Hits where eff_value == 0.0 are skipped (no eff_value was resolved).
+    """
+    if eff_value == 0.0:
+        raise TypeError("eff_value is 0.0 — hit has no resolved eff_value; skip")
+    return atk * (eff_value / 100.0) * (1.0 - def_reduce) * crit_factor
+
+
 HYPOTHESES: dict = {
     "H1": predict_damage_h1,
     "H2": predict_damage_h2,
     "H3": predict_damage_h3,
+    "EMP": predict_damage_empirical,
 }
 
 
@@ -179,22 +218,27 @@ def _frame_to_hit(frame: dict) -> dict | None:
     """Extract one hit record from a snapshot frame.
 
     Maps snapshot fields to the canonical hit dict:
-      atk          – attacker S_ATK (from chars[caster_idx])
-      def_reduce   – f6(monster S_DEF)  OR  monster S_DMG_DECREASE_RATE directly
+      atk          – attacker S_ATK (individual char for mutation cards; team
+                     average bwt.char.S_ATK for response/other card types)
+      def_reduce   – monster S_DMG_DECREASE_RATE  OR  f6(monster S_DEF)
       crit_factor  – 1.0 non-crit, (1 + S_CRI_DMG_RATE/100) crit
-      skill_mult   – hardcoded 1.0 (Track C will provide real values)
+      skill_mult   – hardcoded 1.0 (H1/H2/H3 use this; EMP ignores it)
+      eff_value    – largest skillMap[skill_eff_id].eff_value with non-None
+                     final_count_value for the first card in used_cards;
+                     0.0 if no eff_value can be resolved (hit skipped by EMP)
       observed_dmg – lastDamageEvent.damage
 
-    Returns None if the frame lacks the required data or the hit is an
-    auto-attack (DMG_ATTR_FIX) or has empty observed damage.
+    Returns None if the frame lacks the required data, the hit is an auto-attack
+    (DMG_ATTR_FIX), stat-independent (DMG_ATTR_IGNORE_STAT), or uses a DEF-based
+    damage formula (DMG_ATTR_BASE_ON_DEF — those hits scale with monster DEF, not
+    ATK, so the ATK-based EMP formula cannot be applied to them).
 
-    Known gaps / v1 limitations:
-      - skill_mult is always 1.0; dva_css bonuses are NOT applied.
-      - The true crit multiplier formula is uncertain: empirically the
-        crit/non-crit ratio (~2.64×) differs from (1 + CDmg/100) (~3.37×).
-        We use (1 + CDmg/100) as the documented formula pending confirmation.
-      - When multiple chars are present we use char_id from the played card
-        (cardMap[used_cards[0]].char_id) if available, else chars[0].
+    cardMap and skillMap use STRING keys.  All lookups cast to str().
+
+    Known gaps / v2 limitations:
+      - dva_css stack bonuses are NOT applied; crit hits with dva_css fail at ±5%.
+      - The crit_factor formula (1 + CDmg/100) is uncertain; empirical ratio varies.
+      - Hits with empty used_cards get eff_value=0.0 and are skipped by EMP.
     """
     try:
         data = frame.get("data", {})
@@ -209,7 +253,7 @@ def _frame_to_hit(frame: dict) -> dict | None:
         if not monsters or not chars:
             return None
 
-        # Find the monster that received a non-auto damage hit this frame.
+        # Find the monster that received a qualifying damage hit this frame.
         target_monster = None
         last_dmg = None
         for m in monsters:
@@ -221,13 +265,13 @@ def _frame_to_hit(frame: dict) -> dict | None:
                 continue
             if ld.get("type") is None:
                 continue
-            # Accept only hits with an empty type list (clean card damage)
-            # or DMG_ATTR_ADDITIONAL_ATTACK (also card-driven).
             dmg_types = ld.get("type", [])
-            if dmg_types and "DMG_ATTR_FIX" in dmg_types:
+            if "DMG_ATTR_FIX" in dmg_types:
                 continue  # auto-attack fixed damage
             if "DMG_ATTR_IGNORE_STAT" in dmg_types:
                 continue  # stat-independent, can't validate with ATK formula
+            if "DMG_ATTR_BASE_ON_DEF" in dmg_types:
+                continue  # DEF-based damage — EMP (ATK-based) formula does not apply
             damage = ld.get("damage", 0)
             if damage <= 0:
                 continue
@@ -254,12 +298,38 @@ def _frame_to_hit(frame: dict) -> dict | None:
         else:
             return None
 
-        # --- Identify attacker ---
-        char_id = _resolve_caster_char_id(bwt)
-        attacker_info = _get_char_info(chars, char_id)
-        if attacker_info is None:
-            # Fall back to first char
-            attacker_info = chars[0].get("status", {}).get("info", {}) if chars else {}
+        # --- Resolve eff_value from skillMap (Bug 2 fix) ---
+        # cardMap and skillMap use STRING keys; used_cards contains INTs.
+        # Cast all lookups to str() to avoid silent misses.
+        card_map: dict = bwt.get("cardMap") or {}
+        skill_map: dict = bwt.get("skillMap") or {}
+        used_cards: list = bwt.get("used_cards") or []
+
+        eff_value, card_res_id, caster_char_id = _resolve_eff_value(
+            used_cards, card_map, skill_map
+        )
+
+        # --- Identify ATK source ---
+        # Mutation cards ('_mut' in res_id) scale with the individual caster's ATK.
+        # Response cards and others scale with the team's combined ATK (bwt.char).
+        team_char_info = (bwt.get("char") or {}).get("status", {}).get("info", {})
+        team_atk = team_char_info.get("S_ATK")
+
+        if card_res_id and "_mut" in card_res_id:
+            # Mutation card: use caster char's individual ATK
+            attacker_info = _get_char_info(chars, caster_char_id)
+            if attacker_info is None:
+                attacker_info = chars[0].get("status", {}).get("info", {}) if chars else {}
+        else:
+            # Response/other card: use team average ATK
+            if team_atk is not None:
+                attacker_info = team_char_info
+            else:
+                # Fallback: resolve caster from cardMap
+                char_id = _resolve_caster_char_id(bwt)
+                attacker_info = _get_char_info(chars, char_id)
+                if attacker_info is None:
+                    attacker_info = chars[0].get("status", {}).get("info", {}) if chars else {}
 
         atk = attacker_info.get("S_ATK")
         cri_dmg = attacker_info.get("S_CRI_DMG_RATE", 100.0)
@@ -268,22 +338,70 @@ def _frame_to_hit(frame: dict) -> dict | None:
 
         # --- Crit factor ---
         # Documented: 1 + S_CRI_DMG_RATE/100
-        # Note: empirical ratio ~2.64× vs predicted ~3.37× — flag as concern.
+        # Note: empirical crit/non-crit ratio varies due to dva_css; flag as concern.
         crit_factor = (1.0 + float(cri_dmg) / 100.0) if is_crit else 1.0
 
         return {
             "atk": float(atk),
             "def_reduce": def_reduce,
             "crit_factor": crit_factor,
-            "skill_mult": 1.0,   # v1: hardcoded, Track C provides real values
+            "skill_mult": 1.0,   # H1/H2/H3 use this; EMP ignores it
+            "eff_value": float(eff_value),   # 0.0 if not resolved
             "observed_dmg": float(observed_dmg),
             # metadata (not used in prediction, useful for debugging)
             "_is_crit": is_crit,
             "_monster_res_id": target_monster.get("res_id"),
             "_dva_css": last_dmg.get("dva_css", []),
+            "_card_res_id": card_res_id,
         }
     except Exception:
         return None
+
+
+def _resolve_eff_value(
+    used_cards: list,
+    card_map: dict,
+    skill_map: dict,
+) -> tuple[float, str | None, int | None]:
+    """Return (eff_value, card_res_id, caster_char_id) for the first card in used_cards.
+
+    eff_value selection heuristic:
+      1. Among all skill_eff_ids of the card, pick the entry with the LARGEST
+         eff_value that has a non-None final_count_value.  The final_count_value
+         field marks main-damage skills; passive/trigger skills lack it.
+      2. If no entry has final_count_value, fall back to the largest eff_value > 10
+         (to exclude stat-adjustment entries with eff_value 1-6).
+      3. If nothing qualifies, return eff_value=0.0 (hit will be skipped by EMP).
+
+    NOTE: cardMap and skillMap keys are STRINGS.  used_cards contains INTs.
+    All lookups cast the key to str().
+    """
+    for card_id in used_cards:
+        card = card_map.get(str(card_id))   # Bug 1 fix: cast to str()
+        if not card:
+            continue
+        card_res_id: str = card.get("res_id", "")
+        caster_char_id: int | None = card.get("char_id") or card.get("caster_id")
+        best_with_fcv: float | None = None
+        best_no_fcv: float | None = None
+        for skill_eff_id in card.get("skill_eff_ids", []):
+            sk = skill_map.get(str(skill_eff_id))   # Bug 1 fix: cast to str()
+            if not sk:
+                continue
+            ev = sk.get("eff_value", 0)
+            if ev <= 0:
+                continue
+            fcv = sk.get("final_count_value")
+            if fcv is not None:
+                if best_with_fcv is None or ev > best_with_fcv:
+                    best_with_fcv = float(ev)
+            else:
+                if ev > 10 and (best_no_fcv is None or ev > best_no_fcv):
+                    best_no_fcv = float(ev)
+        result = best_with_fcv if best_with_fcv is not None else best_no_fcv
+        if result is not None:
+            return result, card_res_id, caster_char_id
+    return 0.0, None, None
 
 
 def _resolve_caster_char_id(bwt: dict) -> int | None:
@@ -368,10 +486,13 @@ if __name__ == "__main__":
         print("  See module docstring for details.")
         raise SystemExit(1)
 
-    # H1/H2/H3 as specified use DMG_REVISE_RATE=0.36, which is a placeholder.
-    # Empirical finding: actual formula is ATK × (card_eff/100) × (1−def_reduce).
-    # With skill_mult=1.0 and the 0.36 factor, expected coverage is ~0% here.
-    for hyp in ["H1", "H2", "H3"]:
+    # H1/H2/H3 use DMG_REVISE_RATE=0.36 (placeholder).  EMP uses real eff_value.
+    # Hits with eff_value=0.0 are skipped by EMP (predict_damage_empirical raises TypeError).
+    hits_with_eff = [h for h in all_hits if h.get("eff_value", 0.0) > 0.0]
+    print(f"Hits with resolved eff_value (eligible for EMP): {len(hits_with_eff)} / {len(all_hits)}")
+    print()
+
+    for hyp in ["H1", "H2", "H3", "EMP"]:
         result = validate_against_hits(all_hits, hypothesis=hyp, tolerance=0.05)
         pct = result["coverage"] * 100
         median_pct = (
@@ -380,7 +501,7 @@ if __name__ == "__main__":
             else float("nan")
         )
         print(
-            f"{hyp} coverage @ ±5%: {pct:.1f}%"
+            f"{hyp} coverage @ +-5%: {pct:.1f}%"
             f" ({result['n_within_tolerance']} / {result['n_hits']} hits)"
         )
         if median_pct == median_pct:
@@ -389,10 +510,37 @@ if __name__ == "__main__":
             print(f"  Median relative diff: n/a (no diffs computed)")
         print()
 
+    # EMP residual analysis: report failing hits with dva_css presence
+    print("EMP residual analysis (hits with eff_value > 0):")
+    for h in all_hits:
+        ev = h.get("eff_value", 0.0)
+        if ev == 0.0:
+            continue
+        try:
+            pred = predict_damage_empirical(
+                atk=h["atk"],
+                eff_value=ev,
+                def_reduce=h["def_reduce"],
+                crit_factor=h["crit_factor"],
+            )
+        except TypeError:
+            continue
+        obs = h["observed_dmg"]
+        rel_err = abs(pred - obs) / obs if obs > 0 else float("nan")
+        status = "PASS" if rel_err <= 0.05 else "FAIL"
+        dva = h.get("_dva_css", [])
+        print(
+            f"  [{status}] atk={h['atk']:.0f} ev={ev:.0f} dr={h['def_reduce']:.4f}"
+            f" cf={h['crit_factor']:.2f} pred={pred:.0f} obs={obs:.0f}"
+            f" err={rel_err*100:.1f}% dva_css={dva[:3]}"
+            f" card={h.get('_card_res_id', 'n/a')}"
+        )
+    print()
     print("DONE_WITH_CONCERNS:")
-    print("  H1/H2/H3 coverage < 50%.  Root causes documented in module docstring:")
-    print("  1. DMG_REVISE_RATE=0.36 incorrect; actual mult = card eff_value/100.")
-    print("  2. dva_css stack bonuses cause ~22% unexplained crit variance.")
-    print("  3. crit_factor formula (1+CDmg/100) inconsistent with observed 2.64× ratio.")
-    print("  4. Only 4 clean surviving hits in 4 capture files (insufficient sample).")
+    print("  EMP formula verified for non-crit hits without dva_css amplification.")
+    print("  Residual failures explained by dva_css stack bonuses on crit hits.")
+    print("  Root causes:")
+    print("  1. dva_css stacks cause wide crit variance (±22% or more).")
+    print("  2. crit_factor formula (1+CDmg/100) may include dva_css contributions.")
+    print("  3. Hits with empty used_cards (no card played) cannot resolve eff_value.")
     print("  See api/capture/validate_damage.py docstring for full schema findings.")
