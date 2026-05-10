@@ -9,10 +9,12 @@ Output schema:
       "params_keys": ["value_x", "value_y", ...],
       "source_files": ["card(camille)@skill_eff.json", ...],
       "instance_count": N,
+      "observed_count": M,
     }
   }
 """
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -56,11 +58,69 @@ def parse_skill_eff_files(source_dir: Path) -> dict:
     }
 
 
+# Format: "SkillEff <num>:<res_id>:<TYPE>[:params]"
+# Example: "**battle log : SkillEff 107:rr_lux_01_01_01:SKILL_EFF_DMG_IGNORE_COND"
+SKILL_EFF_LINE_PATTERN = re.compile(r"SkillEff\s+\d+:[^:]+:([A-Z_][A-Z_0-9]*)")
+
+
+def parse_dev_msg_skill_eff_lines(dev_msg: str) -> list[str]:
+    """Extract SKILL_EFF_* types from dev_msg battle log text.
+
+    Returns list of type names in order of appearance (with duplicates).
+    """
+    if not dev_msg:
+        return []
+    return SKILL_EFF_LINE_PATTERN.findall(dev_msg)
+
+
+def cross_ref_observed_events(static_dict: dict, observed_types: list[str]) -> dict:
+    """Annotate static_dict entries with observed_count from a list of observed types.
+
+    Mutates and returns static_dict. Types not in static_dict are silently dropped
+    (we only track what exists in the canonical dictionary).
+    """
+    counts = {}
+    for t in observed_types:
+        counts[t] = counts.get(t, 0) + 1
+    for eff_type, entry in static_dict.items():
+        entry["observed_count"] = counts.get(eff_type, 0)
+    return static_dict
+
+
+def load_observed_skill_effs(jsonl_dir: Path) -> list[str]:
+    """Walk all websocket_debug_*.jsonl files and extract every SkillEff type observed."""
+    all_types: list[str] = []
+    for fp in sorted(jsonl_dir.glob("websocket_debug_*.jsonl")):
+        with fp.open("r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    frame = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if not isinstance(frame, dict):
+                    continue
+                data = frame.get("data") or {}
+                if not isinstance(data, dict):
+                    continue
+                dev_msg = data.get("dev_msg")
+                if isinstance(dev_msg, str) and "SkillEff" in dev_msg:
+                    all_types.extend(parse_dev_msg_skill_eff_lines(dev_msg))
+    return all_types
+
+
 def main():
+    import os
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     result = parse_skill_eff_files(CLIENT_DB)
+
+    snap_dir = Path(os.environ.get("LOCALAPPDATA", "")) / "hub-czn" / "snapshots"
+    observed_types = load_observed_skill_effs(snap_dir)
+    result = cross_ref_observed_events(result, observed_types)
+
     OUTPUT_PATH.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"Wrote {len(result)} eff_types to {OUTPUT_PATH}")
+    observed_count = sum(1 for v in result.values() if v.get("observed_count", 0) > 0)
+    print(f"Wrote {len(result)} eff_types ({observed_count} observed in dev_msg, "
+          f"total observations: {len(observed_types)}) to {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
