@@ -9,11 +9,24 @@ Selects the form with the highest R^2.
 ZERO_VAL = -160.0
 CURV_VAL = 300.0
 
+# f1-f4: parameterized with constant_meta(stat_formula) values directly.
+# These all increase with DEF but observed dmg_decrease decreases — they
+# don't fit. Kept for reference and to prove the constants don't apply
+# to S_DMG_DECREASE_RATE directly.
+#
+# f5: CURV_VAL / (d + CURV_VAL) — natural "decreases with DEF" shape that
+# mirrors simulate.py's def_reduction formula. Uses known game constant.
+# f6: 268 / (d + 503) — empirically fitted on 133 (DEF, dmg_decrease)
+# pairs via least-squares. Constants 268, 503 don't map directly to
+# constant_meta values; suggests S_DMG_DECREASE_RATE uses a separate
+# constant set or is computed differently than the documented formula.
 CANDIDATE_FORMS = {
     "f1": lambda d: max(0.0, min(1.0, (d + ZERO_VAL) / CURV_VAL)),
     "f2": lambda d: d / (d + CURV_VAL) if (d + CURV_VAL) > 0 else 0.0,
     "f3": lambda d: max(0.0, (d + ZERO_VAL) / (d + CURV_VAL)) if (d + CURV_VAL) > 0 else 0.0,
     "f4": lambda d: d / (d + CURV_VAL - ZERO_VAL) if (d + CURV_VAL - ZERO_VAL) > 0 else 0.0,
+    "f5": lambda d: CURV_VAL / (d + CURV_VAL) if (d + CURV_VAL) > 0 else 0.0,
+    "f6": lambda d: 268.0 / (d + 503.0) if (d + 503.0) > 0 else 0.0,
 }
 
 
