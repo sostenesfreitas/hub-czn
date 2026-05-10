@@ -33,3 +33,24 @@ def test_level_above_table_max_clamps_to_max():
     stats_at_62 = get_char_base_stats("1057", level=62, ascend=0)
     stats_at_999 = get_char_base_stats("1057", level=999, ascend=0)
     assert stats_at_62 == stats_at_999
+
+
+def test_ascend_above_max_clamps_to_max():
+    """ascend=999 should return the same stats as the maximum valid ascend, not zero."""
+    stats_at_max = get_char_base_stats("1057", level=60, ascend=5)  # 5 is max in dev_ascend
+    stats_at_999 = get_char_base_stats("1057", level=60, ascend=999)
+    assert stats_at_max == stats_at_999
+
+
+def test_ascend_negative_clamps_to_zero():
+    """ascend=-1 should be clamped to 0 (same as ascend=0)."""
+    stats_at_0 = get_char_base_stats("1057", level=60, ascend=0)
+    stats_at_neg = get_char_base_stats("1057", level=60, ascend=-1)
+    assert stats_at_0 == stats_at_neg
+
+
+def test_level_zero_clamps_to_one():
+    """level=0 should be clamped to 1 (same as level=1)."""
+    stats_at_1 = get_char_base_stats("1057", level=1, ascend=0)
+    stats_at_0 = get_char_base_stats("1057", level=0, ascend=0)
+    assert stats_at_1 == stats_at_0
