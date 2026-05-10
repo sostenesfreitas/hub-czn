@@ -8,7 +8,7 @@ Inputs (from C:\\Users\\soste\\Downloads\\output\\db):
   - char_base@char_combatant.json
 
 Outputs (to api/data/):
-  - level_scaling.json     {group_id: {level_int: {ATK, DEF, HP}}}
+  - level_scaling.json     {group_id: {level_str: {ATK, DEF, HP}}}
   - ascend_scaling.json    {group_id: [ {ATK, DEF, HP} per ascend 0..N ]}
   - char_base_l1.json      {combatant_id: {atk, def, hp, cri, cri_dmg, level_group, ascend_group, limit_break_group, friendship_group}}
 
