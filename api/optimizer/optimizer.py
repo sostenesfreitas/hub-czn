@@ -18,6 +18,7 @@ from game_data import (
     get_partner_stats, get_partner_ascend_bonus, get_partner_passive_stats, get_potential_stat_bonus,
     SETS, SLOT_ORDER, ALL_STAT_NAMES
 )
+from game_data.scaling import get_char_base_stats
 
 
 class GearOptimizer:
@@ -280,7 +281,6 @@ class GearOptimizer:
         base_atk, base_def, base_hp, base_cr, base_cd = 0, 0, 0, 0, 125.0
 
         if char_name and char_name in self.character_info:
-            from api.game_data.scaling import get_char_base_stats
             info = self.character_info[char_name]
             res_id_str = str(info.res_id)
             try:
@@ -292,6 +292,7 @@ class GearOptimizer:
                 base_cd = scaled["CDmg"]
             except KeyError:
                 # Unknown combatant_id — fall back to legacy hardcoded data
+                print(f"Warning: scaling data missing for res_id={res_id_str!r} ({char_name!r}), falling back to legacy CHARACTERS")
                 char_data = get_character_by_name(char_name)
                 base_atk = char_data.get("base_atk", 0)
                 base_def = char_data.get("base_def", 0)
