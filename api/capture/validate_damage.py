@@ -84,21 +84,61 @@ Empirical finding from 5 JSONL capture files (13132 frames):
   EMP_DVA coverage is identical to EMP coverage.
   The dva_css issue requires event-stream capture (not snapshot capture) to resolve.
 
-== Known limitations (v3) ==
+== crit_factor resolution (v4) ==
+
+Previously for response/rsp1 cards, the team-level stat dict (bwt.char.status.info)
+was used for both ATK and CDmg.  The team dict has S_ATK but NOT S_CRI_DMG_RATE,
+so crit_factor fell back to (1 + 100/100) = 2.0 for all response card crits.
+
+Fix: ATK still comes from the team dict for response cards; CDmg is resolved from
+the individual caster's chars[] entry (matched by card.char_id == chars[i].id).
+For Heidemarie (caster of c_30093 cards): observed CDmg = 237 → cf = 3.37.
+
+Two candidate formulas were tested for crit_factor:
+  EMP_CF_PLUS1: cf = 1 + CDmg/100   (same as EMP but with real CDmg per caster)
+  EMP_CF_DIRECT: cf = CDmg/100      (direct ratio, no +1 base)
+
+Results on 7 EMP-eligible hits (5 JSONL files, 13132 frames):
+
+  card                              obs  crit cdmg   EMP err  CF+1 err  CFdir err
+  c_30075_srt4_mut                  547  N    221    543 -0.7%  543 -0.7%   543 -0.7%
+  c_30093_srt4_rsp1                1398  Y    237   1813+29.7% 1813+29.7%  1275 -8.8%
+  c_30093_srt4_rsp1                1148  Y    237   1813+57.9% 1813+57.9%  1275+11.0%
+  c_30093_srt4_rsp1                1219  Y    237   1813+48.7% 1813+48.7%  1275 +4.6%
+  c_30093_srt4_rsp1                 530  N    237    552 +4.1%  552 +4.1%   552 +4.1%
+  c_1052_uni4_lbk                10743  Y    195   3006-72.0% 3667-65.9%  2423-77.4%
+  c_1052_srt4_rsp1                  193  Y    125    335+73.3%  335+73.3%   186 -3.7%
+
+Coverage @ ±5%:  EMP=5% (2/40)  EMP_CF_PLUS1=5% (2/40)  EMP_CF_DIRECT=10% (4/40)
+
+WINNER: EMP_CF_DIRECT (cf = CDmg/100)
+  - EMP_CF_PLUS1 is equivalent to EMP for crits (both compute 1+CDmg/100=3.37);
+    EMP already had crit_factor updated from real CDmg, so no gain.
+  - EMP_CF_DIRECT picks up 2 additional hits: c_30093 rsp1 crit (+4.6% vs obs=1219)
+    and c_1052 rsp2 crit (-3.7% vs obs=193).
+  - The three remaining c_30093 crit failures (8.8%, 11.0% remaining after 4.6% best)
+    are explained by dva_css=[110,111,112] / [124,125] contributions that are consumed
+    before snapshot capture.  The empirical B3 ratio of 2.64× was likely CDmg/100 for
+    a lower-CDmg state of the character, not a universal constant.
+  - The LBK hit (obs=10743) remains 77% off under all formulas; it has an additional
+    stacking mechanism not captured in snapshots regardless of crit_factor formula.
+
+== Known limitations (v4) ==
   - DMG_REVISE_RATE = 0.36 is a PLACEHOLDER from the task spec; actual formula
     embeds the multiplier in card eff_value/100.  H1/H2/H3 show low coverage.
   - dva_css (damage-value adjustment stacks): the conditions are consumed before
     snapshot; csMap lookup ALWAYS returns empty for the referenced cs_ids.
     EMP_DVA = EMP (no improvement possible from snapshot data alone).
-  - crit_factor formula: (1 + S_CRI_DMG_RATE/100); for response cards the team
-    info lacks S_CRI_DMG_RATE so the code falls back to 100 (cf=2.0).
-    Correct behavior would look up the caster char's CDmg even for response cards.
+  - crit_factor formula: WINNER is cf = CDmg/100 (EMP_CF_DIRECT).  The old
+    (1 + CDmg/100) formula overcounts by 1 base-unit for the observed hits.
+    Real CDmg is now resolved from the individual caster chars[] entry by
+    card.char_id even for response/rsp1 cards; fallback is CDmg=200 with warning.
   - DMG_ATTR_BASE_ON_DEF hits use monster DEF as the damage basis, not ATK;
     these are now filtered out in _frame_to_hit so EMP formula is not applied.
   - Hits with empty used_cards cannot have eff_value resolved; they are skipped
     for EMP validation (the eff_value field will be 0.0).
-  - EMP/EMP_DVA coverage 5% (2/40 hits) due to dva_css variance on crit hits
-    and the crit_factor fallback issue.
+  - EMP_CF_DIRECT coverage 10% (4/40 hits); remaining failures due to dva_css
+    stacks consumed before snapshot and the LBK stacking mechanism.
 """
 
 from __future__ import annotations
@@ -288,12 +328,53 @@ def predict_damage_empirical_with_dva(
     return atk * (eff_value / 100.0) * (1.0 - def_reduce) * crit_factor * dva_mult
 
 
+def predict_damage_emp_cf_plus1(
+    atk: float,
+    eff_value: float,
+    def_reduce: float,
+    cdmg: float,
+    is_crit: bool,
+    dva_mult: float = 1.0,
+    **_ignored: object,
+) -> float:
+    """EMP formula, crit_factor = 1 + CDmg/100 when crit, else 1.0.
+
+    Uses the real caster S_CRI_DMG_RATE (cdmg) resolved from chars[] by char_id,
+    rather than the team-level stat dict which lacks S_CRI_DMG_RATE.
+    """
+    if eff_value == 0.0:
+        raise TypeError("eff_value is 0.0 — hit has no resolved eff_value; skip")
+    cf = (1.0 + cdmg / 100.0) if is_crit else 1.0
+    return atk * (eff_value / 100.0) * (1.0 - def_reduce) * cf * dva_mult
+
+
+def predict_damage_emp_cf_direct(
+    atk: float,
+    eff_value: float,
+    def_reduce: float,
+    cdmg: float,
+    is_crit: bool,
+    dva_mult: float = 1.0,
+    **_ignored: object,
+) -> float:
+    """EMP formula, crit_factor = CDmg/100 when crit, else 1.0.
+
+    Uses the real caster S_CRI_DMG_RATE (cdmg) resolved from chars[] by char_id.
+    """
+    if eff_value == 0.0:
+        raise TypeError("eff_value is 0.0 — hit has no resolved eff_value; skip")
+    cf = (cdmg / 100.0) if is_crit else 1.0
+    return atk * (eff_value / 100.0) * (1.0 - def_reduce) * cf * dva_mult
+
+
 HYPOTHESES: dict = {
     "H1": predict_damage_h1,
     "H2": predict_damage_h2,
     "H3": predict_damage_h3,
     "EMP": predict_damage_empirical,
     "EMP_DVA": predict_damage_empirical_with_dva,
+    "EMP_CF_PLUS1": predict_damage_emp_cf_plus1,
+    "EMP_CF_DIRECT": predict_damage_emp_cf_direct,
 }
 
 
@@ -458,26 +539,42 @@ def _frame_to_hit(frame: dict) -> dict | None:
             attacker_info = _get_char_info(chars, caster_char_id)
             if attacker_info is None:
                 attacker_info = chars[0].get("status", {}).get("info", {}) if chars else {}
+            atk = attacker_info.get("S_ATK")
+            cri_dmg_raw = attacker_info.get("S_CRI_DMG_RATE")
         else:
-            # Response/other card: use team average ATK
+            # Response/other card: use team average ATK but caster's individual CDmg.
+            # The team-level stat dict (bwt.char.status.info) has S_ATK but lacks
+            # S_CRI_DMG_RATE, so we resolve CDmg from the individual caster in chars[].
             if team_atk is not None:
-                attacker_info = team_char_info
+                atk = team_atk
             else:
                 # Fallback: resolve caster from cardMap
                 char_id = _resolve_caster_char_id(bwt)
                 attacker_info = _get_char_info(chars, char_id)
                 if attacker_info is None:
                     attacker_info = chars[0].get("status", {}).get("info", {}) if chars else {}
+                atk = attacker_info.get("S_ATK")
+            # Always look up caster's CDmg from individual chars[] entry.
+            caster_info = _get_char_info(chars, caster_char_id)
+            cri_dmg_raw = (caster_info or {}).get("S_CRI_DMG_RATE") if caster_info else None
 
-        atk = attacker_info.get("S_ATK")
-        cri_dmg = attacker_info.get("S_CRI_DMG_RATE", 100.0)
         if atk is None:
             return None
+
+        # Resolve CDmg with fallback and warning.
+        if cri_dmg_raw is None:
+            print(
+                f"WARNING: S_CRI_DMG_RATE not found for caster_char_id={caster_char_id}"
+                f" card={card_res_id}; falling back to CDmg=200 (cf=3.0)"
+            )
+            cri_dmg = 200.0
+        else:
+            cri_dmg = float(cri_dmg_raw)
 
         # --- Crit factor ---
         # Documented: 1 + S_CRI_DMG_RATE/100
         # Note: empirical crit/non-crit ratio varies due to dva_css; flag as concern.
-        crit_factor = (1.0 + float(cri_dmg) / 100.0) if is_crit else 1.0
+        crit_factor = (1.0 + cri_dmg / 100.0) if is_crit else 1.0
 
         return {
             "atk": float(atk),
@@ -486,6 +583,9 @@ def _frame_to_hit(frame: dict) -> dict | None:
             "skill_mult": 1.0,   # H1/H2/H3 use this; EMP ignores it
             "eff_value": float(eff_value),   # 0.0 if not resolved
             "dva_mult": dva_mult,            # 1.0 if no dva_css resolved from csMap
+            # EMP_CF_PLUS1 / EMP_CF_DIRECT fields (raw CDmg and bool crit flag)
+            "cdmg": cri_dmg,
+            "is_crit": is_crit,
             "observed_dmg": float(observed_dmg),
             # metadata (not used in prediction, useful for debugging)
             "_is_crit": is_crit,
@@ -634,7 +734,7 @@ if __name__ == "__main__":
     print(f"Hits with resolved dva_mult != 1.0: {len(hits_with_dva)} / {len(hits_with_eff)}")
     print()
 
-    for hyp in ["H1", "H2", "H3", "EMP", "EMP_DVA"]:
+    for hyp in ["H1", "H2", "H3", "EMP", "EMP_DVA", "EMP_CF_PLUS1", "EMP_CF_DIRECT"]:
         result = validate_against_hits(all_hits, hypothesis=hyp, tolerance=0.05)
         pct = result["coverage"] * 100
         median_pct = (
@@ -652,42 +752,46 @@ if __name__ == "__main__":
             print(f"  Median relative diff: n/a (no diffs computed)")
         print()
 
-    # EMP_DVA per-hit residual analysis (hits with eff_value > 0)
-    print("EMP_DVA per-hit residual analysis (hits with eff_value > 0):")
+    # Per-hit residual analysis (hits with eff_value > 0) — all EMP variants
+    print("Per-hit residual analysis (hits with eff_value > 0):")
+    print(
+        f"  {'card':30s} {'obs':>6s} {'crit':>4s} {'cdmg':>5s}"
+        f" {'EMP':>6s}{'err':>6s} {'EMP_CF+1':>8s}{'err':>6s} {'EMP_CFdir':>9s}{'err':>6s}"
+    )
     for h in all_hits:
         ev = h.get("eff_value", 0.0)
         if ev == 0.0:
             continue
         dm = h.get("dva_mult", 1.0)
+        cdmg = h.get("cdmg", 200.0)
+        is_crit = h.get("is_crit", False)
         try:
             pred_emp = predict_damage_empirical(
-                atk=h["atk"],
-                eff_value=ev,
-                def_reduce=h["def_reduce"],
-                crit_factor=h["crit_factor"],
+                atk=h["atk"], eff_value=ev,
+                def_reduce=h["def_reduce"], crit_factor=h["crit_factor"],
             )
-            pred_dva = predict_damage_empirical_with_dva(
-                atk=h["atk"],
-                eff_value=ev,
-                def_reduce=h["def_reduce"],
-                crit_factor=h["crit_factor"],
-                dva_mult=dm,
+            pred_p1 = predict_damage_emp_cf_plus1(
+                atk=h["atk"], eff_value=ev,
+                def_reduce=h["def_reduce"], cdmg=cdmg, is_crit=is_crit, dva_mult=dm,
+            )
+            pred_dir = predict_damage_emp_cf_direct(
+                atk=h["atk"], eff_value=ev,
+                def_reduce=h["def_reduce"], cdmg=cdmg, is_crit=is_crit, dva_mult=dm,
             )
         except TypeError:
             continue
         obs = h["observed_dmg"]
-        rel_err_emp = abs(pred_emp - obs) / obs if obs > 0 else float("nan")
-        rel_err_dva = abs(pred_dva - obs) / obs if obs > 0 else float("nan")
-        status_emp = "PASS" if rel_err_emp <= 0.05 else "FAIL"
-        status_dva = "PASS" if rel_err_dva <= 0.05 else "FAIL"
-        dva = h.get("_dva_css", [])
+        if obs == 0:
+            continue
+        err_emp = (pred_emp - obs) / obs
+        err_p1  = (pred_p1  - obs) / obs
+        err_dir = (pred_dir - obs) / obs
+        card = h.get("_card_res_id", "n/a") or "n/a"
         print(
-            f"  EMP[{status_emp}] DVA[{status_dva}]"
-            f" atk={h['atk']:.0f} ev={ev:.0f} dr={h['def_reduce']:.4f}"
-            f" cf={h['crit_factor']:.2f} dm={dm:.3f}"
-            f" pred_emp={pred_emp:.0f} pred_dva={pred_dva:.0f} obs={obs:.0f}"
-            f" err_emp={rel_err_emp*100:.1f}% err_dva={rel_err_dva*100:.1f}%"
-            f" dva_css={dva[:3]} card={h.get('_card_res_id', 'n/a')}"
+            f"  {card:30s} {obs:>6.0f} {'Y' if is_crit else 'N':>4s} {cdmg:>5.0f}"
+            f" {pred_emp:>6.0f}{err_emp*100:>+6.1f}%"
+            f" {pred_p1:>8.0f}{err_p1*100:>+6.1f}%"
+            f" {pred_dir:>9.0f}{err_dir*100:>+6.1f}%"
         )
     print()
     print("DONE_WITH_CONCERNS:")
@@ -696,6 +800,6 @@ if __name__ == "__main__":
     print("  consumed before snapshot capture (never found in csMap).")
     print("  Root causes for EMP failures:")
     print("  1. dva_css cs_ids expire before snapshot; csMap lookup returns empty.")
-    print("  2. crit_factor fallback to 2.0 for response cards (team ATK lacks CDmg).")
+    print("  2. crit_factor: EMP uses old fallback cf; EMP_CF_PLUS1/DIRECT use real CDmg.")
     print("  3. LBK/EGO hits use a stacking damage mechanism not captured in snapshots.")
     print("  See api/capture/validate_damage.py docstring for full dva_css findings.")

@@ -52,6 +52,8 @@ from api.capture.validate_damage import (
     predict_damage_h1,
     predict_damage_empirical,
     predict_damage_empirical_with_dva,
+    predict_damage_emp_cf_plus1,
+    predict_damage_emp_cf_direct,
     _resolve_dva_multiplier,
     validate_against_hits,
 )
@@ -153,3 +155,91 @@ def test_predict_damage_empirical_with_dva_skips_zero_eff_value():
     """eff_value=0.0 must raise TypeError regardless of dva_mult."""
     with pytest.raises(TypeError):
         predict_damage_empirical_with_dva(atk=1000, eff_value=0.0, def_reduce=0.3, crit_factor=1.0, dva_mult=1.5)
+
+
+# ---------------------------------------------------------------------------
+# EMP_CF_PLUS1 / EMP_CF_DIRECT tests (crit_factor formula candidates)
+# ---------------------------------------------------------------------------
+
+def test_emp_cf_plus1_non_crit_equals_emp():
+    """For non-crit hits, EMP_CF_PLUS1 must equal EMP (cf=1.0 in both cases)."""
+    atk, ev, dr, cdmg = 1087.0, 75.0, 0.334, 237.0
+    emp = predict_damage_empirical(atk=atk, eff_value=ev, def_reduce=dr, crit_factor=1.0)
+    p1 = predict_damage_emp_cf_plus1(atk=atk, eff_value=ev, def_reduce=dr, cdmg=cdmg, is_crit=False)
+    assert emp == pytest.approx(p1)
+
+
+def test_emp_cf_plus1_crit_uses_one_plus_cdmg_over_100():
+    """EMP_CF_PLUS1 crit hit: cf = 1 + CDmg/100 = 3.37 when CDmg=237."""
+    # atk=1050, ev=80, dr=0.3597, cdmg=237 → base=1050*0.80*0.6403 = 537.9
+    # cf = 1 + 237/100 = 3.37 → 537.9 × 3.37 ≈ 1812.6
+    p1 = predict_damage_emp_cf_plus1(
+        atk=1050.0, eff_value=80.0, def_reduce=0.3597, cdmg=237.0, is_crit=True
+    )
+    assert p1 == pytest.approx(1050.0 * 0.80 * (1 - 0.3597) * (1 + 237.0 / 100.0), rel=1e-4)
+
+
+def test_emp_cf_direct_crit_uses_cdmg_over_100():
+    """EMP_CF_DIRECT crit hit: cf = CDmg/100 = 2.37 when CDmg=237."""
+    # atk=1050, ev=80, dr=0.3597, cdmg=237 → cf=2.37 → 1050*0.80*0.6403*2.37 ≈ 1275.0
+    pd = predict_damage_emp_cf_direct(
+        atk=1050.0, eff_value=80.0, def_reduce=0.3597, cdmg=237.0, is_crit=True
+    )
+    assert pd == pytest.approx(1050.0 * 0.80 * (1 - 0.3597) * (237.0 / 100.0), rel=1e-4)
+
+
+def test_emp_cf_direct_non_crit_uses_cf_one():
+    """EMP_CF_DIRECT non-crit hit: cf = 1.0 regardless of CDmg."""
+    pd = predict_damage_emp_cf_direct(
+        atk=1050.0, eff_value=80.0, def_reduce=0.3597, cdmg=237.0, is_crit=False
+    )
+    assert pd == pytest.approx(1050.0 * 0.80 * (1 - 0.3597) * 1.0, rel=1e-4)
+
+
+def test_emp_cf_direct_skips_zero_eff_value():
+    """eff_value=0.0 must raise TypeError for EMP_CF_DIRECT."""
+    with pytest.raises(TypeError):
+        predict_damage_emp_cf_direct(atk=1000, eff_value=0.0, def_reduce=0.3, cdmg=200.0, is_crit=True)
+
+
+def test_emp_cf_plus1_skips_zero_eff_value():
+    """eff_value=0.0 must raise TypeError for EMP_CF_PLUS1."""
+    with pytest.raises(TypeError):
+        predict_damage_emp_cf_plus1(atk=1000, eff_value=0.0, def_reduce=0.3, cdmg=200.0, is_crit=True)
+
+
+def test_emp_cf_direct_observed_c30093_rsp1_non_crit():
+    """Verified non-crit hit: c_30093_srt4_rsp1, obs=530, pred≈552 (4.1% err)."""
+    # Non-crit — cf=1.0 for both formulas; error is due to unresolved dva_css.
+    pred = predict_damage_emp_cf_direct(
+        atk=1077.3, eff_value=80.0, def_reduce=0.3597, cdmg=237.0, is_crit=False
+    )
+    assert abs(pred - 530.0) / 530.0 < 0.05
+
+
+def test_emp_cf_direct_observed_c1052_rsp2_crit():
+    """Verified crit hit: c_1052_srt4_rsp1, obs=193, EMP_CF_DIRECT pred≈186 (-3.7%)."""
+    pred = predict_damage_emp_cf_direct(
+        atk=774.0, eff_value=30.0, def_reduce=0.3597, cdmg=125.0, is_crit=True
+    )
+    assert abs(pred - 193.0) / 193.0 < 0.05
+
+
+def test_validate_against_hits_emp_cf_direct_new_hypotheses():
+    """EMP_CF_DIRECT hypothesis key must exist in HYPOTHESES and cover known hits."""
+    from api.capture.validate_damage import HYPOTHESES
+    assert "EMP_CF_PLUS1" in HYPOTHESES
+    assert "EMP_CF_DIRECT" in HYPOTHESES
+    # Synthetic non-crit hit where both formulas agree
+    fake_hits = [
+        {
+            "atk": 1000.0, "eff_value": 80.0, "def_reduce": 0.3,
+            "crit_factor": 1.0, "cdmg": 200.0, "is_crit": False,
+            "dva_mult": 1.0, "observed_dmg": 560.0,
+        },
+    ]
+    # Non-crit: both CF formulas produce same result as EMP (cf=1.0)
+    r_p1 = validate_against_hits(fake_hits, hypothesis="EMP_CF_PLUS1", tolerance=0.05)
+    r_dir = validate_against_hits(fake_hits, hypothesis="EMP_CF_DIRECT", tolerance=0.05)
+    assert r_p1["n_within_tolerance"] == 1
+    assert r_dir["n_within_tolerance"] == 1
