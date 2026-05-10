@@ -54,6 +54,7 @@ from api.capture.validate_damage import (
     predict_damage_empirical_with_dva,
     predict_damage_emp_cf_plus1,
     predict_damage_emp_cf_direct,
+    predict_damage_emp_full,
     _resolve_dva_multiplier,
     validate_against_hits,
 )
@@ -230,6 +231,7 @@ def test_validate_against_hits_emp_cf_direct_new_hypotheses():
     from api.capture.validate_damage import HYPOTHESES
     assert "EMP_CF_PLUS1" in HYPOTHESES
     assert "EMP_CF_DIRECT" in HYPOTHESES
+    assert "EMP_FULL" in HYPOTHESES
     # Synthetic non-crit hit where both formulas agree
     fake_hits = [
         {
@@ -243,3 +245,62 @@ def test_validate_against_hits_emp_cf_direct_new_hypotheses():
     r_dir = validate_against_hits(fake_hits, hypothesis="EMP_CF_DIRECT", tolerance=0.05)
     assert r_p1["n_within_tolerance"] == 1
     assert r_dir["n_within_tolerance"] == 1
+
+
+# ---------------------------------------------------------------------------
+# EMP_FULL tests (weak/EGO multiplier)
+# ---------------------------------------------------------------------------
+
+def test_emp_full_non_ego_equals_emp_cf_direct():
+    """EMP_FULL with is_ego=False must produce same result as EMP_CF_DIRECT."""
+    kwargs = dict(atk=1000.0, eff_value=80.0, def_reduce=0.3, cdmg=200.0,
+                  is_crit=True, dva_mult=1.0)
+    cf_direct = predict_damage_emp_cf_direct(**kwargs)
+    emp_full_no_ego = predict_damage_emp_full(
+        **kwargs, is_weak=True, weak_ego_rate=125.0, is_ego=False
+    )
+    assert emp_full_no_ego == pytest.approx(cf_direct, rel=1e-9)
+
+
+def test_emp_full_ego_no_weak_equals_emp_cf_direct():
+    """EMP_FULL with is_ego=True but is_weak=False must equal EMP_CF_DIRECT."""
+    kwargs = dict(atk=1000.0, eff_value=80.0, def_reduce=0.3, cdmg=200.0,
+                  is_crit=True, dva_mult=1.0)
+    cf_direct = predict_damage_emp_cf_direct(**kwargs)
+    emp_full_not_weak = predict_damage_emp_full(
+        **kwargs, is_weak=False, weak_ego_rate=125.0, is_ego=True
+    )
+    assert emp_full_not_weak == pytest.approx(cf_direct, rel=1e-9)
+
+
+def test_emp_full_ego_and_weak_applies_multiplier():
+    """EMP_FULL with is_ego=True and is_weak=True must apply weak_ego_rate/100."""
+    kwargs = dict(atk=1000.0, eff_value=80.0, def_reduce=0.3, cdmg=200.0,
+                  is_crit=True, dva_mult=1.0)
+    cf_direct = predict_damage_emp_cf_direct(**kwargs)
+    emp_full = predict_damage_emp_full(
+        **kwargs, is_weak=True, weak_ego_rate=125.0, is_ego=True
+    )
+    # With weak_ego_rate=125, weak_mult=1.25
+    assert emp_full == pytest.approx(cf_direct * 1.25, rel=1e-9)
+
+
+def test_emp_full_skips_zero_eff_value():
+    """eff_value=0.0 must raise TypeError for EMP_FULL."""
+    with pytest.raises(TypeError):
+        predict_damage_emp_full(
+            atk=1000, eff_value=0.0, def_reduce=0.3, cdmg=200.0,
+            is_crit=True, is_weak=True, weak_ego_rate=125.0, is_ego=True
+        )
+
+
+def test_emp_full_default_neutral_weak_ego_rate():
+    """Default weak_ego_rate=100 (neutral) must give same as EMP_CF_DIRECT when ego+weak."""
+    kwargs = dict(atk=1000.0, eff_value=80.0, def_reduce=0.3, cdmg=200.0,
+                  is_crit=False, dva_mult=1.0)
+    cf_direct = predict_damage_emp_cf_direct(**kwargs)
+    emp_full = predict_damage_emp_full(
+        **kwargs, is_weak=True, weak_ego_rate=100.0, is_ego=True
+    )
+    # weak_ego_rate=100 -> weak_mult=1.0 -> identical
+    assert emp_full == pytest.approx(cf_direct, rel=1e-9)

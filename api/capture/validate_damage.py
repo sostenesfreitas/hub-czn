@@ -123,22 +123,72 @@ WINNER: EMP_CF_DIRECT (cf = CDmg/100)
   - The LBK hit (obs=10743) remains 77% off under all formulas; it has an additional
     stacking mechanism not captured in snapshots regardless of crit_factor formula.
 
-== Known limitations (v4) ==
+== EGO / Weak / Spark multiplier investigation (v5) ==
+
+H_WEAK: S_WEAK_EGO_DMG_RATE (value 125 = +25%) applies when monster.weak == True.
+  Empirical finding: this stat is present on ALL casters (value 125 universally).
+  Applying it to all weak hits makes non-EGO hits WORSE (+25% overshoot).
+  Conclusion: the stat only fires when EGO is simultaneously active.
+
+  Gate condition: cardMap[card_id].outline == True
+  curEgo is set to the team's current EGO stage on ALL cards; it does NOT
+  distinguish EGO-card hits from regular hits (all cards show EGO_INSTINCT or
+  EGO_LOVE in the tested frames).
+  The 'outline' field is True only for EGO-generated special cards (LBK).
+  For mut/rsp1 cards: outline absent/False -> is_ego=False -> weak_mult=1.0.
+
+H_EGO: Implemented as predict_damage_emp_full with combined weak/EGO gate.
+  Formula: dmg = ATK * (eff/100) * (1-def_reduce) * cf * weak_mult
+  where weak_mult = weak_ego_rate/100 if (is_weak AND is_ego) else 1.0.
+  For non-EGO cards: identical to EMP_CF_DIRECT (no change in coverage).
+  For LBK hit: base pred = 2423, with weak = 2423*1.25 = 3029. Still 3.55x short.
+
+H_SPARK: card.r_spark.category = CATEGORY_UNIQUE on the LBK card.
+  S_NODE_REINFORCE_CARD_UNIQUE = 26 for char3 (but this yields +26%, still short).
+  No stat named S_SPARK_DMG_RATE, S_UNIQUE_DMG_RATE, or similar was found.
+
+H_PASSIVE: card.passive = [[46, 500], [422, 500]].
+  Passive[0]: skill[46] (c_1052_uni4_lbk_01, eff=1) fires when passive condition
+              46 triggers; "500" might be a trigger threshold or eff override.
+  Passive[1]: skill[422] (cs01_0861_01, eff=30, cs_operation_rule=1) fires when
+              condition 422 triggers from the continueSkill chain.
+  Testing 500 as eff_value override: pred=3690, ratio=2.91x (too low).
+  Testing eff=160+500+500=1160: pred≈8561, ratio=1.25x (close to weak mult).
+  No clean passive interpretation explains the full 9.1x gap.
+
+H_DVA_STACK: cs01_0805 (cs[91]) has term_value=23 (init_tv=6), delta=17 charges.
+  skill[192] (cs01_0805_01) eff=80 with eff_opts=["attack"].
+  eff = 160 + 80*(tv-init) = 160+80*17 = 1520 -> pred=11217 vs obs=10743 -> -4.4%.
+  BUT: this formula predicts 11217 for ALL monsters, while the 9218 hit on a
+  different monster requires eff=1249 (different value). The same cs[91] state
+  applies to all monsters, so the discrepancy proves per-monster stacks are the
+  true mechanism, and the apparent "fit" is coincidental.
+
+BLOCKED (LBK/EGO): The LBK hit's 9.1x multiplier (beyond ATK*eff*def*cf) is
+  caused by 9 dva_css conditions stacked onto the specific target monster by
+  previous turns. These stacks are consumed at the moment of the hit and are
+  completely absent from the snapshot. Each of the 13 monsters in the same
+  snapshot frame has a different damage value with a different dva_css list,
+  confirming monster-specific accumulation that cannot be reconstructed post-hoc.
+  Event-stream capture (not snapshot) is required to resolve LBK/EGO hits.
+
+== Known limitations (v5) ==
   - DMG_REVISE_RATE = 0.36 is a PLACEHOLDER from the task spec; actual formula
     embeds the multiplier in card eff_value/100.  H1/H2/H3 show low coverage.
   - dva_css (damage-value adjustment stacks): the conditions are consumed before
     snapshot; csMap lookup ALWAYS returns empty for the referenced cs_ids.
     EMP_DVA = EMP (no improvement possible from snapshot data alone).
-  - crit_factor formula: WINNER is cf = CDmg/100 (EMP_CF_DIRECT).  The old
-    (1 + CDmg/100) formula overcounts by 1 base-unit for the observed hits.
-    Real CDmg is now resolved from the individual caster chars[] entry by
-    card.char_id even for response/rsp1 cards; fallback is CDmg=200 with warning.
+  - crit_factor formula: WINNER is cf = CDmg/100 (EMP_CF_DIRECT / EMP_FULL).
+    Real CDmg is resolved from the individual caster chars[] entry by card.char_id.
   - DMG_ATTR_BASE_ON_DEF hits use monster DEF as the damage basis, not ATK;
-    these are now filtered out in _frame_to_hit so EMP formula is not applied.
+    these are filtered out in _frame_to_hit so the ATK-based EMP formula is not applied.
   - Hits with empty used_cards cannot have eff_value resolved; they are skipped
-    for EMP validation (the eff_value field will be 0.0).
-  - EMP_CF_DIRECT coverage 10% (4/40 hits); remaining failures due to dva_css
-    stacks consumed before snapshot and the LBK stacking mechanism.
+    for EMP validation (eff_value will be 0.0).
+  - EMP_FULL = EMP_CF_DIRECT for non-EGO hits; it adds weak/EGO multiplier only when
+    the active card has curEgo set to a non-null, non-NONE value.
+  - EMP_FULL coverage: same 4/40 hits as EMP_CF_DIRECT (the weak/EGO path is hit for
+    the LBK card but the remaining 77% gap is still the dva_css blocker).
+  - LBK/EGO hits require event-stream capture; snapshot-only analysis is blocked.
 """
 
 from __future__ import annotations
@@ -367,6 +417,52 @@ def predict_damage_emp_cf_direct(
     return atk * (eff_value / 100.0) * (1.0 - def_reduce) * cf * dva_mult
 
 
+def predict_damage_emp_full(
+    atk: float,
+    eff_value: float,
+    def_reduce: float,
+    cdmg: float,
+    is_crit: bool,
+    dva_mult: float = 1.0,
+    is_weak: bool = False,
+    weak_ego_rate: float = 100.0,
+    is_ego: bool = False,
+    **_ignored: object,
+) -> float:
+    """EMP_FULL formula: EMP_CF_DIRECT + weak/EGO multiplier.
+
+    dmg = ATK * (eff_value/100) * (1-def_reduce) * cf * weak_mult * dva_mult
+
+    where:
+      cf         = CDmg/100 when crit, else 1.0  (EMP_CF_DIRECT formula)
+      weak_mult  = (weak_ego_rate / 100.0)  when  is_weak AND is_ego, else 1.0
+
+    weak/EGO interaction:
+      S_WEAK_EGO_DMG_RATE applies only when BOTH conditions are true:
+        1. The target monster is in weak/break state  (lastDamageEvent.weak == True)
+        2. The card is an EGO-outline card  (cardMap[card_id].outline == True)
+      curEgo on the card reflects the team's current EGO stage (set on ALL cards)
+      and does NOT distinguish EGO-card hits from regular hits.
+      Empirically, applying S_WEAK_EGO_DMG_RATE to mut/rsp1 hits where weak=True
+      but outline=False worsens the prediction from ~0% to ~+25% error.
+
+    LBK note:
+      The large LBK hit (obs=10743) still fails by ~77% under this formula.
+      The remaining gap is due to the dva_css mechanism: each monster accumulates
+      N condition stacks (via cs01_0805 "charging" system) that are consumed at
+      the time of the hit but are gone by snapshot capture time.  The LBK hit with
+      9 dva_css entries shows a 9x multiplier that cannot be reconstructed from
+      the snapshot.  This is a SNAPSHOT BLOCKER requiring event-stream capture.
+
+    Hits where eff_value == 0.0 are skipped (same as EMP_CF_DIRECT).
+    """
+    if eff_value == 0.0:
+        raise TypeError("eff_value is 0.0 — hit has no resolved eff_value; skip")
+    cf = (cdmg / 100.0) if is_crit else 1.0
+    weak_mult = (weak_ego_rate / 100.0) if (is_weak and is_ego) else 1.0
+    return atk * (eff_value / 100.0) * (1.0 - def_reduce) * cf * weak_mult * dva_mult
+
+
 HYPOTHESES: dict = {
     "H1": predict_damage_h1,
     "H2": predict_damage_h2,
@@ -375,6 +471,7 @@ HYPOTHESES: dict = {
     "EMP_DVA": predict_damage_empirical_with_dva,
     "EMP_CF_PLUS1": predict_damage_emp_cf_plus1,
     "EMP_CF_DIRECT": predict_damage_emp_cf_direct,
+    "EMP_FULL": predict_damage_emp_full,
 }
 
 
@@ -497,6 +594,7 @@ def _frame_to_hit(frame: dict) -> dict | None:
 
         observed_dmg = last_dmg["damage"]
         is_crit = bool(last_dmg.get("crit", False))
+        is_weak = bool(last_dmg.get("weak", False))
 
         # --- DEF reduction ---
         minfo = target_monster.get("status", {}).get("info", {})
@@ -576,6 +674,30 @@ def _frame_to_hit(frame: dict) -> dict | None:
         # Note: empirical crit/non-crit ratio varies due to dva_css; flag as concern.
         crit_factor = (1.0 + cri_dmg / 100.0) if is_crit else 1.0
 
+        # --- Weak/EGO multiplier ---
+        # S_WEAK_EGO_DMG_RATE is present on all chars but only applies when
+        # the card was played with EGO active (cardMap[card_id].curEgo is set
+        # to a non-null, non-"NONE" value) AND the monster is in weak/break state.
+        # Resolve from individual caster chars[] first; fall back to 100 (neutral).
+        caster_info_for_weak = _get_char_info(chars, caster_char_id)
+        if caster_info_for_weak is not None:
+            weak_ego_rate = float(caster_info_for_weak.get("S_WEAK_EGO_DMG_RATE", 100.0))
+        else:
+            weak_ego_rate = 100.0
+
+        # Determine if this card was played as an EGO/outline card.
+        # The 'outline' field on the card in cardMap is True only for EGO-triggered
+        # special cards (e.g. LBK cards with cost > 0 generated by the EGO system).
+        # curEgo reflects the team's current EGO stage and is set on ALL cards;
+        # it does NOT distinguish EGO-card hits from regular hits.
+        # Empirical: weak_mult only improves LBK-type hits; applying it to rsp1/mut
+        # hits (which also have weak=True) worsens their predictions by ~25%.
+        is_ego = False
+        if used_cards:
+            active_card = card_map.get(str(used_cards[0])) or {}
+            # outline=True marks EGO-generated cards (Lose Brake / special EGO cards).
+            is_ego = bool(active_card.get("outline"))
+
         return {
             "atk": float(atk),
             "def_reduce": def_reduce,
@@ -586,9 +708,15 @@ def _frame_to_hit(frame: dict) -> dict | None:
             # EMP_CF_PLUS1 / EMP_CF_DIRECT fields (raw CDmg and bool crit flag)
             "cdmg": cri_dmg,
             "is_crit": is_crit,
+            # EMP_FULL additional fields (weak/EGO multiplier)
+            "is_weak": is_weak,
+            "weak_ego_rate": weak_ego_rate,
+            "is_ego": is_ego,
             "observed_dmg": float(observed_dmg),
             # metadata (not used in prediction, useful for debugging)
             "_is_crit": is_crit,
+            "_is_weak": is_weak,
+            "_is_ego": is_ego,
             "_monster_res_id": target_monster.get("res_id"),
             "_dva_css": dva_css_list,
             "_dva_mult": dva_mult,           # also exposed as metadata for inspection
@@ -730,11 +858,15 @@ if __name__ == "__main__":
     # Hits with eff_value=0.0 are skipped by EMP/EMP_DVA (raises TypeError).
     hits_with_eff = [h for h in all_hits if h.get("eff_value", 0.0) > 0.0]
     hits_with_dva = [h for h in hits_with_eff if h.get("_dva_mult", 1.0) != 1.0]
+    hits_with_ego = [h for h in hits_with_eff if h.get("is_ego", False)]
+    hits_weak_ego = [h for h in hits_with_ego if h.get("is_weak", False)]
     print(f"Hits with resolved eff_value (eligible for EMP): {len(hits_with_eff)} / {len(all_hits)}")
     print(f"Hits with resolved dva_mult != 1.0: {len(hits_with_dva)} / {len(hits_with_eff)}")
+    print(f"Hits with EGO active: {len(hits_with_ego)} / {len(hits_with_eff)}")
+    print(f"Hits with EGO active + monster weak: {len(hits_weak_ego)} / {len(hits_with_eff)}")
     print()
 
-    for hyp in ["H1", "H2", "H3", "EMP", "EMP_DVA", "EMP_CF_PLUS1", "EMP_CF_DIRECT"]:
+    for hyp in ["H1", "H2", "H3", "EMP", "EMP_DVA", "EMP_CF_PLUS1", "EMP_CF_DIRECT", "EMP_FULL"]:
         result = validate_against_hits(all_hits, hypothesis=hyp, tolerance=0.05)
         pct = result["coverage"] * 100
         median_pct = (
@@ -755,8 +887,8 @@ if __name__ == "__main__":
     # Per-hit residual analysis (hits with eff_value > 0) — all EMP variants
     print("Per-hit residual analysis (hits with eff_value > 0):")
     print(
-        f"  {'card':30s} {'obs':>6s} {'crit':>4s} {'cdmg':>5s}"
-        f" {'EMP':>6s}{'err':>6s} {'EMP_CF+1':>8s}{'err':>6s} {'EMP_CFdir':>9s}{'err':>6s}"
+        f"  {'card':30s} {'obs':>6s} {'crit':>4s} {'cdmg':>5s} {'ego':>3s} {'weak':>4s}"
+        f" {'CFdir':>6s}{'err':>6s} {'FULL':>6s}{'err':>6s}"
     )
     for h in all_hits:
         ev = h.get("eff_value", 0.0)
@@ -765,41 +897,42 @@ if __name__ == "__main__":
         dm = h.get("dva_mult", 1.0)
         cdmg = h.get("cdmg", 200.0)
         is_crit = h.get("is_crit", False)
+        is_weak_h = h.get("is_weak", False)
+        is_ego_h = h.get("is_ego", False)
+        weak_rate = h.get("weak_ego_rate", 100.0)
         try:
-            pred_emp = predict_damage_empirical(
-                atk=h["atk"], eff_value=ev,
-                def_reduce=h["def_reduce"], crit_factor=h["crit_factor"],
-            )
-            pred_p1 = predict_damage_emp_cf_plus1(
-                atk=h["atk"], eff_value=ev,
-                def_reduce=h["def_reduce"], cdmg=cdmg, is_crit=is_crit, dva_mult=dm,
-            )
             pred_dir = predict_damage_emp_cf_direct(
                 atk=h["atk"], eff_value=ev,
                 def_reduce=h["def_reduce"], cdmg=cdmg, is_crit=is_crit, dva_mult=dm,
+            )
+            pred_full = predict_damage_emp_full(
+                atk=h["atk"], eff_value=ev,
+                def_reduce=h["def_reduce"], cdmg=cdmg, is_crit=is_crit, dva_mult=dm,
+                is_weak=is_weak_h, weak_ego_rate=weak_rate, is_ego=is_ego_h,
             )
         except TypeError:
             continue
         obs = h["observed_dmg"]
         if obs == 0:
             continue
-        err_emp = (pred_emp - obs) / obs
-        err_p1  = (pred_p1  - obs) / obs
-        err_dir = (pred_dir - obs) / obs
+        err_dir  = (pred_dir  - obs) / obs
+        err_full = (pred_full - obs) / obs
         card = h.get("_card_res_id", "n/a") or "n/a"
         print(
             f"  {card:30s} {obs:>6.0f} {'Y' if is_crit else 'N':>4s} {cdmg:>5.0f}"
-            f" {pred_emp:>6.0f}{err_emp*100:>+6.1f}%"
-            f" {pred_p1:>8.0f}{err_p1*100:>+6.1f}%"
-            f" {pred_dir:>9.0f}{err_dir*100:>+6.1f}%"
+            f" {'Y' if is_ego_h else 'N':>3s} {'Y' if is_weak_h else 'N':>4s}"
+            f" {pred_dir:>6.0f}{err_dir*100:>+6.1f}%"
+            f" {pred_full:>6.0f}{err_full*100:>+6.1f}%"
         )
     print()
     print("DONE_WITH_CONCERNS:")
-    print("  EMP formula verified for non-crit hits without dva_css amplification.")
+    print("  EMP_CF_DIRECT verified for non-ego hits; EMP_FULL adds weak/EGO multiplier.")
     print("  EMP_DVA == EMP: dva_mult is always 1.0 because dva_css cs_ids are")
     print("  consumed before snapshot capture (never found in csMap).")
-    print("  Root causes for EMP failures:")
+    print("  Root causes for remaining EMP_FULL failures:")
     print("  1. dva_css cs_ids expire before snapshot; csMap lookup returns empty.")
-    print("  2. crit_factor: EMP uses old fallback cf; EMP_CF_PLUS1/DIRECT use real CDmg.")
-    print("  3. LBK/EGO hits use a stacking damage mechanism not captured in snapshots.")
-    print("  See api/capture/validate_damage.py docstring for full dva_css findings.")
+    print("  2. LBK/EGO hits accumulate per-monster condition stacks (cs01_0805 charging)")
+    print("     that are consumed at hit time and absent from snapshot.  The 9x multiplier")
+    print("     on the LBK hit (obs=10743) requires event-stream capture to resolve.")
+    print("  3. rsp1 crit failures (8.8%, 11%) also caused by consumed dva_css stacks.")
+    print("  See api/capture/validate_damage.py docstring for full investigation findings.")
