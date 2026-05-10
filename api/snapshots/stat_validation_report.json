@@ -2,28 +2,28 @@
   "summary": {
     "ATK": {
       "n": 9,
-      "mean_abs": -347.294,
-      "mean_pct": -40.981,
-      "median_pct": -36.67,
-      "max_abs_pct": 73.34,
+      "mean_abs": -222.133,
+      "mean_pct": -25.873,
+      "median_pct": -26.53,
+      "max_abs_pct": 29.21,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
     "DEF": {
       "n": 9,
-      "mean_abs": -185.103,
-      "mean_pct": -41.459,
-      "median_pct": -37.52,
-      "max_abs_pct": 75.72,
+      "mean_abs": -127.123,
+      "mean_pct": -28.317,
+      "median_pct": -28.79,
+      "max_abs_pct": 33.18,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
     "HP": {
       "n": 9,
-      "mean_abs": -360.428,
-      "mean_pct": -40.393,
-      "median_pct": -34.66,
-      "max_abs_pct": 84.99,
+      "mean_abs": -303.251,
+      "mean_pct": -33.672,
+      "median_pct": -30.63,
+      "max_abs_pct": 52.02,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
@@ -56,21 +56,21 @@
       "diffs": {
         "ATK": {
           "observed": 1534,
-          "predicted": 946.31,
-          "abs_diff": -587.69,
-          "pct_diff": -38.31
+          "predicted": 1085.88,
+          "abs_diff": -448.12,
+          "pct_diff": -29.21
         },
         "DEF": {
           "observed": 247,
-          "predicted": 154.33,
-          "abs_diff": -92.67,
-          "pct_diff": -37.52
+          "predicted": 179.22,
+          "abs_diff": -67.78,
+          "pct_diff": -27.44
         },
         "HP": {
           "observed": 696,
-          "predicted": 497.36,
-          "abs_diff": -198.64,
-          "pct_diff": -28.54
+          "predicted": 514.5,
+          "abs_diff": -181.5,
+          "pct_diff": -26.08
         },
         "CRate": {
           "observed": 36.8,
@@ -96,21 +96,21 @@
       "diffs": {
         "ATK": {
           "observed": 808,
-          "predicted": 215.41,
-          "abs_diff": -592.6,
-          "pct_diff": -73.34
+          "predicted": 586.77,
+          "abs_diff": -221.23,
+          "pct_diff": -27.38
         },
         "DEF": {
           "observed": 428,
-          "predicted": 103.92,
-          "abs_diff": -324.08,
-          "pct_diff": -75.72
+          "predicted": 285.99,
+          "abs_diff": -142.01,
+          "pct_diff": -33.18
         },
         "HP": {
           "observed": 831,
-          "predicted": 124.76,
-          "abs_diff": -706.24,
-          "pct_diff": -84.99
+          "predicted": 398.73,
+          "abs_diff": -432.27,
+          "pct_diff": -52.02
         },
         "CRate": {
           "observed": 31.9,
@@ -136,21 +136,21 @@
       "diffs": {
         "ATK": {
           "observed": 644,
-          "predicted": 410.81,
-          "abs_diff": -233.19,
-          "pct_diff": -36.21
+          "predicted": 476.22,
+          "abs_diff": -167.78,
+          "pct_diff": -26.05
         },
         "DEF": {
           "observed": 544,
-          "predicted": 345.28,
-          "abs_diff": -198.72,
-          "pct_diff": -36.53
+          "predicted": 387.37,
+          "abs_diff": -156.63,
+          "pct_diff": -28.79
         },
         "HP": {
           "observed": 1089,
-          "predicted": 618.25,
-          "abs_diff": -470.75,
-          "pct_diff": -43.23
+          "predicted": 643.53,
+          "abs_diff": -445.47,
+          "pct_diff": -40.91
         },
         "CRate": {
           "observed": 7.9,
@@ -176,21 +176,21 @@
       "diffs": {
         "ATK": {
           "observed": 1242,
-          "predicted": 786.59,
-          "abs_diff": -455.41,
-          "pct_diff": -36.67
+          "predicted": 911.51,
+          "abs_diff": -330.49,
+          "pct_diff": -26.61
         },
         "DEF": {
           "observed": 271,
-          "predicted": 182.0,
-          "abs_diff": -89.0,
-          "pct_diff": -32.84
+          "predicted": 206.0,
+          "abs_diff": -65.0,
+          "pct_diff": -23.99
         },
         "HP": {
           "observed": 792,
-          "predicted": 582.41,
-          "abs_diff": -209.59,
-          "pct_diff": -26.46
+          "predicted": 600.07,
+          "abs_diff": -191.93,
+          "pct_diff": -24.23
         },
         "CRate": {
           "observed": 61.1,
@@ -216,21 +216,21 @@
       "diffs": {
         "ATK": {
           "observed": 791,
-          "predicted": 483.95,
-          "abs_diff": -307.05,
-          "pct_diff": -38.82
+          "predicted": 614.0,
+          "abs_diff": -177.0,
+          "pct_diff": -22.38
         },
         "DEF": {
           "observed": 529,
-          "predicted": 296.27,
-          "abs_diff": -232.73,
-          "pct_diff": -43.99
+          "predicted": 366.3,
+          "abs_diff": -162.7,
+          "pct_diff": -30.76
         },
         "HP": {
           "observed": 970,
-          "predicted": 540.22,
-          "abs_diff": -429.78,
-          "pct_diff": -44.31
+          "predicted": 607.82,
+          "abs_diff": -362.18,
+          "pct_diff": -37.34
         },
         "CRate": {
           "observed": 41.9,
@@ -256,21 +256,21 @@
       "diffs": {
         "ATK": {
           "observed": 811,
-          "predicted": 466.17,
-          "abs_diff": -344.83,
-          "pct_diff": -42.52
+          "predicted": 594.77,
+          "abs_diff": -216.23,
+          "pct_diff": -26.66
         },
         "DEF": {
           "observed": 532,
-          "predicted": 305.52,
-          "abs_diff": -226.48,
-          "pct_diff": -42.57
+          "predicted": 373.39,
+          "abs_diff": -158.61,
+          "pct_diff": -29.81
         },
         "HP": {
           "observed": 775,
-          "predicted": 506.36,
-          "abs_diff": -268.64,
-          "pct_diff": -34.66
+          "predicted": 568.73,
+          "abs_diff": -206.27,
+          "pct_diff": -26.62
         },
         "CRate": {
           "observed": 31.9,
@@ -296,21 +296,21 @@
       "diffs": {
         "ATK": {
           "observed": 584,
-          "predicted": 378.36,
-          "abs_diff": -205.64,
-          "pct_diff": -35.21
+          "predicted": 429.05,
+          "abs_diff": -154.95,
+          "pct_diff": -26.53
         },
         "DEF": {
           "observed": 497,
-          "predicted": 308.28,
-          "abs_diff": -188.72,
-          "pct_diff": -37.97
+          "predicted": 344.48,
+          "abs_diff": -152.52,
+          "pct_diff": -30.69
         },
         "HP": {
           "observed": 884,
-          "predicted": 599.09,
-          "abs_diff": -284.91,
-          "pct_diff": -32.23
+          "predicted": 613.26,
+          "abs_diff": -270.74,
+          "pct_diff": -30.63
         },
         "CRate": {
           "observed": 45.2,
@@ -336,21 +336,21 @@
       "diffs": {
         "ATK": {
           "observed": 597,
-          "predicted": 386.76,
-          "abs_diff": -210.24,
-          "pct_diff": -35.22
+          "predicted": 438.6,
+          "abs_diff": -158.4,
+          "pct_diff": -26.53
         },
         "DEF": {
           "observed": 386,
-          "predicted": 269.61,
-          "abs_diff": -116.39,
-          "pct_diff": -30.15
+          "predicted": 298.53,
+          "abs_diff": -87.47,
+          "pct_diff": -22.66
         },
         "HP": {
           "observed": 1068,
-          "predicted": 599.85,
-          "abs_diff": -468.15,
-          "pct_diff": -43.83
+          "predicted": 618.69,
+          "abs_diff": -449.31,
+          "pct_diff": -42.07
         },
         "CRate": {
           "observed": 38.0,
@@ -376,21 +376,21 @@
       "diffs": {
         "ATK": {
           "observed": 581,
-          "predicted": 392.0,
-          "abs_diff": -189.0,
-          "pct_diff": -32.53
+          "predicted": 456.0,
+          "abs_diff": -125.0,
+          "pct_diff": -21.51
         },
         "DEF": {
           "observed": 550,
-          "predicted": 352.86,
-          "abs_diff": -197.14,
-          "pct_diff": -35.84
+          "predicted": 398.61,
+          "abs_diff": -151.39,
+          "pct_diff": -27.53
         },
         "HP": {
           "observed": 819,
-          "predicted": 611.85,
-          "abs_diff": -207.15,
-          "pct_diff": -25.29
+          "predicted": 629.41,
+          "abs_diff": -189.59,
+          "pct_diff": -23.15
         },
         "CRate": {
           "observed": 57.1,
