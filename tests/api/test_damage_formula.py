@@ -51,6 +51,8 @@ def test_fit_def_curve_empty_input_raises():
 from api.capture.validate_damage import (
     predict_damage_h1,
     predict_damage_empirical,
+    predict_damage_empirical_with_dva,
+    _resolve_dva_multiplier,
     validate_against_hits,
 )
 
@@ -79,3 +81,75 @@ def test_predict_damage_empirical_matches_b3_verified_hit():
     -> predicted dmg = 1087 x 0.75 x 0.666 = 543 vs observed 547 (0.7% error)."""
     predicted = predict_damage_empirical(atk=1087, eff_value=75, def_reduce=0.334, crit_factor=1.0)
     assert predicted == pytest.approx(543.0, rel=0.01)
+
+
+# ---------------------------------------------------------------------------
+# _resolve_dva_multiplier tests (B4)
+# ---------------------------------------------------------------------------
+
+def test_resolve_dva_multiplier_empty_returns_one():
+    """Empty dva_css list returns 1.0 (neutral multiplier)."""
+    assert _resolve_dva_multiplier([], {}, {}) == 1.0
+
+
+def test_resolve_dva_multiplier_missing_cs_ids_returns_one():
+    """cs_ids not in csMap return 1.0 — this is the normal case in captures."""
+    dva = [110, 111, 112]
+    cs_map = {}   # empty — cs_ids are consumed before snapshot
+    sk_map = {}
+    assert _resolve_dva_multiplier(dva, cs_map, sk_map) == 1.0
+
+
+def test_resolve_dva_multiplier_additive_single_entry():
+    """When one cs entry resolves with eff_value=50, dva_mult = 1 + 50/100 = 1.5."""
+    cs_map = {
+        "10": {"skillEffs": [42]},
+    }
+    sk_map = {
+        "42": {"eff_value": 50},
+    }
+    result = _resolve_dva_multiplier([10], cs_map, sk_map)
+    assert result == pytest.approx(1.5)
+
+
+def test_resolve_dva_multiplier_additive_multiple_entries():
+    """With two cs entries (ev=30, ev=20), dva_mult = 1 + (30+20)/100 = 1.5."""
+    cs_map = {
+        "1": {"skillEffs": [10]},
+        "2": {"skillEffs": [11]},
+    }
+    sk_map = {
+        "10": {"eff_value": 30},
+        "11": {"eff_value": 20},
+    }
+    result = _resolve_dva_multiplier([1, 2], cs_map, sk_map)
+    assert result == pytest.approx(1.5)
+
+
+def test_resolve_dva_multiplier_zero_eff_value_skipped():
+    """eff_value=0 entries are skipped; if nothing non-zero is found, returns 1.0."""
+    cs_map = {"5": {"skillEffs": [99]}}
+    sk_map = {"99": {"eff_value": 0}}
+    assert _resolve_dva_multiplier([5], cs_map, sk_map) == 1.0
+
+
+def test_predict_damage_empirical_with_dva_neutral_equals_emp():
+    """dva_mult=1.0 must produce the same result as predict_damage_empirical."""
+    atk, ev, dr, cf = 1087.0, 75.0, 0.334, 1.0
+    emp = predict_damage_empirical(atk=atk, eff_value=ev, def_reduce=dr, crit_factor=cf)
+    dva = predict_damage_empirical_with_dva(atk=atk, eff_value=ev, def_reduce=dr, crit_factor=cf, dva_mult=1.0)
+    assert emp == pytest.approx(dva)
+
+
+def test_predict_damage_empirical_with_dva_scales_correctly():
+    """dva_mult=1.5 must scale the base EMP prediction by 1.5."""
+    atk, ev, dr, cf = 1000.0, 80.0, 0.3, 1.0
+    base = predict_damage_empirical(atk=atk, eff_value=ev, def_reduce=dr, crit_factor=cf)
+    scaled = predict_damage_empirical_with_dva(atk=atk, eff_value=ev, def_reduce=dr, crit_factor=cf, dva_mult=1.5)
+    assert scaled == pytest.approx(base * 1.5)
+
+
+def test_predict_damage_empirical_with_dva_skips_zero_eff_value():
+    """eff_value=0.0 must raise TypeError regardless of dva_mult."""
+    with pytest.raises(TypeError):
+        predict_damage_empirical_with_dva(atk=1000, eff_value=0.0, def_reduce=0.3, crit_factor=1.0, dva_mult=1.5)

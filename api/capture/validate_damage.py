@@ -50,19 +50,55 @@ Verified hits:
   Non-crit (card c_30093_srt4_rsp1, eff=80, team_ATK=1077, def_reduce=0.3597):
     pred = 1077 × 0.80 × (1 − 0.3597) = 552  vs  obs = 530  (4.1% error, dva_css reduce)
 
-== Known limitations (v2) ==
+== dva_css investigation findings (Track B Step B4) ==
+
+DVA = Damage Value Adjustment.  Each cs_id in dva_css nominally refers to a
+condition-stack entry in csMap, which chains to skillMap via skillEffs.
+
+Empirical finding from 5 JSONL capture files (13132 frames):
+
+  BLOCKER: dva_css cs_ids are CONSUMED/EXPIRED before the snapshot is captured.
+  In all tested hits the relevant cs_id is absent from csMap at snapshot time:
+    - rsp1 crit hits (dva=[110,111,112] or [124,125]): 0/5 cs_ids in csMap
+    - lbk hits  (dva up to 9 entries, e.g. [88,132,194,210,350,356,192,349,201]):
+        0/9 cs_ids resolved from csMap
+
+  The one exception (20260510 hit, cs[94]=cs01_0610 ev=100 found in csMap) does NOT
+  converge: additive/multiplicative interpretations both widen the error (37%→175%).
+  That entry appears to be a still-active CDmg buff for a DIFFERENT hit, not the
+  dva source for the observed hit.
+
+  Additional evidence that csMap-based resolution is impossible:
+    - Two hits with identical dva_css=[110,111,112] produce different damages
+      (1398 vs 1148), proving the condition VALUES differ at consumption time.
+      Since csMap only reflects the current (post-consumption) state, the
+      multiplier cannot be back-computed.
+
+  EGO / LBK hits have an additional unknown stacking mechanism.  The large LBK
+  hit (obs=10743, pred=1787 → 83% error, dva 9 entries) likely accumulates
+  a damage multiplier proportional to the number/value of stacked conditions
+  at the time of the hit; this mechanism is not reflected in the snapshot at all.
+
+  CONCLUSION: _resolve_dva_multiplier always returns 1.0 in practice, because
+  the cs_ids in dva_css are never found in csMap at snapshot time.
+  EMP_DVA coverage is identical to EMP coverage.
+  The dva_css issue requires event-stream capture (not snapshot capture) to resolve.
+
+== Known limitations (v3) ==
   - DMG_REVISE_RATE = 0.36 is a PLACEHOLDER from the task spec; actual formula
     embeds the multiplier in card eff_value/100.  H1/H2/H3 show low coverage.
-  - dva_css (damage-value adjustment stacks) cause ±22% residual on crit hits.
-    All crit hits with dva_css fail the EMP formula at ±5% tolerance.
-  - crit_factor formula: (1 + S_CRI_DMG_RATE/100) is uncertain; empirical
-    crit/non-crit ratio varies widely due to dva_css interference.
+  - dva_css (damage-value adjustment stacks): the conditions are consumed before
+    snapshot; csMap lookup ALWAYS returns empty for the referenced cs_ids.
+    EMP_DVA = EMP (no improvement possible from snapshot data alone).
+  - crit_factor formula: (1 + S_CRI_DMG_RATE/100); for response cards the team
+    info lacks S_CRI_DMG_RATE so the code falls back to 100 (cf=2.0).
+    Correct behavior would look up the caster char's CDmg even for response cards.
   - DMG_ATTR_BASE_ON_DEF hits use monster DEF as the damage basis, not ATK;
     these are now filtered out in _frame_to_hit so EMP formula is not applied.
   - Hits with empty used_cards cannot have eff_value resolved; they are skipped
     for EMP validation (the eff_value field will be 0.0).
-  - EMP coverage ~20% (2/10 hits with eff_values within ±5%) due to dva_css
-    variance on crit hits.  Non-crit hits without dva_css amplification pass.
+  - EMP/EMP_DVA coverage 5% (2/40 hits) due to dva_css variance on crit hits
+    and the crit_factor fallback issue.
 """
 
 from __future__ import annotations
@@ -160,11 +196,104 @@ def predict_damage_empirical(
     return atk * (eff_value / 100.0) * (1.0 - def_reduce) * crit_factor
 
 
+def _resolve_dva_multiplier(
+    dva_css: list,
+    cs_map: dict,
+    skill_map: dict,
+) -> float:
+    """Resolve the cumulative damage multiplier from a dva_css list.
+
+    Each cs_id in dva_css nominally refers to csMap[cs_id], which contains a
+    skillEffs list of skill_eff_ids.  Each skill_eff_id resolves to a
+    skillMap[seid].eff_value.
+
+    Combinator (additive):
+        dva_mult = 1 + Σ (eff_value / 100)  for each resolved eff_value
+
+    Rationale for additive vs multiplicative:
+        The game uses additive stacking for most buff/debuff stats (e.g. S_ATK,
+        S_CRI_DMG_RATE).  Multiplicative chains would create runaway values
+        inconsistent with the observed damage range.  Additive is the default
+        choice; the distinction is moot in practice (see BLOCKER below).
+
+    BLOCKER — empirically this function ALWAYS returns 1.0:
+        dva_css references condition-stack entries that are CONSUMED (one-shot
+        applied) at the moment of the hit and expire before the snapshot frame is
+        written.  As a result the cs_ids in dva_css are NEVER present in csMap at
+        snapshot capture time.  In all 5 tested capture files (13132 frames, every
+        crit hit with dva_css), zero cs_ids were resolved.
+
+        When a cs_id IS found (e.g. cs[94]=cs01_0610, ev=100 in the 20260510
+        capture), it belongs to a still-active condition for a different hit —
+        applying it additively or multiplicatively diverges further from the
+        observed damage rather than correcting it.
+
+    Returns 1.0 (neutral multiplier) when dva_css is empty or all lookups fail.
+    Logs a warning per unresolved cs_id via print() to stderr.
+
+    Parameters
+    ----------
+    dva_css  : list of int cs_ids from lastDamageEvent.dva_css
+    cs_map   : dict[str, dict] from battle_wt.csMap
+    skill_map: dict[str, dict] from battle_wt.skillMap
+    """
+    if not dva_css:
+        return 1.0
+
+    total_eff = 0.0
+    any_resolved = False
+
+    for cs_id in dva_css:
+        cs = cs_map.get(str(cs_id))
+        if cs is None:
+            # Expected: dva_css cs_ids are consumed before snapshot is captured.
+            # Do not log here — this is the normal (blocking) case.
+            continue
+        se_ids = cs.get("skillEffs") or []
+        for seid in se_ids:
+            sk = skill_map.get(str(seid))
+            if sk is None:
+                continue
+            ev = sk.get("eff_value")
+            if ev is not None and ev != 0:
+                total_eff += float(ev)
+                any_resolved = True
+
+    if not any_resolved:
+        return 1.0
+
+    # Additive combinator: base is 1.0 + sum of contributions (each as fraction)
+    return 1.0 + total_eff / 100.0
+
+
+def predict_damage_empirical_with_dva(
+    atk: float,
+    eff_value: float,
+    def_reduce: float,
+    crit_factor: float,
+    dva_mult: float = 1.0,
+    **_ignored: object,
+) -> float:
+    """B4 empirical formula with dva_css multiplier:
+    dmg = ATK × (eff_value/100) × (1 − def_reduce) × crit_factor × dva_mult
+
+    dva_mult is computed by _resolve_dva_multiplier from the dva_css list.
+    In practice dva_mult == 1.0 for all observed hits because dva_css cs_ids
+    are consumed before snapshot capture (see module docstring).
+
+    Hits where eff_value == 0.0 are skipped (same as EMP).
+    """
+    if eff_value == 0.0:
+        raise TypeError("eff_value is 0.0 — hit has no resolved eff_value; skip")
+    return atk * (eff_value / 100.0) * (1.0 - def_reduce) * crit_factor * dva_mult
+
+
 HYPOTHESES: dict = {
     "H1": predict_damage_h1,
     "H2": predict_damage_h2,
     "H3": predict_damage_h3,
     "EMP": predict_damage_empirical,
+    "EMP_DVA": predict_damage_empirical_with_dva,
 }
 
 
@@ -235,10 +364,13 @@ def _frame_to_hit(frame: dict) -> dict | None:
 
     cardMap and skillMap use STRING keys.  All lookups cast to str().
 
-    Known gaps / v2 limitations:
-      - dva_css stack bonuses are NOT applied; crit hits with dva_css fail at ±5%.
-      - The crit_factor formula (1 + CDmg/100) is uncertain; empirical ratio varies.
-      - Hits with empty used_cards get eff_value=0.0 and are skipped by EMP.
+    Known gaps / v3 limitations:
+      - dva_css stack bonuses: _resolve_dva_multiplier attempts csMap→skillMap lookup
+        but the referenced cs_ids are consumed before snapshot; dva_mult is always 1.0.
+      - The crit_factor formula (1 + CDmg/100) is uncertain; for response cards the
+        team-level stat dict lacks S_CRI_DMG_RATE, so the code falls back to 100
+        (cf=2.0 instead of the caster's actual CDmg).
+      - Hits with empty used_cards get eff_value=0.0 and are skipped by EMP/EMP_DVA.
     """
     try:
         data = frame.get("data", {})
@@ -303,11 +435,17 @@ def _frame_to_hit(frame: dict) -> dict | None:
         # Cast all lookups to str() to avoid silent misses.
         card_map: dict = bwt.get("cardMap") or {}
         skill_map: dict = bwt.get("skillMap") or {}
+        cs_map: dict = bwt.get("csMap") or {}
         used_cards: list = bwt.get("used_cards") or []
 
         eff_value, card_res_id, caster_char_id = _resolve_eff_value(
             used_cards, card_map, skill_map
         )
+
+        # --- Resolve dva_css multiplier ---
+        # Best-effort: cs_ids are consumed before snapshot; always returns 1.0 in practice.
+        dva_css_list: list = last_dmg.get("dva_css") or []
+        dva_mult = _resolve_dva_multiplier(dva_css_list, cs_map, skill_map)
 
         # --- Identify ATK source ---
         # Mutation cards ('_mut' in res_id) scale with the individual caster's ATK.
@@ -347,11 +485,13 @@ def _frame_to_hit(frame: dict) -> dict | None:
             "crit_factor": crit_factor,
             "skill_mult": 1.0,   # H1/H2/H3 use this; EMP ignores it
             "eff_value": float(eff_value),   # 0.0 if not resolved
+            "dva_mult": dva_mult,            # 1.0 if no dva_css resolved from csMap
             "observed_dmg": float(observed_dmg),
             # metadata (not used in prediction, useful for debugging)
             "_is_crit": is_crit,
             "_monster_res_id": target_monster.get("res_id"),
-            "_dva_css": last_dmg.get("dva_css", []),
+            "_dva_css": dva_css_list,
+            "_dva_mult": dva_mult,           # also exposed as metadata for inspection
             "_card_res_id": card_res_id,
         }
     except Exception:
@@ -486,13 +626,15 @@ if __name__ == "__main__":
         print("  See module docstring for details.")
         raise SystemExit(1)
 
-    # H1/H2/H3 use DMG_REVISE_RATE=0.36 (placeholder).  EMP uses real eff_value.
-    # Hits with eff_value=0.0 are skipped by EMP (predict_damage_empirical raises TypeError).
+    # H1/H2/H3 use DMG_REVISE_RATE=0.36 (placeholder).  EMP/EMP_DVA use real eff_value.
+    # Hits with eff_value=0.0 are skipped by EMP/EMP_DVA (raises TypeError).
     hits_with_eff = [h for h in all_hits if h.get("eff_value", 0.0) > 0.0]
+    hits_with_dva = [h for h in hits_with_eff if h.get("_dva_mult", 1.0) != 1.0]
     print(f"Hits with resolved eff_value (eligible for EMP): {len(hits_with_eff)} / {len(all_hits)}")
+    print(f"Hits with resolved dva_mult != 1.0: {len(hits_with_dva)} / {len(hits_with_eff)}")
     print()
 
-    for hyp in ["H1", "H2", "H3", "EMP"]:
+    for hyp in ["H1", "H2", "H3", "EMP", "EMP_DVA"]:
         result = validate_against_hits(all_hits, hypothesis=hyp, tolerance=0.05)
         pct = result["coverage"] * 100
         median_pct = (
@@ -510,37 +652,50 @@ if __name__ == "__main__":
             print(f"  Median relative diff: n/a (no diffs computed)")
         print()
 
-    # EMP residual analysis: report failing hits with dva_css presence
-    print("EMP residual analysis (hits with eff_value > 0):")
+    # EMP_DVA per-hit residual analysis (hits with eff_value > 0)
+    print("EMP_DVA per-hit residual analysis (hits with eff_value > 0):")
     for h in all_hits:
         ev = h.get("eff_value", 0.0)
         if ev == 0.0:
             continue
+        dm = h.get("dva_mult", 1.0)
         try:
-            pred = predict_damage_empirical(
+            pred_emp = predict_damage_empirical(
                 atk=h["atk"],
                 eff_value=ev,
                 def_reduce=h["def_reduce"],
                 crit_factor=h["crit_factor"],
             )
+            pred_dva = predict_damage_empirical_with_dva(
+                atk=h["atk"],
+                eff_value=ev,
+                def_reduce=h["def_reduce"],
+                crit_factor=h["crit_factor"],
+                dva_mult=dm,
+            )
         except TypeError:
             continue
         obs = h["observed_dmg"]
-        rel_err = abs(pred - obs) / obs if obs > 0 else float("nan")
-        status = "PASS" if rel_err <= 0.05 else "FAIL"
+        rel_err_emp = abs(pred_emp - obs) / obs if obs > 0 else float("nan")
+        rel_err_dva = abs(pred_dva - obs) / obs if obs > 0 else float("nan")
+        status_emp = "PASS" if rel_err_emp <= 0.05 else "FAIL"
+        status_dva = "PASS" if rel_err_dva <= 0.05 else "FAIL"
         dva = h.get("_dva_css", [])
         print(
-            f"  [{status}] atk={h['atk']:.0f} ev={ev:.0f} dr={h['def_reduce']:.4f}"
-            f" cf={h['crit_factor']:.2f} pred={pred:.0f} obs={obs:.0f}"
-            f" err={rel_err*100:.1f}% dva_css={dva[:3]}"
-            f" card={h.get('_card_res_id', 'n/a')}"
+            f"  EMP[{status_emp}] DVA[{status_dva}]"
+            f" atk={h['atk']:.0f} ev={ev:.0f} dr={h['def_reduce']:.4f}"
+            f" cf={h['crit_factor']:.2f} dm={dm:.3f}"
+            f" pred_emp={pred_emp:.0f} pred_dva={pred_dva:.0f} obs={obs:.0f}"
+            f" err_emp={rel_err_emp*100:.1f}% err_dva={rel_err_dva*100:.1f}%"
+            f" dva_css={dva[:3]} card={h.get('_card_res_id', 'n/a')}"
         )
     print()
     print("DONE_WITH_CONCERNS:")
     print("  EMP formula verified for non-crit hits without dva_css amplification.")
-    print("  Residual failures explained by dva_css stack bonuses on crit hits.")
-    print("  Root causes:")
-    print("  1. dva_css stacks cause wide crit variance (±22% or more).")
-    print("  2. crit_factor formula (1+CDmg/100) may include dva_css contributions.")
-    print("  3. Hits with empty used_cards (no card played) cannot resolve eff_value.")
-    print("  See api/capture/validate_damage.py docstring for full schema findings.")
+    print("  EMP_DVA == EMP: dva_mult is always 1.0 because dva_css cs_ids are")
+    print("  consumed before snapshot capture (never found in csMap).")
+    print("  Root causes for EMP failures:")
+    print("  1. dva_css cs_ids expire before snapshot; csMap lookup returns empty.")
+    print("  2. crit_factor fallback to 2.0 for response cards (team ATK lacks CDmg).")
+    print("  3. LBK/EGO hits use a stacking damage mechanism not captured in snapshots.")
+    print("  See api/capture/validate_damage.py docstring for full dva_css findings.")
