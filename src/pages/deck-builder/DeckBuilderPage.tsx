@@ -58,8 +58,8 @@ function createEmptySlot(): SquadSlot {
     startingCards: [],
     epiphanyCards: [],
     egoSkill: null,
-    showStartingCards: true,
-    showEpiphanyCards: true,
+    showStartingCards: false,
+    showEpiphanyCards: false,
     isLoading: false,
     error: null,
   }
@@ -164,10 +164,6 @@ function AvailableDeckBuilderCardButton({
           <p className="truncate text-xs font-bold text-white">
             {card.name}
           </p>
-
-          <p className="mt-0.5 truncate text-[10px] font-mono text-[#666]">
-            {card.card_id}
-          </p>
         </div>
 
         <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
@@ -255,10 +251,6 @@ function DeckCard({
           <h3 className="line-clamp-2 text-sm font-bold text-white">
             {selectedVariant?.name || card.name || 'Unnamed card'}
           </h3>
-
-          <p className="mt-0.5 text-[10px] text-[#666] font-mono truncate">
-            {card.card_id}
-          </p>
 
           {selectedVariant && (
             <p className="mt-1 text-[10px] text-[#7dd3fc]">
@@ -386,9 +378,6 @@ function EpiphanyVariantModal({
                     {item.selectedVariant?.name ?? item.card.name}
                   </p>
 
-                  <p className="mt-0.5 truncate text-[10px] font-mono text-[#666]">
-                    {item.card.card_id}
-                  </p>
                 </div>
               </div>
 
@@ -443,7 +432,6 @@ function EpiphanyVariantModal({
 
                 return (
                   <button
-                    key={variant.variant_id}
                     type="button"
                     onClick={() => onApplyVariant(variant)}
                     className={`rounded-lg border p-3 text-left transition-colors ${
@@ -456,10 +444,6 @@ function EpiphanyVariantModal({
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-white">
                           {variant.name}
-                        </p>
-
-                        <p className="mt-0.5 text-[10px] font-mono text-[#666]">
-                          {variant.variant_id}
                         </p>
                       </div>
 
@@ -596,12 +580,6 @@ function CombatantDeckColumn({
             <p className="text-sm font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
           </div>
         </div>
-
-        {selectedCombatant && (
-          <p className="mt-3 truncate text-xs text-[#b3b3b3]">
-            Deck de <span className="font-semibold text-white">{selectedCombatant.name}</span>
-          </p>
-        )}
       </header>
 
       <div className="h-[calc(100vh-330px)] min-h-[420px] overflow-y-auto p-3">
@@ -654,7 +632,6 @@ function CombatantDeckColumn({
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {startingCards.map((item, index) => (
                   <AvailableDeckBuilderCardButton
-                    key={`${item.card.card_id}-${index}`}
                     item={item}
                     onAdd={() => onAddStartingCard(item)}
                   />
@@ -677,7 +654,6 @@ function CombatantDeckColumn({
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {epiphanyCards.map(item => (
                   <AvailableDeckBuilderCardButton
-                    key={item.card.card_id}
                     item={item}
                     onAdd={() => onAddEpiphanyCard(item)}
                   />
@@ -697,10 +673,6 @@ function CombatantDeckColumn({
               <div>
                 <p className="text-sm font-bold text-white">
                   {egoSkill.card.name}
-                </p>
-
-                <p className="text-[10px] font-mono text-[#777]">
-                  {egoSkill.card.card_id}
                 </p>
               </div>
 
@@ -763,8 +735,8 @@ export function DeckBuilderPage() {
           startingCards: [],
           epiphanyCards: [],
           egoSkill: null,
-          showStartingCards: true,
-          showEpiphanyCards: true,
+          showStartingCards: false,
+          showEpiphanyCards: false,
           isLoading: true,
           error: null,
         }
