@@ -197,42 +197,74 @@ class Addon:
 
     def websocket_message(self, flow):
         """
-        Handle WebSocket messages from the game server.
-        Extracts piece_items (inventory) and characters data.
+        Handle WebSocket messages from both directions.
+        Server frames feed the inventory/battle pipeline; client frames are
+        only logged in debug mode.
 
         Args:
             flow: mitmproxy flow object containing WebSocket messages
         """
         msg = flow.websocket.messages[-1]
-        if msg.from_client:
-            return
+        direction = "c2s" if msg.from_client else "s2c"
 
         try:
             # Handle both text and binary WebSocket frames
             if msg.is_text:
                 content = msg.text
             else:
-                # Binary frame - try to decode/decompress
                 content = self._try_decode_binary(msg.content)
-                if content is None:
-                    return
 
-            data = json.loads(content)
+            if content is None:
+                # Could not decode (probably a different encoding for c2s).
+                # Log a hex preview so we can diagnose without losing the frame.
+                if self.debug_file:
+                    raw = msg.content if not msg.is_text else b""
+                    entry = {
+                        "ts": datetime.now().isoformat(),
+                        "dir": direction,
+                        "decode": "failed",
+                        "size": len(raw),
+                        "hex_head": raw[:64].hex(),
+                    }
+                    self.debug_file.write(json.dumps(entry, ensure_ascii=False) + "\\n")
+                    self.debug_file.flush()
+                return
 
-            # Skip non-object messages (some responses are JSON arrays)
+            try:
+                data = json.loads(content)
+            except json.JSONDecodeError:
+                if self.debug_file:
+                    entry = {
+                        "ts": datetime.now().isoformat(),
+                        "dir": direction,
+                        "decode": "not_json",
+                        "size": len(content),
+                        "preview": content[:300],
+                    }
+                    self.debug_file.write(json.dumps(entry, ensure_ascii=False) + "\\n")
+                    self.debug_file.flush()
+                return
+
             if not isinstance(data, dict):
                 return
 
-            # Debug: log every decoded message before filtering
+            # Debug: log every decoded message before filtering, tagged with direction
             if self.debug_file:
                 entry = {
                     "ts": datetime.now().isoformat(),
+                    "dir": direction,
                     "keys": list(data.keys()),
                     "size": len(content),
                     "data": data
                 }
                 self.debug_file.write(json.dumps(entry, ensure_ascii=False) + "\\n")
                 self.debug_file.flush()
+
+            # From here on, only process server-side responses (inventory,
+            # battle, rescue pipelines). Client requests have a different
+            # schema and would misfire downstream code.
+            if msg.from_client:
+                return
 
             if data.get("res") != "ok":
                 return
@@ -301,6 +333,54 @@ class Addon:
 
         except Exception as e:
             self.log_callback(f"Error: {e}")
+
+    # ---- HTTP capture (debug only) ------------------------------------
+    # The game appears to send commands via HTTP POST and only receives
+    # push frames over WebSocket. These hooks log every HTTP request and
+    # response to the same debug JSONL so request/response can be paired
+    # by qid.
+
+    def _log_http(self, flow, kind: str):
+        if not self.debug_file:
+            return
+        try:
+            if kind == "http_req":
+                msg = flow.request
+            else:
+                msg = flow.response
+            if msg is None:
+                return
+            raw = msg.raw_content or b""
+            content = self._try_decode_binary(raw) if raw else ""
+            entry = {
+                "ts": datetime.now().isoformat(),
+                "dir": kind,
+                "method": getattr(flow.request, "method", None),
+                "url": getattr(flow.request, "pretty_url", None),
+                "size": len(raw),
+            }
+            if content is None:
+                entry["decode"] = "failed"
+                entry["hex_head"] = raw[:64].hex()
+            else:
+                try:
+                    parsed = json.loads(content) if content else None
+                    entry["data"] = parsed
+                    if isinstance(parsed, dict):
+                        entry["keys"] = list(parsed.keys())
+                except json.JSONDecodeError:
+                    entry["decode"] = "not_json"
+                    entry["preview"] = content[:300]
+            self.debug_file.write(json.dumps(entry, ensure_ascii=False) + "\\n")
+            self.debug_file.flush()
+        except Exception as e:
+            self.log_callback(f"http debug log error: {e}")
+
+    def request(self, flow):
+        self._log_http(flow, "http_req")
+
+    def response(self, flow):
+        self._log_http(flow, "http_resp")
 
     def _save_data(self):
         """

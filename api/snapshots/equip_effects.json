@@ -1,0 +1,890 @@
+{
+  "summary": {
+    "source_file": "C:\\Users\\soste\\AppData\\Local\\hub-czn\\snapshots\\websocket_debug_20260509_170617.jsonl",
+    "messages_with_dev_msg": 1956,
+    "battle_log_lines": 148950,
+    "skill_eff_lines": 16105,
+    "distinct_eff_types": 42,
+    "distinct_equip_leaves": 52,
+    "distinct_equip_bases": 34
+  },
+  "by_leaf": {
+    "eq_pub_027_01_01": {
+      "count": 198,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 198
+      },
+      "examples": [
+        "SkillEff 90:eq_pub_027_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_02\"]",
+        "SkillEff 90:eq_pub_027_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_02\"]",
+        "SkillEff 90:eq_pub_027_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_02\"]"
+      ]
+    },
+    "eq_pub_027_01_02": {
+      "count": 198,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 198
+      },
+      "examples": [
+        "SkillEff 91:eq_pub_027_01_02:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_03\"]",
+        "SkillEff 91:eq_pub_027_01_02:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_03\"]",
+        "SkillEff 91:eq_pub_027_01_02:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_03\"]"
+      ]
+    },
+    "eq_pub_027_01_03": {
+      "count": 198,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 198
+      },
+      "examples": [
+        "SkillEff 92:eq_pub_027_01_03:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_04\"]",
+        "SkillEff 92:eq_pub_027_01_03:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_04\"]",
+        "SkillEff 92:eq_pub_027_01_03:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_027_04\"]"
+      ]
+    },
+    "eq_pub_029_01_01": {
+      "count": 130,
+      "effects": {
+        "SKILL_EFF_CARD_USE": 130
+      },
+      "examples": [
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]"
+      ]
+    },
+    "eq_chr_020_01_01": {
+      "count": 99,
+      "effects": {
+        "SKILL_EFF_MONSTER_TURN_COUNT": 99
+      },
+      "examples": [
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT"
+      ]
+    },
+    "eq_pub_042_01_02": {
+      "count": 98,
+      "effects": {
+        "SKILL_EFF_CARD_DRAW": 98
+      },
+      "examples": [
+        "SkillEff 111:eq_pub_042_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 111:eq_pub_042_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 126:eq_pub_042_01_02:SKILL_EFF_CARD_DRAW"
+      ]
+    },
+    "eq_g02_002_01_01": {
+      "count": 80,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 80
+      },
+      "examples": [
+        "SkillEff 66:eq_g02_002_01_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 66:eq_g02_002_01_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 66:eq_g02_002_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_pub_ca_032_01_01": {
+      "count": 75,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 75
+      },
+      "examples": [
+        "SkillEff 57:eq_pub_ca_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_ca_032_02\"]",
+        "SkillEff 55:eq_pub_ca_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_ca_032_02\"]",
+        "SkillEff 55:eq_pub_ca_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_ca_032_02\"]"
+      ]
+    },
+    "eq_pub_017_01_01": {
+      "count": 71,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 71
+      },
+      "examples": [
+        "SkillEff 96:eq_pub_017_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0006\"]",
+        "SkillEff 96:eq_pub_017_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0006\"]",
+        "SkillEff 93:eq_pub_017_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0006\"]"
+      ]
+    },
+    "eq_pub_042_01_01": {
+      "count": 71,
+      "effects": {
+        "SKILL_EFF_ENERGY_CHANGE": 71
+      },
+      "examples": [
+        "SkillEff 110:eq_pub_042_01_01:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 110:eq_pub_042_01_01:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 125:eq_pub_042_01_01:SKILL_EFF_ENERGY_CHANGE"
+      ]
+    },
+    "eq_pub_032_01_01": {
+      "count": 49,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 49
+      },
+      "examples": [
+        "SkillEff 103:eq_pub_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_032_02\"]",
+        "SkillEff 103:eq_pub_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_032_02\"]",
+        "SkillEff 103:eq_pub_032_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_032_02\"]"
+      ]
+    },
+    "eq_pub_034_01_01": {
+      "count": 45,
+      "effects": {
+        "SKILL_EFF_DMG_IGNORE_COND": 45
+      },
+      "examples": [
+        "SkillEff 100:eq_pub_034_01_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 100:eq_pub_034_01_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 97:eq_pub_034_01_01:SKILL_EFF_DMG_IGNORE_COND"
+      ]
+    },
+    "eq_pub_021_01_01": {
+      "count": 40,
+      "effects": {
+        "SKILL_EFF_HEAL": 40
+      },
+      "examples": [
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL"
+      ]
+    },
+    "eq_pub_012_01_01": {
+      "count": 34,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 34
+      },
+      "examples": [
+        "SkillEff 74:eq_pub_012_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0025\"]",
+        "SkillEff 74:eq_pub_012_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0025\"]",
+        "SkillEff 88:eq_pub_012_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0025\"]"
+      ]
+    },
+    "eq_pub_022_01_01": {
+      "count": 32,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 32
+      },
+      "examples": [
+        "SkillEff 95:eq_pub_022_01_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 95:eq_pub_022_01_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 82:eq_pub_022_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_pub_005_01_01": {
+      "count": 24,
+      "effects": {
+        "SKILL_EFF_DMG_IGNORE_COND": 24
+      },
+      "examples": [
+        "SkillEff 97:eq_pub_005_01_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 97:eq_pub_005_01_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 94:eq_pub_005_01_01:SKILL_EFF_DMG_IGNORE_COND"
+      ]
+    },
+    "eq_pub_043_01_02": {
+      "count": 24,
+      "effects": {
+        "SKILL_EFF_STRESS_ADD": 24
+      },
+      "examples": [
+        "SkillEff 70:eq_pub_043_01_02:SKILL_EFF_STRESS_ADD",
+        "SkillEff 74:eq_pub_043_01_02:SKILL_EFF_STRESS_ADD",
+        "SkillEff 70:eq_pub_043_01_02:SKILL_EFF_STRESS_ADD"
+      ]
+    },
+    "eq_pub_030_01_01": {
+      "count": 24,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 24
+      },
+      "examples": [
+        "SkillEff 79:eq_pub_030_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0269\"]",
+        "SkillEff 94:eq_pub_030_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0269\"]",
+        "SkillEff 81:eq_pub_030_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0269\"]"
+      ]
+    },
+    "eq_dll_004_01_01": {
+      "count": 22,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 22
+      },
+      "examples": [
+        "SkillEff 95:eq_dll_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_004_02\"]",
+        "SkillEff 95:eq_dll_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_004_02\"]",
+        "SkillEff 95:eq_dll_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_004_02\"]"
+      ]
+    },
+    "eq_pub_023_01_01": {
+      "count": 22,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 22
+      },
+      "examples": [
+        "SkillEff 124:eq_pub_023_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_023_02\"]",
+        "SkillEff 124:eq_pub_023_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_023_02\"]",
+        "SkillEff 124:eq_pub_023_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_023_02\"]"
+      ]
+    },
+    "eq_pub_038_01_01": {
+      "count": 21,
+      "effects": {
+        "SKILL_EFF_STRESS_ADD": 21
+      },
+      "examples": [
+        "SkillEff 86:eq_pub_038_01_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 86:eq_pub_038_01_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 86:eq_pub_038_01_01:SKILL_EFF_STRESS_ADD"
+      ]
+    },
+    "eq_pub_031_01_01": {
+      "count": 21,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 21
+      },
+      "examples": [
+        "SkillEff 72:eq_pub_031_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0267\"]",
+        "SkillEff 76:eq_pub_031_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0267\"]",
+        "SkillEff 72:eq_pub_031_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0267\"]"
+      ]
+    },
+    "eq_pub_008_01_01": {
+      "count": 16,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 16
+      },
+      "examples": [
+        "SkillEff 102:eq_pub_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0004\"]",
+        "SkillEff 102:eq_pub_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0004\"]",
+        "SkillEff 105:eq_pub_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0004\"]"
+      ]
+    },
+    "eq_dll_008_01_01": {
+      "count": 14,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 14
+      },
+      "examples": [
+        "SkillEff 112:eq_dll_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_008_02\"]",
+        "SkillEff 112:eq_dll_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_008_02\"]",
+        "SkillEff 106:eq_dll_008_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_008_02\"]"
+      ]
+    },
+    "eq_pub_013_01_01": {
+      "count": 12,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 12
+      },
+      "examples": [
+        "SkillEff 114:eq_pub_013_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0003\"]",
+        "SkillEff 114:eq_pub_013_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0003\"]",
+        "SkillEff 107:eq_pub_013_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0003\"]"
+      ]
+    },
+    "eq_dll_ca_002_01_01": {
+      "count": 11,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 11
+      },
+      "examples": [
+        "SkillEff 89:eq_dll_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_ca_002_02\"]",
+        "SkillEff 89:eq_dll_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_ca_002_02\"]",
+        "SkillEff 89:eq_dll_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_dll_ca_002_02\"]"
+      ]
+    },
+    "eq_pub_033_01_01": {
+      "count": 10,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 10
+      },
+      "examples": [
+        "SkillEff 84:eq_pub_033_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs01_0578\"]",
+        "SkillEff 84:eq_pub_033_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs01_0578\"]",
+        "SkillEff 83:eq_pub_033_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs01_0578\"]"
+      ]
+    },
+    "eq_pub_023_02_01": {
+      "count": 10,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 10
+      },
+      "examples": [
+        "SkillEff 106:eq_pub_023_02_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 106:eq_pub_023_02_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 136:eq_pub_023_02_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_p_nih_005_01_02": {
+      "count": 8,
+      "effects": {
+        "SKILL_EFF_CARD_DRAW": 8
+      },
+      "examples": [
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW"
+      ]
+    },
+    "eq_pub_019_01_01": {
+      "count": 8,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 8
+      },
+      "examples": [
+        "SkillEff 109:eq_pub_019_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0157\"]",
+        "SkillEff 109:eq_pub_019_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0157\"]",
+        "SkillEff 105:eq_pub_019_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0157\"]"
+      ]
+    },
+    "eq_ds01_ca_002_01_01": {
+      "count": 8,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 8
+      },
+      "examples": [
+        "SkillEff 102:eq_ds01_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0279\"]",
+        "SkillEff 102:eq_ds01_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0279\"]",
+        "SkillEff 102:eq_ds01_ca_002_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0279\"]"
+      ]
+    },
+    "eq_ds03_007_01_01": {
+      "count": 7,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 7
+      },
+      "examples": [
+        "SkillEff 104:eq_ds03_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_007_02\"]",
+        "SkillEff 104:eq_ds03_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_007_02\"]",
+        "SkillEff 104:eq_ds03_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_007_02\"]"
+      ]
+    },
+    "eq_pub_011_01_01": {
+      "count": 7,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 7
+      },
+      "examples": [
+        "SkillEff 93:eq_pub_011_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_011_02\"]",
+        "SkillEff 88:eq_pub_011_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_011_02\"]",
+        "SkillEff 101:eq_pub_011_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_011_02\"]"
+      ]
+    },
+    "eq_p_dll_005_01_01": {
+      "count": 5,
+      "effects": {
+        "SKILL_EFF_TACTIC_GAUGE_ADD": 5
+      },
+      "examples": [
+        "SkillEff 69:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 75:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 113:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD"
+      ]
+    },
+    "eq_ds03_003_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "examples": [
+        "SkillEff 100:eq_ds03_003_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_003_02\"]",
+        "SkillEff 100:eq_ds03_003_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_003_02\"]",
+        "SkillEff 100:eq_ds03_003_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_003_02\"]"
+      ]
+    },
+    "eq_p_nih_005_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CARD_DISCARD": 4
+      },
+      "examples": [
+        "SkillEff 108:eq_p_nih_005_01_01:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 108:eq_p_nih_005_01_01:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 108:eq_p_nih_005_01_01:SKILL_EFF_CARD_DISCARD"
+      ]
+    },
+    "eq_pub_007_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "examples": [
+        "SkillEff 94:eq_pub_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0002\"]",
+        "SkillEff 110:eq_pub_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0002\"]",
+        "SkillEff 100:eq_pub_007_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0002\"]"
+      ]
+    },
+    "eq_dll_004_02_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "examples": [
+        "SkillEff 107:eq_dll_004_02_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0268\"]",
+        "SkillEff 126:eq_dll_004_02_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0268\"]",
+        "SkillEff 126:eq_dll_004_02_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0268\"]"
+      ]
+    },
+    "eq_pub_004_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "examples": [
+        "SkillEff 134:eq_pub_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_004_02\"]",
+        "SkillEff 134:eq_pub_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_004_02\"]",
+        "SkillEff 112:eq_pub_004_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_pub_004_02\"]"
+      ]
+    },
+    "eq_pub_026_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_EGO_FIELD_CHANGE": 4
+      },
+      "examples": [
+        "SkillEff 106:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 118:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 107:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE"
+      ]
+    },
+    "eq_ds02_ca_008_01_01": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CARD_DRAW": 4
+      },
+      "examples": [
+        "SkillEff 88:eq_ds02_ca_008_01_01:SKILL_EFF_CARD_DRAW",
+        "SkillEff 88:eq_ds02_ca_008_01_01:SKILL_EFF_CARD_DRAW",
+        "SkillEff 88:eq_ds02_ca_008_01_01:SKILL_EFF_CARD_DRAW"
+      ]
+    },
+    "eq_ds03_007_02_01": {
+      "count": 3,
+      "effects": {
+        "SKILL_EFF_MONSTER_TURN_COUNT": 3
+      },
+      "examples": [
+        "SkillEff 176:eq_ds03_007_02_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 150:eq_ds03_007_02_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 149:eq_ds03_007_02_01:SKILL_EFF_MONSTER_TURN_COUNT"
+      ]
+    },
+    "eq_dll_ca_009_01_01": {
+      "count": 3,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 3
+      },
+      "examples": [
+        "SkillEff 108:eq_dll_ca_009_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0062\"]",
+        "SkillEff 108:eq_dll_ca_009_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0062\"]",
+        "SkillEff 108:eq_dll_ca_009_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0062\"]"
+      ]
+    },
+    "eq_chr_022_01_01": {
+      "count": 2,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 2
+      },
+      "examples": [
+        "SkillEff 101:eq_chr_022_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_chr_022_02\"]",
+        "SkillEff 101:eq_chr_022_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_chr_022_02\"]"
+      ]
+    },
+    "eq_p_dll_010_01_01": {
+      "count": 2,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 2
+      },
+      "examples": [
+        "SkillEff 111:eq_p_dll_010_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0267\"]",
+        "SkillEff 111:eq_p_dll_010_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0267\"]"
+      ]
+    },
+    "eq_p_dll_010_01_02": {
+      "count": 2,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 2
+      },
+      "examples": [
+        "SkillEff 112:eq_p_dll_010_01_02:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0269\"]",
+        "SkillEff 112:eq_p_dll_010_01_02:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0269\"]"
+      ]
+    },
+    "eq_pub_043_01_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_HEAL": 1
+      },
+      "examples": [
+        "SkillEff 66:eq_pub_043_01_01:SKILL_EFF_HEAL"
+      ]
+    },
+    "eq_pub_016_01_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "examples": [
+        "SkillEff 71:eq_pub_016_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_dll_008_02_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 1
+      },
+      "examples": [
+        "SkillEff 112:eq_dll_008_02_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs00_0007\"]"
+      ]
+    },
+    "eq_pub_014_01_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "examples": [
+        "SkillEff 106:eq_pub_014_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_pub_020_01_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "examples": [
+        "SkillEff 123:eq_pub_020_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "eq_ds02_005_01_01": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "examples": [
+        "SkillEff 107:eq_ds02_005_01_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    }
+  },
+  "by_base": {
+    "eq_pub_027": {
+      "count": 594,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 594
+      },
+      "leaves": {
+        "eq_pub_027_01_01": 198,
+        "eq_pub_027_01_02": 198,
+        "eq_pub_027_01_03": 198
+      }
+    },
+    "eq_pub_042": {
+      "count": 169,
+      "effects": {
+        "SKILL_EFF_CARD_DRAW": 98,
+        "SKILL_EFF_ENERGY_CHANGE": 71
+      },
+      "leaves": {
+        "eq_pub_042_01_02": 98,
+        "eq_pub_042_01_01": 71
+      }
+    },
+    "eq_pub_029": {
+      "count": 130,
+      "effects": {
+        "SKILL_EFF_CARD_USE": 130
+      },
+      "leaves": {
+        "eq_pub_029_01_01": 130
+      }
+    },
+    "eq_chr_020": {
+      "count": 99,
+      "effects": {
+        "SKILL_EFF_MONSTER_TURN_COUNT": 99
+      },
+      "leaves": {
+        "eq_chr_020_01_01": 99
+      }
+    },
+    "eq_g02_002": {
+      "count": 80,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 80
+      },
+      "leaves": {
+        "eq_g02_002_01_01": 80
+      }
+    },
+    "eq_pub_017": {
+      "count": 71,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 71
+      },
+      "leaves": {
+        "eq_pub_017_01_01": 71
+      }
+    },
+    "eq_pub_032": {
+      "count": 49,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 49
+      },
+      "leaves": {
+        "eq_pub_032_01_01": 49
+      }
+    },
+    "eq_pub_034": {
+      "count": 45,
+      "effects": {
+        "SKILL_EFF_DMG_IGNORE_COND": 45
+      },
+      "leaves": {
+        "eq_pub_034_01_01": 45
+      }
+    },
+    "eq_pub_021": {
+      "count": 40,
+      "effects": {
+        "SKILL_EFF_HEAL": 40
+      },
+      "leaves": {
+        "eq_pub_021_01_01": 40
+      }
+    },
+    "eq_pub_012": {
+      "count": 34,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 34
+      },
+      "leaves": {
+        "eq_pub_012_01_01": 34
+      }
+    },
+    "eq_pub_022": {
+      "count": 32,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 32
+      },
+      "leaves": {
+        "eq_pub_022_01_01": 32
+      }
+    },
+    "eq_pub_023": {
+      "count": 32,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 22,
+        "SKILL_EFF_SHIELD_IGNORE_COND": 10
+      },
+      "leaves": {
+        "eq_pub_023_01_01": 22,
+        "eq_pub_023_02_01": 10
+      }
+    },
+    "eq_dll_004": {
+      "count": 26,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 26
+      },
+      "leaves": {
+        "eq_dll_004_01_01": 22,
+        "eq_dll_004_02_01": 4
+      }
+    },
+    "eq_pub_043": {
+      "count": 25,
+      "effects": {
+        "SKILL_EFF_STRESS_ADD": 24,
+        "SKILL_EFF_HEAL": 1
+      },
+      "leaves": {
+        "eq_pub_043_01_02": 24,
+        "eq_pub_043_01_01": 1
+      }
+    },
+    "eq_pub_005": {
+      "count": 24,
+      "effects": {
+        "SKILL_EFF_DMG_IGNORE_COND": 24
+      },
+      "leaves": {
+        "eq_pub_005_01_01": 24
+      }
+    },
+    "eq_pub_030": {
+      "count": 24,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 24
+      },
+      "leaves": {
+        "eq_pub_030_01_01": 24
+      }
+    },
+    "eq_pub_038": {
+      "count": 21,
+      "effects": {
+        "SKILL_EFF_STRESS_ADD": 21
+      },
+      "leaves": {
+        "eq_pub_038_01_01": 21
+      }
+    },
+    "eq_pub_031": {
+      "count": 21,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 21
+      },
+      "leaves": {
+        "eq_pub_031_01_01": 21
+      }
+    },
+    "eq_pub_008": {
+      "count": 16,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 16
+      },
+      "leaves": {
+        "eq_pub_008_01_01": 16
+      }
+    },
+    "eq_dll_008": {
+      "count": 15,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 15
+      },
+      "leaves": {
+        "eq_dll_008_01_01": 14,
+        "eq_dll_008_02_01": 1
+      }
+    },
+    "eq_pub_013": {
+      "count": 12,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 12
+      },
+      "leaves": {
+        "eq_pub_013_01_01": 12
+      }
+    },
+    "eq_ds03_007": {
+      "count": 10,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 7,
+        "SKILL_EFF_MONSTER_TURN_COUNT": 3
+      },
+      "leaves": {
+        "eq_ds03_007_01_01": 7,
+        "eq_ds03_007_02_01": 3
+      }
+    },
+    "eq_pub_033": {
+      "count": 10,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 10
+      },
+      "leaves": {
+        "eq_pub_033_01_01": 10
+      }
+    },
+    "eq_pub_019": {
+      "count": 8,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 8
+      },
+      "leaves": {
+        "eq_pub_019_01_01": 8
+      }
+    },
+    "eq_pub_011": {
+      "count": 7,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 7
+      },
+      "leaves": {
+        "eq_pub_011_01_01": 7
+      }
+    },
+    "eq_ds03_003": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "leaves": {
+        "eq_ds03_003_01_01": 4
+      }
+    },
+    "eq_pub_007": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "leaves": {
+        "eq_pub_007_01_01": 4
+      }
+    },
+    "eq_pub_004": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 4
+      },
+      "leaves": {
+        "eq_pub_004_01_01": 4
+      }
+    },
+    "eq_pub_026": {
+      "count": 4,
+      "effects": {
+        "SKILL_EFF_EGO_FIELD_CHANGE": 4
+      },
+      "leaves": {
+        "eq_pub_026_01_01": 4
+      }
+    },
+    "eq_chr_022": {
+      "count": 2,
+      "effects": {
+        "SKILL_EFF_CS_SET_ADD_IGNORE_COND": 2
+      },
+      "leaves": {
+        "eq_chr_022_01_01": 2
+      }
+    },
+    "eq_pub_016": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "leaves": {
+        "eq_pub_016_01_01": 1
+      }
+    },
+    "eq_pub_014": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "leaves": {
+        "eq_pub_014_01_01": 1
+      }
+    },
+    "eq_pub_020": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "leaves": {
+        "eq_pub_020_01_01": 1
+      }
+    },
+    "eq_ds02_005": {
+      "count": 1,
+      "effects": {
+        "SKILL_EFF_SHIELD_IGNORE_COND": 1
+      },
+      "leaves": {
+        "eq_ds02_005_01_01": 1
+      }
+    }
+  }
+}

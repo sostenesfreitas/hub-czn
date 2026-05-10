@@ -1,0 +1,247 @@
+{
+  "summary": {
+    "ATK": {
+      "n": 5,
+      "mean_abs": -343.154,
+      "mean_pct": -31.92,
+      "median_pct": -24.1,
+      "max_abs_pct": 47.62,
+      "within_1pct_count": 0,
+      "within_1pct_rate": 0.0
+    },
+    "DEF": {
+      "n": 5,
+      "mean_abs": -150.39,
+      "mean_pct": -36.094,
+      "median_pct": -39.03,
+      "max_abs_pct": 47.76,
+      "within_1pct_count": 0,
+      "within_1pct_rate": 0.0
+    },
+    "HP": {
+      "n": 5,
+      "mean_abs": -384.27,
+      "mean_pct": -44.478,
+      "median_pct": -47.23,
+      "max_abs_pct": 52.49,
+      "within_1pct_count": 0,
+      "within_1pct_rate": 0.0
+    },
+    "CRate": {
+      "n": 5,
+      "mean_abs": -4.0,
+      "mean_pct": -6.776,
+      "median_pct": 0.0,
+      "max_abs_pct": 17.51,
+      "within_1pct_count": 3,
+      "within_1pct_rate": 60.0
+    },
+    "CDmg": {
+      "n": 5,
+      "mean_abs": -2.4,
+      "mean_pct": -1.148,
+      "median_pct": 0.0,
+      "max_abs_pct": 5.74,
+      "within_1pct_count": 4,
+      "within_1pct_rate": 80.0
+    }
+  },
+  "rows": [
+    {
+      "char_name": "Yuki",
+      "res_id": 1057,
+      "level": 60,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 1296,
+          "predicted": 678.79,
+          "abs_diff": -617.21,
+          "pct_diff": -47.62
+        },
+        "DEF": {
+          "observed": 271,
+          "predicted": 201.0,
+          "abs_diff": -70.0,
+          "pct_diff": -25.83
+        },
+        "HP": {
+          "observed": 832,
+          "predicted": 439.07,
+          "abs_diff": -392.93,
+          "pct_diff": -47.23
+        },
+        "CRate": {
+          "observed": 61.1,
+          "predicted": 51.1,
+          "abs_diff": -10.0,
+          "pct_diff": -16.37
+        },
+        "CDmg": {
+          "observed": 209.2,
+          "predicted": 197.2,
+          "abs_diff": -12.0,
+          "pct_diff": -5.74
+        }
+      }
+    },
+    {
+      "char_name": "Magna",
+      "res_id": 1010,
+      "level": 50,
+      "ascend": 4,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 584,
+          "predicted": 464.79,
+          "abs_diff": -119.21,
+          "pct_diff": -20.41
+        },
+        "DEF": {
+          "observed": 497,
+          "predicted": 296.15,
+          "abs_diff": -200.85,
+          "pct_diff": -40.41
+        },
+        "HP": {
+          "observed": 884,
+          "predicted": 593.21,
+          "abs_diff": -290.79,
+          "pct_diff": -32.89
+        },
+        "CRate": {
+          "observed": 45.2,
+          "predicted": 45.2,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 159.7,
+          "predicted": 159.7,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      }
+    },
+    {
+      "char_name": "Rei",
+      "res_id": 1056,
+      "level": 50,
+      "ascend": 4,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 597,
+          "predicted": 472.36,
+          "abs_diff": -124.64,
+          "pct_diff": -20.88
+        },
+        "DEF": {
+          "observed": 386,
+          "predicted": 235.35,
+          "abs_diff": -150.65,
+          "pct_diff": -39.03
+        },
+        "HP": {
+          "observed": 1068,
+          "predicted": 507.46,
+          "abs_diff": -560.54,
+          "pct_diff": -52.49
+        },
+        "CRate": {
+          "observed": 38.0,
+          "predicted": 38.0,
+          "abs_diff": -0.0,
+          "pct_diff": -0.0
+        },
+        "CDmg": {
+          "observed": 139.5,
+          "predicted": 139.5,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      }
+    },
+    {
+      "char_name": "Heidemarie",
+      "res_id": 30093,
+      "level": 60,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 1534,
+          "predicted": 819.29,
+          "abs_diff": -714.71,
+          "pct_diff": -46.59
+        },
+        "DEF": {
+          "observed": 247,
+          "predicted": 179.22,
+          "abs_diff": -67.78,
+          "pct_diff": -27.44
+        },
+        "HP": {
+          "observed": 696,
+          "predicted": 366.5,
+          "abs_diff": -329.5,
+          "pct_diff": -47.34
+        },
+        "CRate": {
+          "observed": 36.8,
+          "predicted": 36.8,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 237,
+          "predicted": 237.0,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      }
+    },
+    {
+      "char_name": "Tiphera",
+      "res_id": 30084,
+      "level": 60,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 581,
+          "predicted": 441.0,
+          "abs_diff": -140.0,
+          "pct_diff": -24.1
+        },
+        "DEF": {
+          "observed": 550,
+          "predicted": 287.33,
+          "abs_diff": -262.67,
+          "pct_diff": -47.76
+        },
+        "HP": {
+          "observed": 819,
+          "predicted": 471.41,
+          "abs_diff": -347.59,
+          "pct_diff": -42.44
+        },
+        "CRate": {
+          "observed": 57.1,
+          "predicted": 47.1,
+          "abs_diff": -10.0,
+          "pct_diff": -17.51
+        },
+        "CDmg": {
+          "observed": 190.9,
+          "predicted": 190.9,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      }
+    }
+  ],
+  "errors": []
+}
