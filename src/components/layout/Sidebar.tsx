@@ -8,12 +8,14 @@ import { cn } from '@/lib/utils'
 import i18n from '@/i18n'
 import { useUpdateCheck } from '@/hooks/useUpdateCheck'
 
+
 const NAV = [
   { to: '/',           key: 'nav.home',        icon: Home },
   { to: '/optimizer',  key: 'nav.optimizer',   icon: Swords },
   { to: '/fragments',  key: 'nav.fragments',   icon: Layers },
   { to: '/combatants', key: 'nav.combatants',  icon: Users },
   { to: '/scoring',    key: 'nav.scoring',     icon: BarChart2 },
+  { to: '/deck-builder', key: 'nav.deckBuilder', icon: Swords, beta: true },
   { to: '/simulator',  key: 'nav.simulator',   icon: Zap,  beta: true },
   { to: '/battle',     key: 'nav.battle',      icon: Sword, beta: true },
   { to: '/capture',    key: 'nav.capture',     icon: Radio },
