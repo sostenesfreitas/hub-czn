@@ -107,10 +107,30 @@ def _compare(char: dict, optimizer: GearOptimizer) -> dict | None:
     if not gear:
         return None
 
+    # Bug A fix: override the stale memory_fragments level/ascend with battle-time values.
+    # optimizer.character_info[char_name] is populated from the loaded memory_fragments file,
+    # which may be stale (e.g., a character captured at a different point in time).
+    # The battle frame carries the authoritative level and ascend at the time of capture.
+    battle_level = char.get("level")
+    battle_ascend = char.get("ascend")
+    info = optimizer.character_info.get(char_name) if char_name else None
+    _saved_level = None
+    _saved_ascend = None
+    if info is not None and battle_level is not None:
+        _saved_level, _saved_ascend = info.level, info.ascend
+        info.level = battle_level
+        if battle_ascend is not None:
+            info.ascend = battle_ascend
+
     try:
         predicted = optimizer.calculate_build_stats(gear, char_name)
     except Exception as e:
         return {"char_name": char_name, "res_id": res_id, "error": str(e)}
+    finally:
+        # Restore overridden values so subsequent calls are not affected.
+        if info is not None and _saved_level is not None:
+            info.level = _saved_level
+            info.ascend = _saved_ascend
 
     info = char["status"]["info"]
     diffs = {}
