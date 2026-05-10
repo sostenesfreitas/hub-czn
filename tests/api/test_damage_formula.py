@@ -46,3 +46,25 @@ def test_fit_def_curve_returns_best_form_with_r_squared():
 def test_fit_def_curve_empty_input_raises():
     with pytest.raises(ValueError):
         fit_def_curve([])
+
+
+from api.capture.validate_damage import predict_damage_h1, validate_against_hits
+
+
+def test_predict_damage_h1_basic():
+    """H1: dmg = ATK × 0.36 × (1 - def_reduce) × crit_factor × skill_mult."""
+    predicted = predict_damage_h1(
+        atk=1000, def_reduce=0.3, crit_factor=1.0, skill_mult=1.0
+    )
+    assert predicted == pytest.approx(252.0, rel=1e-3)
+
+
+def test_validate_against_hits_returns_coverage_metrics():
+    fake_hits = [
+        {"atk": 1000, "def_reduce": 0.3, "crit_factor": 1.0, "skill_mult": 1.0, "observed_dmg": 252.0},
+        {"atk": 1000, "def_reduce": 0.3, "crit_factor": 1.0, "skill_mult": 1.0, "observed_dmg": 500.0},
+    ]
+    result = validate_against_hits(fake_hits, hypothesis="H1", tolerance=0.05)
+    assert result["coverage"] == 0.5
+    assert result["n_hits"] == 2
+    assert result["n_within_tolerance"] == 1
