@@ -22,6 +22,129 @@ class CaptureError(Exception):
     pass
 
 
+def _is_process_elevated() -> Optional[bool]:
+    """Return True if the current process has an elevated UAC token, False if not,
+    None if we can't determine (e.g. non-Windows). Uses TokenElevation, which is
+    accurate (IsUserAnAdmin alone returns True for any Administrators-group member
+    even when the process isn't elevated)."""
+    if sys.platform != "win32":
+        return None
+    try:
+        import ctypes.wintypes as wintypes
+        hToken = wintypes.HANDLE()
+        TOKEN_QUERY = 0x0008
+        TokenElevation = 20
+        if not ctypes.windll.advapi32.OpenProcessToken(
+            ctypes.windll.kernel32.GetCurrentProcess(),
+            TOKEN_QUERY,
+            ctypes.byref(hToken),
+        ):
+            return None
+        try:
+            elevated = wintypes.DWORD(0)
+            size = wintypes.DWORD(0)
+            if ctypes.windll.advapi32.GetTokenInformation(
+                hToken, TokenElevation,
+                ctypes.byref(elevated),
+                ctypes.sizeof(elevated),
+                ctypes.byref(size),
+            ):
+                return bool(elevated.value)
+        finally:
+            ctypes.windll.kernel32.CloseHandle(hToken)
+    except Exception:
+        pass
+    return None
+
+
+def _is_controlled_folder_access_enabled() -> Optional[bool]:
+    """Detect if Microsoft Defender Controlled Folder Access is enabled.
+    Returns True/False if PowerShell + Defender are available, None otherwise.
+    CFA blocks writes to %WinDir%\\System32\\drivers\\etc\\hosts even from elevated
+    processes, returning a generic EACCES with no specific indicator."""
+    if sys.platform != "win32":
+        return None
+    try:
+        result = subprocess.run(
+            ["powershell", "-NoProfile", "-Command",
+             "(Get-MpPreference).EnableControlledFolderAccess"],
+            capture_output=True, text=True, timeout=5,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        if result.returncode == 0:
+            # Get-MpPreference returns 0 (Disabled), 1 (Enabled), or 2 (AuditMode)
+            value = result.stdout.strip()
+            return value in ("1", "2")
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+        pass
+    return None
+
+
+def _is_readonly(path: Path) -> bool:
+    """Check whether a Windows file has the read-only attribute set."""
+    try:
+        return not (os.stat(path).st_mode & 0o200)
+    except OSError:
+        return False
+
+
+def _diagnose_hosts_write_failure(path: Path, original_error: Exception) -> str:
+    """Build an actionable error message based on which Windows mechanism is
+    most likely blocking the write. Order matters: report the most fixable
+    cause that's confirmed present."""
+    parts = [f"Cannot write to hosts file at {path}."]
+
+    elevated = _is_process_elevated()
+    if elevated is False:
+        parts.append(
+            "The app is running as Administrator according to the Windows "
+            "group check, but the process token is NOT elevated. Restart "
+            "Hub CZN by right-clicking the app icon → 'Run as administrator', "
+            "and accept the UAC prompt."
+        )
+        parts.append(f"Original error: {original_error}")
+        return "\n\n".join(parts)
+
+    if _is_readonly(path):
+        parts.append(
+            "The hosts file has the read-only attribute. Clear it from an "
+            "admin PowerShell with:\n"
+            "  Set-ItemProperty -Path \"$env:WINDIR\\System32\\drivers\\etc\\hosts\" -Name IsReadOnly -Value $false"
+        )
+        parts.append(f"Original error: {original_error}")
+        return "\n\n".join(parts)
+
+    cfa = _is_controlled_folder_access_enabled()
+    if cfa is True:
+        parts.append(
+            "Microsoft Defender Controlled Folder Access (CFA) is enabled and "
+            "is most likely blocking the write — CFA blocks ALL writes to "
+            "%WinDir%\\System32\\drivers\\etc\\ even from admin processes.\n\n"
+            "Two options:\n"
+            "  1) Allow Hub CZN through CFA (recommended):\n"
+            "     Windows Security → Virus & threat protection → "
+            "     Manage ransomware protection → Allow an app through "
+            "     Controlled folder access → Add the Hub CZN executable.\n"
+            "  2) Temporarily disable CFA while capturing:\n"
+            "     Windows Security → same path → toggle Controlled folder access off."
+        )
+        parts.append(f"Original error: {original_error}")
+        return "\n\n".join(parts)
+
+    # Generic — couldn't pinpoint a specific cause.
+    parts.append(
+        "Could not pinpoint the specific cause. Likely candidates:\n"
+        "  - Microsoft Defender Controlled Folder Access (could not query)\n"
+        "  - Third-party antivirus / endpoint security software blocking hosts edits\n"
+        "  - Explicit Deny ACL on the hosts file (corporate / hardened machines)\n"
+        "  - Another process holding an exclusive lock on the file\n\n"
+        "Try: temporarily pausing antivirus, or running 'icacls "
+        f"\"{path}\"' from an elevated prompt to check permissions."
+    )
+    parts.append(f"Original error: {original_error}")
+    return "\n\n".join(parts)
+
+
 # Addon template embedded as string constant (works in bundled executables)
 ADDON_TEMPLATE = '''"""
 mitmproxy Addon for intercepting CZN game WebSocket traffic.
@@ -616,36 +739,55 @@ class CaptureManager:
             Original hosts file content (for restoration)
 
         Raises:
-            CaptureError: If hosts file modification fails
+            CaptureError: With actionable diagnostic message on failure.
         """
         try:
             with open(HOSTS_PATH, "r") as f:
                 content = f.read()
+        except Exception as e:
+            raise CaptureError(
+                f"Cannot read hosts file at {HOSTS_PATH}: {e}\n"
+                f"This is unusual — the file should be world-readable."
+            )
 
-            # Don't modify if already modified
-            if "# CZN-CAPTURE-START" in content:
-                return content
-
-            # Add redirect entries
-            from .constants import SERVERS
-            server_config = SERVERS[self.current_region]
-            entries = ["\n# CZN-CAPTURE-START"]
-            for host in server_config.hosts:
-                entries.append(f"127.0.0.1 {host}")
-            entries.append("# CZN-CAPTURE-END\n")
-
-            new_content = content + "\n".join(entries)
-
-            with open(HOSTS_PATH, "w") as f:
-                f.write(new_content)
-
-            # Flush DNS cache
-            subprocess.run(["ipconfig", "/flushdns"], capture_output=True)
-
+        # Don't modify if already modified
+        if "# CZN-CAPTURE-START" in content:
             return content
 
-        except Exception as e:
-            raise CaptureError(f"Failed to modify hosts file: {e}")
+        # Probe write access BEFORE building the new content so we fail fast
+        # with a specific reason. We rewrite the file with the same content
+        # — this is a no-op on success, and triggers the same EACCES on failure.
+        try:
+            with open(HOSTS_PATH, "w") as f:
+                f.write(content)
+        except (PermissionError, OSError) as e:
+            raise CaptureError(_diagnose_hosts_write_failure(HOSTS_PATH, e))
+
+        # Build entries and write the real change.
+        from .constants import SERVERS
+        server_config = SERVERS[self.current_region]
+        entries = ["\n# CZN-CAPTURE-START"]
+        for host in server_config.hosts:
+            entries.append(f"127.0.0.1 {host}")
+        entries.append("# CZN-CAPTURE-END\n")
+        new_content = content + "\n".join(entries)
+
+        try:
+            with open(HOSTS_PATH, "w") as f:
+                f.write(new_content)
+        except (PermissionError, OSError) as e:
+            # Probe succeeded but real write failed — race condition or transient lock.
+            raise CaptureError(
+                f"Hosts file write failed after access probe succeeded: {e}\n"
+                f"Possible cause: another process locked the file between checks. "
+                f"Common culprits: antivirus real-time scan, DNS resolver service. "
+                f"Retry, and if it persists, temporarily pause the suspected service."
+            )
+
+        # Flush DNS cache
+        subprocess.run(["ipconfig", "/flushdns"], capture_output=True)
+
+        return content
 
     def restore_hosts_file(self):
         """
@@ -870,12 +1012,10 @@ addons = [Addon(OUTPUT_DIR, dict_path=DICT_PATH, debug_mode={debug_mode})]
         # (Using IP avoids circular DNS lookup through modified hosts file)
         real_ip = list(self.game_server_ips.values())[0]
 
-        # Modify hosts file
-        try:
-            self.modify_hosts_file()
-            self.log_callback("Hosts file modified", "success")
-        except CaptureError as e:
-            raise CaptureError(f"Failed to modify hosts file: {e}")
+        # Modify hosts file (modify_hosts_file already raises CaptureError with
+        # actionable diagnostic message on failure — don't re-wrap it).
+        self.modify_hosts_file()
+        self.log_callback("Hosts file modified", "success")
 
         # Generate addon script
         try:

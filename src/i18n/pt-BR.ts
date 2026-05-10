@@ -196,6 +196,11 @@ const ptBR = {
       ok: 'Executando com privilégios de administrador',
       fail: 'Feche o app e abra novamente com "Executar como administrador"',
     },
+    hosts: {
+      label: 'Arquivo hosts gravável',
+      ok: 'Pode modificar o arquivo hosts',
+      fail: 'Não consegue escrever no arquivo hosts (veja erros de Captura)',
+    },
     mitmproxy: {
       label: 'mitmproxy',
       ok: 'mitmproxy {{version}} instalado',

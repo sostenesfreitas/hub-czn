@@ -196,6 +196,11 @@ const en = {
       ok: 'Running with administrator privileges',
       fail: 'Close the app and reopen with "Run as administrator"',
     },
+    hosts: {
+      label: 'Hosts file writable',
+      ok: 'Can modify hosts file',
+      fail: 'Cannot write to hosts file (see Capture errors)',
+    },
     mitmproxy: {
       label: 'mitmproxy',
       ok: 'mitmproxy {{version}} installed',

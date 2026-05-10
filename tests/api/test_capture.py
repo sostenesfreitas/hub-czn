@@ -16,8 +16,7 @@ def test_capture_status_not_running():
 
 
 def test_capture_start_no_admin():
-    with patch("api.routes.capture.ctypes") as mock_ctypes:
-        mock_ctypes.windll.shell32.IsUserAnAdmin.return_value = 0
+    with patch("api.routes.capture._is_admin", return_value=False):
         r = client.post("/api/capture/start", json={"region": "global", "debug": False})
     assert r.status_code == 403
 
@@ -26,8 +25,7 @@ def test_capture_start_already_running():
     from api.state import state
     state.capture_running = True
     try:
-        with patch("api.routes.capture.ctypes") as mock_ctypes:
-            mock_ctypes.windll.shell32.IsUserAnAdmin.return_value = 1
+        with patch("api.routes.capture._is_admin", return_value=True):
             r = client.post("/api/capture/start", json={"region": "global", "debug": False})
         assert r.status_code == 409
     finally:
@@ -56,10 +54,9 @@ def test_set_region_invalid():
 def test_capture_start_success():
     mock_mgr = MagicMock()
     mock_mgr.start_capture = MagicMock()
-    with patch("api.routes.capture.ctypes") as mock_ctypes, \
+    with patch("api.routes.capture._is_admin", return_value=True), \
          patch("api.state.AppState.get_capture_manager", return_value=mock_mgr), \
          patch("threading.Thread") as mock_thread:
-        mock_ctypes.windll.shell32.IsUserAnAdmin.return_value = 1
         mock_thread.return_value.start = MagicMock()
         r = client.post("/api/capture/start", json={"region": "global", "debug": False})
     assert r.status_code == 200

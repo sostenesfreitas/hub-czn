@@ -154,6 +154,8 @@ class PrerequisiteStatus:
     has_certificate: bool
     certificate_path: Optional[Path]
     certificate_trusted: bool
+    can_write_hosts: bool = True
+    hosts_block_reason: Optional[str] = None
 
 
 def check_prerequisites() -> PrerequisiteStatus:
@@ -210,6 +212,8 @@ def check_prerequisites() -> PrerequisiteStatus:
     has_certificate = cert_path.exists()
     certificate_trusted = is_certificate_trusted(cert_path) if has_certificate else False
 
+    can_write_hosts, hosts_block_reason = _probe_hosts_writable()
+
     return PrerequisiteStatus(
         is_admin=is_admin,
         has_mitmproxy=has_mitmproxy,
@@ -217,7 +221,31 @@ def check_prerequisites() -> PrerequisiteStatus:
         has_certificate=has_certificate,
         certificate_path=cert_path if has_certificate else None,
         certificate_trusted=certificate_trusted,
+        can_write_hosts=can_write_hosts,
+        hosts_block_reason=hosts_block_reason,
     )
+
+
+def _probe_hosts_writable() -> tuple[bool, Optional[str]]:
+    """Verify the hosts file is writable, surfacing failures BEFORE the user
+    clicks Start Capture. Returns (writable, blocking_reason). The reason is
+    a user-readable message ready to display in the Setup tab."""
+    if sys.platform != "win32":
+        return True, None
+    from .constants import HOSTS_PATH
+    from .manager import _diagnose_hosts_write_failure
+    try:
+        with open(HOSTS_PATH, "r") as f:
+            content = f.read()
+    except Exception as e:
+        return False, f"Cannot read hosts file: {e}"
+    try:
+        # Rewrite identical content as a no-op write probe.
+        with open(HOSTS_PATH, "w") as f:
+            f.write(content)
+        return True, None
+    except (PermissionError, OSError) as e:
+        return False, _diagnose_hosts_write_failure(HOSTS_PATH, e)
 
 
 def _find_python() -> Optional[str]:

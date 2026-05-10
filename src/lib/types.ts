@@ -61,6 +61,8 @@ export interface SetupStatus {
   mitmproxy_version: string | null
   certificate: boolean
   certificate_trusted: boolean
+  can_write_hosts: boolean
+  hosts_block_reason: string | null
 }
 
 export interface SetupActionResponse {

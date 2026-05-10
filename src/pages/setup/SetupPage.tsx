@@ -97,6 +97,16 @@ export function SetupPage() {
       />
 
       <Row
+        ok={status.can_write_hosts}
+        label={t('setup.hosts.label')}
+        detail={
+          status.can_write_hosts
+            ? t('setup.hosts.ok')
+            : status.hosts_block_reason ?? t('setup.hosts.fail')
+        }
+      />
+
+      <Row
         ok={status.mitmproxy}
         label={t('setup.mitmproxy.label')}
         detail={
