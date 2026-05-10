@@ -48,3 +48,19 @@ export type VariantModalTarget =
       slotIndex: number
       item: DeckBuilderCardWithVariants
     }
+
+export type DeckBuilderImportedCard = {
+  card_id: string
+  selected_variant_id: string | null
+}
+
+export type DeckBuilderExportSlot = {
+  combatant_id: number | null
+  cards: DeckBuilderImportedCard[]
+}
+
+export type DeckBuilderExportPayload = {
+  version: number
+  exported_at: string
+  slots: DeckBuilderExportSlot[]
+}

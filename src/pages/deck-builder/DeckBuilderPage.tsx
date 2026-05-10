@@ -13,6 +13,8 @@ export function DeckBuilderPage() {
         totalCards={deckBuilder.totalCards}
         totalCost={deckBuilder.totalCost}
         onReset={deckBuilder.resetBuilder}
+        onImportDeck={deckBuilder.importDeck}
+        onExportDeck={deckBuilder.exportDeck}
       />
 
       {deckBuilder.isLoading ? (
