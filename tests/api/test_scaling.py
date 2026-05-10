@@ -54,3 +54,28 @@ def test_level_zero_clamps_to_one():
     stats_at_1 = get_char_base_stats("1057", level=1, ascend=0)
     stats_at_0 = get_char_base_stats("1057", level=0, ascend=0)
     assert stats_at_1 == stats_at_0
+
+
+def test_optimizer_uses_scaling_for_yuki_l60_a5():
+    """Optimizer must compute Yuki's L60 A5 base stats via scaling.py, not legacy CHARACTERS."""
+    from api.optimizer.optimizer import GearOptimizer
+
+    opt = GearOptimizer()
+    # Mock character_info entry for Yuki L60 A5 (no gear)
+    class FakeCharInfo:
+        res_id = 1057
+        level = 60
+        ascend = 5
+        partner_res_id = None
+        friendship_bonus = (0, 0, 0)
+        potential_50_level = 0
+        potential_60_level = 0
+
+    opt.character_info = {"Yuki": FakeCharInfo()}
+    stats = opt.calculate_build_stats(gear=[], char_name="Yuki")
+
+    # Scaling-driven base must equal what scaling.py reports for Yuki L60 A5
+    from api.game_data.scaling import get_char_base_stats
+    expected = get_char_base_stats("1057", 60, 5)
+    assert stats["ATK"] >= 387  # at minimum, level cumsum is applied
+    assert stats["ATK"] == expected["ATK"]

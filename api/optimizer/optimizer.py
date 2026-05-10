@@ -279,7 +279,26 @@ class GearOptimizer:
         """
         base_atk, base_def, base_hp, base_cr, base_cd = 0, 0, 0, 0, 125.0
 
-        if char_name:
+        if char_name and char_name in self.character_info:
+            from api.game_data.scaling import get_char_base_stats
+            info = self.character_info[char_name]
+            res_id_str = str(info.res_id)
+            try:
+                scaled = get_char_base_stats(res_id_str, info.level, info.ascend)
+                base_atk = scaled["ATK"]
+                base_def = scaled["DEF"]
+                base_hp = scaled["HP"]
+                base_cr = scaled["CRate"]
+                base_cd = scaled["CDmg"]
+            except KeyError:
+                # Unknown combatant_id — fall back to legacy hardcoded data
+                char_data = get_character_by_name(char_name)
+                base_atk = char_data.get("base_atk", 0)
+                base_def = char_data.get("base_def", 0)
+                base_hp = char_data.get("base_hp", 0)
+                base_cr = char_data.get("base_crit_rate", 0)
+                base_cd = char_data.get("base_crit_dmg", 125.0)
+        elif char_name:
             char_data = get_character_by_name(char_name)
             base_atk = char_data.get("base_atk", 0)
             base_def = char_data.get("base_def", 0)
