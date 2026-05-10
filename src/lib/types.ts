@@ -399,10 +399,21 @@ export interface SimulateDamageResponse {
   total_avg: number
 }
 
+export interface DeckBuilderEpiphanyVariant {
+  variant_id: string
+  level: number
+  name: string
+  cost: number
+  card_type: string | null
+  tags: string[]
+  description: string
+}
+
 export interface DeckBuilderCard {
   card: CardEntry
   copies: number
   group: 'starting' | 'epiphany' | 'ego'
+  variants: DeckBuilderEpiphanyVariant[]
 }
 
 export interface DeckBuilderCombatantResponse {
