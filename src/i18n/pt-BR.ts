@@ -284,6 +284,7 @@ const ptBR = {
     topPercentTip: 'Considerar apenas o gear no top X% por Gear Score. % menor = busca mais rápida, mas pode excluir peças viáveis. 60% é um padrão seguro.',
     minPrioritySubstats: 'Substats prioritários mínimos',
     minPrioritySubstatsTip: 'Só considera peças com pelo menos N substats entre os seus stats prioritários (peso > 0). Reduz drasticamente as permutações sem perder builds relevantes.',
+    minPrioritySubstatsImpossible: 'Precisa de ≥{{n}} stats com peso > 0 (você tem {{count}}). Coloque peso em mais stats pra habilitar.',
     statConstraints: 'Requisitos mínimos de stats',
     statConstraintsTip: 'Filtra builds que não atendem aos valores mínimos de stat final. Deixe um campo vazio ou em 0 para ignorar aquela restrição.',
     maxResultsTip: 'Número máximo de builds a exibir. Valores menores são mais rápidos de navegar.',
