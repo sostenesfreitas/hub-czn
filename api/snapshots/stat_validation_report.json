@@ -1,169 +1,52 @@
 {
   "summary": {
     "ATK": {
-      "n": 5,
-      "mean_abs": -343.154,
-      "mean_pct": -31.92,
-      "median_pct": -24.1,
-      "max_abs_pct": 47.62,
+      "n": 9,
+      "mean_abs": -347.294,
+      "mean_pct": -40.981,
+      "median_pct": -36.67,
+      "max_abs_pct": 73.34,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
     "DEF": {
-      "n": 5,
-      "mean_abs": -150.39,
-      "mean_pct": -36.094,
-      "median_pct": -39.03,
-      "max_abs_pct": 47.76,
+      "n": 9,
+      "mean_abs": -185.103,
+      "mean_pct": -41.459,
+      "median_pct": -37.52,
+      "max_abs_pct": 75.72,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
     "HP": {
-      "n": 5,
-      "mean_abs": -384.27,
-      "mean_pct": -44.478,
-      "median_pct": -47.23,
-      "max_abs_pct": 52.49,
+      "n": 9,
+      "mean_abs": -360.428,
+      "mean_pct": -40.393,
+      "median_pct": -34.66,
+      "max_abs_pct": 84.99,
       "within_1pct_count": 0,
       "within_1pct_rate": 0.0
     },
     "CRate": {
-      "n": 5,
-      "mean_abs": -4.0,
-      "mean_pct": -6.776,
+      "n": 9,
+      "mean_abs": -1.111,
+      "mean_pct": -2.652,
       "median_pct": 0.0,
-      "max_abs_pct": 17.51,
-      "within_1pct_count": 3,
-      "within_1pct_rate": 60.0
+      "max_abs_pct": 23.87,
+      "within_1pct_count": 8,
+      "within_1pct_rate": 88.9
     },
     "CDmg": {
-      "n": 5,
-      "mean_abs": -2.4,
-      "mean_pct": -1.148,
+      "n": 9,
+      "mean_abs": 0.0,
+      "mean_pct": 0.0,
       "median_pct": 0.0,
-      "max_abs_pct": 5.74,
-      "within_1pct_count": 4,
-      "within_1pct_rate": 80.0
+      "max_abs_pct": 0.0,
+      "within_1pct_count": 9,
+      "within_1pct_rate": 100.0
     }
   },
   "rows": [
-    {
-      "char_name": "Yuki",
-      "res_id": 1057,
-      "level": 60,
-      "ascend": 5,
-      "n_pieces": 6,
-      "diffs": {
-        "ATK": {
-          "observed": 1296,
-          "predicted": 678.79,
-          "abs_diff": -617.21,
-          "pct_diff": -47.62
-        },
-        "DEF": {
-          "observed": 271,
-          "predicted": 201.0,
-          "abs_diff": -70.0,
-          "pct_diff": -25.83
-        },
-        "HP": {
-          "observed": 832,
-          "predicted": 439.07,
-          "abs_diff": -392.93,
-          "pct_diff": -47.23
-        },
-        "CRate": {
-          "observed": 61.1,
-          "predicted": 51.1,
-          "abs_diff": -10.0,
-          "pct_diff": -16.37
-        },
-        "CDmg": {
-          "observed": 209.2,
-          "predicted": 197.2,
-          "abs_diff": -12.0,
-          "pct_diff": -5.74
-        }
-      }
-    },
-    {
-      "char_name": "Magna",
-      "res_id": 1010,
-      "level": 50,
-      "ascend": 4,
-      "n_pieces": 6,
-      "diffs": {
-        "ATK": {
-          "observed": 584,
-          "predicted": 464.79,
-          "abs_diff": -119.21,
-          "pct_diff": -20.41
-        },
-        "DEF": {
-          "observed": 497,
-          "predicted": 296.15,
-          "abs_diff": -200.85,
-          "pct_diff": -40.41
-        },
-        "HP": {
-          "observed": 884,
-          "predicted": 593.21,
-          "abs_diff": -290.79,
-          "pct_diff": -32.89
-        },
-        "CRate": {
-          "observed": 45.2,
-          "predicted": 45.2,
-          "abs_diff": 0.0,
-          "pct_diff": 0.0
-        },
-        "CDmg": {
-          "observed": 159.7,
-          "predicted": 159.7,
-          "abs_diff": 0.0,
-          "pct_diff": 0.0
-        }
-      }
-    },
-    {
-      "char_name": "Rei",
-      "res_id": 1056,
-      "level": 50,
-      "ascend": 4,
-      "n_pieces": 6,
-      "diffs": {
-        "ATK": {
-          "observed": 597,
-          "predicted": 472.36,
-          "abs_diff": -124.64,
-          "pct_diff": -20.88
-        },
-        "DEF": {
-          "observed": 386,
-          "predicted": 235.35,
-          "abs_diff": -150.65,
-          "pct_diff": -39.03
-        },
-        "HP": {
-          "observed": 1068,
-          "predicted": 507.46,
-          "abs_diff": -560.54,
-          "pct_diff": -52.49
-        },
-        "CRate": {
-          "observed": 38.0,
-          "predicted": 38.0,
-          "abs_diff": -0.0,
-          "pct_diff": -0.0
-        },
-        "CDmg": {
-          "observed": 139.5,
-          "predicted": 139.5,
-          "abs_diff": 0.0,
-          "pct_diff": 0.0
-        }
-      }
-    },
     {
       "char_name": "Heidemarie",
       "res_id": 30093,
@@ -173,21 +56,21 @@
       "diffs": {
         "ATK": {
           "observed": 1534,
-          "predicted": 819.29,
-          "abs_diff": -714.71,
-          "pct_diff": -46.59
+          "predicted": 946.31,
+          "abs_diff": -587.69,
+          "pct_diff": -38.31
         },
         "DEF": {
           "observed": 247,
-          "predicted": 179.22,
-          "abs_diff": -67.78,
-          "pct_diff": -27.44
+          "predicted": 154.33,
+          "abs_diff": -92.67,
+          "pct_diff": -37.52
         },
         "HP": {
           "observed": 696,
-          "predicted": 366.5,
-          "abs_diff": -329.5,
-          "pct_diff": -47.34
+          "predicted": 497.36,
+          "abs_diff": -198.64,
+          "pct_diff": -28.54
         },
         "CRate": {
           "observed": 36.8,
@@ -201,7 +84,288 @@
           "abs_diff": 0.0,
           "pct_diff": 0.0
         }
-      }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Cassius",
+      "res_id": 1049,
+      "level": 58,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 808,
+          "predicted": 215.41,
+          "abs_diff": -592.6,
+          "pct_diff": -73.34
+        },
+        "DEF": {
+          "observed": 428,
+          "predicted": 103.92,
+          "abs_diff": -324.08,
+          "pct_diff": -75.72
+        },
+        "HP": {
+          "observed": 831,
+          "predicted": 124.76,
+          "abs_diff": -706.24,
+          "pct_diff": -84.99
+        },
+        "CRate": {
+          "observed": 31.9,
+          "predicted": 31.9,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 161,
+          "predicted": 161.0,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Orlea",
+      "res_id": 1024,
+      "level": 60,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 644,
+          "predicted": 410.81,
+          "abs_diff": -233.19,
+          "pct_diff": -36.21
+        },
+        "DEF": {
+          "observed": 544,
+          "predicted": 345.28,
+          "abs_diff": -198.72,
+          "pct_diff": -36.53
+        },
+        "HP": {
+          "observed": 1089,
+          "predicted": 618.25,
+          "abs_diff": -470.75,
+          "pct_diff": -43.23
+        },
+        "CRate": {
+          "observed": 7.9,
+          "predicted": 7.9,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 131.4,
+          "predicted": 131.4,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Yuki",
+      "res_id": 1057,
+      "level": 60,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 1242,
+          "predicted": 786.59,
+          "abs_diff": -455.41,
+          "pct_diff": -36.67
+        },
+        "DEF": {
+          "observed": 271,
+          "predicted": 182.0,
+          "abs_diff": -89.0,
+          "pct_diff": -32.84
+        },
+        "HP": {
+          "observed": 792,
+          "predicted": 582.41,
+          "abs_diff": -209.59,
+          "pct_diff": -26.46
+        },
+        "CRate": {
+          "observed": 61.1,
+          "predicted": 61.1,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 209.2,
+          "predicted": 209.2,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Magna",
+      "res_id": 1010,
+      "level": 58,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 791,
+          "predicted": 483.95,
+          "abs_diff": -307.05,
+          "pct_diff": -38.82
+        },
+        "DEF": {
+          "observed": 529,
+          "predicted": 296.27,
+          "abs_diff": -232.73,
+          "pct_diff": -43.99
+        },
+        "HP": {
+          "observed": 970,
+          "predicted": 540.22,
+          "abs_diff": -429.78,
+          "pct_diff": -44.31
+        },
+        "CRate": {
+          "observed": 41.9,
+          "predicted": 31.9,
+          "abs_diff": -10.0,
+          "pct_diff": -23.87
+        },
+        "CDmg": {
+          "observed": 161,
+          "predicted": 161.0,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Rei",
+      "res_id": 1056,
+      "level": 58,
+      "ascend": 5,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 811,
+          "predicted": 466.17,
+          "abs_diff": -344.83,
+          "pct_diff": -42.52
+        },
+        "DEF": {
+          "observed": 532,
+          "predicted": 305.52,
+          "abs_diff": -226.48,
+          "pct_diff": -42.57
+        },
+        "HP": {
+          "observed": 775,
+          "predicted": 506.36,
+          "abs_diff": -268.64,
+          "pct_diff": -34.66
+        },
+        "CRate": {
+          "observed": 31.9,
+          "predicted": 31.9,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 161,
+          "predicted": 161.0,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_111039.jsonl"
+    },
+    {
+      "char_name": "Magna",
+      "res_id": 1010,
+      "level": 50,
+      "ascend": 4,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 584,
+          "predicted": 378.36,
+          "abs_diff": -205.64,
+          "pct_diff": -35.21
+        },
+        "DEF": {
+          "observed": 497,
+          "predicted": 308.28,
+          "abs_diff": -188.72,
+          "pct_diff": -37.97
+        },
+        "HP": {
+          "observed": 884,
+          "predicted": 599.09,
+          "abs_diff": -284.91,
+          "pct_diff": -32.23
+        },
+        "CRate": {
+          "observed": 45.2,
+          "predicted": 45.2,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        },
+        "CDmg": {
+          "observed": 159.7,
+          "predicted": 159.7,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_170617.jsonl"
+    },
+    {
+      "char_name": "Rei",
+      "res_id": 1056,
+      "level": 50,
+      "ascend": 4,
+      "n_pieces": 6,
+      "diffs": {
+        "ATK": {
+          "observed": 597,
+          "predicted": 386.76,
+          "abs_diff": -210.24,
+          "pct_diff": -35.22
+        },
+        "DEF": {
+          "observed": 386,
+          "predicted": 269.61,
+          "abs_diff": -116.39,
+          "pct_diff": -30.15
+        },
+        "HP": {
+          "observed": 1068,
+          "predicted": 599.85,
+          "abs_diff": -468.15,
+          "pct_diff": -43.83
+        },
+        "CRate": {
+          "observed": 38.0,
+          "predicted": 38.0,
+          "abs_diff": -0.0,
+          "pct_diff": -0.0
+        },
+        "CDmg": {
+          "observed": 139.5,
+          "predicted": 139.5,
+          "abs_diff": 0.0,
+          "pct_diff": 0.0
+        }
+      },
+      "_source": "websocket_debug_20260509_170617.jsonl"
     },
     {
       "char_name": "Tiphera",
@@ -212,27 +376,27 @@
       "diffs": {
         "ATK": {
           "observed": 581,
-          "predicted": 441.0,
-          "abs_diff": -140.0,
-          "pct_diff": -24.1
+          "predicted": 392.0,
+          "abs_diff": -189.0,
+          "pct_diff": -32.53
         },
         "DEF": {
           "observed": 550,
-          "predicted": 287.33,
-          "abs_diff": -262.67,
-          "pct_diff": -47.76
+          "predicted": 352.86,
+          "abs_diff": -197.14,
+          "pct_diff": -35.84
         },
         "HP": {
           "observed": 819,
-          "predicted": 471.41,
-          "abs_diff": -347.59,
-          "pct_diff": -42.44
+          "predicted": 611.85,
+          "abs_diff": -207.15,
+          "pct_diff": -25.29
         },
         "CRate": {
           "observed": 57.1,
-          "predicted": 47.1,
-          "abs_diff": -10.0,
-          "pct_diff": -17.51
+          "predicted": 57.1,
+          "abs_diff": -0.0,
+          "pct_diff": -0.0
         },
         "CDmg": {
           "observed": 190.9,
@@ -240,7 +404,8 @@
           "abs_diff": 0.0,
           "pct_diff": 0.0
         }
-      }
+      },
+      "_source": "websocket_debug_20260509_170617.jsonl"
     }
   ],
   "errors": []

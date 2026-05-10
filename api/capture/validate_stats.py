@@ -75,7 +75,7 @@ def _iter_chars_messages(jsonl_path: Path):
                 obj = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            d = obj.get("data", {})
+            d = obj.get("data") or {}
             chars = d.get("chars")
             if not isinstance(chars, list):
                 continue
@@ -138,51 +138,20 @@ def _compare(char: dict, optimizer: GearOptimizer) -> dict | None:
     }
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("capture", type=Path, help="websocket_debug_*.jsonl")
-    ap.add_argument("memory_fragments", type=Path,
-                    help="memory_fragments_*.json (loaded into optimizer for char data)")
-    ap.add_argument("--out", type=Path, default=None, help="write detailed report json")
-    args = ap.parse_args()
-
-    if not args.capture.exists():
-        print(f"capture not found: {args.capture}", file=sys.stderr)
-        sys.exit(2)
-    if not args.memory_fragments.exists():
-        print(f"memory_fragments not found: {args.memory_fragments}", file=sys.stderr)
-        sys.exit(2)
-
-    print(f"Loading optimizer with {args.memory_fragments.name} ...")
-    optimizer = GearOptimizer()
-    optimizer.load_data(str(args.memory_fragments))
-
-    rows = []
-    errors = []
-    print(f"Scanning {args.capture.name} ...")
-    for i, char in _iter_chars_messages(args.capture):
-        result = _compare(char, optimizer)
-        if result is None:
-            continue
-        if "error" in result:
-            errors.append(result)
-            continue
-        rows.append(result)
-
-    if not rows:
-        print("No comparable chars found. Did the capture include battle data?")
-        sys.exit(1)
-
-    # aggregate per stat
+def _aggregate_and_print(rows: list, errors: list, label: str = "") -> dict:
+    """Aggregate per-stat diffs from rows, print table + worst offenders, return summary dict."""
     agg = defaultdict(lambda: {"abs_diffs": [], "pct_diffs": []})
     for r in rows:
         for stat, d in r["diffs"].items():
             agg[stat]["abs_diffs"].append(d["abs_diff"])
             agg[stat]["pct_diffs"].append(d["pct_diff"])
 
+    header = f"Stat formula validation: {len(rows)} unique (char, gear) samples"
+    if label:
+        header += f"  [{label}]"
     print()
     print("=" * 78)
-    print(f"Stat formula validation: {len(rows)} unique (char, gear) samples")
+    print(header)
     if errors:
         print(f"  ({len(errors)} errors -- see report)")
     print("=" * 78)
@@ -224,7 +193,148 @@ def main():
                   f"observed={d['observed']:>8}  predicted={d['predicted']:>8}  "
                   f"diff={d['pct_diff']:+.2f}%")
 
+    return summary
+
+
+def run_batch(snapshot_dir: Path, optimizer: GearOptimizer, out_path: Path | None = None) -> dict:
+    """Run validation across ALL websocket_debug_*.jsonl files in snapshot_dir.
+
+    Returns the aggregated summary dict (same shape as single-capture mode).
+    """
+    jsonl_files = sorted(snapshot_dir.glob("websocket_debug_*.jsonl"))
+    if not jsonl_files:
+        print(f"No websocket_debug_*.jsonl files found in {snapshot_dir}", file=sys.stderr)
+        sys.exit(2)
+
+    print(f"Batch mode: found {len(jsonl_files)} capture file(s) in {snapshot_dir}")
+
+    all_rows: list = []
+    all_errors: list = []
+    # Use a global dedup key across all captures so cross-file duplicates are
+    # also removed (same char snapshot appearing in two capture files).
+    global_seen: set = set()
+
+    for jsonl_path in jsonl_files:
+        file_rows = []
+        file_errors = []
+        print(f"  Scanning {jsonl_path.name} ...")
+        for i, char in _iter_chars_messages(jsonl_path):
+            eq = char.get("equipped_pieces") or {}
+            eq_ids = tuple(sorted(
+                p.get("id") for p in eq.values() if isinstance(p, dict)
+            ))
+            global_key = (char.get("res_id"), eq_ids)
+            if global_key in global_seen:
+                continue
+            global_seen.add(global_key)
+
+            result = _compare(char, optimizer)
+            if result is None:
+                continue
+            if "error" in result:
+                file_errors.append(result)
+                continue
+            result["_source"] = jsonl_path.name
+            file_rows.append(result)
+
+        print(f"    -> {len(file_rows)} rows, {len(file_errors)} errors")
+        all_rows.extend(file_rows)
+        all_errors.extend(file_errors)
+
+    if not all_rows:
+        print("No comparable chars found across any capture. Did they include battle data?")
+        sys.exit(1)
+
+    summary = _aggregate_and_print(all_rows, all_errors, label=f"{len(jsonl_files)} captures")
+
+    if out_path is not None:
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(
+            json.dumps({"summary": summary, "rows": all_rows, "errors": all_errors},
+                       ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"\nDetailed report -> {out_path}")
+
+    return summary
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        description="Validate optimizer stat formula against captured game data."
+    )
+    ap.add_argument("capture", type=Path, nargs="?",
+                    help="websocket_debug_*.jsonl  (omit when --batch is used)")
+    ap.add_argument("memory_fragments", type=Path, nargs="?",
+                    help="memory_fragments_*.json  (omit when --batch is used)")
+    ap.add_argument("--out", type=Path, default=None, help="write detailed report json")
+    ap.add_argument(
+        "--batch", type=Path, default=None, metavar="SNAPSHOT_DIR",
+        help=(
+            "Run across ALL websocket_debug_*.jsonl files in SNAPSHOT_DIR. "
+            "The latest memory_fragments_*.json in that dir is used automatically."
+        ),
+    )
+    args = ap.parse_args()
+
+    if args.batch is not None:
+        # ---- BATCH MODE ----
+        snapshot_dir = args.batch
+        if not snapshot_dir.is_dir():
+            print(f"snapshot_dir not found: {snapshot_dir}", file=sys.stderr)
+            sys.exit(2)
+
+        # Pick the latest memory_fragments file by mtime
+        mf_files = sorted(snapshot_dir.glob("memory_fragments_*.json"),
+                          key=lambda p: p.stat().st_mtime)
+        if not mf_files:
+            print(f"No memory_fragments_*.json found in {snapshot_dir}", file=sys.stderr)
+            sys.exit(2)
+        mf_path = mf_files[-1]
+        print(f"Using latest memory_fragments: {mf_path.name}")
+
+        optimizer = GearOptimizer()
+        optimizer.load_data(str(mf_path))
+
+        run_batch(snapshot_dir, optimizer, out_path=args.out)
+        return
+
+    # ---- SINGLE-CAPTURE MODE ----
+    if args.capture is None or args.memory_fragments is None:
+        ap.error("positional args 'capture' and 'memory_fragments' are required "
+                 "unless --batch is used")
+
+    if not args.capture.exists():
+        print(f"capture not found: {args.capture}", file=sys.stderr)
+        sys.exit(2)
+    if not args.memory_fragments.exists():
+        print(f"memory_fragments not found: {args.memory_fragments}", file=sys.stderr)
+        sys.exit(2)
+
+    print(f"Loading optimizer with {args.memory_fragments.name} ...")
+    optimizer = GearOptimizer()
+    optimizer.load_data(str(args.memory_fragments))
+
+    rows = []
+    errors = []
+    print(f"Scanning {args.capture.name} ...")
+    for i, char in _iter_chars_messages(args.capture):
+        result = _compare(char, optimizer)
+        if result is None:
+            continue
+        if "error" in result:
+            errors.append(result)
+            continue
+        rows.append(result)
+
+    if not rows:
+        print("No comparable chars found. Did the capture include battle data?")
+        sys.exit(1)
+
+    summary = _aggregate_and_print(rows, errors)
+
     if args.out:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(
             json.dumps({"summary": summary, "rows": rows, "errors": errors},
                        ensure_ascii=False, indent=2),
