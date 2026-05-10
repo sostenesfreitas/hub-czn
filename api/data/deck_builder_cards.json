@@ -1,19 +1,1093 @@
 {
-  "1043": {
+  "1055": {
+    "character_name": "Adelheid",
     "starting_cards": [
-      { "card_id": "c_1043_srt1" },
-      { "card_id": "c_1043_srt2" },
-      { "card_id": "c_1043_srt3" },
-      { "card_id": "c_1043_srt4" }
+      {
+        "card_id": "c_1055_srt1"
+      },
+      {
+        "card_id": "c_1055_srt2"
+      },
+      {
+        "card_id": "c_1055_srt3"
+      },
+      {
+        "card_id": "c_1055_srt4"
+      }
     ],
     "epiphany_cards": [
-      { "card_id": "c_1043_uni1" },
-      { "card_id": "c_1043_uni2" },
-      { "card_id": "c_1043_uni3" },
-      { "card_id": "c_1043_uni4" }
+      {
+        "card_id": "c_1055_uni1"
+      },
+      {
+        "card_id": "c_1055_uni2"
+      },
+      {
+        "card_id": "c_1055_uni3"
+      },
+      {
+        "card_id": "c_1055_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1055_eps"
+    }
+  },
+  "1017": {
+    "character_name": "Amir",
+    "starting_cards": [
+      {
+        "card_id": "c_1017_srt1"
+      },
+      {
+        "card_id": "c_1017_srt2"
+      },
+      {
+        "card_id": "c_1017_srt3"
+      },
+      {
+        "card_id": "c_1017_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1017_uni1"
+      },
+      {
+        "card_id": "c_1017_uni2"
+      },
+      {
+        "card_id": "c_1017_uni3"
+      },
+      {
+        "card_id": "c_1017_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1017_eps"
+    }
+  },
+  "1040": {
+    "character_name": "Beryl",
+    "starting_cards": [
+      {
+        "card_id": "c_1040_srt1"
+      },
+      {
+        "card_id": "c_1040_srt2"
+      },
+      {
+        "card_id": "c_1040_srt3"
+      },
+      {
+        "card_id": "c_1040_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1040_uni1"
+      },
+      {
+        "card_id": "c_1040_uni2"
+      },
+      {
+        "card_id": "c_1040_uni3"
+      },
+      {
+        "card_id": "c_1040_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1040_eps"
+    }
+  },
+  "1049": {
+    "character_name": "Cassius",
+    "starting_cards": [
+      {
+        "card_id": "c_1049_srt1"
+      },
+      {
+        "card_id": "c_1049_srt2"
+      },
+      {
+        "card_id": "c_1049_srt3"
+      },
+      {
+        "card_id": "c_1049_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1049_uni1"
+      },
+      {
+        "card_id": "c_1049_uni2"
+      },
+      {
+        "card_id": "c_1049_uni3"
+      },
+      {
+        "card_id": "c_1049_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1049_eps"
+    }
+  },
+  "1060": {
+    "character_name": "Chizuru",
+    "starting_cards": [
+      {
+        "card_id": "c_1060_srt1"
+      },
+      {
+        "card_id": "c_1060_srt2"
+      },
+      {
+        "card_id": "c_1060_srt3"
+      },
+      {
+        "card_id": "c_1060_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1060_uni1"
+      },
+      {
+        "card_id": "c_1060_uni2"
+      },
+      {
+        "card_id": "c_1060_uni3"
+      },
+      {
+        "card_id": "c_1060_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1060_eps"
+    }
+  },
+  "1061": {
+    "character_name": "Diana",
+    "starting_cards": [
+      {
+        "card_id": "c_1061_srt1"
+      },
+      {
+        "card_id": "c_1061_srt2"
+      },
+      {
+        "card_id": "c_1061_srt3"
+      },
+      {
+        "card_id": "c_1061_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1061_uni1"
+      },
+      {
+        "card_id": "c_1061_uni2"
+      },
+      {
+        "card_id": "c_1061_uni3"
+      },
+      {
+        "card_id": "c_1061_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1061_eps"
+    }
+  },
+  "1062": {
+    "character_name": "Haru",
+    "starting_cards": [
+      {
+        "card_id": "c_1062_srt1"
+      },
+      {
+        "card_id": "c_1062_srt2"
+      },
+      {
+        "card_id": "c_1062_srt3"
+      },
+      {
+        "card_id": "c_1062_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1062_uni1"
+      },
+      {
+        "card_id": "c_1062_uni2"
+      },
+      {
+        "card_id": "c_1062_uni3"
+      },
+      {
+        "card_id": "c_1062_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1062_eps"
+    }
+  },
+  "30093": {
+    "character_name": "Heidemarie",
+    "starting_cards": [
+      {
+        "card_id": "c_30093_srt1"
+      },
+      {
+        "card_id": "c_30093_srt2"
+      },
+      {
+        "card_id": "c_30093_srt3"
+      },
+      {
+        "card_id": "c_30093_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_30093_uni1"
+      },
+      {
+        "card_id": "c_30093_uni2"
+      },
+      {
+        "card_id": "c_30093_uni3"
+      },
+      {
+        "card_id": "c_30093_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_30093_eps"
+    }
+  },
+  "1043": {
+    "character_name": "Hugo",
+    "starting_cards": [
+      {
+        "card_id": "c_1043_srt1"
+      },
+      {
+        "card_id": "c_1043_srt2"
+      },
+      {
+        "card_id": "c_1043_srt3"
+      },
+      {
+        "card_id": "c_1043_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1043_uni1"
+      },
+      {
+        "card_id": "c_1043_uni2"
+      },
+      {
+        "card_id": "c_1043_uni3"
+      },
+      {
+        "card_id": "c_1043_uni4"
+      }
     ],
     "ego_skill": {
       "card_id": "c_1043_eps"
+    }
+  },
+  "1064": {
+    "character_name": "Kayron",
+    "starting_cards": [
+      {
+        "card_id": "c_1064_srt1"
+      },
+      {
+        "card_id": "c_1064_srt2"
+      },
+      {
+        "card_id": "c_1064_srt3"
+      },
+      {
+        "card_id": "c_1064_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1064_uni1"
+      },
+      {
+        "card_id": "c_1064_uni2"
+      },
+      {
+        "card_id": "c_1064_uni3"
+      },
+      {
+        "card_id": "c_1064_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1064_eps"
+    }
+  },
+  "1008": {
+    "character_name": "Khalipe",
+    "starting_cards": [
+      {
+        "card_id": "c_1008_srt1"
+      },
+      {
+        "card_id": "c_1008_srt2"
+      },
+      {
+        "card_id": "c_1008_srt3"
+      },
+      {
+        "card_id": "c_1008_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1008_uni1"
+      },
+      {
+        "card_id": "c_1008_uni2"
+      },
+      {
+        "card_id": "c_1008_uni3"
+      },
+      {
+        "card_id": "c_1008_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1008_eps"
+    }
+  },
+  "1021": {
+    "character_name": "Lucas",
+    "starting_cards": [
+      {
+        "card_id": "c_1021_srt1"
+      },
+      {
+        "card_id": "c_1021_srt2"
+      },
+      {
+        "card_id": "c_1021_srt3"
+      },
+      {
+        "card_id": "c_1021_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1021_uni1"
+      },
+      {
+        "card_id": "c_1021_uni2"
+      },
+      {
+        "card_id": "c_1021_uni3"
+      },
+      {
+        "card_id": "c_1021_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1021_eps"
+    }
+  },
+  "1004": {
+    "character_name": "Luke",
+    "starting_cards": [
+      {
+        "card_id": "c_1004_srt1"
+      },
+      {
+        "card_id": "c_1004_srt2"
+      },
+      {
+        "card_id": "c_1004_srt3"
+      },
+      {
+        "card_id": "c_1004_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1004_uni1"
+      },
+      {
+        "card_id": "c_1004_uni2"
+      },
+      {
+        "card_id": "c_1004_uni3"
+      },
+      {
+        "card_id": "c_1004_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1004_eps"
+    }
+  },
+  "1010": {
+    "character_name": "Magna",
+    "starting_cards": [
+      {
+        "card_id": "c_1010_srt1"
+      },
+      {
+        "card_id": "c_1010_srt2"
+      },
+      {
+        "card_id": "c_1010_srt3"
+      },
+      {
+        "card_id": "c_1010_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1010_uni1"
+      },
+      {
+        "card_id": "c_1010_uni2"
+      },
+      {
+        "card_id": "c_1010_uni3"
+      },
+      {
+        "card_id": "c_1010_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1010_eps"
+    }
+  },
+  "1028": {
+    "character_name": "Maribell",
+    "starting_cards": [
+      {
+        "card_id": "c_1028_srt1"
+      },
+      {
+        "card_id": "c_1028_srt2"
+      },
+      {
+        "card_id": "c_1028_srt3"
+      },
+      {
+        "card_id": "c_1028_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1028_uni1"
+      },
+      {
+        "card_id": "c_1028_uni2"
+      },
+      {
+        "card_id": "c_1028_uni3"
+      },
+      {
+        "card_id": "c_1028_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1028_eps"
+    }
+  },
+  "1027": {
+    "character_name": "Mei Lin",
+    "starting_cards": [
+      {
+        "card_id": "c_1027_srt1"
+      },
+      {
+        "card_id": "c_1027_srt2"
+      },
+      {
+        "card_id": "c_1027_srt3"
+      },
+      {
+        "card_id": "c_1027_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1027_uni1"
+      },
+      {
+        "card_id": "c_1027_uni2"
+      },
+      {
+        "card_id": "c_1027_uni3"
+      },
+      {
+        "card_id": "c_1027_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1027_eps"
+    }
+  },
+  "1039": {
+    "character_name": "Mika",
+    "starting_cards": [
+      {
+        "card_id": "c_1039_srt1"
+      },
+      {
+        "card_id": "c_1039_srt2"
+      },
+      {
+        "card_id": "c_1039_srt3"
+      },
+      {
+        "card_id": "c_1039_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1039_uni1"
+      },
+      {
+        "card_id": "c_1039_uni2"
+      },
+      {
+        "card_id": "c_1039_uni3"
+      },
+      {
+        "card_id": "c_1039_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1039_eps"
+    }
+  },
+  "1052": {
+    "character_name": "Narja",
+    "starting_cards": [
+      {
+        "card_id": "c_1052_srt1"
+      },
+      {
+        "card_id": "c_1052_srt2"
+      },
+      {
+        "card_id": "c_1052_srt3"
+      },
+      {
+        "card_id": "c_1052_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1052_uni1"
+      },
+      {
+        "card_id": "c_1052_uni2"
+      },
+      {
+        "card_id": "c_1052_uni3"
+      },
+      {
+        "card_id": "c_1052_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1052_eps"
+    }
+  },
+  "1003": {
+    "character_name": "Nia",
+    "starting_cards": [
+      {
+        "card_id": "c_1003_srt1"
+      },
+      {
+        "card_id": "c_1003_srt2"
+      },
+      {
+        "card_id": "c_1003_srt3"
+      },
+      {
+        "card_id": "c_1003_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1003_uni1"
+      },
+      {
+        "card_id": "c_1003_uni2"
+      },
+      {
+        "card_id": "c_1003_uni3"
+      },
+      {
+        "card_id": "c_1003_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1003_eps"
+    }
+  },
+  "30047": {
+    "character_name": "Nine",
+    "starting_cards": [
+      {
+        "card_id": "c_30047_srt1"
+      },
+      {
+        "card_id": "c_30047_srt2"
+      },
+      {
+        "card_id": "c_30047_srt3"
+      },
+      {
+        "card_id": "c_30047_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_30047_uni1"
+      },
+      {
+        "card_id": "c_30047_uni2"
+      },
+      {
+        "card_id": "c_30047_uni3"
+      },
+      {
+        "card_id": "c_30047_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_30047_eps"
+    }
+  },
+  "1024": {
+    "character_name": "Orlea",
+    "starting_cards": [
+      {
+        "card_id": "c_1024_srt1"
+      },
+      {
+        "card_id": "c_1024_srt2"
+      },
+      {
+        "card_id": "c_1024_srt3"
+      },
+      {
+        "card_id": "c_1024_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1024_uni1"
+      },
+      {
+        "card_id": "c_1024_uni2"
+      },
+      {
+        "card_id": "c_1024_uni3"
+      },
+      {
+        "card_id": "c_1024_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1024_eps"
+    }
+  },
+  "1050": {
+    "character_name": "Owen",
+    "starting_cards": [
+      {
+        "card_id": "c_1050_srt1"
+      },
+      {
+        "card_id": "c_1050_srt2"
+      },
+      {
+        "card_id": "c_1050_srt3"
+      },
+      {
+        "card_id": "c_1050_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1050_uni1"
+      },
+      {
+        "card_id": "c_1050_uni2"
+      },
+      {
+        "card_id": "c_1050_uni3"
+      },
+      {
+        "card_id": "c_1050_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1050_eps"
+    }
+  },
+  "1056": {
+    "character_name": "Rei",
+    "starting_cards": [
+      {
+        "card_id": "c_1056_srt1"
+      },
+      {
+        "card_id": "c_1056_srt2"
+      },
+      {
+        "card_id": "c_1056_srt3"
+      },
+      {
+        "card_id": "c_1056_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1056_uni1"
+      },
+      {
+        "card_id": "c_1056_uni2"
+      },
+      {
+        "card_id": "c_1056_uni3"
+      },
+      {
+        "card_id": "c_1056_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1056_eps"
+    }
+  },
+  "1041": {
+    "character_name": "Renoa",
+    "starting_cards": [
+      {
+        "card_id": "c_1041_srt1"
+      },
+      {
+        "card_id": "c_1041_srt2"
+      },
+      {
+        "card_id": "c_1041_srt3"
+      },
+      {
+        "card_id": "c_1041_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1041_uni1"
+      },
+      {
+        "card_id": "c_1041_uni2"
+      },
+      {
+        "card_id": "c_1041_uni3"
+      },
+      {
+        "card_id": "c_1041_uni4"
+      },
+      {
+        "card_id": "c_1041_uni5"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1041_eps"
+    }
+  },
+  "1018": {
+    "character_name": "Rin",
+    "starting_cards": [
+      {
+        "card_id": "c_1018_srt1"
+      },
+      {
+        "card_id": "c_1018_srt2"
+      },
+      {
+        "card_id": "c_1018_srt3"
+      },
+      {
+        "card_id": "c_1018_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1018_uni1"
+      },
+      {
+        "card_id": "c_1018_uni2"
+      },
+      {
+        "card_id": "c_1018_uni3"
+      },
+      {
+        "card_id": "c_1018_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1018_eps"
+    }
+  },
+  "30097": {
+    "character_name": "Rita",
+    "starting_cards": [
+      {
+        "card_id": "c_30097_srt1"
+      },
+      {
+        "card_id": "c_30097_srt2"
+      },
+      {
+        "card_id": "c_30097_srt3"
+      },
+      {
+        "card_id": "c_30097_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_30097_uni1"
+      },
+      {
+        "card_id": "c_30097_uni2"
+      },
+      {
+        "card_id": "c_30097_uni3"
+      },
+      {
+        "card_id": "c_30097_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_30097_eps"
+    }
+  },
+  "1005": {
+    "character_name": "Selena",
+    "starting_cards": [
+      {
+        "card_id": "c_1005_srt1"
+      },
+      {
+        "card_id": "c_1005_srt2"
+      },
+      {
+        "card_id": "c_1005_srt3"
+      },
+      {
+        "card_id": "c_1005_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1005_uni1"
+      },
+      {
+        "card_id": "c_1005_uni2"
+      },
+      {
+        "card_id": "c_1005_uni3"
+      },
+      {
+        "card_id": "c_1005_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1005_eps"
+    }
+  },
+  "30075": {
+    "character_name": "Sereniel",
+    "starting_cards": [
+      {
+        "card_id": "c_30075_srt1"
+      },
+      {
+        "card_id": "c_30075_srt2"
+      },
+      {
+        "card_id": "c_30075_srt3"
+      },
+      {
+        "card_id": "c_30075_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_30075_uni1"
+      },
+      {
+        "card_id": "c_30075_uni2"
+      },
+      {
+        "card_id": "c_30075_uni3"
+      },
+      {
+        "card_id": "c_30075_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_30075_eps"
+    }
+  },
+  "30084": {
+    "character_name": "Tiphera",
+    "starting_cards": [
+      {
+        "card_id": "c_30084_srt1"
+      },
+      {
+        "card_id": "c_30084_srt2"
+      },
+      {
+        "card_id": "c_30084_srt3"
+      },
+      {
+        "card_id": "c_30084_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_30084_uni1"
+      },
+      {
+        "card_id": "c_30084_uni2"
+      },
+      {
+        "card_id": "c_30084_uni3"
+      },
+      {
+        "card_id": "c_30084_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_30084_eps"
+    }
+  },
+  "1009": {
+    "character_name": "Tressa",
+    "starting_cards": [
+      {
+        "card_id": "c_1009_srt1"
+      },
+      {
+        "card_id": "c_1009_srt2"
+      },
+      {
+        "card_id": "c_1009_srt3"
+      },
+      {
+        "card_id": "c_1009_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1009_uni1"
+      },
+      {
+        "card_id": "c_1009_uni2"
+      },
+      {
+        "card_id": "c_1009_uni3"
+      },
+      {
+        "card_id": "c_1009_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1009_eps"
+    }
+  },
+  "1033": {
+    "character_name": "Veronica",
+    "starting_cards": [
+      {
+        "card_id": "c_1033_srt1"
+      },
+      {
+        "card_id": "c_1033_srt2"
+      },
+      {
+        "card_id": "c_1033_srt3"
+      },
+      {
+        "card_id": "c_1033_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1033_uni1"
+      },
+      {
+        "card_id": "c_1033_uni2"
+      },
+      {
+        "card_id": "c_1033_uni3"
+      },
+      {
+        "card_id": "c_1033_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1033_eps"
+    }
+  },
+  "1057": {
+    "character_name": "Yuki",
+    "starting_cards": [
+      {
+        "card_id": "c_1057_srt1"
+      },
+      {
+        "card_id": "c_1057_srt2"
+      },
+      {
+        "card_id": "c_1057_srt3"
+      },
+      {
+        "card_id": "c_1057_srt4"
+      }
+    ],
+    "epiphany_cards": [
+      {
+        "card_id": "c_1057_uni1"
+      },
+      {
+        "card_id": "c_1057_uni2"
+      },
+      {
+        "card_id": "c_1057_uni3"
+      },
+      {
+        "card_id": "c_1057_uni4"
+      }
+    ],
+    "ego_skill": {
+      "card_id": "c_1057_eps"
     }
   }
 }

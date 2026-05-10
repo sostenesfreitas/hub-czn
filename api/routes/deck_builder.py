@@ -21,24 +21,23 @@ class DeckBuilderCardManifestItem(BaseModel):
 
 
 class DeckBuilderCombatantManifest(BaseModel):
+    character_name: str | None = None
     starting_cards: list[DeckBuilderCardManifestItem] = []
     epiphany_cards: list[DeckBuilderCardManifestItem] = []
     ego_skill: DeckBuilderCardManifestItem | None = None
-
 
 class DeckBuilderCard(BaseModel):
     card: CardEntry
     copies: int
     group: Literal["starting", "epiphany", "ego"]
 
-
 class DeckBuilderCombatantResponse(BaseModel):
     char_res_id: int
+    character_name: str | None = None
     starting_cards: list[DeckBuilderCard]
     epiphany_cards: list[DeckBuilderCard]
     ego_skill: DeckBuilderCard | None
     missing_card_ids: list[str]
-
 
 def _load_manifest() -> dict[str, DeckBuilderCombatantManifest]:
     if not _MANIFEST_PATH.exists():
@@ -51,7 +50,6 @@ def _load_manifest() -> dict[str, DeckBuilderCombatantManifest]:
         for char_res_id, config in raw.items()
     }
 
-
 def _copy_card_with_name_override(card: CardEntry, name_override: str | None) -> CardEntry:
     if not name_override:
         return card
@@ -60,7 +58,6 @@ def _copy_card_with_name_override(card: CardEntry, name_override: str | None) ->
         return card.model_copy(update={"name": name_override})
     except AttributeError:
         return card.copy(update={"name": name_override})
-
 
 def _resolve_manifest_items(
     items: list[DeckBuilderCardManifestItem],
@@ -130,6 +127,7 @@ def get_deck_builder_combatant(char_res_id: int):
 
     return DeckBuilderCombatantResponse(
         char_res_id=char_res_id,
+        character_name=config.character_name,
         starting_cards=starting_cards,
         epiphany_cards=epiphany_cards,
         ego_skill=ego_skill,
