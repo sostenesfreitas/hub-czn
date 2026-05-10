@@ -56,6 +56,13 @@ def test_level_zero_clamps_to_one():
     assert stats_at_1 == stats_at_0
 
 
+def test_ascend_5_is_cumulative_sum_of_rows_1_to_5():
+    """A5 must equal cumulative sum of per-tier ascend deltas, not just row 5."""
+    stats = get_char_base_stats("1057", level=60, ascend=5)
+    # Yuki L60 A5: L1(160) + level_cumsum(227) + ascend_cumulative(80) = 467
+    assert stats["ATK"] == 467
+
+
 def test_optimizer_uses_scaling_for_yuki_l60_a5():
     """Optimizer must compute Yuki's L60 A5 base stats via scaling.py, not legacy CHARACTERS."""
     from api.optimizer.optimizer import GearOptimizer

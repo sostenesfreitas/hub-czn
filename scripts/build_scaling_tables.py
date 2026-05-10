@@ -9,8 +9,12 @@ Inputs (from C:\\Users\\soste\\Downloads\\output\\db):
 
 Outputs (to api/data/):
   - level_scaling.json     {group_id: {level_str: {ATK, DEF, HP}}}
-  - ascend_scaling.json    {group_id: [ {ATK, DEF, HP} per ascend 0..N ]}
+  - ascend_scaling.json    {group_id: [ {ATK, DEF, HP} CUMULATIVE per ascend 0..N ]}
   - char_base_l1.json      {combatant_id: {atk, def, hp, cri, cri_dmg, level_group, ascend_group, limit_break_group, friendship_group}}
+
+Note: ascend_scaling stores CUMULATIVE bonuses. Index N = sum of per-tier deltas 0..N.
+For example, dev_ascend with per-tier delta ATK=16 for tiers 1..5 yields:
+  index 0: ATK=0, index 1: ATK=16, index 2: ATK=32, index 3: ATK=48, index 4: ATK=64, index 5: ATK=80
 
 Run when client data is updated. Read-only on inputs.
 """
@@ -43,7 +47,12 @@ def build_level_scaling() -> dict:
 
 
 def build_ascend_scaling() -> dict:
-    """Per-ascend stat values (NOT cumulative — each ascend index gives its row's values)."""
+    """Cumulative ATK/DEF/HP bonus per ascend index (0..N).
+
+    Each row in char_base@combatant_ascend.json stores a per-tier DELTA.
+    This function converts those deltas to cumulative sums so that
+    ascend_scaling[group][N] gives the total bonus for ascend level N.
+    """
     raw = json.loads((CLIENT_DB / "char_base@combatant_ascend.json").read_text(encoding="utf-8"))
     by_group = defaultdict(list)
     for row in raw:
@@ -52,10 +61,13 @@ def build_ascend_scaling() -> dict:
     out = {}
     for group, rows in by_group.items():
         rows.sort(key=lambda r: int(r["ascend"]))
-        out[group] = [
-            {"ATK": int(r["stat1_value"]), "DEF": int(r["stat2_value"]), "HP": int(r["stat3_value"])}
-            for r in rows
-        ]
+        cum_atk, cum_def, cum_hp = 0, 0, 0
+        out[group] = []
+        for r in rows:
+            cum_atk += int(r["stat1_value"])
+            cum_def += int(r["stat2_value"])
+            cum_hp += int(r["stat3_value"])
+            out[group].append({"ATK": cum_atk, "DEF": cum_def, "HP": cum_hp})
     return out
 
 
