@@ -39,7 +39,7 @@
         "cost": 2,
         "card_type": "Attack",
         "tags": [],
-        "description": "80% Ã 4\nDefense-based Damage to all enemies.\nFor\n1\nturn,\nMetallization\nto all enemies,\n+20%\nDamage."
+        "description": "80%  4\nDefense-based Damage to all enemies.\nFor\n1\nturn,\nMetallization\nto all enemies,\n+20%\nDamage."
       },
       {
         "variant_id": "c_1017_uni3_epiphany_5",
@@ -48,7 +48,7 @@
         "cost": 2,
         "card_type": "Attack",
         "tags": [],
-        "description": "100%\nDefense-based Damage to all enemies\nÃ 3.\nDecrease\nMetallization\nup to\n2.\nAdd\n1\nhit for each."
+        "description": "100%\nDefense-based Damage to all enemies\n 3.\nDecrease\nMetallization\nup to\n2.\nAdd\n1\nhit for each."
       }
     ]
   },
@@ -177,7 +177,7 @@
         "cost": 1,
         "card_type": "Attack",
         "tags": [],
-        "description": "110%\nDefense-Based Damage Ã\n2.\nIf in a\nMetallization\nstate, decrease\nMetallization\nby\n1, add\n1\nHit, inflict\n2\nVulnerable."
+        "description": "110%\nDefense-Based Damage \n2.\nIf in a\nMetallization\nstate, decrease\nMetallization\nby\n1, add\n1\nHit, inflict\n2\nVulnerable."
       },
       {
         "variant_id": "c_1017_uni1_epiphany_2",
@@ -195,7 +195,7 @@
         "cost": 1,
         "card_type": "Attack",
         "tags": [],
-        "description": "90% Ã 2\nDefense-based Damage.\n1\nVulnerable.\n2\nMetallization."
+        "description": "90%  2\nDefense-based Damage.\n1\nVulnerable.\n2\nMetallization."
       },
       {
         "variant_id": "c_1017_uni1_epiphany_4",
@@ -204,7 +204,7 @@
         "cost": 2,
         "card_type": "Attack",
         "tags": [],
-        "description": "110%\nDefense-Based Damage Ã\n2.\n1\nVulnerable.\nWhen Recovering, decrease Cost by\n1\nfor\n1\nturn."
+        "description": "110%\nDefense-Based Damage \n2.\n1\nVulnerable.\nWhen Recovering, decrease Cost by\n1\nfor\n1\nturn."
       },
       {
         "variant_id": "c_1017_uni1_epiphany_5",
@@ -213,7 +213,7 @@
         "cost": 1,
         "card_type": "Attack",
         "tags": [],
-        "description": "110%\nDefense-Based Damage Ã\n2.\nIf in a\nMetallization\nstate, decrease\nMetallization\nby\n1, and inflict\n2\nVulnerable,\n2\nWeaken."
+        "description": "110%\nDefense-Based Damage \n2.\nIf in a\nMetallization\nstate, decrease\nMetallization\nby\n1, and inflict\n2\nVulnerable,\n2\nWeaken."
       }
     ]
   },
@@ -276,7 +276,7 @@
         "tags": [
           "Retain"
         ],
-        "description": "[Retain]\n140%\nDamage Ã\n2.\nRetain:\n+80%\nDamage amount."
+        "description": "[Retain]\n140%\nDamage \n2.\nRetain:\n+80%\nDamage amount."
       }
     ]
   },
@@ -831,7 +831,7 @@
         "tags": [
           "Haste"
         ],
-        "description": "[Haste]\n50%\nDamage Ã\n4.\n+100%\nDamage Amount to the next\nBind\ncard used."
+        "description": "[Haste]\n50%\nDamage \n4.\n+100%\nDamage Amount to the next\nBind\ncard used."
       },
       {
         "variant_id": "c_1060_uni3_epiphany_2",
@@ -853,7 +853,7 @@
         "tags": [
           "Haste"
         ],
-        "description": "[Haste]\n100%\nDamage Ã\n3.\nIf there are no other Attack Cards in hand Other than Shadow of the Moon, add\n2\nHit(s)."
+        "description": "[Haste]\n100%\nDamage \n3.\nIf there are no other Attack Cards in hand Other than Shadow of the Moon, add\n2\nHit(s)."
       },
       {
         "variant_id": "c_1060_uni3_epiphany_4",
@@ -1770,7 +1770,7 @@
         "tags": [
           "Haste"
         ],
-        "description": "[Haste]\n90%\nDamage\nÃ 3\nto random enemies.\nIf in a\nCommence the Hunt\nstate, increase Damage Amount by\n100%."
+        "description": "[Haste]\n90%\nDamage\n 3\nto random enemies.\nIf in a\nCommence the Hunt\nstate, increase Damage Amount by\n100%."
       },
       {
         "variant_id": "c_1043_uni1_epiphany_5",
@@ -1872,7 +1872,7 @@
         "tags": [
           "Haste"
         ],
-        "description": "[Haste]\n80%\nDamage\nÃ 2.\nIf in a\nCommence the Hunt\nstate, add\n1\nHit(s)."
+        "description": "[Haste]\n80%\nDamage\n 2.\nIf in a\nCommence the Hunt\nstate, add\n1\nHit(s)."
       },
       {
         "variant_id": "c_1043_uni2_epiphany_3",
@@ -1894,7 +1894,7 @@
         "tags": [
           "Haste"
         ],
-        "description": "[Haste]\n100%\nDamage\nÃ 3.\nIf in a\nCommence the Hunt\nstate, increase Action Count of all enemies by\n2."
+        "description": "[Haste]\n100%\nDamage\n 3.\nIf in a\nCommence the Hunt\nstate, increase Action Count of all enemies by\n2."
       },
       {
         "variant_id": "c_1043_uni2_epiphany_5",
@@ -3863,7 +3863,7 @@
         "cost": 1,
         "card_type": "Attack",
         "tags": [],
-        "description": "30%\nDefense-Based Damage Ã\n4.\nAttunement:\n6\nVoracity."
+        "description": "30%\nDefense-Based Damage \n4.\nAttunement:\n6\nVoracity."
       },
       {
         "variant_id": "c_1052_srt4_epiphany_2",
@@ -3872,7 +3872,7 @@
         "cost": 0,
         "card_type": "Attack",
         "tags": [],
-        "description": "30%\nDefense-Based Damage Ã\n2.\nAt the start of the turn, if\nVoracity\nwas activated\n3\nor more times in the previous turn, move to hand.\nAttunement:\n1\nVoracity."
+        "description": "30%\nDefense-Based Damage \n2.\nAt the start of the turn, if\nVoracity\nwas activated\n3\nor more times in the previous turn, move to hand.\nAttunement:\n1\nVoracity."
       },
       {
         "variant_id": "c_1052_srt4_epiphany_3",
@@ -3881,7 +3881,7 @@
         "cost": 1,
         "card_type": "Attack",
         "tags": [],
-        "description": "50%\nDefense-Based Damage\nÃ 3.\nAdd\n1\nHit for each\n4\nVoracity\nowned (max\n3\ntimes)."
+        "description": "50%\nDefense-Based Damage\n 3.\nAdd\n1\nHit for each\n4\nVoracity\nowned (max\n3\ntimes)."
       },
       {
         "variant_id": "c_1052_srt4_epiphany_4",
@@ -5971,7 +5971,7 @@
         "cost": 3,
         "card_type": "Attack",
         "tags": [],
-        "description": "180%\nDamage Ã\n4\nto random enemies.\n1\nTenacity Damage\nfor each Hit.\nRavage: Decrease Cost by\n1."
+        "description": "180%\nDamage \n4\nto random enemies.\n1\nTenacity Damage\nfor each Hit.\nRavage: Decrease Cost by\n1."
       },
       {
         "variant_id": "c_30075_uni3_epiphany_2",
@@ -5982,7 +5982,7 @@
         "tags": [
           "Retain"
         ],
-        "description": "[Retain]\n120%\nDamage Ã\n4\nto random enemies.\n1\nTenacity Damage\nfor each Hit.\nRetain: Add\n1\nHit until use (max\n5\ntimes)."
+        "description": "[Retain]\n120%\nDamage \n4\nto random enemies.\n1\nTenacity Damage\nfor each Hit.\nRetain: Add\n1\nHit until use (max\n5\ntimes)."
       },
       {
         "variant_id": "c_30075_uni3_epiphany_3",
@@ -5991,7 +5991,7 @@
         "cost": 2,
         "card_type": "Attack",
         "tags": [],
-        "description": "120%\nDamage Ã\n4\nto random enemies.\nCreate\n1\nHoming Laser L for each target Hit."
+        "description": "120%\nDamage \n4\nto random enemies.\nCreate\n1\nHoming Laser L for each target Hit."
       },
       {
         "variant_id": "c_30075_uni3_epiphany_4",
@@ -6011,7 +6011,7 @@
         "tags": [
           "Weakness Attack"
         ],
-        "description": "[Weakness Attack]\n120%\nDamage Ã\n4\nRavage: Activate\n1\nmore time."
+        "description": "[Weakness Attack]\n120%\nDamage \n4\nRavage: Activate\n1\nmore time."
       }
     ]
   },
@@ -6445,7 +6445,7 @@
         "tags": [
           "Lead"
         ],
-        "description": "[Lead]\n4 Ã 2\nAgony\nto random enemies."
+        "description": "[Lead]\n4  2\nAgony\nto random enemies."
       },
       {
         "variant_id": "c_1009_uni1_epiphany_4",
@@ -6493,7 +6493,7 @@
         "cost": 0,
         "card_type": "Skill",
         "tags": [],
-        "description": "Heal\n1\n0%.\nCreate\n1\nAdvanced Shadow Dagger.\nX\nShadow Reload III\nHeal\n100% Ã X.\nCreate\nX\ncards, each randomly chosen to be either Shadow Dagger or Advanced Shadow Dagger."
+        "description": "Heal\n1\n0%.\nCreate\n1\nAdvanced Shadow Dagger.\nX\nShadow Reload III\nHeal\n100%  X.\nCreate\nX\ncards, each randomly chosen to be either Shadow Dagger or Advanced Shadow Dagger."
       },
       {
         "variant_id": "c_1009_uni2_epiphany_4",

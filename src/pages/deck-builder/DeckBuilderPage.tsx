@@ -1,14 +1,39 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { ChevronDown, Copy, Plus, Sparkles, Trash2, X } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Plus,
+  Sparkles,
+  Trash2,
+  X,
+} from 'lucide-react'
 import { api } from '@/lib/api'
+import {
+  getCardImageUrl,
+  getCharacterFaceUrl,
+} from '@/lib/deck-builder-assets'
 import type {
   CardCharacter,
   CardEntry,
   DeckBuilderCard as ApiDeckBuilderCard,
-  DeckBuilderEpiphanyVariant,
 } from '@/lib/types'
+
+type DeckBuilderEpiphanyVariant = {
+  variant_id: string
+  level: number
+  name: string
+  cost: number
+  card_type: string
+  tags: string[]
+  description: string
+}
+
+type DeckBuilderCardWithVariants = ApiDeckBuilderCard & {
+  variants?: DeckBuilderEpiphanyVariant[]
+}
 
 type DeckCardInstance = {
   instanceId: string
@@ -20,19 +45,27 @@ type DeckCardInstance = {
 type SquadSlot = {
   combatantId: number | null
   cards: DeckCardInstance[]
-  startingCards: ApiDeckBuilderCard[]
-  epiphanyCards: ApiDeckBuilderCard[]
-  egoSkill: ApiDeckBuilderCard | null
-  showStartingCards: boolean
-  showEpiphanyCards: boolean
+  startingCards: DeckBuilderCardWithVariants[]
+  epiphanyCards: DeckBuilderCardWithVariants[]
+  egoSkill: DeckBuilderCardWithVariants | null
   isLoading: boolean
   error: string | null
 }
 
-type VariantModalState = {
-  slotIndex: number
-  instanceId: string
-} | null
+type VariantModalTarget =
+  | {
+      type: 'deck'
+      slotIndex: number
+      instanceId: string
+      card: CardEntry
+      variants: DeckBuilderEpiphanyVariant[]
+      selectedVariant: DeckBuilderEpiphanyVariant | null
+    }
+  | {
+      type: 'available'
+      slotIndex: number
+      item: DeckBuilderCardWithVariants
+    }
 
 const TYPE_COLORS: Record<string, string> = {
   DMG: 'bg-[#7f1d1d] text-[#fca5a5]',
@@ -45,10 +78,12 @@ const TYPE_COLORS: Record<string, string> = {
   Change: 'bg-[#1c2a3a] text-[#7dd3fc]',
   Copy: 'bg-[#1c2a3a] text-[#7dd3fc]',
   Use: 'bg-[#2a1c1c] text-[#fca5a5]',
-
   Attack: 'bg-[#7f1d1d] text-[#fca5a5]',
   Skill: 'bg-[#1e3a5f] text-[#93c5fd]',
-  Upgrade: 'bg-[#3b1f6e] text-[#c4b5fd]',
+  Upgrade: 'bg-[#14532d] text-[#86efac]',
+  Haste: 'bg-[#4c1d95] text-[#d8b4fe]',
+  Unique: 'bg-[#78350f] text-[#fde68a]',
+  Initiation: 'bg-[#0f766e] text-[#99f6e4]',
 }
 
 function createEmptySlot(): SquadSlot {
@@ -58,8 +93,6 @@ function createEmptySlot(): SquadSlot {
     startingCards: [],
     epiphanyCards: [],
     egoSkill: null,
-    showStartingCards: false,
-    showEpiphanyCards: false,
     isLoading: false,
     error: null,
   }
@@ -71,6 +104,10 @@ function createInitialSquad(): SquadSlot[] {
     createEmptySlot(),
     createEmptySlot(),
   ]
+}
+
+function getVariants(item: DeckBuilderCardWithVariants): DeckBuilderEpiphanyVariant[] {
+  return item.variants ?? []
 }
 
 function createCardInstance(
@@ -86,108 +123,126 @@ function createCardInstance(
   }
 }
 
-function getEffectiveCardCost(item: DeckCardInstance) {
+function createCardInstanceFromDeckBuilderCard(
+  item: DeckBuilderCardWithVariants,
+  selectedVariant: DeckBuilderEpiphanyVariant | null = null,
+): DeckCardInstance {
+  return createCardInstance(item.card, getVariants(item), selectedVariant)
+}
+
+function cloneCardInstance(item: DeckCardInstance): DeckCardInstance {
+  return createCardInstance(item.card, item.variants, item.selectedVariant)
+}
+
+function getInstanceCost(item: DeckCardInstance) {
   return item.selectedVariant?.cost ?? item.card.cost
+}
+
+function getDisplayTypes(
+  card: CardEntry,
+  selectedVariant?: DeckBuilderEpiphanyVariant | null,
+) {
+  if (!selectedVariant) {
+    return card.effect_types
+  }
+
+  const types = [
+    selectedVariant.card_type,
+    ...(selectedVariant.tags ?? []),
+  ].filter(Boolean)
+
+  return Array.from(new Set(types))
 }
 
 function TypeBadge({ type }: { type: string }) {
   const cls = TYPE_COLORS[type] ?? 'bg-[#222] text-[#888]'
 
   return (
-    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide ${cls}`}>
+    <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${cls}`}>
       {type}
     </span>
   )
 }
 
-function VariantTag({ tag }: { tag: string }) {
+function CardImage({
+  card,
+  className = '',
+  variant = 'cover',
+}: {
+  card: CardEntry
+  className?: string
+  variant?: 'cover' | 'thumbnail' | 'contain'
+}) {
+  const [hasError, setHasError] = useState(false)
+  const imageUrl = getCardImageUrl(card)
+
+  if (!imageUrl || hasError) {
+    return (
+      <div
+        className={[
+          'flex h-full w-full items-center justify-center bg-[#11111a] text-[10px] text-[#666]',
+          className,
+        ].join(' ')}
+      >
+        Sem imagem
+      </div>
+    )
+  }
+
   return (
-    <span className="rounded bg-[#2e1f4d] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#d8b4fe]">
-      {tag}
-    </span>
+    <img
+      src={imageUrl}
+      alt={card.name}
+      loading="lazy"
+      draggable={false}
+      onError={() => setHasError(true)}
+      className={[
+        'h-full w-full',
+        variant === 'contain'
+          ? 'object-contain'
+          : variant === 'cover'
+            ? 'object-cover object-top'
+            : 'object-cover',
+        className,
+      ].join(' ')}
+    />
   )
 }
 
-function SectionToggleButton({
-  title,
-  count,
-  isOpen,
-  onToggle,
+function CharacterAvatar({
+  character,
 }: {
-  title: string
-  count: number
-  isOpen: boolean
-  onToggle: () => void
+  character: CardCharacter | undefined
 }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="flex w-full items-center justify-between gap-2 rounded-lg border border-[#282838] bg-[#101018] px-3 py-2 text-left hover:border-[#3b3b52]"
-    >
-      <div className="flex items-center gap-2">
-        <ChevronDown
-          size={14}
-          className={`text-[#c084fc] transition-transform ${isOpen ? '' : '-rotate-90'}`}
-        />
+  const [hasError, setHasError] = useState(false)
 
-        <span className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
-          {title}
-        </span>
+  if (!character) {
+    return (
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-[#333348] bg-[#101018] text-[#777]">
+        <Plus size={16} />
       </div>
+    )
+  }
 
-      <span className="text-[10px] text-[#777]">
-        {count} disponíveis
-      </span>
-    </button>
-  )
-}
+  const imageUrl = getCharacterFaceUrl(character.char_res_id)
 
-function AvailableDeckBuilderCardButton({
-  item,
-  onAdd,
-}: {
-  item: ApiDeckBuilderCard
-  onAdd: () => void
-}) {
-  const card = item.card
-  const variantsCount = item.variants?.length ?? 0
+  if (!imageUrl || hasError) {
+    return (
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-[#333348] bg-[#101018] text-xs font-bold text-[#c084fc]">
+        {character.name?.slice(0, 1) ?? '?'}
+      </div>
+    )
+  }
 
   return (
-    <button
-      type="button"
-      onClick={onAdd}
-      className="rounded-lg border border-[#333348] bg-[#15151f] p-2 text-left transition-colors hover:border-[#c084fc] hover:bg-[#1f1b2e]"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="truncate text-xs font-bold text-white">
-            {card.name}
-          </p>
-        </div>
-
-        <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
-          {card.cost}
-        </span>
-      </div>
-
-      <div className="mt-2 flex items-center justify-between text-[10px]">
-        <span className="text-[#888]">
-          {card.eff_value > 0 ? `${card.eff_value}% dano` : 'suporte'}
-        </span>
-
-        <span className="font-semibold text-[#c084fc]">
-          + adicionar
-        </span>
-      </div>
-
-      {variantsCount > 0 && (
-        <div className="mt-2 inline-flex items-center gap-1 rounded-md bg-[#082f49]/50 px-1.5 py-0.5 text-[9px] font-semibold text-[#7dd3fc]">
-          <Sparkles size={10} />
-          {variantsCount} variantes
-        </div>
-      )}
-    </button>
+    <img
+      src={imageUrl}
+      alt={character.name ?? `Combatente ${character.char_res_id}`}
+      loading="lazy"
+      draggable={false}
+      onError={() => setHasError(true)}
+      className="h-10 w-10 shrink-0 rounded-lg border border-[#333348] object-cover"
+    />
   )
 }
 
@@ -200,26 +255,109 @@ function DeckCard({
   item: DeckCardInstance
   onDuplicate: () => void
   onRemove: () => void
-  onOpenVariants: () => void
+  onOpenVariants?: () => void
 }) {
   const { card, selectedVariant } = item
+
+  const displayName = selectedVariant?.name ?? card.name ?? 'Unnamed card'
+  const displayCost = getInstanceCost(item)
+  const displayDescription = selectedVariant?.description
+  const displayTypes = getDisplayTypes(card, selectedVariant)
   const coefficient = card.eff_value > 0 ? `${card.eff_value}%` : '—'
-  const effectiveCost = getEffectiveCardCost(item)
-  const hasVariants = item.variants.length > 0
+  const hasVariants = item.variants.length > 0 || card.spark_count > 0
 
   return (
-    <article className="group relative min-h-[170px] rounded-lg border border-[#2d2d3a] bg-gradient-to-b from-[#222033] to-[#14141b] p-3 overflow-hidden">
-      <div className={`absolute inset-x-0 top-0 h-1 ${selectedVariant ? 'bg-[#38bdf8]' : 'bg-[#c084fc]'}`} />
+    <article className="flex h-full flex-col overflow-hidden rounded-lg border border-[#2d2d3a] bg-[#15151f] transition-colors hover:border-[#c084fc]">
+      <div className="flex flex-1 gap-3 p-3">
+        <div className="h-24 w-16 shrink-0 overflow-hidden rounded-md border border-[#2d2d3a] bg-[#101018]">
+          <CardImage card={card} variant="thumbnail" />
+        </div>
 
-      <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-        {hasVariants && (
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0">
+              <h3 className="line-clamp-2 text-sm font-bold text-white">
+                {displayName}
+              </h3>
+
+              {selectedVariant && selectedVariant.name !== card.name && (
+                <p className="mt-1 text-[10px] text-[#60a5fa]">
+                  Base: {card.name}
+                </p>
+              )}
+            </div>
+
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded bg-[#0f172a] text-sm font-bold text-[#93c5fd]">
+              {displayCost}
+            </span>
+          </div>
+
+          <div className="mt-2 flex flex-wrap gap-1">
+            {displayTypes.length > 0 ? (
+              displayTypes.map(type => (
+                <TypeBadge key={type} type={type} />
+              ))
+            ) : (
+              <span className="text-[10px] text-[#777]">
+                Sem efeito mapeado
+              </span>
+            )}
+          </div>
+
+          {hasVariants && !selectedVariant && onOpenVariants && (
+            <button
+              type="button"
+              onClick={onOpenVariants}
+              className="mt-2 inline-flex items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/70 px-2 py-1 text-[10px] font-semibold text-[#7dd3fc] hover:bg-[#0c4a6e]"
+            >
+              <Sparkles size={12} />
+              {item.variants.length > 0
+                ? `${item.variants.length} variantes`
+                : `${card.spark_count} variantes`}
+            </button>
+          )}
+
+          {displayDescription && (
+            <div className="mt-2 rounded-md border border-[#0ea5e9]/20 bg-[#082f49]/20 p-2">
+              <p className="line-clamp-3 text-[10px] leading-relaxed text-[#dbeafe]">
+                {displayDescription}
+              </p>
+            </div>
+          )}
+
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="rounded-md bg-[#0f0f14] px-2 py-2 text-center">
+              <p className="text-[9px] uppercase text-[#666]">Dano</p>
+              <p className="text-xs font-bold text-[#e5e7eb]">{coefficient}</p>
+            </div>
+
+            <div className="rounded-md bg-[#0f0f14] px-2 py-2 text-center">
+              <p className="text-[9px] uppercase text-[#666]">Hits</p>
+              <p className="text-xs font-bold text-[#e5e7eb]">
+                {card.hits > 0 ? card.hits : '—'}
+              </p>
+            </div>
+
+            <div className="rounded-md bg-[#0f0f14] px-2 py-2 text-center">
+              <p className="text-[9px] uppercase text-[#666]">Spark</p>
+              <p className="text-xs font-bold text-[#facc15]">
+                {card.spark_count > 0 ? `+${card.spark_count}` : '—'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-auto flex items-center justify-end gap-2 border-t border-[#282838] bg-[#11111a] px-3 py-2">
+        {hasVariants && onOpenVariants && (
           <button
             type="button"
             onClick={onOpenVariants}
-            title="Selecionar variante Epiphany"
-            className="grid h-7 w-7 place-items-center rounded-md bg-[#111827]/90 text-[#7dd3fc] hover:bg-[#0c4a6e]"
+            title="Selecionar variante"
+            className="inline-flex h-8 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/70 px-2 text-[11px] font-semibold text-[#7dd3fc] hover:bg-[#0c4a6e]"
           >
-            <Sparkles size={14} />
+            <Sparkles size={12} />
+            Variantes
           </button>
         )}
 
@@ -227,7 +365,7 @@ function DeckCard({
           type="button"
           onClick={onDuplicate}
           title="Duplicar carta"
-          className="grid h-7 w-7 place-items-center rounded-md bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
+          className="grid h-8 w-8 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
         >
           <Copy size={14} />
         </button>
@@ -236,251 +374,266 @@ function DeckCard({
           type="button"
           onClick={onRemove}
           title="Remover carta"
-          className="grid h-7 w-7 place-items-center rounded-md bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
+          className="grid h-8 w-8 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
         >
           <X size={14} />
         </button>
-      </div>
-
-      <div className="flex items-start gap-2 pr-20">
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-[#0f172a] text-lg font-black text-[#93c5fd]">
-          {effectiveCost}
-        </span>
-
-        <div className="min-w-0">
-          <h3 className="line-clamp-2 text-sm font-bold text-white">
-            {selectedVariant?.name || card.name || 'Unnamed card'}
-          </h3>
-
-          {selectedVariant && (
-            <p className="mt-1 text-[10px] text-[#7dd3fc]">
-              Base: {card.name}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {selectedVariant && (
-        <div className="mt-3 rounded-md border border-[#164e63] bg-[#082f49]/40 p-2">
-          <div className="mb-1 flex flex-wrap items-center gap-1">
-            {selectedVariant.card_type && <TypeBadge type={selectedVariant.card_type} />}
-
-            {selectedVariant.tags.map(tag => (
-              <VariantTag key={tag} tag={tag} />
-            ))}
-          </div>
-
-          <p className="line-clamp-3 text-[10px] leading-relaxed text-[#bae6fd]">
-            {selectedVariant.description}
-          </p>
-        </div>
-      )}
-
-      {!selectedVariant && (
-        <>
-          <div className="mt-4 flex flex-wrap gap-1">
-            {card.effect_types.length > 0 ? (
-              card.effect_types.map(type => <TypeBadge key={type} type={type} />)
-            ) : (
-              <span className="text-[10px] text-[#555]">Sem efeito mapeado</span>
-            )}
-          </div>
-
-          {hasVariants && (
-            <button
-              type="button"
-              onClick={onOpenVariants}
-              className="mt-3 inline-flex items-center gap-1 rounded-md border border-[#164e63] bg-[#082f49]/40 px-2 py-1 text-[10px] font-semibold text-[#7dd3fc] hover:bg-[#0c4a6e]/60"
-            >
-              <Sparkles size={12} />
-              {item.variants.length} variantes
-            </button>
-          )}
-        </>
-      )}
-
-      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-md bg-[#0f0f14] px-2 py-2">
-          <p className="text-[9px] uppercase text-[#666]">Dano</p>
-          <p className="text-xs font-bold text-[#e5e7eb]">{coefficient}</p>
-        </div>
-
-        <div className="rounded-md bg-[#0f0f14] px-2 py-2">
-          <p className="text-[9px] uppercase text-[#666]">Hits</p>
-          <p className="text-xs font-bold text-[#e5e7eb]">
-            {card.hits > 0 ? card.hits : '—'}
-          </p>
-        </div>
-
-        <div className="rounded-md bg-[#0f0f14] px-2 py-2">
-          <p className="text-[9px] uppercase text-[#666]">Spark</p>
-          <p className="text-xs font-bold text-[#facc15]">
-            {card.spark_count > 0 ? `+${card.spark_count}` : '—'}
-          </p>
-        </div>
       </div>
     </article>
   )
 }
 
-function EpiphanyVariantModal({
+function AvailableDeckBuilderCardButton({
   item,
+  onAdd,
+  onOpenVariants,
+}: {
+  item: DeckBuilderCardWithVariants
+  onAdd: () => void
+  onOpenVariants?: () => void
+}) {
+  const card = item.card
+  const variants = getVariants(item)
+  const hasVariants = variants.length > 0 || card.spark_count > 0
+
+  return (
+    <div className="overflow-hidden rounded-lg border border-[#333348] bg-[#15151f] transition-colors hover:border-[#c084fc] hover:bg-[#1f1b2e]">
+      <button
+        type="button"
+        onClick={onAdd}
+        className="flex w-full gap-3 p-2 text-left"
+      >
+        <div className="h-20 w-14 shrink-0 overflow-hidden rounded-md border border-[#2d2d3a] bg-[#101018]">
+          <CardImage card={card} variant="thumbnail" />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <p className="line-clamp-2 text-xs font-bold text-white">
+              {card.name || 'Unnamed card'}
+            </p>
+
+            <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
+              {card.cost}
+            </span>
+          </div>
+
+          <div className="mt-2 flex flex-wrap gap-1">
+            {card.effect_types.length > 0 ? (
+              card.effect_types.slice(0, 2).map(type => (
+                <TypeBadge key={type} type={type} />
+              ))
+            ) : (
+              <span className="text-[10px] text-[#777]">
+                suporte
+              </span>
+            )}
+          </div>
+
+          <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
+            <span className="text-[#888]">
+              {card.eff_value > 0 ? `${card.eff_value}% dano` : 'suporte'}
+            </span>
+
+            <span className="font-semibold text-[#c084fc]">
+              + adicionar
+            </span>
+          </div>
+        </div>
+      </button>
+
+      {hasVariants && onOpenVariants && (
+        <div className="border-t border-[#282838] px-2 pb-2 pt-2">
+          <button
+            type="button"
+            onClick={onOpenVariants}
+            className="inline-flex items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/70 px-2 py-1 text-[10px] font-semibold text-[#7dd3fc] hover:bg-[#0c4a6e]"
+          >
+            <Sparkles size={12} />
+            {variants.length > 0
+              ? `${variants.length} variantes`
+              : `${card.spark_count} variantes`}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function VariantSettingsModal({
+  target,
   onClose,
   onApplyVariant,
   onClearVariant,
 }: {
-  item: DeckCardInstance
+  target: VariantModalTarget
   onClose: () => void
   onApplyVariant: (variant: DeckBuilderEpiphanyVariant) => void
-  onClearVariant: () => void
+  onClearVariant?: () => void
 }) {
+  const card = target.type === 'deck'
+    ? target.card
+    : target.item.card
+
+  const variants = target.type === 'deck'
+    ? target.variants
+    : getVariants(target.item)
+
+  const selectedVariant = target.type === 'deck'
+    ? target.selectedVariant
+    : null
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6">
-      <div className="w-full max-w-4xl overflow-hidden rounded-xl border border-[#282838] bg-[#11111a] shadow-2xl">
-        <header className="flex items-center justify-between border-b border-[#282838] px-5 py-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-6">
+      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-[#303044] bg-[#15151f] shadow-2xl">
+        <header className="flex items-start justify-between gap-4 border-b border-[#282838] p-5">
           <div>
             <div className="flex items-center gap-2">
-              <Sparkles size={16} className="text-[#7dd3fc]" />
-
+              <Sparkles size={18} className="text-[#7dd3fc]" />
               <h2 className="text-lg font-bold text-white">
                 Epiphany Settings
               </h2>
             </div>
 
-            <p className="mt-1 text-xs text-[#999]">
-              Selecione uma variante para <span className="font-semibold text-white">{item.card.name}</span>.
+            <p className="mt-1 text-xs text-[#b3b3b3]">
+              Selecione uma variante para <span className="font-semibold text-white">{card.name}</span>.
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-lg text-[#aaa] hover:bg-[#222233] hover:text-white"
+            className="grid h-8 w-8 place-items-center rounded-lg text-[#aaa] hover:bg-[#242435] hover:text-white"
           >
             <X size={18} />
           </button>
         </header>
 
-        <div className="grid max-h-[70vh] gap-4 overflow-y-auto p-5 lg:grid-cols-[260px_1fr]">
-          <aside className="rounded-xl border border-[#282838] bg-[#15151f] p-4">
+        <div className="grid min-h-0 flex-1 gap-4 overflow-y-auto p-5 lg:grid-cols-[280px_1fr]">
+          <aside className="rounded-xl border border-[#303044] bg-[#171722] p-4">
             <p className="text-[10px] uppercase tracking-wide text-[#777]">
               Carta atual
             </p>
 
-            <div className="mt-3 rounded-lg border border-[#333348] bg-[#101018] p-3">
-              <div className="flex items-start gap-2">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#0f172a] text-lg font-black text-[#93c5fd]">
-                  {item.selectedVariant?.cost ?? item.card.cost}
-                </span>
-
-                <div className="min-w-0">
-                  <p className="text-sm font-bold text-white">
-                    {item.selectedVariant?.name ?? item.card.name}
-                  </p>
-
-                </div>
+            <div className="mt-3 overflow-hidden rounded-lg border border-[#333348] bg-[#101018]">
+              <div className="h-48 bg-[#101018] p-2">
+                <CardImage card={card} variant="contain" />
               </div>
 
-              {item.selectedVariant ? (
-                <div className="mt-3 rounded-md border border-[#164e63] bg-[#082f49]/40 p-2">
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[#7dd3fc]">
-                    Variante selecionada
-                  </p>
+              <div className="p-3">
+                <div className="flex items-start gap-2">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#0f172a] text-lg font-black text-[#93c5fd]">
+                    {selectedVariant?.cost ?? card.cost}
+                  </span>
 
-                  <p className="mt-1 text-xs font-bold text-white">
-                    {item.selectedVariant.name}
-                  </p>
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-sm font-bold text-white">
+                      {selectedVariant?.name ?? card.name}
+                    </p>
 
-                  <p className="mt-2 text-[11px] leading-relaxed text-[#bae6fd]">
-                    {item.selectedVariant.description}
-                  </p>
+                    {selectedVariant ? (
+                      <p className="mt-1 text-[10px] text-[#7dd3fc]">
+                        Base: {card.name}
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-[10px] text-[#888]">
+                        Nenhuma variante aplicada.
+                      </p>
+                    )}
+                  </div>
                 </div>
-              ) : (
-                <p className="mt-3 text-xs text-[#777]">
-                  Nenhuma variante aplicada.
-                </p>
-              )}
-            </div>
 
-            {item.selectedVariant && (
-              <button
-                type="button"
-                onClick={onClearVariant}
-                className="mt-3 w-full rounded-lg border border-[#7f1d1d] px-3 py-2 text-xs font-semibold text-[#f87171] hover:bg-[#7f1d1d]/20"
-              >
-                Remover variante
-              </button>
-            )}
-          </aside>
-
-          <section className="rounded-xl border border-[#282838] bg-[#15151f] p-4">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <div>
-                <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                  Variantes disponíveis
-                </p>
-
-                <p className="mt-1 text-sm text-[#b3b3b3]">
-                  {item.variants.length} variantes encontradas
-                </p>
-              </div>
-            </div>
-
-            <div className="grid gap-3 md:grid-cols-2">
-              {item.variants.map(variant => {
-                const isSelected = item.selectedVariant?.variant_id === variant.variant_id
-
-                return (
-                  <button
-                    type="button"
-                    onClick={() => onApplyVariant(variant)}
-                    className={`rounded-lg border p-3 text-left transition-colors ${
-                      isSelected
-                        ? 'border-[#38bdf8] bg-[#082f49]/60'
-                        : 'border-[#333348] bg-[#101018] hover:border-[#38bdf8] hover:bg-[#0c1f2b]'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-sm font-bold text-white">
-                          {variant.name}
-                        </p>
-                      </div>
-
-                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
-                        {variant.cost}
-                      </span>
-                    </div>
-
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {variant.card_type && <TypeBadge type={variant.card_type} />}
-
-                      {variant.tags.map(tag => (
-                        <VariantTag key={tag} tag={tag} />
+                {selectedVariant && (
+                  <div className="mt-3 rounded-md border border-[#0ea5e9]/30 bg-[#082f49]/30 p-2">
+                    <div className="mb-1 flex flex-wrap gap-1">
+                      {getDisplayTypes(card, selectedVariant).map(type => (
+                        <TypeBadge key={type} type={type} />
                       ))}
                     </div>
 
-                    <p className="mt-3 text-xs leading-relaxed text-[#cbd5e1]">
-                      {variant.description}
+                    <p className="text-[10px] leading-relaxed text-[#dbeafe]">
+                      {selectedVariant.description}
                     </p>
+                  </div>
+                )}
 
-                    {isSelected && (
-                      <p className="mt-3 text-[10px] font-bold uppercase tracking-wide text-[#7dd3fc]">
-                        Selecionada
-                      </p>
-                    )}
+                {selectedVariant && onClearVariant && (
+                  <button
+                    type="button"
+                    onClick={onClearVariant}
+                    className="mt-3 w-full rounded-lg border border-[#333348] px-3 py-2 text-xs font-semibold text-[#aaa] hover:border-[#f87171] hover:text-[#f87171]"
+                  >
+                    Remover variante
                   </button>
-                )
-              })}
+                )}
+              </div>
             </div>
+          </aside>
+
+          <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
+            <p className="text-[10px] uppercase tracking-wide text-[#777]">
+              Variantes disponíveis
+            </p>
+
+            <p className="mt-2 text-sm text-[#b3b3b3]">
+              {variants.length} variantes encontradas
+            </p>
+
+            {variants.length === 0 ? (
+              <div className="mt-4 flex h-64 items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
+                Nenhuma variante mapeada para esta carta.
+              </div>
+            ) : (
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                {variants.map(variant => {
+                  const isSelected = selectedVariant?.variant_id === variant.variant_id
+
+                  return (
+                    <button
+                      key={variant.variant_id}
+                      type="button"
+                      onClick={() => onApplyVariant(variant)}
+                      className={[
+                        'rounded-lg border p-3 text-left transition-colors',
+                        isSelected
+                          ? 'border-[#7dd3fc] bg-[#082f49]/50'
+                          : 'border-[#333348] bg-[#101018] hover:border-[#c084fc] hover:bg-[#1f1b2e]',
+                      ].join(' ')}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="line-clamp-2 text-sm font-bold text-white">
+                            {variant.name}
+                          </p>
+
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {getDisplayTypes(card, variant).map(type => (
+                              <TypeBadge key={type} type={type} />
+                            ))}
+                          </div>
+                        </div>
+
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded bg-[#0f172a] text-sm font-bold text-[#93c5fd]">
+                          {variant.cost}
+                        </span>
+                      </div>
+
+                      <p className="mt-3 text-xs leading-relaxed text-[#dbeafe]">
+                        {variant.description}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </section>
         </div>
 
-        <footer className="flex justify-end border-t border-[#282838] px-5 py-4">
+        <footer className="flex justify-end gap-2 border-t border-[#282838] p-5">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-[#333348] px-4 py-2 text-sm font-semibold text-[#ddd] hover:bg-[#222233]"
+            className="rounded-lg border border-[#333348] px-4 py-2 text-sm font-semibold text-[#d1d5db] hover:bg-[#242435]"
           >
             Fechar
           </button>
@@ -502,36 +655,35 @@ function CombatantDeckColumn({
   onSelectCombatant,
   onDuplicateCard,
   onRemoveCard,
-  onOpenVariants,
-  onAddStartingCard,
-  onAddEpiphanyCard,
+  onAddDeckBuilderCard,
+  onOpenDeckCardVariants,
+  onOpenAvailableCardVariants,
   onClearDeck,
-  onToggleStartingCards,
-  onToggleEpiphanyCards,
 }: {
   slotIndex: number
   slot: SquadSlot
   characters: CardCharacter[]
-  startingCards: ApiDeckBuilderCard[]
-  epiphanyCards: ApiDeckBuilderCard[]
-  egoSkill: ApiDeckBuilderCard | null
+  startingCards: DeckBuilderCardWithVariants[]
+  epiphanyCards: DeckBuilderCardWithVariants[]
+  egoSkill: DeckBuilderCardWithVariants | null
   isLoading: boolean
   error: string | null
   onSelectCombatant: (combatantId: number | null) => void
   onDuplicateCard: (instanceId: string) => void
   onRemoveCard: (instanceId: string) => void
-  onOpenVariants: (instanceId: string) => void
-  onAddStartingCard: (item: ApiDeckBuilderCard) => void
-  onAddEpiphanyCard: (item: ApiDeckBuilderCard) => void
+  onAddDeckBuilderCard: (item: DeckBuilderCardWithVariants) => void
+  onOpenDeckCardVariants: (item: DeckCardInstance) => void
+  onOpenAvailableCardVariants: (item: DeckBuilderCardWithVariants) => void
   onClearDeck: () => void
-  onToggleStartingCards: () => void
-  onToggleEpiphanyCards: () => void
 }) {
+  const [showStartingCards, setShowStartingCards] = useState(false)
+  const [showEpiphanyCards, setShowEpiphanyCards] = useState(false)
+
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
-  const totalCost = slot.cards.reduce((sum, item) => sum + getEffectiveCardCost(item), 0)
+  const totalCost = slot.cards.reduce((sum, item) => sum + getInstanceCost(item), 0)
 
   return (
-    <section className="min-w-0 rounded-xl border border-[#282838] bg-[#15151f] overflow-hidden">
+    <section className="min-w-0 overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
       <header className="border-b border-[#282838] p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
@@ -539,18 +691,22 @@ function CombatantDeckColumn({
               Combatente {slotIndex + 1}
             </p>
 
-            <select
-              value={slot.combatantId ?? ''}
-              onChange={e => onSelectCombatant(e.target.value ? Number(e.target.value) : null)}
-              className="mt-2 w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-sm text-white outline-none focus:border-[#c084fc]"
-            >
-              <option value="">Selecionar combatente...</option>
-              {characters.map(character => (
-                <option key={character.char_res_id} value={character.char_res_id}>
-                  {character.name || `#${character.char_res_id}`}
-                </option>
-              ))}
-            </select>
+            <div className="mt-2 flex items-center gap-3">
+              <CharacterAvatar character={selectedCombatant} />
+
+              <select
+                value={slot.combatantId ?? ''}
+                onChange={e => onSelectCombatant(e.target.value ? Number(e.target.value) : null)}
+                className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-sm text-white outline-none focus:border-[#c084fc]"
+              >
+                <option value="">Selecionar combatente...</option>
+                {characters.map(character => (
+                  <option key={character.char_res_id} value={character.char_res_id}>
+                    {character.name || `#${character.char_res_id}`}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <button
@@ -580,6 +736,12 @@ function CombatantDeckColumn({
             <p className="text-sm font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
           </div>
         </div>
+
+        {selectedCombatant && (
+          <p className="mt-3 truncate text-xs text-[#b3b3b3]">
+            Deck de <span className="font-semibold text-white">{selectedCombatant.name}</span>
+          </p>
+        )}
       </header>
 
       <div className="h-[calc(100vh-330px)] min-h-[420px] overflow-y-auto p-3">
@@ -601,19 +763,23 @@ function CombatantDeckColumn({
             </p>
             <p className="mt-1 max-w-[220px] text-xs text-[#666]">
               {selectedCombatant
-                ? 'Adicione cartas Starting/Epiphany ou selecione outro combatente para recarregar o deck inicial.'
+                ? 'Adicione cartas Starting ou Epiphany para montar o deck.'
                 : 'Selecione um combatente para carregar as cartas base dele.'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 items-stretch gap-3">
             {slot.cards.map(item => (
               <DeckCard
                 key={item.instanceId}
                 item={item}
                 onDuplicate={() => onDuplicateCard(item.instanceId)}
                 onRemove={() => onRemoveCard(item.instanceId)}
-                onOpenVariants={() => onOpenVariants(item.instanceId)}
+                onOpenVariants={
+                  item.variants.length > 0 || item.card.spark_count > 0
+                    ? () => onOpenDeckCardVariants(item)
+                    : undefined
+                }
               />
             ))}
           </div>
@@ -621,19 +787,40 @@ function CombatantDeckColumn({
 
         {startingCards.length > 0 && (
           <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
-            <SectionToggleButton
-              title="Starting Cards"
-              count={startingCards.length}
-              isOpen={slot.showStartingCards}
-              onToggle={onToggleStartingCards}
-            />
+            <button
+              type="button"
+              onClick={() => setShowStartingCards(current => !current)}
+              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
+            >
+              <div className="flex items-center gap-2">
+                {showStartingCards ? (
+                  <ChevronDown size={14} className="text-[#c084fc]" />
+                ) : (
+                  <ChevronRight size={14} className="text-[#c084fc]" />
+                )}
 
-            {slot.showStartingCards && (
+                <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                  Starting Cards
+                </h3>
+              </div>
+
+              <span className="text-[10px] text-[#777]">
+                {startingCards.length} disponíveis
+              </span>
+            </button>
+
+            {showStartingCards && (
               <div className="mt-3 grid grid-cols-2 gap-2">
-                {startingCards.map((item, index) => (
+                {startingCards.map(item => (
                   <AvailableDeckBuilderCardButton
+                    key={item.card.card_id}
                     item={item}
-                    onAdd={() => onAddStartingCard(item)}
+                    onAdd={() => onAddDeckBuilderCard(item)}
+                    onOpenVariants={
+                      getVariants(item).length > 0 || item.card.spark_count > 0
+                        ? () => onOpenAvailableCardVariants(item)
+                        : undefined
+                    }
                   />
                 ))}
               </div>
@@ -643,19 +830,44 @@ function CombatantDeckColumn({
 
         {epiphanyCards.length > 0 && (
           <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
-            <SectionToggleButton
-              title="Epiphany Cards"
-              count={epiphanyCards.length}
-              isOpen={slot.showEpiphanyCards}
-              onToggle={onToggleEpiphanyCards}
-            />
+            <button
+              type="button"
+              onClick={() => setShowEpiphanyCards(current => !current)}
+              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
+            >
+              <div className="flex items-center gap-2">
+                {showEpiphanyCards ? (
+                  <ChevronDown size={14} className="text-[#c084fc]" />
+                ) : (
+                  <ChevronRight size={14} className="text-[#c084fc]" />
+                )}
 
-            {slot.showEpiphanyCards && (
+                <div className="flex items-center gap-2">
+                  <Sparkles size={14} className="text-[#c084fc]" />
+
+                  <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                    Epiphany Cards
+                  </h3>
+                </div>
+              </div>
+
+              <span className="text-[10px] text-[#777]">
+                {epiphanyCards.length} disponíveis
+              </span>
+            </button>
+
+            {showEpiphanyCards && (
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {epiphanyCards.map(item => (
                   <AvailableDeckBuilderCardButton
+                    key={item.card.card_id}
                     item={item}
-                    onAdd={() => onAddEpiphanyCard(item)}
+                    onAdd={() => onAddDeckBuilderCard(item)}
+                    onOpenVariants={
+                      getVariants(item).length > 0 || item.card.spark_count > 0
+                        ? () => onOpenAvailableCardVariants(item)
+                        : undefined
+                    }
                   />
                 ))}
               </div>
@@ -664,21 +876,39 @@ function CombatantDeckColumn({
         )}
 
         {egoSkill && (
-          <section className="mt-4 rounded-xl border border-[#3b2f1d] bg-[#1a1410] p-3">
-            <p className="text-[10px] uppercase tracking-wide text-[#fbbf24]">
-              Ego Skill
-            </p>
-
-            <div className="mt-2 flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-bold text-white">
-                  {egoSkill.card.name}
-                </p>
+          <section className="mt-4 overflow-hidden rounded-xl border border-[#3b2f1d] bg-[#1a1410]">
+            <div className="flex gap-3 p-3">
+              <div className="h-20 w-14 shrink-0 overflow-hidden rounded-md border border-[#3b2f1d] bg-[#101018]">
+                <CardImage card={egoSkill.card} variant="thumbnail" />
               </div>
 
-              <span className="rounded-lg bg-[#0f0f14] px-3 py-1 text-sm font-bold text-[#fb923c]">
-                {egoSkill.card.cost}
-              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] uppercase tracking-wide text-[#fbbf24]">
+                  Ego Skill
+                </p>
+
+                <div className="mt-2 flex items-start justify-between gap-3">
+                  <p className="line-clamp-2 text-sm font-bold text-white">
+                    {egoSkill.card.name}
+                  </p>
+
+                  <span className="rounded-lg bg-[#0f0f14] px-3 py-1 text-sm font-bold text-[#fb923c]">
+                    {egoSkill.card.cost}
+                  </span>
+                </div>
+
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {egoSkill.card.effect_types.length > 0 ? (
+                    egoSkill.card.effect_types.map(type => (
+                      <TypeBadge key={type} type={type} />
+                    ))
+                  ) : (
+                    <span className="text-[10px] text-[#777]">
+                      suporte
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
         )}
@@ -690,7 +920,7 @@ function CombatantDeckColumn({
 export function DeckBuilderPage() {
   const { t } = useTranslation()
   const [squad, setSquad] = useState<SquadSlot[]>(createInitialSquad)
-  const [variantModal, setVariantModal] = useState<VariantModalState>(null)
+  const [variantModalTarget, setVariantModalTarget] = useState<VariantModalTarget | null>(null)
 
   const { data: characters = [], isLoading: loadingCharacters } = useQuery<CardCharacter[]>({
     queryKey: ['deck-builder-card-characters'],
@@ -701,17 +931,15 @@ export function DeckBuilderPage() {
   const totalCards = squad.reduce((sum, slot) => sum + slot.cards.length, 0)
 
   const totalCost = squad.reduce(
-    (sum, slot) => sum + slot.cards.reduce((slotSum, item) => slotSum + getEffectiveCardCost(item), 0),
+    (sum, slot) => sum + slot.cards.reduce((slotSum, item) => slotSum + getInstanceCost(item), 0),
     0,
   )
 
   const selectedCombatants = squad.filter(slot => slot.combatantId != null).length
 
-  const selectedModalItem = variantModal
-    ? squad[variantModal.slotIndex]?.cards.find(card => card.instanceId === variantModal.instanceId) ?? null
-    : null
-
   async function selectCombatant(slotIndex: number, combatantId: number | null) {
+    setVariantModalTarget(null)
+
     if (combatantId == null) {
       setSquad(current =>
         current.map((slot, index) => {
@@ -735,8 +963,6 @@ export function DeckBuilderPage() {
           startingCards: [],
           epiphanyCards: [],
           egoSkill: null,
-          showStartingCards: false,
-          showEpiphanyCards: false,
           isLoading: true,
           error: null,
         }
@@ -746,11 +972,12 @@ export function DeckBuilderPage() {
     try {
       const deckBuilderData = await api.deckBuilderCombatant(combatantId)
 
-      const cards = deckBuilderData.starting_cards.flatMap(item =>
-        Array.from(
-          { length: item.copies },
-          () => createCardInstance(item.card, item.variants ?? []),
-        ),
+      const startingCards = deckBuilderData.starting_cards as DeckBuilderCardWithVariants[]
+      const epiphanyCards = deckBuilderData.epiphany_cards as DeckBuilderCardWithVariants[]
+      const egoSkill = deckBuilderData.ego_skill as DeckBuilderCardWithVariants | null
+
+      const cards = startingCards.flatMap(item =>
+        Array.from({ length: item.copies }, () => createCardInstanceFromDeckBuilderCard(item)),
       )
 
       setSquad(current =>
@@ -761,9 +988,9 @@ export function DeckBuilderPage() {
             ...slot,
             combatantId,
             cards,
-            startingCards: deckBuilderData.starting_cards,
-            epiphanyCards: deckBuilderData.epiphany_cards,
-            egoSkill: deckBuilderData.ego_skill,
+            startingCards,
+            epiphanyCards,
+            egoSkill,
             isLoading: false,
             error: null,
           }
@@ -801,16 +1028,21 @@ export function DeckBuilderPage() {
 
         return {
           ...slot,
-          cards: [
-            ...slot.cards,
-            createCardInstance(item.card, item.variants, item.selectedVariant),
-          ],
+          cards: [...slot.cards, cloneCardInstance(item)],
         }
       }),
     )
   }
 
   function removeCard(slotIndex: number, instanceId: string) {
+    setVariantModalTarget(current => {
+      if (current?.type === 'deck' && current.instanceId === instanceId) {
+        return null
+      }
+
+      return current
+    })
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -821,49 +1053,84 @@ export function DeckBuilderPage() {
         }
       }),
     )
-
-    if (variantModal?.slotIndex === slotIndex && variantModal.instanceId === instanceId) {
-      setVariantModal(null)
-    }
   }
 
-  function addStartingCard(slotIndex: number, item: ApiDeckBuilderCard) {
-    setSquad(current =>
-      current.map((slot, index) => {
-        if (index !== slotIndex) return slot
-
-        return {
-          ...slot,
-          cards: [
-            ...slot.cards,
-            createCardInstance(item.card, item.variants ?? []),
-          ],
-        }
-      }),
-    )
-  }
-
-  function addEpiphanyCard(slotIndex: number, item: ApiDeckBuilderCard) {
-    setSquad(current =>
-      current.map((slot, index) => {
-        if (index !== slotIndex) return slot
-
-        return {
-          ...slot,
-          cards: [
-            ...slot.cards,
-            createCardInstance(item.card, item.variants ?? []),
-          ],
-        }
-      }),
-    )
-  }
-
-  function applyVariant(
+  function addDeckBuilderCard(
     slotIndex: number,
-    instanceId: string,
-    variant: DeckBuilderEpiphanyVariant,
+    item: DeckBuilderCardWithVariants,
+    selectedVariant: DeckBuilderEpiphanyVariant | null = null,
   ) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          cards: [
+            ...slot.cards,
+            createCardInstanceFromDeckBuilderCard(item, selectedVariant),
+          ],
+        }
+      }),
+    )
+  }
+
+  function clearDeck(slotIndex: number) {
+    setVariantModalTarget(current => {
+      if (current?.slotIndex === slotIndex) {
+        return null
+      }
+
+      return current
+    })
+
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          cards: [],
+        }
+      }),
+    )
+  }
+
+  function resetBuilder() {
+    setVariantModalTarget(null)
+    setSquad(createInitialSquad())
+  }
+
+  function openDeckCardVariants(slotIndex: number, item: DeckCardInstance) {
+    setVariantModalTarget({
+      type: 'deck',
+      slotIndex,
+      instanceId: item.instanceId,
+      card: item.card,
+      variants: item.variants,
+      selectedVariant: item.selectedVariant,
+    })
+  }
+
+  function openAvailableCardVariants(slotIndex: number, item: DeckBuilderCardWithVariants) {
+    setVariantModalTarget({
+      type: 'available',
+      slotIndex,
+      item,
+    })
+  }
+
+  function applyVariant(variant: DeckBuilderEpiphanyVariant) {
+    if (!variantModalTarget) return
+
+    if (variantModalTarget.type === 'available') {
+      addDeckBuilderCard(variantModalTarget.slotIndex, variantModalTarget.item, variant)
+      setVariantModalTarget(null)
+      return
+    }
+
+    const { slotIndex, instanceId } = variantModalTarget
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -881,9 +1148,22 @@ export function DeckBuilderPage() {
         }
       }),
     )
+
+    setVariantModalTarget(current => {
+      if (!current || current.type !== 'deck') return current
+
+      return {
+        ...current,
+        selectedVariant: variant,
+      }
+    })
   }
 
-  function clearVariant(slotIndex: number, instanceId: string) {
+  function clearVariant() {
+    if (!variantModalTarget || variantModalTarget.type !== 'deck') return
+
+    const { slotIndex, instanceId } = variantModalTarget
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -901,60 +1181,21 @@ export function DeckBuilderPage() {
         }
       }),
     )
-  }
 
-  function clearDeck(slotIndex: number) {
-    setSquad(current =>
-      current.map((slot, index) => {
-        if (index !== slotIndex) return slot
+    setVariantModalTarget(current => {
+      if (!current || current.type !== 'deck') return current
 
-        return {
-          ...slot,
-          cards: [],
-        }
-      }),
-    )
-
-    if (variantModal?.slotIndex === slotIndex) {
-      setVariantModal(null)
-    }
-  }
-
-  function toggleStartingCards(slotIndex: number) {
-    setSquad(current =>
-      current.map((slot, index) => {
-        if (index !== slotIndex) return slot
-
-        return {
-          ...slot,
-          showStartingCards: !slot.showStartingCards,
-        }
-      }),
-    )
-  }
-
-  function toggleEpiphanyCards(slotIndex: number) {
-    setSquad(current =>
-      current.map((slot, index) => {
-        if (index !== slotIndex) return slot
-
-        return {
-          ...slot,
-          showEpiphanyCards: !slot.showEpiphanyCards,
-        }
-      }),
-    )
-  }
-
-  function resetBuilder() {
-    setSquad(createInitialSquad())
-    setVariantModal(null)
+      return {
+        ...current,
+        selectedVariant: null,
+      }
+    })
   }
 
   const isLoading = loadingCharacters
 
   return (
-    <div className="min-h-full bg-[#0f0f14] text-[#ffffff]">
+    <div className="min-h-full bg-[#0f0f14] text-white">
       <header className="sticky top-0 z-20 border-b border-[#282838] bg-[#101018]/95 backdrop-blur">
         <div className="flex items-center justify-between gap-4 px-6 py-4">
           <div>
@@ -1027,30 +1268,25 @@ export function DeckBuilderPage() {
               onSelectCombatant={combatantId => selectCombatant(index, combatantId)}
               onDuplicateCard={instanceId => duplicateCard(index, instanceId)}
               onRemoveCard={instanceId => removeCard(index, instanceId)}
-              onOpenVariants={instanceId => setVariantModal({ slotIndex: index, instanceId })}
-              onAddStartingCard={item => addStartingCard(index, item)}
-              onAddEpiphanyCard={item => addEpiphanyCard(index, item)}
+              onAddDeckBuilderCard={item => addDeckBuilderCard(index, item)}
+              onOpenDeckCardVariants={item => openDeckCardVariants(index, item)}
+              onOpenAvailableCardVariants={item => openAvailableCardVariants(index, item)}
               onClearDeck={() => clearDeck(index)}
-              onToggleStartingCards={() => toggleStartingCards(index)}
-              onToggleEpiphanyCards={() => toggleEpiphanyCards(index)}
             />
           ))}
         </main>
       )}
 
-      {variantModal && selectedModalItem && (
-        <EpiphanyVariantModal
-          item={selectedModalItem}
-          onClose={() => setVariantModal(null)}
-          onApplyVariant={variant => applyVariant(
-            variantModal.slotIndex,
-            variantModal.instanceId,
-            variant,
-          )}
-          onClearVariant={() => clearVariant(
-            variantModal.slotIndex,
-            variantModal.instanceId,
-          )}
+      {variantModalTarget && (
+        <VariantSettingsModal
+          target={variantModalTarget}
+          onClose={() => setVariantModalTarget(null)}
+          onApplyVariant={applyVariant}
+          onClearVariant={
+            variantModalTarget.type === 'deck'
+              ? clearVariant
+              : undefined
+          }
         />
       )}
     </div>
