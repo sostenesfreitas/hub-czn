@@ -1,0 +1,19 @@
+{
+  "1043": {
+    "starting_cards": [
+      { "card_id": "c_1043_srt1" },
+      { "card_id": "c_1043_srt2" },
+      { "card_id": "c_1043_srt3" },
+      { "card_id": "c_1043_srt4" }
+    ],
+    "epiphany_cards": [
+      { "card_id": "c_1043_uni1" },
+      { "card_id": "c_1043_uni2" },
+      { "card_id": "c_1043_uni3" },
+      { "card_id": "c_1043_uni4" }
+    ],
+    "ego_skill": {
+      "card_id": "c_1043_eps"
+    }
+  }
+}

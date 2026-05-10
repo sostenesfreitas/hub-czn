@@ -398,3 +398,17 @@ export interface SimulateDamageResponse {
   total_crit: number
   total_avg: number
 }
+
+export interface DeckBuilderCard {
+  card: CardEntry
+  copies: number
+  group: 'starting' | 'epiphany' | 'ego'
+}
+
+export interface DeckBuilderCombatantResponse {
+  char_res_id: number
+  starting_cards: DeckBuilderCard[]
+  epiphany_cards: DeckBuilderCard[]
+  ego_skill: DeckBuilderCard | null
+  missing_card_ids: string[]
+}

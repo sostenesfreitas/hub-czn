@@ -7,6 +7,7 @@ import type {
   SimulateRequest, SimulateDamageResponse, DeckInfo,
   CardEntry, CardCharacter, BattleRecord, BattleAnalytics,
   BattleOverview,
+  DeckBuilderCombatantResponse,
 } from './types'
 
 let _port: number = Number(import.meta.env.VITE_API_PORT ?? 7842)
@@ -134,6 +135,9 @@ export const api = {
     const qs = charResId != null ? `?char_res_id=${charResId}` : ''
     return request<CardEntry[]>(`/api/cards${qs}`)
   },
+
+deckBuilderCombatant: (charResId: number) =>
+  request<DeckBuilderCombatantResponse>(`/api/deck-builder/combatants/${charResId}`),
 
   battleLatest: () => request<BattleRecord>('/api/battle/latest'),
 
