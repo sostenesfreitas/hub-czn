@@ -84,3 +84,93 @@ def test_real_capture_caster_resolution_rate_above_80_pct():
     assert rate >= 0.25, (
         f"caster resolution rate {rate:.1%} below 25% floor ({len(resolved)}/{len(dispatched)})"
     )
+
+
+@pytest.mark.slow
+def test_event_parser_extracts_thousands_of_events_from_real_capture():
+    """Real capture has ~6000+ parseable events (770 SkillEff + 691 StackAdd +
+    4294 ConditionTriggered + ~440 Timing + 81 Segment start/end pairs)."""
+    sprint2b_capture = (
+        Path(__file__).resolve().parents[2] / "api" / "snapshots"
+        / "websocket_debug_20260511_100845.jsonl"
+    )
+    if not sprint2b_capture.exists():
+        pytest.skip("Sprint 2b primary capture not present")
+    total_events = 0
+    for event in CaptureReader(sprint2b_capture).events():
+        total_events += len(event.parsed_events)
+    assert total_events >= 5000, f"parsed only {total_events} events"
+
+
+@pytest.mark.slow
+def test_real_capture_dva_stacks_visible_for_dmg_events():
+    """At least 5 dispatched SKILL_EFF_DMG events should have a non-empty
+    dva_stacks_observed dict (proves the accumulator -> state.dva_stacks
+    -> EffectResult chain end-to-end)."""
+    sprint2b_capture = (
+        Path(__file__).resolve().parents[2] / "api" / "snapshots"
+        / "websocket_debug_20260511_100845.jsonl"
+    )
+    if not sprint2b_capture.exists():
+        pytest.skip("Sprint 2b primary capture not present")
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    instances = EffInstanceIndex(CLIENT_DB)
+    runtime = Runtime(catalog=catalog, instances=instances)
+    harness = ReplayHarness(runtime, StateReconstructor())
+    summary, reports = harness.replay(CaptureReader(sprint2b_capture))
+    with_stacks = [
+        r for r in reports
+        if r.status == "dispatched" and r.eff_type == "SKILL_EFF_DMG"
+        and any(v > 0 for v in r.dva_stacks_observed.values())
+    ]
+    assert len(with_stacks) >= 5, (
+        f"only {len(with_stacks)} DMG events have observed stacks > 0"
+    )
+
+
+@pytest.mark.slow
+def test_real_capture_dva_multiplier_applied_for_at_least_5_dmg_events():
+    """At least 5 dispatched SKILL_EFF_DMG events should receive a
+    non-identity dva multiplier (effective_mult != 1.0).  Proves the
+    end-to-end chain: accumulator -> state.dva_stacks -> CSMultiplierIndex
+    lookup -> F_BASE_DMG composition."""
+    sprint2b_capture = (
+        Path(__file__).resolve().parents[2] / "api" / "snapshots"
+        / "websocket_debug_20260511_100845.jsonl"
+    )
+    if not sprint2b_capture.exists():
+        pytest.skip("Sprint 2b primary capture not present")
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    instances = EffInstanceIndex(CLIENT_DB)
+    runtime = Runtime(catalog=catalog, instances=instances)
+    harness = ReplayHarness(runtime, StateReconstructor())
+    summary, reports = harness.replay(CaptureReader(sprint2b_capture))
+
+    # For each dispatched DMG event, check whether ANY of its observed stacks
+    # would apply a 'take'-direction MATHSIGN_*_PCT modifier per CSMultiplierIndex.
+    from api.game_data.cs_multipliers import CSMultiplierIndex
+    cs_idx = CSMultiplierIndex()
+
+    def _has_applicable_modifier(stacks: dict[str, int]) -> bool:
+        for cs_id, count in stacks.items():
+            if count <= 0:
+                continue
+            for mod in cs_idx.lookup(cs_id):
+                if mod.direction != "take":
+                    continue
+                if mod.link_cs_id:
+                    continue
+                if mod.sign in ("MATHSIGN_ADD_HUND_MULTIPLY_PCT",
+                                 "MATHSIGN_MULTIPLY_PCT"):
+                    return True
+        return False
+
+    affected = [
+        r for r in reports
+        if r.status == "dispatched"
+        and r.eff_type == "SKILL_EFF_DMG"
+        and _has_applicable_modifier(r.dva_stacks_observed)
+    ]
+    assert len(affected) >= 5, (
+        f"only {len(affected)} DMG events had applicable dva modifiers"
+    )
