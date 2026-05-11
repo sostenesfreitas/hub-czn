@@ -27,16 +27,13 @@ def _find_firing_card(inst_id: str, state):
 
 
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
-    """Validated Track B formula + Sprint 2c weak/EGO multiplier:
+    """Validated Track B formula + Sprint 2c weak_mult + Sprint 2d dva observation:
        dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor * weak_mult
 
-       weak_mult = caster.weak_ego_dmg_rate / 100
-                   IF firing_card.outline AND target.weak
-                   ELSE 1.0
-
-    The firing card is looked up via _find_firing_card. When state.hand is
-    empty (as in Track B's regression tests), no card is found → weak_mult=1.0
-    → behavior identical to pre-2c.
+       dva_stacks_observed: dict of cs_id -> count for stacks referenced by
+       inst.link_cs_id that are currently present on the target.  Sprint 2d
+       OBSERVATION ONLY — does not affect damage calculation.  Sprint 2e
+       wires the actual multiplier.
     """
     if not targets:
         return EffectResult(skipped=True, skip_reason="no target")
@@ -50,7 +47,22 @@ def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
                  else 1.0)
     raw = caster.atk * (inst.eff_value / 100.0) * (1.0 - dr) * cf * weak_mult
     dealt = target.apply_damage(raw)
-    return EffectResult(damage=dealt, target_id=target.id)
+
+    # Sprint 2d: observe (don't apply) dva_css stack counts on target
+    dva_stacks_observed: dict[str, int] = {}
+    if inst.link_cs_id:
+        dva_stacks = getattr(state, "dva_stacks", None)
+        if dva_stacks is not None:
+            target_stacks = dva_stacks.get(str(target.id), {})
+            dva_stacks_observed = {
+                cs_id: int(target_stacks.get(cs_id, 0)) for cs_id in inst.link_cs_id
+            }
+
+    return EffectResult(
+        damage=dealt,
+        target_id=target.id,
+        dva_stacks_observed=dva_stacks_observed,
+    )
 
 
 def _formula_add_cs(inst, caster, targets, state) -> EffectResult:
