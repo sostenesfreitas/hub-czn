@@ -422,3 +422,27 @@ def test_harness_populates_dva_stacks_on_dispatched_events():
     ])
     summary, reports = ReplayHarness(fake_runtime, StateReconstructor()).replay(reader)
     assert reports[0].dva_stacks_observed == {"cs_91": 3}
+
+
+def test_render_report_includes_stacks_column_for_dispatched_events():
+    """Outlier rows for dispatched DMG events with observed stacks show a
+    'stacks' column listing 'cs_id=count' joined by commas."""
+    summary = ReplaySummary(
+        total_events=1, dispatched_dmg_within_5pct=0,
+        dispatched_dmg_outside_5pct=1,
+        by_eff_type={"SKILL_EFF_DMG": {
+            "dispatched": 1, "stub": 0, "missing": 0, "crashed": 0, "no_target": 0,
+        }},
+    )
+    reports = [
+        EventReport(
+            seq=11, skill_eff_id="c_30093_uni4_lbk_mut1_01",
+            eff_type="SKILL_EFF_DMG", status="dispatched",
+            sim_damage=12227, obs_damage=300, delta_pct=39.76,
+            target_id="79",
+            dva_stacks_observed={"cs_91": 3, "cs_112": 1},
+        ),
+    ]
+    md = render_report(summary, reports, capture_id="test")
+    assert "cs_91=3" in md
+    assert "cs_112=1" in md

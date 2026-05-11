@@ -54,16 +54,20 @@ def render_report(summary: ReplaySummary, reports: list[EventReport],
     if outliers:
         lines.append(f"## Top {min(top_n_outliers, len(outliers))} outlier events (worst delta_pct first)")
         lines.append("")
-        lines.append("| seq | char | skill_eff_id | eff_type | sim | obs | delta% |")
-        lines.append("|---|---|---|---|---|---|---|")
+        lines.append("| seq | char | skill_eff_id | eff_type | sim | obs | delta% | stacks |")
+        lines.append("|---|---|---|---|---|---|---|---|")
         for r in outliers[:top_n_outliers]:
             char_name = "?"
             char_res_id = _extract_char_res_id(r.skill_eff_id)
             if char_res_id and char_resolver is not None:
                 char_name = char_resolver.name_for(char_res_id)
+            stacks_str = (
+                ",".join(f"{k}={v}" for k, v in r.dva_stacks_observed.items())
+                if r.dva_stacks_observed else "-"
+            )
             lines.append(
                 f"| {r.seq} | {char_name} | `{r.skill_eff_id}` | {r.eff_type} | "
-                f"{r.sim_damage} | {r.obs_damage} | {r.delta_pct * 100:+.1f}% |"
+                f"{r.sim_damage} | {r.obs_damage} | {r.delta_pct * 100:+.1f}% | {stacks_str} |"
             )
         lines.append("")
     return "\n".join(lines) + "\n"
