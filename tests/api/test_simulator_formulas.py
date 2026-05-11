@@ -554,3 +554,100 @@ def test_f_base_dmg_track_b_verified_hit_1_unchanged_post_2e1():
     state = _state(caster, target)
     result = _formula_base_damage(_fake_inst(75), caster, [target], state)
     assert abs(result.damage - 547) / 547 < 0.05
+
+
+# =============================================================================
+# Sprint 2f1 — Track B oracle hits (3 known failing per docs/research/combat_mechanics.md).
+# Encoded as @pytest.mark.xfail(strict=False) so v1 closing one silently is OK.
+# Sprint 2f1 measurement-first deep-dive concluded:
+#   - v2 cs_multiplier features (count scaling / MATHSIGN_ADD / link_cs_id) do NOT
+#     explain the LBK 4.43x gap; the actual mechanism is csMap[cs].term_value-based
+#     (deferred to Sprint 2f2).
+#   - The two c_30093_srt4_rsp1 hits aren't measurable in the available captures
+#     (snapshots don't land after Heidemarie skill hits).
+# These oracles remain in tree as permanent regression markers.  When Sprint 2f2's
+# term_value implementation lands, remove @pytest.mark.xfail from the closed hit.
+# =============================================================================
+
+from api.game_data.cs_multipliers import CSMultiplierIndex as _SprintTrackBCSIndex
+
+
+def _track_b_state(caster: CharState, target: MonsterState,
+                   dva_stacks: dict | None = None,
+                   with_real_cs_index: bool = False,
+                   rng_seed: int = 0) -> BattleState:
+    """Construct a BattleState for Track B oracle reconstructions."""
+    state = BattleState(turn=1, player_team=[caster], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(rng_seed))
+    if dva_stacks is not None:
+        state.dva_stacks = dva_stacks
+    if with_real_cs_index:
+        state.cs_multiplier_index = _SprintTrackBCSIndex()
+    return state
+
+
+def _track_b_dmg_inst(eff_value: int) -> EffInstance:
+    raw = {"id": "track_b_oracle", "eff": "SKILL_EFF_DMG",
+           "eff_value": str(eff_value), "eff_count_value": "1",
+           "target_unit_type": "TARGET_UNIT_SELECTED", "link_cs_id": "[]"}
+    return EffInstance(id="track_b_oracle", eff_type="SKILL_EFF_DMG", raw=raw)
+
+
+@pytest.mark.xfail(strict=False, reason=(
+    "Sprint 2f1: documented in docs/research/combat_mechanics.md "
+    "(c_30093_srt4_rsp1 crit obs=1398, pred=1275, -8.8%). "
+    "Hypothesis: dva_css [110,111,112] consumed before snapshot. "
+    "Not measurable in available captures; closing depends on Sprint 2f2 "
+    "term_value-based composition."
+))
+def test_track_b_oracle_c_30093_srt4_rsp1_crit_1398():
+    # Stub inputs — derived from doc (no capture-source available for this hit).
+    caster = CharState(id="c", atk=1000, def_=300, hp=1, hp_current=1,
+                       cri=100.0, cri_dmg_rate=237.0)
+    target = MonsterState(id="m", def_=500, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.27)
+    state = _track_b_state(caster, target, dva_stacks={
+        "m": {"cs00_0110": 1, "cs00_0111": 1, "cs00_0112": 1}
+    }, with_real_cs_index=True)
+    result = _formula_base_damage(_track_b_dmg_inst(75), caster, [target], state)
+    assert abs(result.damage - 1398) / 1398 < 0.05
+
+
+@pytest.mark.xfail(strict=False, reason=(
+    "Sprint 2f1: documented in docs/research/combat_mechanics.md "
+    "(c_30093_srt4_rsp1 crit obs=1148, pred=1275, +11.0%). "
+    "Same root cause as the 1398 hit but different stack values consumed. "
+    "Closing depends on Sprint 2f2 term_value-based composition."
+))
+def test_track_b_oracle_c_30093_srt4_rsp1_crit_1148():
+    caster = CharState(id="c", atk=1000, def_=300, hp=1, hp_current=1,
+                       cri=100.0, cri_dmg_rate=237.0)
+    target = MonsterState(id="m", def_=500, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.27)
+    state = _track_b_state(caster, target, dva_stacks={
+        "m": {"cs00_0110": 1, "cs00_0111": 1, "cs00_0112": 1}
+    }, with_real_cs_index=True)
+    result = _formula_base_damage(_track_b_dmg_inst(75), caster, [target], state)
+    assert abs(result.damage - 1148) / 1148 < 0.05
+
+
+@pytest.mark.xfail(strict=False, reason=(
+    "Sprint 2f1: documented in docs/research/combat_mechanics.md "
+    "(c_1052_uni4_lbk crit obs=10743, pred=3029, -71.8%, 4.43x multiplier). "
+    "Sprint 2f1 deep-dive confirmed in capture websocket_debug_20260510_154057: "
+    "target 39 seq=425 sim=1771 obs=4197 (same mechanic, different battle). "
+    "Hypothesis: csMap[cs].term_value-based charging stack — NOT explained by "
+    "cs_multipliers v2 features A/B/C. Closing depends on Sprint 2f2 architecture."
+))
+def test_track_b_oracle_c_1052_uni4_lbk_crit_10743():
+    caster = CharState(id="c", atk=1500, def_=300, hp=1, hp_current=1,
+                       cri=100.0, cri_dmg_rate=195.0)
+    target = MonsterState(id="m", def_=500, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.27)
+    state = _track_b_state(caster, target, dva_stacks={
+        "m": {"cs00_0091": 23}
+    }, with_real_cs_index=True)
+    result = _formula_base_damage(_track_b_dmg_inst(100), caster, [target], state)
+    assert abs(result.damage - 10743) / 10743 < 0.05
