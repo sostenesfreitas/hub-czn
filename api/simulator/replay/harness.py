@@ -165,7 +165,15 @@ class ReplayHarness:
     @staticmethod
     def _resolve_caster(caster_id: "str | None", state) -> tuple:
         """Find the unit (char or monster) whose id matches caster_id.
-        Returns (unit, inferred) where inferred=True if fallback to player_team[0] was used."""
+
+        Resolution order:
+        1. Direct match: caster_id == unit.id in player_team or enemies.
+        2. Indirect via card_owner_lookup: caster_id is a card-instance-id,
+           translate to owning char_id, then match.
+        3. Fallback to player_team[0] with inferred=True.
+
+        Returns (unit, inferred) where inferred=True if the fallback was used.
+        """
         if caster_id is not None:
             for unit in state.player_team:
                 if str(unit.id) == str(caster_id):
@@ -173,6 +181,14 @@ class ReplayHarness:
             for unit in state.enemies:
                 if str(unit.id) == str(caster_id):
                     return unit, False
+            owner_id = state.card_owner_lookup.get(str(caster_id))
+            if owner_id is not None:
+                for unit in state.player_team:
+                    if str(unit.id) == owner_id:
+                        return unit, False
+                for unit in state.enemies:
+                    if str(unit.id) == owner_id:
+                        return unit, False
         # fallback
         if state.player_team:
             return state.player_team[0], True

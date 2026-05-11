@@ -317,3 +317,37 @@ def test_extract_obs_returns_damage_for_real_skill_hit():
     }
     obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, "38")
     assert obs == 543
+
+
+def test_harness_resolves_caster_via_card_owner_lookup():
+    """When SkillEffFire.caster_id is a card-instance-id (not a unit id),
+    the harness translates via state.card_owner_lookup."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    bw["cardMap"] = {
+        "54": {"id": 54, "res_id": "card_x", "char_id": 2, "cost": 1,
+               "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["card_x_01"],
+               "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+    }
+    fire = SkillEffFire(skill_eff_id="card_x_01", eff_type="SKILL_EFF_DMG", caster_id="54")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    call_args = runtime.apply.call_args
+    passed_caster = call_args.args[1] if len(call_args.args) > 1 else call_args.kwargs.get("caster")
+    assert str(passed_caster.id) == "2"
+    assert reports[0].inferred_caster is False
