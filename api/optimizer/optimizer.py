@@ -19,6 +19,8 @@ from game_data import (
     SETS, SLOT_ORDER, ALL_STAT_NAMES
 )
 from game_data.scaling import get_char_base_stats
+from game_data.char_eff import best_damage_eff_for
+from optimizer.expected_damage import expected_damage
 
 
 class GearOptimizer:
@@ -418,7 +420,14 @@ class GearOptimizer:
         total_cd = base_cd + crit_dmg
 
         ehp = total_hp * (total_def / 300 + 1)
-        avg_dmg = total_atk * (total_cr / 100) * (total_cd / 100)
+        # Sprint 2e2: expected damage from Track B's validated formula
+        eff_pct = best_damage_eff_for(char_name) if char_name else 100.0
+        avg_dmg = expected_damage(
+            atk=total_atk,
+            cri=total_cr,
+            cri_dmg_rate=total_cd,
+            eff_pct=eff_pct,
+        )
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)
 
