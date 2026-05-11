@@ -37,1057 +37,1336 @@
     "character_name": "Amir",
     "starting_cards": [
       {
-        "card_id": "c_1017_srt1"
+        "card_id": "c_1017_srt1",
+        "description": "100% Defense-based Damage."
       },
       {
-        "card_id": "c_1017_srt2"
+        "card_id": "c_1017_srt2",
+        "description": "100% Defense-based Damage."
       },
       {
-        "card_id": "c_1017_srt3"
+        "card_id": "c_1017_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1017_srt4"
+        "card_id": "c_1017_srt4",
+        "description": "3 Damage Reduction. 2 Metalize."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1017_uni1"
+        "card_id": "c_1017_uni1",
+        "description": "90% Defense-based Damage x 2. If in Metallization state, -1 Metallization, 2 Vulnerable."
       },
       {
-        "card_id": "c_1017_uni2"
+        "card_id": "c_1017_uni2",
+        "description": "2 Metallization. 2 Resolve for 1 turn."
       },
       {
-        "card_id": "c_1017_uni3"
+        "card_id": "c_1017_uni3",
+        "description": "200% Defense-based Damage to all enemies. For 1 turn, all enemies are targeted by Metallization effect, +20% Damage."
       },
       {
-        "card_id": "c_1017_uni4"
+        "card_id": "c_1017_uni4",
+        "description": "[ Exhaust ] [ Finale ] Decreases Damage Taken by 20% for 1 turn. Decrease up to 4 Metallization. Additionally decrease Damage Taken by 20% for each."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1017_eps"
+      "card_id": "c_1017_eps",
+      "description": "Gain Shield 120% per Metalize. Remove Metalize. At the start of the next turn, gain Metalize 3."
     }
   },
   "1040": {
     "character_name": "Beryl",
     "starting_cards": [
       {
-        "card_id": "c_1040_srt1"
+        "card_id": "c_1040_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1040_srt2"
+        "card_id": "c_1040_srt2",
+        "description": "220% Damage."
       },
       {
-        "card_id": "c_1040_srt3"
+        "card_id": "c_1040_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1040_srt4"
+        "card_id": "c_1040_srt4",
+        "description": "[ Retain ] 140% Damage. Retain: Add 1 Hit(s) for 1 turn."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1040_uni1"
+        "card_id": "c_1040_uni1",
+        "description": "[ Retain ] 240% Damage. Retain: Damage +120%."
       },
       {
-        "card_id": "c_1040_uni2"
+        "card_id": "c_1040_uni2",
+        "description": "[ Exhaust ] Draw 3."
       },
       {
-        "card_id": "c_1040_uni3"
+        "card_id": "c_1040_uni3",
+        "description": "100% Shield. +80% Damage of next Attack Card used."
       },
       {
-        "card_id": "c_1040_uni4"
+        "card_id": "c_1040_uni4",
+        "description": "Create 1 Opening Found or Charged Shot card, apply Exhaust to that card, decrease Cost by 1 until used."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1040_eps"
+      "card_id": "c_1040_eps",
+      "description": "350% Damage to all enemies"
     }
   },
   "1049": {
     "character_name": "Cassius",
     "starting_cards": [
       {
-        "card_id": "c_1049_srt1"
+        "card_id": "c_1049_srt1",
+        "description": "100% Damage"
       },
       {
-        "card_id": "c_1049_srt2"
+        "card_id": "c_1049_srt2",
+        "description": "220% Damage."
       },
       {
-        "card_id": "c_1049_srt3"
+        "card_id": "c_1049_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1049_srt4"
+        "card_id": "c_1049_srt4",
+        "description": "Start a random 1 out of 4 Quests."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1049_uni1"
+        "card_id": "c_1049_uni1",
+        "description": "160% Damage. Draw 1."
       },
       {
-        "card_id": "c_1049_uni2"
+        "card_id": "c_1049_uni2",
+        "description": "[ Exhaust ] Discard all cards in hand. Draw for each."
       },
       {
-        "card_id": "c_1049_uni3"
+        "card_id": "c_1049_uni3",
+        "description": "240% Damage. Reduce 1 Morale for 1 turn. Decrease cost by the number of completed Quests."
       },
       {
-        "card_id": "c_1049_uni4"
+        "card_id": "c_1049_uni4",
+        "description": "Choose 1 card(s) from Draw Pile to Draw."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1049_eps"
+      "card_id": "c_1049_eps",
+      "description": "Create 2 Quest Card(s). Decrease Morale of all enemies by 3 for 1 turn."
     }
   },
   "1060": {
     "character_name": "Chizuru",
     "starting_cards": [
       {
-        "card_id": "c_1060_srt1"
+        "card_id": "c_1060_srt1",
+        "description": "Deal 100% damage"
       },
       {
-        "card_id": "c_1060_srt2"
+        "card_id": "c_1060_srt2",
+        "description": "Deal 100% damage"
       },
       {
-        "card_id": "c_1060_srt3"
+        "card_id": "c_1060_srt3",
+        "description": "100% Shield"
       },
       {
-        "card_id": "c_1060_srt4"
+        "card_id": "c_1060_srt4",
+        "description": "[ Initiation ] 100% Damage, 1 Cursed Shackles. Cursed Shackles: Add 2 Hits."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1060_uni1"
+        "card_id": "c_1060_uni1",
+        "description": "3 Will-O'-Wisp for each Hit of the next Attack Card of this unit used."
       },
       {
-        "card_id": "c_1060_uni2"
+        "card_id": "c_1060_uni2",
+        "description": "[ Initiation ] [ Unique ] At the start of the turn, gain Inhibit. Decrease Cost by 1 until 2 random cards of another Combatant is used"
       },
       {
-        "card_id": "c_1060_uni3"
+        "card_id": "c_1060_uni3",
+        "description": "[ Haste ] 60% Damage x3. +80% Damage Amount to the next Bind Card."
       },
       {
-        "card_id": "c_1060_uni4"
+        "card_id": "c_1060_uni4",
+        "description": "[ Bind 1 ] [ Retain ] 80% Damage. +80% Damage Amount for each Bind stack."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1060_eps"
+      "card_id": "c_1060_eps",
+      "description": "350% Damage. +50% Damage Amount for each Shadow of the Moon created (max 10 )"
     }
   },
   "1061": {
     "character_name": "Diana",
     "starting_cards": [
       {
-        "card_id": "c_1061_srt1"
+        "card_id": "c_1061_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1061_srt2"
+        "card_id": "c_1061_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1061_srt3"
+        "card_id": "c_1061_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1061_srt4"
+        "card_id": "c_1061_srt4",
+        "description": "[ Quietus ] 100% Damage. Create 2 Heart Breaker."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1061_uni1"
+        "card_id": "c_1061_uni1",
+        "description": "Create 2 Heart Shaker."
       },
       {
-        "card_id": "c_1061_uni2"
+        "card_id": "c_1061_uni2",
+        "description": "[ Bullet ] [ Quietus ] 120% Damage. 2 Resonance. If this card is Discarded, activate Resonance inflicted on the target by this unit 3 more times."
       },
       {
-        "card_id": "c_1061_uni3"
+        "card_id": "c_1061_uni3",
+        "description": "Draw 1 Quietus card(s). Discard 2."
       },
       {
-        "card_id": "c_1061_uni4"
+        "card_id": "c_1061_uni4",
+        "description": "Draw 2 Exhaust Bullet card(s), 300% Damage, Increase Damage Amount by 30% for each different Bullet card in hand."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1061_eps"
+      "card_id": "c_1061_eps",
+      "description": "Create 1 Cupid Shot, Create 2 Heart Bullet."
     }
   },
   "1062": {
     "character_name": "Haru",
     "starting_cards": [
       {
-        "card_id": "c_1062_srt1"
+        "card_id": "c_1062_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1062_srt2"
+        "card_id": "c_1062_srt2",
+        "description": "220% Damage."
       },
       {
-        "card_id": "c_1062_srt3"
+        "card_id": "c_1062_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1062_srt4"
+        "card_id": "c_1062_srt4",
+        "description": "[ Pulverize ] 300% Damage. +100% Damage for each time this card has been used (Max 5 )."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1062_uni1"
+        "card_id": "c_1062_uni1",
+        "description": "From Draw Pile or Graveyard, move Anchor Shot to hand."
       },
       {
-        "card_id": "c_1062_uni2"
+        "card_id": "c_1062_uni2",
+        "description": "180% Damage to all enemies. If single target, +80% Damage."
       },
       {
-        "card_id": "c_1062_uni3"
+        "card_id": "c_1062_uni3",
+        "description": "[ Retain ] Increase Damage Amount of Attacks Cards of this unit by 30% for 1 turn."
       },
       {
-        "card_id": "c_1062_uni4"
+        "card_id": "c_1062_uni4",
+        "description": "[ Retain ] Increase Damage Amount by 80% of Anchor Shot in hand for 1 turn."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1062_eps"
+      "card_id": "c_1062_eps",
+      "description": "350% Damage. +50% Damage amount for each Buff owned."
     }
   },
   "30093": {
     "character_name": "Heidemarie",
     "starting_cards": [
       {
-        "card_id": "c_30093_srt1"
+        "card_id": "c_30093_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_30093_srt2"
+        "card_id": "c_30093_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_30093_srt3"
+        "card_id": "c_30093_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_30093_srt4"
+        "card_id": "c_30093_srt4",
+        "description": "[ Linked ] 80% Damage x 2. Attunement: Create 1 Effulgent Blade."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_30093_uni1"
+        "card_id": "c_30093_uni1",
+        "description": "[ Quietus ] Draw 3. Apply Linked those cards for this turn."
       },
       {
-        "card_id": "c_30093_uni2"
+        "card_id": "c_30093_uni2",
+        "description": "[ Linked ] 120% Damage. + 120% Damage Amount for each Linked card in hand."
       },
       {
-        "card_id": "c_30093_uni3"
+        "card_id": "c_30093_uni3",
+        "description": "[ Quietus ] Create 2 Effulgent Blade. + 50% Damage Amount to Effulgent Blade for 1 turn."
       },
       {
-        "card_id": "c_30093_uni4"
+        "card_id": "c_30093_uni4",
+        "description": "[ Unique ] [ Linked ] [ Retrieve 3 ] When moved to Graveyard, 1 Effulgent Light."
       }
     ],
     "ego_skill": {
-      "card_id": "c_30093_eps"
+      "card_id": "c_30093_eps",
+      "description": "400% Damage. +80% Damage Amount for each card Discarded this battle (max 20"
     }
   },
   "1043": {
     "character_name": "Hugo",
     "starting_cards": [
       {
-        "card_id": "c_1043_srt1"
+        "card_id": "c_1043_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1043_srt2"
+        "card_id": "c_1043_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1043_srt3"
+        "card_id": "c_1043_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1043_srt4"
+        "card_id": "c_1043_srt4",
+        "description": "[ Initiation ] When an Upgrade or Skill Card of another Combatant is used, 1 Commence the Hunt."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1043_uni1"
+        "card_id": "c_1043_uni1",
+        "description": "[ Haste ] 60% x 3 Damage to random enemies. Commence the Hunt for each target hit."
       },
       {
-        "card_id": "c_1043_uni2"
+        "card_id": "c_1043_uni2",
+        "description": "[ Haste ] 80% x 2 Damage. If in Commence the Hunt, Draw 1 Attack Card(s)."
       },
       {
-        "card_id": "c_1043_uni3"
+        "card_id": "c_1043_uni3",
+        "description": "100% Shield. 2 Commence the Hunt."
       },
       {
-        "card_id": "c_1043_uni4"
+        "card_id": "c_1043_uni4",
+        "description": "[ Unique ] Increase Extra Attack Damage Amount of Commence the Hunt by 40%."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1043_eps"
+      "card_id": "c_1043_eps",
+      "description": "250% Damage to all enemies. Increase Damage of Commence the Hunt by +30%."
     }
   },
   "1064": {
     "character_name": "Kayron",
     "starting_cards": [
       {
-        "card_id": "c_1064_srt1"
+        "card_id": "c_1064_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1064_srt2"
+        "card_id": "c_1064_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1064_srt3"
+        "card_id": "c_1064_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1064_srt4"
+        "card_id": "c_1064_srt4",
+        "description": "320% Damage. Create 2 Futility Card(s)."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1064_uni1"
+        "card_id": "c_1064_uni1",
+        "description": "400% Damage to all enemies. When a card is Exhausted, decrease Cost of this card by 1 for 1 turn."
       },
       {
-        "card_id": "c_1064_uni2"
+        "card_id": "c_1064_uni2",
+        "description": "240% Damage. +40% Damage Amount for each Exhausted Futility."
       },
       {
-        "card_id": "c_1064_uni3"
+        "card_id": "c_1064_uni3",
+        "description": "[ Unique ] When Futility is created, change those cards into 1 -Cost Attack Cards with 100% Damage and Heal effects."
       },
       {
-        "card_id": "c_1064_uni4"
+        "card_id": "c_1064_uni4",
+        "description": "240% Damage. Create 3 Futility Cards. +40% Damage Amount for each."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1064_eps"
+      "card_id": "c_1064_eps",
+      "description": "200% Damage to all enemies. Exhaust all Futility in hand. +80% Damage for each."
     }
   },
   "1008": {
     "character_name": "Khalipe",
     "starting_cards": [
       {
-        "card_id": "c_1008_srt1"
+        "card_id": "c_1008_srt1",
+        "description": "100% Defense-based Damage."
       },
       {
-        "card_id": "c_1008_srt2"
+        "card_id": "c_1008_srt2",
+        "description": "220% Defense-based Damage."
       },
       {
-        "card_id": "c_1008_srt3"
+        "card_id": "c_1008_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1008_srt4"
+        "card_id": "c_1008_srt4",
+        "description": "[ Celestial ] [ Retain ] 120% Defense-based Damage to all enemies. 100% Shield. 1 Silver Veil."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1008_uni1"
+        "card_id": "c_1008_uni1",
+        "description": "150% Defense-Based Damage to all enemies. If Vulture Ejection is in hand, increase Cost by 1, +100% Damage Amount."
       },
       {
-        "card_id": "c_1008_uni2"
+        "card_id": "c_1008_uni2",
+        "description": "250% Shield. 1 Tenacity Damage to all enemies."
       },
       {
-        "card_id": "c_1008_uni3"
+        "card_id": "c_1008_uni3",
+        "description": "120% Shield. Draw 1 highest-cost card(s)."
       },
       {
-        "card_id": "c_1008_uni4"
+        "card_id": "c_1008_uni4",
+        "description": "[ Finale ] 100% Shield equal to the number of X. For 1 turn, Retain all cards in hand."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1008_eps"
+      "card_id": "c_1008_eps",
+      "description": "300% Defense-based Damage to all enemies. Create 1 Vulture Ejection."
     }
   },
   "1021": {
     "character_name": "Lucas",
     "starting_cards": [
       {
-        "card_id": "c_1021_srt1"
+        "card_id": "c_1021_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1021_srt2"
+        "card_id": "c_1021_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1021_srt3"
+        "card_id": "c_1021_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1021_srt4"
+        "card_id": "c_1021_srt4",
+        "description": "[ Lead ] At the start of the turn, create 1 Launcher Bullet."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1021_uni1"
+        "card_id": "c_1021_uni1",
+        "description": "100% Damage. For 1 turn, +40% Bullet card Damage."
       },
       {
-        "card_id": "c_1021_uni2"
+        "card_id": "c_1021_uni2",
+        "description": "180% Damage to all enemies. Draw 1. Discard 1."
       },
       {
-        "card_id": "c_1021_uni3"
+        "card_id": "c_1021_uni3",
+        "description": "120% Damage to all enemies. 2 Weaken. If the target has Shield, +50% Damage."
       },
       {
-        "card_id": "c_1021_uni4"
+        "card_id": "c_1021_uni4",
+        "description": "When Bullet cards are Exhausted, 40 Fixed Damage."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1021_eps"
+      "card_id": "c_1021_eps",
+      "description": "Draw 2. 250% Damage to all enemies."
     }
   },
   "1004": {
     "character_name": "Luke",
     "starting_cards": [
       {
-        "card_id": "c_1004_srt1"
+        "card_id": "c_1004_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1004_srt2"
+        "card_id": "c_1004_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1004_srt3"
+        "card_id": "c_1004_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1004_srt4"
+        "card_id": "c_1004_srt4",
+        "description": "50% Damage x 2. For each Critical Hit create a Handgun Bullet. +50% Critical Chance."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1004_uni1"
+        "card_id": "c_1004_uni1",
+        "description": "Create 2 Handgun Bullet Card(s)."
       },
       {
-        "card_id": "c_1004_uni2"
+        "card_id": "c_1004_uni2",
+        "description": "[ Lead ] 100% Shield. Next Bullet Card used +120% Damage Amount."
       },
       {
-        "card_id": "c_1004_uni3"
+        "card_id": "c_1004_uni3",
+        "description": "50% Damage. For each Bullet Card used this turn, 1 extra Hit."
       },
       {
-        "card_id": "c_1004_uni4"
+        "card_id": "c_1004_uni4",
+        "description": "[ Unique ] [ Bullet ] 300% Damage. After using 5 Handgun Bullet card time(s), remove Unusable."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1004_eps"
+      "card_id": "c_1004_eps",
+      "description": "+300% Damage. For each card in hand +15% Damage Amount."
     }
   },
   "1010": {
     "character_name": "Magna",
     "starting_cards": [
       {
-        "card_id": "c_1010_srt1"
+        "card_id": "c_1010_srt1",
+        "description": "100% Defense-based Damage."
       },
       {
-        "card_id": "c_1010_srt2"
+        "card_id": "c_1010_srt2",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1010_srt3"
+        "card_id": "c_1010_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1010_srt4"
+        "card_id": "c_1010_srt4",
+        "description": "[ Lead ] 4 Crystallization. At the start of the turn, 1 Counterattack"
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1010_uni1"
+        "card_id": "c_1010_uni1",
+        "description": "300% Defense-Based Damage. Gain Fixed Shield equal to 50% Damage dealt (cannot exceed 20% of Max HP)."
       },
       {
-        "card_id": "c_1010_uni2"
+        "card_id": "c_1010_uni2",
+        "description": "200% Shield. 2 Counterattack. For 2 turn, Counterattack applies to all enemies."
       },
       {
-        "card_id": "c_1010_uni3"
+        "card_id": "c_1010_uni3",
+        "description": "140% Shield. 3 Vulnerable to all enemies."
       },
       {
-        "card_id": "c_1010_uni4"
+        "card_id": "c_1010_uni4",
+        "description": "[ Lead ] 2 Crystallization. When gaining Shield by an ability, 1 Counterattack."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1010_eps"
+      "card_id": "c_1010_eps",
+      "description": "300% Defense-based Damage. Increases Damage Amount by 20% for each Counterattack on this unit"
     }
   },
   "1028": {
     "character_name": "Maribell",
     "starting_cards": [
       {
-        "card_id": "c_1028_srt1"
+        "card_id": "c_1028_srt1",
+        "description": "100% Defense-based Damage."
       },
       {
-        "card_id": "c_1028_srt2"
+        "card_id": "c_1028_srt2",
+        "description": "100% Shield"
       },
       {
-        "card_id": "c_1028_srt3"
+        "card_id": "c_1028_srt3",
+        "description": "220% Shield."
       },
       {
-        "card_id": "c_1028_srt4"
+        "card_id": "c_1028_srt4",
+        "description": "[ Pulverize ] 140% Defense-based Damage. 20% DMG-Based Shield. 1 Counterattack."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1028_uni1"
+        "card_id": "c_1028_uni1",
+        "description": "[ Pulverize ] 120% Defense-based Damage. Fixed Shield equal to Damage dealt (Does not exceed 20% of Max HP)."
       },
       {
-        "card_id": "c_1028_uni2"
+        "card_id": "c_1028_uni2",
+        "description": "2 Counterattack. At the start of the turn, 1 Counterattack. 2 Crystallization. ※The “2 Crystallization” is only applied when using a card. It is not part of any start-of-turn effect."
       },
       {
-        "card_id": "c_1028_uni3"
+        "card_id": "c_1028_uni3",
+        "description": "100% Shield. 1 Counterattack. 1 Weaken to all enemies."
       },
       {
-        "card_id": "c_1028_uni4"
+        "card_id": "c_1028_uni4",
+        "description": "[ Pulverize ] Fixed Damage equal to Shield owned."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1028_eps"
+      "card_id": "c_1028_eps",
+      "description": "350% Shield."
     }
   },
   "1027": {
     "character_name": "Mei Lin",
     "starting_cards": [
       {
-        "card_id": "c_1027_srt1"
+        "card_id": "c_1027_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1027_srt2"
+        "card_id": "c_1027_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1027_srt3"
+        "card_id": "c_1027_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1027_srt4"
+        "card_id": "c_1027_srt4",
+        "description": "[ Unique ] [ Initiation ] Increases Damage Amount of Attack Cards of this unit by 20%. When an Attack Card is used, 1 Passion Weakness to the target."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1027_uni1"
+        "card_id": "c_1027_uni1",
+        "description": "100% Damage. 2 Ember. Combo: Add 1 hit(s)."
       },
       {
-        "card_id": "c_1027_uni2"
+        "card_id": "c_1027_uni2",
+        "description": "Draw 2 Basic Card(s) of this unit. Decrease Cost of those cards by 1 for 1 turn."
       },
       {
-        "card_id": "c_1027_uni3"
+        "card_id": "c_1027_uni3",
+        "description": "[ Retain ] For 1 turn, when using an own card +20% own Damage Amount."
       },
       {
-        "card_id": "c_1027_uni4"
+        "card_id": "c_1027_uni4",
+        "description": "[ Weakness Attack ] 300% Damage. Destroy: Retain Embers."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1027_eps"
+      "card_id": "c_1027_eps",
+      "description": "Next 4 own Basic Attack Card(s), 1 extra Hit(s)."
     }
   },
   "1039": {
     "character_name": "Mika",
     "starting_cards": [
       {
-        "card_id": "c_1039_srt1"
+        "card_id": "c_1039_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1039_srt2"
+        "card_id": "c_1039_srt2",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1039_srt3"
+        "card_id": "c_1039_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1039_srt4"
+        "card_id": "c_1039_srt4",
+        "description": "Heal 100%. Gain 1 AP."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1039_uni1"
+        "card_id": "c_1039_uni1",
+        "description": "[ Retain ] Heal 100%. Increase Heal Amount by 30% for each AP."
       },
       {
-        "card_id": "c_1039_uni2"
+        "card_id": "c_1039_uni2",
+        "description": "1 Wave. For 1 turn, +50% Healing."
       },
       {
-        "card_id": "c_1039_uni3"
+        "card_id": "c_1039_uni3",
+        "description": "200% Damage to all enemies. Heal 50% for each target hit."
       },
       {
-        "card_id": "c_1039_uni4"
+        "card_id": "c_1039_uni4",
+        "description": "[ Unique ] 1 Wave. At the start of the turn, 1 Wave."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1039_eps"
+      "card_id": "c_1039_eps",
+      "description": "Create 2 Source of Water card(s), grant Exhaust to it."
     }
   },
   "1052": {
     "character_name": "Narja",
     "starting_cards": [
       {
-        "card_id": "c_1052_srt1"
+        "card_id": "c_1052_srt1",
+        "description": "100% Defense-Based Damage."
       },
       {
-        "card_id": "c_1052_srt2"
+        "card_id": "c_1052_srt2",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1052_srt3"
+        "card_id": "c_1052_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1052_srt4"
+        "card_id": "c_1052_srt4",
+        "description": "30% Defense-Based Damage × 3. Attunement: 4 Voracity."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1052_uni1"
+        "card_id": "c_1052_uni1",
+        "description": "The next 2 times Voracity is activated, decrease Cost of 1 random card in hand by 1 for 1 turn."
       },
       {
-        "card_id": "c_1052_uni2"
+        "card_id": "c_1052_uni2",
+        "description": "If Voracity is fewer than 6 stacks, gain 6 Voracity. If 6 or more stacks, gain 2 Predation."
       },
       {
-        "card_id": "c_1052_uni3"
+        "card_id": "c_1052_uni3",
+        "description": "100% Defense-Based Damage to all enemies. Increase Tenacity Damage taken of the target by 100% until their next Ravage."
       },
       {
-        "card_id": "c_1052_uni4"
+        "card_id": "c_1052_uni4",
+        "description": "[ Retain ] [ Unique ] If Voracity is decreased, decrease Cost by 1 and add +30% Heal Amount (max 10) until used. 160% Defense-Based Damage to all enemies. Heal 100%. 4 Predation."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1052_eps"
+      "card_id": "c_1052_eps",
+      "description": "10 Voracity. 250% Defense-Based Damage. If Mealtime is in Graveyard, 5 Predation."
     }
   },
   "1003": {
     "character_name": "Nia",
     "starting_cards": [
       {
-        "card_id": "c_1003_srt1"
+        "card_id": "c_1003_srt1",
+        "description": "100% Damage"
       },
       {
-        "card_id": "c_1003_srt2"
+        "card_id": "c_1003_srt2",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1003_srt3"
+        "card_id": "c_1003_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1003_srt4"
+        "card_id": "c_1003_srt4",
+        "description": "2 Decibel. Activate the top 1 card(s) of the Draw Pile."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1003_uni1"
+        "card_id": "c_1003_uni1",
+        "description": "Discard 1 card(s) with highest Cost. The Combatant who owns that card performs 150% Extra Attack to a random enemy."
       },
       {
-        "card_id": "c_1003_uni2"
+        "card_id": "c_1003_uni2",
+        "description": "[ Retain ] Heal 120%. When a card is discarded, Heal 100%, 1 Decibel and 2 Elasticity for 1 turn."
       },
       {
-        "card_id": "c_1003_uni3"
+        "card_id": "c_1003_uni3",
+        "description": "Draw 1. Discard 1. Move discarded card that is effected to top of the Draw Pile."
       },
       {
-        "card_id": "c_1003_uni4"
+        "card_id": "c_1003_uni4",
+        "description": "Check 3 random cards from the Draw Pile. Choose one to Draw, Discard the rest."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1003_eps"
+      "card_id": "c_1003_eps",
+      "description": "200% Damage to all enemies. 3 Decibel. Discard all cards from the Draw Pile."
     }
   },
   "30047": {
     "character_name": "Nine",
     "starting_cards": [
       {
-        "card_id": "c_30047_srt1"
+        "card_id": "c_30047_srt1",
+        "description": "100% Defense-Based Damage"
       },
       {
-        "card_id": "c_30047_srt2"
+        "card_id": "c_30047_srt2",
+        "description": "100% Defense-Based Damage"
       },
       {
-        "card_id": "c_30047_srt3"
+        "card_id": "c_30047_srt3",
+        "description": "100% Shield"
       },
       {
-        "card_id": "c_30047_srt4"
+        "card_id": "c_30047_srt4",
+        "description": "[ Unique ] [ Initiation ] [ Exhaust ] [ Ephemeral ] 350% Defense-Based Damage. Incinerate: Create 1 Hew Lv. 1"
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_30047_uni1"
+        "card_id": "c_30047_uni1",
+        "description": "140% Defense-Based Damage. 20% DMG-Based Shield. Increase Damage Amount of Exhaust Pile cards by 20% for 1 turn."
       },
       {
-        "card_id": "c_30047_uni2"
+        "card_id": "c_30047_uni2",
+        "description": "140% Defense-Based Damage. Increase Damage Amount by 20% for each Cost of the highest-Cost Exhaust card, then Exhaust that card."
       },
       {
-        "card_id": "c_30047_uni3"
+        "card_id": "c_30047_uni3",
+        "description": "[ Unique ] When Shield is gained through an ability, gain 1 Honed Edge."
       },
       {
-        "card_id": "c_30047_uni4"
+        "card_id": "c_30047_uni4",
+        "description": "Activate 1 highest-Cost Attack Card(s) of this unit in hand, then Exhaust those cards."
       }
     ],
     "ego_skill": {
-      "card_id": "c_30047_eps"
+      "card_id": "c_30047_eps",
+      "description": "250% Defense-Based Damage to all enemies. +50% Damage Amount for each point of the combined Cost of the 2 highest-Cost cards, then Exhaust those cards"
     }
   },
   "1024": {
     "character_name": "Orlea",
     "starting_cards": [
       {
-        "card_id": "c_1024_srt1"
+        "card_id": "c_1024_srt1",
+        "description": "100% Damage"
       },
       {
-        "card_id": "c_1024_srt2"
+        "card_id": "c_1024_srt2",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1024_srt3"
+        "card_id": "c_1024_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1024_srt4"
+        "card_id": "c_1024_srt4",
+        "description": "[ Initiation ] Create 2 Creation★"
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1024_uni1"
+        "card_id": "c_1024_uni1",
+        "description": "Heal 100%. Select 1 of own Cards in hand and trigger Retain effect 2 time(s)."
       },
       {
-        "card_id": "c_1024_uni2"
+        "card_id": "c_1024_uni2",
+        "description": "40% Fixed Damage equal to the number of cards in hand. Heal 20%."
       },
       {
-        "card_id": "c_1024_uni3"
+        "card_id": "c_1024_uni3",
+        "description": "[ Retain ] Create 1 Creation★ card(s). Retain: Change this card to Creation★★★."
       },
       {
-        "card_id": "c_1024_uni4"
+        "card_id": "c_1024_uni4",
+        "description": "Heal 200%. Activate the Retain effect of all cards in hand."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1024_eps"
+      "card_id": "c_1024_eps",
+      "description": "Create 1 of each Creation★★."
     }
   },
   "1050": {
     "character_name": "Owen",
     "starting_cards": [
       {
-        "card_id": "c_1050_srt1"
+        "card_id": "c_1050_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1050_srt2"
+        "card_id": "c_1050_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1050_srt3"
+        "card_id": "c_1050_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1050_srt4"
+        "card_id": "c_1050_srt4",
+        "description": "Add 1 Hit(s) to the next Attack Card of this unit that is used."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1050_uni1"
+        "card_id": "c_1050_uni1",
+        "description": "280% Damage to all enemies"
       },
       {
-        "card_id": "c_1050_uni2"
+        "card_id": "c_1050_uni2",
+        "description": "140% Damage. 2 Vulnerable."
       },
       {
-        "card_id": "c_1050_uni3"
+        "card_id": "c_1050_uni3",
+        "description": "150% Shield. Move Wind Charge from Discard Pile to hand"
       },
       {
-        "card_id": "c_1050_uni4"
+        "card_id": "c_1050_uni4",
+        "description": "300% Damage. 130% Shield."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1050_eps"
+      "card_id": "c_1050_eps",
+      "description": "250% Damage. 250% Shield."
     }
   },
   "1056": {
     "character_name": "Rei",
     "starting_cards": [
       {
-        "card_id": "c_1056_srt1"
+        "card_id": "c_1056_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1056_srt2"
+        "card_id": "c_1056_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1056_srt3"
+        "card_id": "c_1056_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1056_srt4"
+        "card_id": "c_1056_srt4",
+        "description": "[ Lead ] 100% Damage. Increase Damage Amount of Basic Attack Cards by 100% for 1 turn."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1056_uni1"
+        "card_id": "c_1056_uni1",
+        "description": "[ Unique ] +40% Damage Amount of cards with Cost 1. At the end of the turn, Heal 60%."
       },
       {
-        "card_id": "c_1056_uni2"
+        "card_id": "c_1056_uni2",
+        "description": "[ Exhaust ] Choose 1 card(s) in hand to Exhaust. Heal 200%. Draw 1."
       },
       {
-        "card_id": "c_1056_uni3"
+        "card_id": "c_1056_uni3",
+        "description": "Choose 1 Attack Card(s) in hand, +100% Damage Amount for 1 turn."
       },
       {
-        "card_id": "c_1056_uni4"
+        "card_id": "c_1056_uni4",
+        "description": "250% Damage. For 1 turn 2 Morale."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1056_eps"
+      "card_id": "c_1056_eps",
+      "description": "300% Damage. 15% DMG-Based Recovery. Gain 1 AP."
     }
   },
   "1041": {
     "character_name": "Renoa",
     "starting_cards": [
       {
-        "card_id": "c_1041_srt1"
+        "card_id": "c_1041_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1041_srt2"
+        "card_id": "c_1041_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1041_srt3"
+        "card_id": "c_1041_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1041_srt4"
+        "card_id": "c_1041_srt4",
+        "description": "140% Damage. Create 1 Dirge Bullet card(s)."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1041_uni1"
+        "card_id": "c_1041_uni1",
+        "description": "180% Damage. If Dirge Bullet is in hand, discard 1 and +100% Damage Amount."
       },
       {
-        "card_id": "c_1041_uni2"
+        "card_id": "c_1041_uni2",
+        "description": "50% x 3 Damage. +20% Damage Amount for each Dirge Bullet in hand."
       },
       {
-        "card_id": "c_1041_uni3"
+        "card_id": "c_1041_uni3",
+        "description": "Discard up to 2 card(s) from hand. Create Dirge Bullet for each."
       },
       {
-        "card_id": "c_1041_uni4"
+        "card_id": "c_1041_uni4",
+        "description": "[ Retain ] 150% Damage (+0%). Discard all Dirge Bullets and +50% Damage Amount for each."
       },
       {
         "card_id": "c_1041_uni5"
       }
     ],
     "ego_skill": {
-      "card_id": "c_1041_eps"
+      "card_id": "c_1041_eps",
+      "description": "Move all Dirge Bullet from Draw Pile and Graveyard to hand. 300% damage."
     }
   },
   "1018": {
     "character_name": "Rin",
     "starting_cards": [
       {
-        "card_id": "c_1018_srt1"
+        "card_id": "c_1018_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1018_srt2"
+        "card_id": "c_1018_srt2",
+        "description": "220% Damage."
       },
       {
-        "card_id": "c_1018_srt3"
+        "card_id": "c_1018_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1018_srt4"
+        "card_id": "c_1018_srt4",
+        "description": "[ Haste ] 120% Damage. Obtain Dark Mist Stance. Dark Mist Stance: Increase Damage Amount by 100%."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1018_uni1"
+        "card_id": "c_1018_uni1",
+        "description": "Draw 1 card(s). Gain Dark Mist Stance."
       },
       {
-        "card_id": "c_1018_uni2"
+        "card_id": "c_1018_uni2",
+        "description": "[ Haste ] 200% Damage. Dark Mist Stance: Add 1 Hit(s)."
       },
       {
-        "card_id": "c_1018_uni3"
+        "card_id": "c_1018_uni3",
+        "description": "[ Lead ] Retain Dark Mist Stance for 1 turn. Dark Mist Stance: +40% Damage Amount to Attack Cards of this unit for 1 turn."
       },
       {
-        "card_id": "c_1018_uni4"
+        "card_id": "c_1018_uni4",
+        "description": "120% Damage. Dark Mist Stance: +1 Hit(s) per Skill card in hand."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1018_eps"
+      "card_id": "c_1018_eps",
+      "description": "400% Damage. 6 Vulnerable."
     }
   },
   "30097": {
     "character_name": "Rita",
     "starting_cards": [
       {
-        "card_id": "c_30097_srt1"
+        "card_id": "c_30097_srt1",
+        "description": "350% Damage."
       },
       {
-        "card_id": "c_30097_srt2"
+        "card_id": "c_30097_srt2",
+        "description": "350% Damage."
       },
       {
-        "card_id": "c_30097_srt3"
+        "card_id": "c_30097_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_30097_srt4"
+        "card_id": "c_30097_srt4",
+        "description": "[ Unique ] [ Initiation ] When a card is activated, 1 Chronicle for each Cost of that card."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_30097_uni1"
+        "card_id": "c_30097_uni1",
+        "description": "300% Damage. Increase Damage Amount by 20% for each combined Cost of cards in hand (max 200% )."
       },
       {
-        "card_id": "c_30097_uni2"
+        "card_id": "c_30097_uni2",
+        "description": "Increase Cost of 1 2 -Cost or lower card(s) by 1 until used, then activate 1 random 3 -Cost card(s)."
       },
       {
-        "card_id": "c_30097_uni3"
+        "card_id": "c_30097_uni3",
+        "description": "Create 2 Fate Imprint."
       },
       {
-        "card_id": "c_30097_uni4"
+        "card_id": "c_30097_uni4",
+        "description": "[ Unique ] Decrease all Chronicle. Gain Chronal Ascension for each decreased."
       }
     ],
     "ego_skill": {
-      "card_id": "c_30097_eps"
+      "card_id": "c_30097_eps",
+        "description": "6 Chronal Ascension. Increase Damage Amount of the next Attack Card of this unit used by 10% for each combined Cost of cards activated during this battle (max 200%)."
     }
   },
   "1005": {
     "character_name": "Selena",
     "starting_cards": [
       {
-        "card_id": "c_1005_srt1"
+        "card_id": "c_1005_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1005_srt2"
+        "card_id": "c_1005_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1005_srt3"
+        "card_id": "c_1005_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1005_srt4"
+        "card_id": "c_1005_srt4",
+        "description": "2 Mark."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1005_uni1"
+        "card_id": "c_1005_uni1",
+        "description": "150% Damage. Attunement: 1 Mark to random enemies."
       },
       {
-        "card_id": "c_1005_uni2"
+        "card_id": "c_1005_uni2",
+        "description": "120% Damage to all enemies, 1 Passion Weakness."
       },
       {
-        "card_id": "c_1005_uni3"
+        "card_id": "c_1005_uni3",
+        "description": "150% Shield. 2 Tenacity Damage."
       },
       {
-        "card_id": "c_1005_uni4"
+        "card_id": "c_1005_uni4",
+        "description": "[ Unique ] +80% Mark Damage"
       }
     ],
     "ego_skill": {
-      "card_id": "c_1005_eps"
+      "card_id": "c_1005_eps",
+      "description": "300% Damage. 3 Mark."
     }
   },
   "30075": {
     "character_name": "Sereniel",
     "starting_cards": [
       {
-        "card_id": "c_30075_srt1"
+        "card_id": "c_30075_srt1",
+        "description": "Deal 100% damage."
       },
       {
-        "card_id": "c_30075_srt2"
+        "card_id": "c_30075_srt2",
+        "description": "Deal 100% damage."
       },
       {
-        "card_id": "c_30075_srt3"
+        "card_id": "c_30075_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_30075_srt4"
+        "card_id": "c_30075_srt4",
+        "description": "100% damage. 2 Afterglow. On Ravage, move from Graveyard to hand."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_30075_uni1"
+        "card_id": "c_30075_uni1",
+        "description": "120% damage. 0.5 Tenacity Damage. If the target was not Ravaged, activate 1 more time."
       },
       {
-        "card_id": "c_30075_uni2"
+        "card_id": "c_30075_uni2",
+        "description": "Create 2 Homing Laser L."
       },
       {
-        "card_id": "c_30075_uni3"
+        "card_id": "c_30075_uni3",
+        "description": "120% x 4 damage to random enemies. 1 Tenacity Damage for each hit."
       },
       {
-        "card_id": "c_30075_uni4"
+        "card_id": "c_30075_uni4",
+        "description": "150% damage. Activate 3 Homing Laser in Draw Pile and Graveyard."
       }
     ],
     "ego_skill": {
-      "card_id": "c_30075_eps"
+      "card_id": "c_30075_eps",
+      "description": "400% damage to all enemies. Move all Homing Laser L in Exhaust Pile to hand"
     }
   },
   "30084": {
     "character_name": "Tiphera",
     "starting_cards": [
       {
-        "card_id": "c_30084_srt1"
+        "card_id": "c_30084_srt1",
+        "description": "100% Defense-Based Damage."
       },
       {
-        "card_id": "c_30084_srt2"
+        "card_id": "c_30084_srt2",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_30084_srt3"
+        "card_id": "c_30084_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_30084_srt4"
+        "card_id": "c_30084_srt4",
+        "description": "Heal 100%, create 2 Archetype cards in Draw Pile. Draw 1 of them."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_30084_uni1"
+        "card_id": "c_30084_uni1",
+        "description": "[ Retain ] Draw 2 Archetype cards. Double a random effect of those cards for 1 turn."
       },
       {
-        "card_id": "c_30084_uni2"
+        "card_id": "c_30084_uni2",
+        "description": "120% Defense-Based Damage, 80% Shield, Heal 80%. Harmonization: Double all effects"
       },
       {
-        "card_id": "c_30084_uni3"
+        "card_id": "c_30084_uni3",
+        "description": "[ Unique ] When 2 Archetype cards are created, create 1 identical card in Discard Pile."
       },
       {
-        "card_id": "c_30084_uni4"
+        "card_id": "c_30084_uni4",
+        "description": "[ Unique ] [ Form Upgrade ] 1 AP. Draw 1. Increase Damage Amount of the first Hit of the next Attack Card by 40%."
       }
     ],
     "ego_skill": {
-      "card_id": "c_30084_eps"
+      "card_id": "c_30084_eps",
+      "description": "Select and create 1 Archetype card. The next 3 times an is used, create an additional card. Decrease Cost of the next used by 2."
     }
   },
   "1009": {
     "character_name": "Tressa",
     "starting_cards": [
       {
-        "card_id": "c_1009_srt1"
+        "card_id": "c_1009_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1009_srt2"
+        "card_id": "c_1009_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1009_srt3"
+        "card_id": "c_1009_srt3",
+        "description": "Heal 100%."
       },
       {
-        "card_id": "c_1009_srt4"
+        "card_id": "c_1009_srt4",
+        "description": "Create 2 Shadow Dagger."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1009_uni1"
+        "card_id": "c_1009_uni1",
+        "description": "For 1 turn, when using Attack Cards, 1 Agony."
       },
       {
-        "card_id": "c_1009_uni2"
+        "card_id": "c_1009_uni2",
+        "description": "Heal 100%. Create 1 Advanced Shadow Dagger."
       },
       {
-        "card_id": "c_1009_uni3"
+        "card_id": "c_1009_uni3",
+        "description": "80% x 3 Damage If the target is in Agony, +50% Damage."
       },
       {
-        "card_id": "c_1009_uni4"
+        "card_id": "c_1009_uni4",
+        "description": "Activates this unit’s Agony applied to the target."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1009_eps"
+      "card_id": "c_1009_eps",
+      "description": "Create 2 Shadow Dagger."
     }
   },
   "1033": {
     "character_name": "Veronica",
     "starting_cards": [
       {
-        "card_id": "c_1033_srt1"
+        "card_id": "c_1033_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1033_srt2"
+        "card_id": "c_1033_srt2",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1033_srt3"
+        "card_id": "c_1033_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1033_srt4"
+        "card_id": "c_1033_srt4",
+        "description": "[ Unique ] [ Initiation ] Create 1 Ballista card(s). At the start of the turn, create 1 Ballista card(s)."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1033_uni1"
+        "card_id": "c_1033_uni1",
+        "description": "100% Shield. Draw 2 card(s) from other combatant."
       },
       {
-        "card_id": "c_1033_uni2"
+        "card_id": "c_1033_uni2",
+        "description": "When another combatant uses Skill Card, 1 Reload."
       },
       {
-        "card_id": "c_1033_uni3"
+        "card_id": "c_1033_uni3",
+        "description": "Choose 1 Ballista card in hand, +100% Damage Amount until activated. Draw 1."
       },
       {
-        "card_id": "c_1033_uni4"
+        "card_id": "c_1033_uni4",
+        "description": "[ Unique ] Increase max stack of Reload by 1. 2 Reload."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1033_eps"
+      "card_id": "c_1033_eps",
+      "description": "250% Piercing Damage to all enemies. Gain Maximum Reload."
     }
   },
   "1057": {
     "character_name": "Yuki",
     "starting_cards": [
       {
-        "card_id": "c_1057_srt1"
+        "card_id": "c_1057_srt1",
+        "description": "100% Damage."
       },
       {
-        "card_id": "c_1057_srt2"
+        "card_id": "c_1057_srt2",
+        "description": "220% Damage."
       },
       {
-        "card_id": "c_1057_srt3"
+        "card_id": "c_1057_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1057_srt4"
+        "card_id": "c_1057_srt4",
+        "description": "Draw 1 Attack Card(s) of this unit. Increase Damage Amount of those cards by 40% for 1 Turn."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1057_uni1"
+        "card_id": "c_1057_uni1",
+        "description": "220% Damage to all enemies. Inspiration: Decrease cost by 1."
       },
       {
-        "card_id": "c_1057_uni2"
+        "card_id": "c_1057_uni2",
+        "description": "[ Retain ] 180% Damage. Activate Inspiration for 1 random card of this unit in hand."
       },
       {
-        "card_id": "c_1057_uni3"
+        "card_id": "c_1057_uni3",
+        "description": "[ Unique ] When using a card of this unit with an activated Inspiration, 120% Damage to all enemies."
       },
       {
-        "card_id": "c_1057_uni4"
+        "card_id": "c_1057_uni4",
+        "description": "180% Damage to all enemies. Inspiration: add 1 Hit, decrease Damage Amount by 20%."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1057_eps"
+      "card_id": "c_1057_eps",
+      "description": "300% Damage to all enemies. Move all Attack Cards in hand to the top of the draw pile. +50% for each card moved."
     }
   }
 }
