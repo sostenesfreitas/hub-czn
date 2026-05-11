@@ -87,6 +87,44 @@ def _formula_heal(inst, caster, targets, state) -> EffectResult:
     return EffectResult(target_id=target.id)
 
 
+def _formula_draw(inst, caster, targets, state) -> EffectResult:
+    """SKILL_EFF_CARD_DRAW: move N cards from deck to hand."""
+    count = inst.eff_value or 1
+    moved = []
+    for _ in range(count):
+        if not state.deck:
+            break
+        card = state.deck.pop(0)
+        state.hand.append(card)
+        moved.append(card.card_id)
+    return EffectResult(cards_moved=moved)
+
+
+def _formula_discard(inst, caster, targets, state) -> EffectResult:
+    """SKILL_EFF_CARD_DISCARD: move N cards from hand to discard pile."""
+    count = inst.eff_value or 1
+    moved = []
+    for _ in range(count):
+        if not state.hand:
+            break
+        card = state.hand.pop(0)
+        state.discard.append(card)
+        moved.append(card.card_id)
+    return EffectResult(cards_moved=moved)
+
+
+def _formula_move_card(inst, caster, targets, state) -> EffectResult:
+    """SKILL_EFF_CARD_MOVE_TO: move N cards from source pile to dest.
+       MVP: treat all moves as hand->discard (most common observed shape).
+    """
+    return _formula_discard(inst, caster, targets, state)
+
+
+def _formula_noop(inst, caster, targets, state) -> EffectResult:
+    """Effects with no damage-relevant side effect in the MVP."""
+    return EffectResult(skipped=True, skip_reason=f"noop ({inst.eff_type})")
+
+
 FORMULA_REGISTRY: dict[str, Callable] = {
     "F_BASE_DMG": _formula_base_damage,
     "F_ADD_CS": _formula_add_cs,
@@ -94,4 +132,8 @@ FORMULA_REGISTRY: dict[str, Callable] = {
     "F_CURE": _formula_remove_cs,  # CURE removes cs (the cs_id of the negative status)
     "F_SHIELD": _formula_shield,
     "F_HEAL": _formula_heal,
+    "F_DRAW": _formula_draw,
+    "F_DISCARD": _formula_discard,
+    "F_MOVE_CARD": _formula_move_card,
+    "F_NOOP": _formula_noop,
 }

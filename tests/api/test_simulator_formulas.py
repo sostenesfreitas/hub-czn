@@ -58,7 +58,53 @@ from api.simulator.formulas import (
     _formula_add_cs,
     _formula_shield,
     _formula_heal,
+    _formula_draw,
+    _formula_discard,
+    _formula_move_card,
+    _formula_noop,
 )
+from api.simulator.state import CardState
+
+
+def test_f_draw_moves_from_deck_to_hand():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster], enemies=[],
+                        hand=[],
+                        deck=[CardState(card_id="c1", cost=1), CardState(card_id="c2", cost=1)],
+                        discard=[], morale=0, ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_CARD_DRAW", "eff_value": "1",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_CARD_DRAW", raw=raw)
+    _formula_draw(inst, caster, [], state)
+    assert len(state.hand) == 1
+    assert len(state.deck) == 1
+
+
+def test_f_discard_moves_hand_to_discard():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster], enemies=[],
+                        hand=[CardState(card_id="c1", cost=1)], deck=[], discard=[],
+                        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_CARD_DISCARD", "eff_value": "1",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_CARD_DISCARD", raw=raw)
+    _formula_discard(inst, caster, [], state)
+    assert len(state.hand) == 0
+    assert len(state.discard) == 1
+
+
+def test_f_noop_returns_skipped_with_no_state_change():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    state = _state(caster, MonsterState(id="m", def_=0, hp=1, hp_current=1))
+    raw = {"id": "fake", "eff": "SKILL_EFF_BATTLE_SKIP", "eff_value": "0",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_NONE",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_BATTLE_SKIP", raw=raw)
+    result = _formula_noop(inst, caster, [], state)
+    assert result.skipped is True
 
 
 def test_f_add_cs_increments_target_stacks():
