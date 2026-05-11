@@ -16,6 +16,7 @@ export function AvailableDeckBuilderCardButton({
   const card = item.card
   const variants = getVariants(item)
   const hasVariants = variants.length > 0 || card.spark_count > 0
+  const displayDescription = item.description
 
   return (
     <div className="overflow-hidden rounded-lg border border-[#333348] bg-[#15151f] transition-colors hover:border-[#c084fc] hover:bg-[#1f1b2e]">
@@ -50,6 +51,12 @@ export function AvailableDeckBuilderCardButton({
               </span>
             )}
           </div>
+
+          {displayDescription && (
+            <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[#b3b3b3]">
+              {displayDescription}
+            </p>
+          )}
 
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
             <span className="text-[#888]">

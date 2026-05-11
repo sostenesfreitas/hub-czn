@@ -30,6 +30,16 @@ export function VariantSettingsModal({
     ? target.selectedVariant
     : null
 
+  const baseDescription = target.type === 'deck'
+    ? target.description
+    : target.item.description
+
+  const currentDescription = selectedVariant?.description ?? baseDescription
+
+  const currentTypes = selectedVariant
+    ? getDisplayTypes(card, selectedVariant)
+    : card.effect_types
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-6">
       <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-[#303044] bg-[#15151f] shadow-2xl">
@@ -90,16 +100,18 @@ export function VariantSettingsModal({
                   </div>
                 </div>
 
-                {selectedVariant && (
+                {currentDescription && (
                   <div className="mt-3 rounded-md border border-[#0ea5e9]/30 bg-[#082f49]/30 p-2">
-                    <div className="mb-1 flex flex-wrap gap-1">
-                      {getDisplayTypes(card, selectedVariant).map(type => (
-                        <TypeBadge key={type} type={type} />
-                      ))}
-                    </div>
+                    {currentTypes.length > 0 && (
+                      <div className="mb-1 flex flex-wrap gap-1">
+                        {currentTypes.map(type => (
+                          <TypeBadge key={type} type={type} />
+                        ))}
+                      </div>
+                    )}
 
                     <p className="text-[10px] leading-relaxed text-[#dbeafe]">
-                      {selectedVariant.description}
+                      {currentDescription}
                     </p>
                   </div>
                 )}

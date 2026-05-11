@@ -34,10 +34,12 @@ export function createCardInstance(
   card: CardEntry,
   variants: DeckBuilderEpiphanyVariant[] = [],
   selectedVariant: DeckBuilderEpiphanyVariant | null = null,
+  description: string | null = null,
 ): DeckCardInstance {
   return {
     instanceId: `${card.card_id}-${Date.now()}-${Math.random()}`,
     card,
+    description,
     variants,
     selectedVariant,
   }
@@ -47,11 +49,21 @@ export function createCardInstanceFromDeckBuilderCard(
   item: DeckBuilderCardWithVariants,
   selectedVariant: DeckBuilderEpiphanyVariant | null = null,
 ): DeckCardInstance {
-  return createCardInstance(item.card, getVariants(item), selectedVariant)
+  return createCardInstance(
+    item.card,
+    getVariants(item),
+    selectedVariant,
+    item.description ?? null,
+  )
 }
 
 export function cloneCardInstance(item: DeckCardInstance): DeckCardInstance {
-  return createCardInstance(item.card, item.variants, item.selectedVariant)
+  return createCardInstance(
+    item.card,
+    item.variants,
+    item.selectedVariant,
+    item.description,
+  )
 }
 
 export function getInstanceCost(item: DeckCardInstance) {

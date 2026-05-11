@@ -1,12 +1,9 @@
 from __future__ import annotations
-
 import json
 from pathlib import Path
 from typing import Literal
-
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
 from api.routes.cards import CardEntry, _get_library
 
 router = APIRouter()
@@ -18,6 +15,7 @@ class DeckBuilderCardManifestItem(BaseModel):
     card_id: str
     copies: int = 1
     name_override: str | None = None
+    description: str | None = None
 
 
 class DeckBuilderCombatantManifest(BaseModel):
@@ -26,19 +24,6 @@ class DeckBuilderCombatantManifest(BaseModel):
     epiphany_cards: list[DeckBuilderCardManifestItem] = []
     ego_skill: DeckBuilderCardManifestItem | None = None
 
-class DeckBuilderCard(BaseModel):
-    card: CardEntry
-    copies: int
-    group: Literal["starting", "epiphany", "ego"]
-    variants: list[DeckBuilderEpiphanyVariant] = []
-
-class DeckBuilderCombatantResponse(BaseModel):
-    char_res_id: int
-    character_name: str | None = None
-    starting_cards: list[DeckBuilderCard]
-    epiphany_cards: list[DeckBuilderCard]
-    ego_skill: DeckBuilderCard | None
-    missing_card_ids: list[str]
 
 class DeckBuilderEpiphanyVariant(BaseModel):
     variant_id: str
@@ -49,12 +34,31 @@ class DeckBuilderEpiphanyVariant(BaseModel):
     tags: list[str] = []
     description: str
 
+
+class DeckBuilderCard(BaseModel):
+    card: CardEntry
+    copies: int
+    group: Literal["starting", "epiphany", "ego"]
+    description: str | None = None
+    variants: list[DeckBuilderEpiphanyVariant] = []
+
+
+class DeckBuilderCombatantResponse(BaseModel):
+    char_res_id: int
+    character_name: str | None = None
+    starting_cards: list[DeckBuilderCard]
+    epiphany_cards: list[DeckBuilderCard]
+    ego_skill: DeckBuilderCard | None
+    missing_card_ids: list[str]
+
+
 class DeckBuilderEpiphanyVariantGroup(BaseModel):
     character_id: int
     character_name: str
     base_card_id: str
     base_card_name: str
     variants: list[DeckBuilderEpiphanyVariant] = []
+
 
 def _load_manifest() -> dict[str, DeckBuilderCombatantManifest]:
     if not _MANIFEST_PATH.exists():
@@ -67,6 +71,7 @@ def _load_manifest() -> dict[str, DeckBuilderCombatantManifest]:
         for char_res_id, config in raw.items()
     }
 
+
 def _copy_card_with_name_override(card: CardEntry, name_override: str | None) -> CardEntry:
     if not name_override:
         return card
@@ -75,6 +80,7 @@ def _copy_card_with_name_override(card: CardEntry, name_override: str | None) ->
         return card.model_copy(update={"name": name_override})
     except AttributeError:
         return card.copy(update={"name": name_override})
+
 
 def _load_epiphany_variants() -> dict[str, DeckBuilderEpiphanyVariantGroup]:
     if not _EPIPHANY_VARIANTS_PATH.exists():
@@ -86,6 +92,7 @@ def _load_epiphany_variants() -> dict[str, DeckBuilderEpiphanyVariantGroup]:
         str(card_id): DeckBuilderEpiphanyVariantGroup(**config)
         for card_id, config in raw.items()
     }
+
 
 def _resolve_manifest_items(
     items: list[DeckBuilderCardManifestItem],
@@ -110,6 +117,7 @@ def _resolve_manifest_items(
                 card=_copy_card_with_name_override(card, item.name_override),
                 copies=item.copies,
                 group=group,
+                description=item.description,
                 variants=variant_group.variants if variant_group else [],
             )
         )

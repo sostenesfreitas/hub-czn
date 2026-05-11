@@ -54,6 +54,9 @@ function normalizeDeckBuilderCard(
 ): DeckBuilderCardWithVariants {
   return {
     ...item,
+    description: typeof item.description === 'string'
+      ? item.description
+      : null,
     variants: (item.variants ?? []).map(variant =>
       normalizeVariant(variant as DeckBuilderEpiphanyVariant),
     ),
@@ -356,6 +359,7 @@ export function useDeckBuilder() {
       slotIndex,
       instanceId: item.instanceId,
       card: item.card,
+      description: item.description,
       variants: item.variants,
       selectedVariant: item.selectedVariant,
     })

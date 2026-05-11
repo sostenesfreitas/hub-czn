@@ -19,7 +19,7 @@ export function DeckCard({
 
   const displayName = selectedVariant?.name ?? card.name ?? 'Unnamed card'
   const displayCost = getInstanceCost(item)
-  const displayDescription = selectedVariant?.description
+  const displayDescription = selectedVariant?.description ?? item.description
   const displayTypes = getDisplayTypes(card, selectedVariant)
   const coefficient = card.eff_value > 0 ? `${card.eff_value}%` : '—'
   const hasVariants = item.variants.length > 0 || card.spark_count > 0

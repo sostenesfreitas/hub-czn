@@ -13,13 +13,15 @@ export type DeckBuilderEpiphanyVariant = {
   description: string
 }
 
-export type DeckBuilderCardWithVariants = ApiDeckBuilderCard & {
+export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants'> & {
+  description?: string | null
   variants?: DeckBuilderEpiphanyVariant[]
 }
 
 export type DeckCardInstance = {
   instanceId: string
   card: CardEntry
+  description: string | null
   variants: DeckBuilderEpiphanyVariant[]
   selectedVariant: DeckBuilderEpiphanyVariant | null
 }
@@ -40,6 +42,7 @@ export type VariantModalTarget =
       slotIndex: number
       instanceId: string
       card: CardEntry
+      description: string | null
       variants: DeckBuilderEpiphanyVariant[]
       selectedVariant: DeckBuilderEpiphanyVariant | null
     }
