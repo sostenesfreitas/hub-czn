@@ -1,0 +1,2330 @@
+[
+  {
+    "id": "div_0001",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1adeddb20f2a",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0002",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "6052674535a5",
+    "raw_text": "1 Morale, 1 Resolve\n@?#$\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0003",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "6663f102a0c6",
+    "raw_text": "Increase this card’s Shield by 30%.\n@?#$\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0004",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "792f03ab54d5",
+    "raw_text": "Increase Heal Amount of this card by 30%\n@?#$\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0005",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "b8f747bfbfa3",
+    "raw_text": "Always Attack Weakness\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0006",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1b529e39b2b5",
+    "raw_text": "One random ally performs Coordinated Attack to the target\n@?#$\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0007",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "11840ce0f6fd",
+    "raw_text": "Gain 1 AP\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0008",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "3f424ce1ed1f",
+    "raw_text": "Reduce Cost of this card by 1\n@?#$\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0009",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8ba24462fde0",
+    "raw_text": "4 Agony on the target\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0010",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8d1ed93b302d",
+    "raw_text": "2 Vulnerable to the target\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0011",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "236b1ab1f674",
+    "raw_text": "Draw 1\n@?#$\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0012",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "7073a62525cc",
+    "raw_text": "Increase this card’s Damage by 30%.\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0013",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Destroy: Draw 3",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8c460b60c0ae",
+    "raw_text": "Destroy: Draw 3\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0014",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Apply Combo to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b72ff0461ad0",
+    "raw_text": "Apply Combo to this card\n@?#$\nUNIQUE\n1"
+  },
+  {
+    "id": "div_0015",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Treated as a Common Card Draw 1 Common Card(s)",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "d27c4c523a50",
+    "raw_text": "Treated as a Common Card\nDraw 1 Common Card(s)\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0016",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Attunement: 3 Morale for 1 turn",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "144b8f04f91b",
+    "raw_text": "Attunement: 3 Morale for 1 turn\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0017",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Destroy: Draw 3",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "6d4ab17e1c2b",
+    "raw_text": "Destroy: Draw 3\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0018",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Apply Linked and Quietus to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "d5b9dd4d7568",
+    "raw_text": "Apply Linked and Quietus to this card\n@?#$\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0019",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Apply Combo to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "a0418d5db4e5",
+    "raw_text": "Apply Combo to this card\n@?#$\nUNIQUE\n1"
+  },
+  {
+    "id": "div_0020",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "On Shuffle, move from Draw Pile to hand",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "adb54e0028c9",
+    "raw_text": "On Shuffle, move from Draw Pile to hand\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0021",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase Damage Amount by 50% against targets that have not yet acted",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "e403a02f6ad4",
+    "raw_text": "Increase Damage Amount by 50% against targets that have not yet acted\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0022",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "30 Credits",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "dc70f6c02bae",
+    "raw_text": "30 Credits\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0023",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "30 Credits",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "00c409dc8368",
+    "raw_text": "30 Credits\n@?#$\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0024",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Draw equal to Cost",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1cbcc4333c3d",
+    "raw_text": "Draw equal to Cost\n@?#$\nUNIQUE\nSkill\n2\n3\n4+"
+  },
+  {
+    "id": "div_0025",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Treated as a Common Card Draw 1 Common Card(s)",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "00c8c9317362",
+    "raw_text": "Treated as a Common Card\nDraw 1 Common Card(s)\n@?#$\nUNIQUE"
+  },
+  {
+    "id": "div_0026",
+    "god": "Caligo",
+    "display_god": "@?#$",
+    "description": "Increase Damage Amount by 200% in Boss Battle",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "d2d8e31467ee",
+    "raw_text": "Increase Damage Amount by 200% in Boss Battle\n@?#$\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0027",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Decrease Stress by 3",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "24162c2fdb42",
+    "raw_text": "Decrease Stress by 3\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0028",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Harmonization: 2 AP next turn",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a5eef971f3c9",
+    "raw_text": "Harmonization: 2 AP next turn\nCIRCEN\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0029",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Decrease Cost of Ego Skill by 1 for this turn",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "f3d600e7b0a7",
+    "raw_text": "Decrease Cost of Ego Skill by 1 for this turn\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0030",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Apply Celestial to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "db0ea0a075b4",
+    "raw_text": "Apply Celestial to this card\nCIRCEN\nUNIQUE\n2\n3\n4+"
+  },
+  {
+    "id": "div_0031",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Add X of this card to the next X",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "10a68ffe347b",
+    "raw_text": "Add X of this card to the next X\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0032",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Decrease Stress by 3",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ae9d9cabaacc",
+    "raw_text": "Decrease Stress by 3\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0033",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Harmonization: 2 AP next turn",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "cac317ecdc58",
+    "raw_text": "Harmonization: 2 AP next turn\nCIRCEN\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0034",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Treated as a Basic Card Draw 1 Basic Cards",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "944b1d6f8b13",
+    "raw_text": "Treated as a Basic Card\nDraw 1 Basic Cards\nCIRCEN\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0035",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Increase Cost by 1, and increase Damage Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "fe337f3a93c4",
+    "raw_text": "Increase Cost by 1, and increase Damage Amount by 100%\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0036",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "When EP is 5 or more, increase Heal Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "35afb1a0ef7d",
+    "raw_text": "When EP is 5 or more, increase Heal Amount by 100%\nCIRCEN\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0037",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Create a random Common Skill Card",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "e47e7d96c672",
+    "raw_text": "Create a random Common Skill Card\nCIRCEN\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0038",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "9703cb977623",
+    "raw_text": "Gain 1 AP\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0039",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Decrease Cost of Ego Skill by 1 for this turn",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "39f72fb84563",
+    "raw_text": "Decrease Cost of Ego Skill by 1 for this turn\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0040",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c4195bfec368",
+    "raw_text": "Reduce Cost of this card by 1\nCIRCEN\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0041",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ca9729b1538b",
+    "raw_text": "Increase this card’s Damage by 30%.\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0042",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "a0df9a7cb6c7",
+    "raw_text": "Gain 1 AP\nCIRCEN\nUNIQUE"
+  },
+  {
+    "id": "div_0043",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "65a8b42fac2f",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0044",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8616017a8484",
+    "raw_text": "One random ally performs Coordinated Attack to the target\nCIRCEN\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0045",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "631810d386d2",
+    "raw_text": "Always Attack Weakness\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0046",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "2abf3ef4c7df",
+    "raw_text": "Increase this card’s Shield by 30%.\nCIRCEN\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0047",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "d09203909751",
+    "raw_text": "Increase Heal Amount of this card by 30%\nCIRCEN\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0048",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ab3357aba995",
+    "raw_text": "1 Morale, 1 Resolve\nCIRCEN\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0049",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "541ce229f543",
+    "raw_text": "Draw 1\nCIRCEN\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0050",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8767f9791a8a",
+    "raw_text": "4 Agony on the target\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0051",
+    "god": "Circen",
+    "display_god": "Circen",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "f037cb33071c",
+    "raw_text": "2 Vulnerable to the target\nCIRCEN\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0052",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Apply Pulverize to this card 3 Impair to all enemies",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "491262319dca",
+    "raw_text": "Apply Pulverize to this card\n3 Impair to all enemies\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0053",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Apply Retain to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "01639d17a0cf",
+    "raw_text": "Apply Retain to this card\nDIALLOS\nUNIQUE"
+  },
+  {
+    "id": "div_0054",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "If no Shield is present, increase Shield Gain Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "19e2e1213028",
+    "raw_text": "If no Shield is present, increase Shield Gain Amount by 100%\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0055",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Create 2 Activation Core",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "49de18cb46fc",
+    "raw_text": "Create 2 Activation Core\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0056",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Apply Pulverize to this card 3 Impair to all enemies",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "5bda0e09f551",
+    "raw_text": "Apply Pulverize to this card\n3 Impair to all enemies\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0057",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Retain: Create 1 Activation Core",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "5555569cf99e",
+    "raw_text": "Retain: Create 1 Activation Core\nDIALLOS\nUNIQUE"
+  },
+  {
+    "id": "div_0058",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Apply Retain to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8383cafa028a",
+    "raw_text": "Apply Retain to this card\nDIALLOS\nUNIQUE"
+  },
+  {
+    "id": "div_0059",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Activate at the start of battle",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "16b432d7fbb0",
+    "raw_text": "Activate at the start of battle\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0060",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "If no Shield is present, increase Shield Gain Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "591fbf608cf6",
+    "raw_text": "If no Shield is present, increase Shield Gain Amount by 100%\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0061",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "If 8 or more cards are in hand, change Cost to 0",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "578210ec29f3",
+    "raw_text": "If 8 or more cards are in hand, change Cost to\n0\nDIALLOS\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0062",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "After creating a random Common Upgrade Card, activate that card",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "628e6e62cfce",
+    "raw_text": "After creating a random Common Upgrade Card, activate that card\nDIALLOS\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0063",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Retain 15% Shield",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "3513d5bf0f6a",
+    "raw_text": "Retain 15% Shield\nDIALLOS\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0064",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "When attacked, activate this card in hand",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "bfcd47a009ab",
+    "raw_text": "When attacked, activate this card in hand\nDIALLOS\nUNIQUE"
+  },
+  {
+    "id": "div_0065",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "7c0e6c67e14a",
+    "raw_text": "Increase this card’s Shield by 30%.\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0066",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ad0cb9567c97",
+    "raw_text": "Increase Heal Amount of this card by 30%\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0067",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "3a85451d360e",
+    "raw_text": "1 Morale, 1 Resolve\nDIALLOS\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0068",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "69da4f972240",
+    "raw_text": "One random ally performs Coordinated Attack to the target\nDIALLOS\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0069",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "77e932566d5d",
+    "raw_text": "Always Attack Weakness\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0070",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "3ca4b7c45f0e",
+    "raw_text": "Reduce Cost of this card by 1\nDIALLOS\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0071",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "11e31a2aa581",
+    "raw_text": "Gain 1 AP\nDIALLOS\nUNIQUE"
+  },
+  {
+    "id": "div_0072",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "5ecd212a0b22",
+    "raw_text": "Increase this card’s Damage by 30%.\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0073",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "4fe31b77251e",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0074",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1b9e6b963320",
+    "raw_text": "Draw 1\nDIALLOS\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0075",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "4c91aee6b439",
+    "raw_text": "4 Agony on the target\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0076",
+    "god": "Diallos",
+    "display_god": "Diallos",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "83a86c91065d",
+    "raw_text": "2 Vulnerable to the target\nDIALLOS\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0077",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "At the start of the turn, change the Cost of this card to 0 - 3",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "775baea12b26",
+    "raw_text": "At the start of the turn, change the Cost of this card to 0 - 3\nNIHILUM\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0078",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Move 2 Exhaust card from Discard Pile to hand",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8931dc8d095d",
+    "raw_text": "Move 2 Exhaust card from Discard Pile to hand\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0079",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase Heal Amount by 100% Apply to this card",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Finale"
+    ],
+    "source_key": "e014c38168a6",
+    "raw_text": "Increase Heal Amount by 100%\nApply Finale to this card\nNIHILUM\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0080",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "At the start of the turn, change the Cost of this card to 0 - 3",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "5b5b63a92e0a",
+    "raw_text": "At the start of the turn, change the Cost of this card to 0 - 3\nNIHILUM\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0081",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Apply Ephemeral to this card Incinerate: Activate this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "3ea090a36d85",
+    "raw_text": "Apply Ephemeral to this card\nIncinerate: Activate this card\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0082",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Apply Ignition to this card",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "6e0a13bd17c8",
+    "raw_text": "Apply Ignition to this card\nNIHILUM\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0083",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Move 2 Exhaust card from Discard Pile to hand",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "34e108c5bf54",
+    "raw_text": "Move 2 Exhaust card from Discard Pile to hand\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0084",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Create 1 Void Fragment",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "9db2b260fdf8",
+    "raw_text": "Create 1 Void Fragment\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0085",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "If a Status Ailment or Curse card is in hand, double Hit Count",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "53397365ff57",
+    "raw_text": "If a Status Ailment or Curse card is in hand, double Hit Count\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0086",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase Heal Amount by 100% Apply to this card",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Finale"
+    ],
+    "source_key": "78d9208609cf",
+    "raw_text": "Increase Heal Amount by 100%\nApply Finale to this card\nNIHILUM\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0087",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1a3cc632686c",
+    "raw_text": "4 Agony on the target\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0088",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "3 Vulnerable on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "6d05c57ffc48",
+    "raw_text": "3 Vulnerable on the target\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0089",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Apply to this card Create 2 Void Fragment",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Remove"
+    ],
+    "source_key": "248647b401c7",
+    "raw_text": "Apply Remove to this card\nCreate 2 Void Fragment\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0090",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "894501613b03",
+    "raw_text": "Draw 1\nNIHILUM\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0091",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "3d9075f050a9",
+    "raw_text": "4 Agony on the target\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0092",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "cb18071f66e2",
+    "raw_text": "2 Vulnerable to the target\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0093",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "efc41b1a72e4",
+    "raw_text": "Increase this card’s Shield by 30%.\nNIHILUM\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0094",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "fae66e693be5",
+    "raw_text": "Increase Heal Amount of this card by 30%\nNIHILUM\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0095",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "03de09f9b400",
+    "raw_text": "1 Morale, 1 Resolve\nNIHILUM\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0096",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "4d5fed9868a4",
+    "raw_text": "One random ally performs Coordinated Attack to the target\nNIHILUM\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0097",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "28bf9367266b",
+    "raw_text": "Always Attack Weakness\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0098",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "3ecfb844be40",
+    "raw_text": "Reduce Cost of this card by 1\nNIHILUM\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0099",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "5dbfceb27352",
+    "raw_text": "Gain 1 AP\nNIHILUM\nUNIQUE"
+  },
+  {
+    "id": "div_0100",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "51c1da546ebb",
+    "raw_text": "Increase this card’s Damage by 30%.\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0101",
+    "god": "Nihilum",
+    "display_god": "Nihilum",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "964633143f44",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\nNIHILUM\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0102",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "At the start of each turn, when this card is the first card used, Draw 2",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "758c378bf475",
+    "raw_text": "At the start of each turn, when this card is the first card used, Draw 2\nSECRED\nUNIQUE"
+  },
+  {
+    "id": "div_0103",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "When HP is less than 50%, increase Heal Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "c38f8cb1299a",
+    "raw_text": "When HP is less than 50%, increase Heal Amount by 100%\nSECRED\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0104",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "At the start of the turn, 2 Mark to random enemies",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "fa66d1dba7ad",
+    "raw_text": "At the start of the turn, 2 Mark to random enemies\nSECRED\nUNIQUE\nUpgrade\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0105",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "At the start of each turn, when this card is the first card used, Draw 2",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "f45ea05a24e6",
+    "raw_text": "At the start of each turn, when this card is the first card used, Draw 2\nSECRED\nUNIQUE"
+  },
+  {
+    "id": "div_0106",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Discard 2, then Draw 2",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "b72a0c11ddc0",
+    "raw_text": "Discard 2, then Draw 2\nSECRED\nUNIQUE\n4+"
+  },
+  {
+    "id": "div_0107",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "At the start of the turn, activate this card in hand",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "fdf2e3583448",
+    "raw_text": "At the start of the turn, activate this card in hand\nSECRED\nUNIQUE"
+  },
+  {
+    "id": "div_0108",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "1 Evade, and 1 Immunity",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "02c2a61138ca",
+    "raw_text": "1 Evade, and 1 Immunity\nSECRED\nUNIQUE\n2\n3\n4+"
+  },
+  {
+    "id": "div_0109",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "1 Evade, and 1 Immunity",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "0beb8600d55e",
+    "raw_text": "1 Evade, and 1 Immunity\nSECRED\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0110",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "If HP is full, change Cost to 0",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "792b61fecea8",
+    "raw_text": "If HP is full, change Cost to 0\nSECRED\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0111",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Increase Damage Amount by 100 against targets at max HP",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "d4b274a7cc32",
+    "raw_text": "Increase Damage Amount by 100 against targets at max HP\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0112",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "When HP is less than 50%, increase Heal Amount by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "bd8b63e49eec",
+    "raw_text": "When HP is less than 50%, increase Heal Amount by 100%\nSECRED\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0113",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Always Attack Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "b1f8cb3e09e1",
+    "raw_text": "Always Weakness Attack\nIncrease Tenacity Damage of this card by 100%\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0114",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Coordinated Attack for all Combatants",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1f5f46d2a30e",
+    "raw_text": "Coordinated Attack for all Combatants\nSECRED\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0115",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "At the start of the turn, 2 Mark to random enemies",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1d4f67c4eec3",
+    "raw_text": "At the start of the turn, 2 Mark to random enemies\nSECRED\nUNIQUE\nUpgrade\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0116",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "904f7da89a9c",
+    "raw_text": "One random ally performs Coordinated Attack to the target\nSECRED\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0117",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "be2b25e47e15",
+    "raw_text": "Always Attack Weakness\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0118",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "e59e4f7aaf95",
+    "raw_text": "Reduce Cost of this card by 1\nSECRED\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0119",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ea81a683751f",
+    "raw_text": "Gain 1 AP\nSECRED\nUNIQUE"
+  },
+  {
+    "id": "div_0120",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "588527b14397",
+    "raw_text": "Increase this card’s Damage by 30%.\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0121",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1174f6ae2caf",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0122",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "5d0e9438fb79",
+    "raw_text": "Increase this card’s Shield by 30%.\nSECRED\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0123",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "29f0fcc9f2af",
+    "raw_text": "Increase Heal Amount of this card by 30%\nSECRED\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0124",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "411b329c9673",
+    "raw_text": "1 Morale, 1 Resolve\nSECRED\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0125",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "d29e7a97d774",
+    "raw_text": "Draw 1\nSECRED\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0126",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "21c339ee8acc",
+    "raw_text": "4 Agony on the target\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0127",
+    "god": "Secred",
+    "display_god": "Secred",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "2c5aefc04125",
+    "raw_text": "2 Vulnerable to the target\nSECRED\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0128",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Draw 1 card(s) of this unit",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "e5dd5fa36e7d",
+    "raw_text": "Draw 1 card(s) of this unit\nVITOR\nUNIQUE"
+  },
+  {
+    "id": "div_0129",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Apply Initiation to this card",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "a70f0e08c3b7",
+    "raw_text": "Apply Initiation to this card\nVITOR\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0130",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Attack: Decrease Fortitude by 2 for 1 turn",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "e35869736ddf",
+    "raw_text": "Weakness Attack: Decrease Fortitude by 2 for 1 turn\nVITOR\nUNIQUE\nAttack\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0131",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Inspiration: Change Cost to 0",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "5278ad37680b",
+    "raw_text": "Inspiration: Change Cost to 0\nVITOR\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0132",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Draw 1 card(s) of this unit",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "8b37014bd003",
+    "raw_text": "Draw 1 card(s) of this unit\nVITOR\nUNIQUE"
+  },
+  {
+    "id": "div_0133",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Apply Initiation to this card",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1682ab2dc0de",
+    "raw_text": "Apply Initiation to this card\nVITOR\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0134",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Guaranteed Critical",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "2636f14de6a2",
+    "raw_text": "Guaranteed Critical\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0135",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "On Ravage with this card, move to hand",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "30fe03dc18f5",
+    "raw_text": "On Ravage with this card, move to hand\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0136",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Combo: Increase Damage Amount by 50%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "1f025e529288",
+    "raw_text": "Combo: Increase Damage Amount by 50%\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0137",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Destroy: Add 1 Hit(s)",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "69b71a9e3f7b",
+    "raw_text": "Destroy: Add 1 Hit(s)\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0138",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "+100% Critical Damage",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "247792b75242",
+    "raw_text": "+100% Critical Damage\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0139",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "6667f61bbd4c",
+    "raw_text": "Reduce Cost of this card by 1\nVITOR\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0140",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Attack: Decrease Fortitude by 2 for 1 turn",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "95aff39c5f5d",
+    "raw_text": "Weakness Attack: Decrease Fortitude by 2 for 1 turn\nVITOR\nUNIQUE\nAttack\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0141",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Increase this card’s Damage by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "0f1f0d961069",
+    "raw_text": "Increase this card’s Damage by 30%.\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0142",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Increase Tenacity Damage of this card by 100%",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "e69e3c35abd2",
+    "raw_text": "Increase Tenacity Damage of this card by 100%\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0143",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "43f4383f3d4c",
+    "raw_text": "Reduce Cost of this card by 1\nVITOR\nUNIQUE\n1\n2\n3\n4+"
+  },
+  {
+    "id": "div_0144",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Gain 1 AP",
+    "rarity": "Unique",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "082517d4090c",
+    "raw_text": "Gain 1 AP\nVITOR\nUNIQUE"
+  },
+  {
+    "id": "div_0145",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "One random ally performs Coordinated Attack to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "f58336a9cf6f",
+    "raw_text": "One random ally performs Coordinated Attack to the target\nVITOR\nUNIQUE\nAttack\nSkill"
+  },
+  {
+    "id": "div_0146",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Always Attack",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [
+      "Weakness"
+    ],
+    "source_key": "132f79cd2b8d",
+    "raw_text": "Always Attack Weakness\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0147",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Increase this card’s Shield by 30%.",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "bd08e36cea43",
+    "raw_text": "Increase this card’s Shield by 30%.\nVITOR\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0148",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Increase Heal Amount of this card by 30%",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "83d50e7e7eb5",
+    "raw_text": "Increase Heal Amount of this card by 30%\nVITOR\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0149",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "1 Morale, 1 Resolve",
+    "rarity": "Unique",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "761fc3ca4411",
+    "raw_text": "1 Morale, 1 Resolve\nVITOR\nUNIQUE\nUpgrade"
+  },
+  {
+    "id": "div_0150",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "Draw 1",
+    "rarity": "Unique",
+    "card_types": [
+      "Skill"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "758421e0b8d1",
+    "raw_text": "Draw 1\nVITOR\nUNIQUE\nSkill"
+  },
+  {
+    "id": "div_0151",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "4 Agony on the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "ced47cd74ff0",
+    "raw_text": "4 Agony on the target\nVITOR\nUNIQUE\nAttack"
+  },
+  {
+    "id": "div_0152",
+    "god": "Vitor",
+    "display_god": "Vitor",
+    "description": "2 Vulnerable to the target",
+    "rarity": "Unique",
+    "card_types": [
+      "Attack"
+    ],
+    "allowed_classes": [],
+    "levels": [],
+    "tags": [],
+    "source_key": "c46c5a54b7f4",
+    "raw_text": "2 Vulnerable to the target\nVITOR\nUNIQUE\nAttack"
+  }
+]
