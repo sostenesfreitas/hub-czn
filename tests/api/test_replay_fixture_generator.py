@@ -79,3 +79,30 @@ def test_description_baseline_alignment_diagnostic(fixtures):
           f"no_desc={no_desc} alignment_rate={aligned / max(total_with_desc, 1):.1%}")
     # Sanity: SOMETHING should have a description
     assert total_with_desc > 0
+
+
+def test_fixture_generator_emits_rsp1_variant_when_instance_exists(fixtures):
+    """Spark variant c_1040_srt4_rsp1 has its own instance with eff_value=210
+    (= base 140 × 1.5 epiphany bonus). A fixture should exist for it."""
+    by_card = {f.card_id: f for f in fixtures}
+    f = by_card.get("c_1040_srt4_rsp1")
+    assert f is not None, "rsp1 variant fixture missing"
+    assert f.expected_eff_pct == 210
+    assert "rsp1" in f.name
+
+
+def test_fixture_count_grows_with_spark_variants(fixtures):
+    """Total fixtures should grow beyond the 153 baseline now that spark
+    variants are enumerated."""
+    assert len(fixtures) >= 200
+
+
+def test_some_variant_fixtures_have_higher_eff_value_than_base(fixtures):
+    """For [Retain]/[Initiation]/etc cards, rsp1 variant has higher eff_value
+    than the base — the +50% epiphany bonus baked into the variant instance."""
+    by_card = {f.card_id: f for f in fixtures}
+    base = by_card.get("c_1040_srt4")
+    rsp1 = by_card.get("c_1040_srt4_rsp1")
+    assert base is not None
+    assert rsp1 is not None
+    assert rsp1.expected_eff_pct > base.expected_eff_pct

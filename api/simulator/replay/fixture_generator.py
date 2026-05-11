@@ -52,68 +52,102 @@ def generate_fixtures(char_resolver, instances) -> list[SynthFixture]:
             + ([char_info.ego_card_id] if char_info.ego_card_id else [])
         )
         for card_id in all_card_ids:
-            inst = _find_dmg_instance_for_card(instances, card_id)
-            if inst is None:
-                skipped.append((
-                    char_info.char_res_id,
-                    char_info.name,
-                    card_id,
-                    "no SKILL_EFF_DMG instance in client db",
-                ))
-                continue
-            if inst.eff_value <= 0:
-                skipped.append((
-                    char_info.char_res_id,
-                    char_info.name,
-                    card_id,
-                    f"instance eff_value is {inst.eff_value}",
-                ))
-                continue
-            try:
-                base = get_char_base_stats(
-                    str(char_info.char_res_id),
-                    level=FIXTURE_LEVEL,
-                    ascend=FIXTURE_ASCEND,
+            base_fixture = _build_base_fixture(
+                char_info, card_id, char_resolver, instances, skipped,
+            )
+            if base_fixture is not None:
+                fixtures.append(base_fixture)
+            for level in (1, 2, 3, 4, 5):
+                variant_card_id = f"{card_id}_rsp{level}"
+                variant_inst = _find_dmg_instance_for_card(instances, variant_card_id)
+                if variant_inst is None or variant_inst.eff_value <= 0:
+                    continue
+                variant_fixture = _build_variant_fixture(
+                    char_info, card_id, variant_card_id, level, variant_inst,
+                    char_resolver, skipped,
                 )
-            except KeyError:
-                skipped.append((
-                    char_info.char_res_id,
-                    char_info.name,
-                    card_id,
-                    "no entry in char_base_l1.json",
-                ))
-                continue
-            exp = char_resolver.card_expectation(card_id)
-            char_state = CharState(
-                id=str(char_info.char_res_id),
-                atk=int(base.get("ATK", 0)),
-                def_=int(base.get("DEF", 0)),
-                hp=int(base.get("HP", 0)),
-                hp_current=int(base.get("HP", 0)),
-                cri=float(base.get("CRate", 0)),
-                cri_dmg_rate=float(base.get("CDmg", 0)),
-            )
-            target = MonsterState(
-                id="dummy",
-                def_=DUMMY_DEF,
-                hp=DUMMY_HP,
-                hp_current=DUMMY_HP,
-                dmg_decrease_rate=0.0,
-            )
-            fixtures.append(SynthFixture(
-                name=f"{char_info.name}_{card_id}",
-                char_state=char_state,
-                target_state=target,
-                card_id=card_id,
-                skill_eff_id=inst.id,
-                expected_eff_pct=inst.eff_value,
-                description_eff_pct=exp.eff_pct if exp else None,
-                expected_target_class=exp.target_class if exp else None,
-                expected_scaling=exp.scaling_stat if exp else None,
-            ))
+                if variant_fixture is not None:
+                    fixtures.append(variant_fixture)
 
     _write_skipped(skipped)
     return fixtures
+
+
+def _build_base_fixture(char_info, card_id, char_resolver, instances, skipped):
+    inst = _find_dmg_instance_for_card(instances, card_id)
+    if inst is None:
+        skipped.append((char_info.char_res_id, char_info.name, card_id,
+                        "no SKILL_EFF_DMG instance in client db"))
+        return None
+    if inst.eff_value <= 0:
+        skipped.append((char_info.char_res_id, char_info.name, card_id,
+                        f"instance eff_value is {inst.eff_value}"))
+        return None
+    char_state = _build_char_state(char_info, skipped, card_id)
+    if char_state is None:
+        return None
+    exp = char_resolver.card_expectation(card_id)
+    target = MonsterState(
+        id="dummy", def_=DUMMY_DEF, hp=DUMMY_HP,
+        hp_current=DUMMY_HP, dmg_decrease_rate=0.0,
+    )
+    return SynthFixture(
+        name=f"{char_info.name}_{card_id}",
+        char_state=char_state,
+        target_state=target,
+        card_id=card_id,
+        skill_eff_id=inst.id,
+        expected_eff_pct=inst.eff_value,
+        description_eff_pct=exp.eff_pct if exp else None,
+        expected_target_class=exp.target_class if exp else None,
+        expected_scaling=exp.scaling_stat if exp else None,
+    )
+
+
+def _build_variant_fixture(char_info, base_card_id, variant_card_id, level,
+                           variant_inst, char_resolver, skipped):
+    char_state = _build_char_state(char_info, skipped, variant_card_id)
+    if char_state is None:
+        return None
+    exp = char_resolver.card_expectation(base_card_id, level=level)
+    target = MonsterState(
+        id="dummy", def_=DUMMY_DEF, hp=DUMMY_HP,
+        hp_current=DUMMY_HP, dmg_decrease_rate=0.0,
+    )
+    return SynthFixture(
+        name=f"{char_info.name}_{variant_card_id}",
+        char_state=char_state,
+        target_state=target,
+        card_id=variant_card_id,
+        skill_eff_id=variant_inst.id,
+        expected_eff_pct=variant_inst.eff_value,
+        description_eff_pct=exp.eff_pct if exp else None,
+        expected_target_class=exp.target_class if exp else None,
+        expected_scaling=exp.scaling_stat if exp else None,
+    )
+
+
+def _build_char_state(char_info, skipped, card_id_for_audit):
+    """Build CharState at L60/A5 or record skipped + return None."""
+    try:
+        base = get_char_base_stats(
+            str(char_info.char_res_id),
+            level=FIXTURE_LEVEL,
+            ascend=FIXTURE_ASCEND,
+        )
+    except KeyError:
+        skipped.append((char_info.char_res_id, char_info.name, card_id_for_audit,
+                        "no entry in char_base_l1.json"))
+        return None
+    return CharState(
+        id=str(char_info.char_res_id),
+        atk=int(base.get("ATK", 0)),
+        def_=int(base.get("DEF", 0)),
+        hp=int(base.get("HP", 0)),
+        hp_current=int(base.get("HP", 0)),
+        cri=float(base.get("CRate", 0)),
+        cri_dmg_rate=float(base.get("CDmg", 0)),
+    )
 
 
 def _find_dmg_instance_for_card(instances, card_id: str):
