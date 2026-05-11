@@ -12,11 +12,17 @@ import type {
   DeckCardInstance,
   SquadSlot,
 } from '../deck-builder.types'
-import { getInstanceCost, getVariants } from '../deck-builder.utils'
+import {
+  getInstanceCost,
+  getNeutralAndMonsterDeckBuilderCards,
+  getVariants,
+} from '../deck-builder.utils'
 import { AvailableDeckBuilderCardButton } from './AvailableDeckBuilderCardButton'
 import { CharacterAvatar } from './CharacterAvatar'
 import { DeckCard } from './DeckCard'
 import { EgoSkillCard } from './EgoSkillCard'
+
+const NEUTRAL_AND_MONSTER_CARDS = getNeutralAndMonsterDeckBuilderCards()
 
 export function CombatantDeckColumn({
   slotIndex,
@@ -43,12 +49,15 @@ export function CombatantDeckColumn({
 }) {
   const [showStartingCards, setShowStartingCards] = useState(false)
   const [showEpiphanyCards, setShowEpiphanyCards] = useState(false)
+  const [showNeutralAndMonsterCards, setShowNeutralAndMonsterCards] = useState(false)
 
   const startingCards = slot.startingCards
   const epiphanyCards = slot.epiphanyCards
+  const neutralAndMonsterCards = NEUTRAL_AND_MONSTER_CARDS
   const egoSkill = slot.egoSkill
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
   const totalCost = slot.cards.reduce((sum, item) => sum + getInstanceCost(item), 0)
+  const canShowNeutralAndMonsterCards = selectedCombatant != null && neutralAndMonsterCards.length > 0
 
   return (
     <section className="min-w-0 overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
@@ -131,7 +140,7 @@ export function CombatantDeckColumn({
             </p>
             <p className="mt-1 max-w-[220px] text-xs text-[#666]">
               {selectedCombatant
-                ? 'Adicione cartas Starting ou Epiphany para montar o deck.'
+                ? 'Adicione cartas Starting, Epiphany, Neutral ou Monster para montar o deck.'
                 : 'Selecione um combatente para carregar as cartas base dele.'}
             </p>
           </div>
@@ -236,6 +245,45 @@ export function CombatantDeckColumn({
                         ? () => onOpenAvailableCardVariants(item)
                         : undefined
                     }
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {canShowNeutralAndMonsterCards && (
+          <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
+            <button
+              type="button"
+              onClick={() => setShowNeutralAndMonsterCards(current => !current)}
+              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
+            >
+              <div className="flex items-center gap-2">
+                {showNeutralAndMonsterCards ? (
+                  <ChevronDown size={14} className="text-[#c084fc]" />
+                ) : (
+                  <ChevronRight size={14} className="text-[#c084fc]" />
+                )}
+
+                <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                  Neutral & Monster Cards
+                </h3>
+              </div>
+
+              <span className="text-[10px] text-[#777]">
+                {neutralAndMonsterCards.length} disponíveis
+              </span>
+            </button>
+
+            {showNeutralAndMonsterCards && (
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {neutralAndMonsterCards.map(item => (
+                  <AvailableDeckBuilderCardButton
+                    key={item.card.card_id}
+                    item={item}
+                    onAdd={() => onAddDeckBuilderCard(item)}
+                    onOpenVariants={undefined}
                   />
                 ))}
               </div>

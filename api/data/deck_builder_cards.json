@@ -93,13 +93,13 @@
       },
       {
         "card_id": "c_1040_srt4",
-        "description": "[ Retain ] 140% Damage. Retain: Add 1 Hit(s) for 1 turn."
+        "description": "[Retain] 140% Damage. Retain: Add 1 Hit(s) for 1 turn."
       }
     ],
     "epiphany_cards": [
       {
         "card_id": "c_1040_uni1",
-        "description": "[ Retain ] 240% Damage. Retain: Damage +120%."
+        "description": "[Retain] 240% Damage. Retain: Damage +120%."
       },
       {
         "card_id": "c_1040_uni2",
@@ -197,7 +197,7 @@
       },
       {
         "card_id": "c_1060_uni4",
-        "description": "[ Bind 1 ] [ Retain ] 80% Damage. +80% Damage Amount for each Bind stack."
+        "description": "[ Bind 1 ] [Retain] 80% Damage. +80% Damage Amount for each Bind stack."
       }
     ],
     "ego_skill": {
@@ -265,7 +265,7 @@
       },
       {
         "card_id": "c_1062_srt4",
-        "description": "[ Pulverize ] 300% Damage. +100% Damage for each time this card has been used (Max 5 )."
+        "description": "[Pulverize] 300% Damage. +100% Damage for each time this card has been used (Max 5 )."
       }
     ],
     "epiphany_cards": [
@@ -279,11 +279,11 @@
       },
       {
         "card_id": "c_1062_uni3",
-        "description": "[ Retain ] Increase Damage Amount of Attacks Cards of this unit by 30% for 1 turn."
+        "description": "[Retain] Increase Damage Amount of Attacks Cards of this unit by 30% for 1 turn."
       },
       {
         "card_id": "c_1062_uni4",
-        "description": "[ Retain ] Increase Damage Amount by 80% of Anchor Shot in hand for 1 turn."
+        "description": "[Retain] Increase Damage Amount by 80% of Anchor Shot in hand for 1 turn."
       }
     ],
     "ego_skill": {
@@ -437,7 +437,7 @@
       },
       {
         "card_id": "c_1008_srt4",
-        "description": "[ Celestial ] [ Retain ] 120% Defense-based Damage to all enemies. 100% Shield. 1 Silver Veil."
+        "description": "[ Celestial ] [Retain] 120% Defense-based Damage to all enemies. 100% Shield. 1 Silver Veil."
       }
     ],
     "epiphany_cards": [
@@ -609,13 +609,13 @@
       },
       {
         "card_id": "c_1028_srt4",
-        "description": "[ Pulverize ] 140% Defense-based Damage. 20% DMG-Based Shield. 1 Counterattack."
+        "description": "[Pulverize] 140% Defense-based Damage. 20% DMG-Based Shield. 1 Counterattack."
       }
     ],
     "epiphany_cards": [
       {
         "card_id": "c_1028_uni1",
-        "description": "[ Pulverize ] 120% Defense-based Damage. Fixed Shield equal to Damage dealt (Does not exceed 20% of Max HP)."
+        "description": "[Pulverize] 120% Defense-based Damage. Fixed Shield equal to Damage dealt (Does not exceed 20% of Max HP)."
       },
       {
         "card_id": "c_1028_uni2",
@@ -627,7 +627,7 @@
       },
       {
         "card_id": "c_1028_uni4",
-        "description": "[ Pulverize ] Fixed Damage equal to Shield owned."
+        "description": "[Pulverize] Fixed Damage equal to Shield owned."
       }
     ],
     "ego_skill": {
@@ -666,7 +666,7 @@
       },
       {
         "card_id": "c_1027_uni3",
-        "description": "[ Retain ] For 1 turn, when using an own card +20% own Damage Amount."
+        "description": "[Retain] For 1 turn, when using an own card +20% own Damage Amount."
       },
       {
         "card_id": "c_1027_uni4",
@@ -701,7 +701,7 @@
     "epiphany_cards": [
       {
         "card_id": "c_1039_uni1",
-        "description": "[ Retain ] Heal 100%. Increase Heal Amount by 30% for each AP."
+        "description": "[Retain] Heal 100%. Increase Heal Amount by 30% for each AP."
       },
       {
         "card_id": "c_1039_uni2",
@@ -756,7 +756,7 @@
       },
       {
         "card_id": "c_1052_uni4",
-        "description": "[ Retain ] [Unique] If Voracity is decreased, decrease Cost by 1 and add +30% Heal Amount (max 10) until used. 160% Defense-Based Damage to all enemies. Heal 100%. 4 Predation."
+        "description": "[Retain] [Unique] If Voracity is decreased, decrease Cost by 1 and add +30% Heal Amount (max 10) until used. 160% Defense-Based Damage to all enemies. Heal 100%. 4 Predation."
       }
     ],
     "ego_skill": {
@@ -791,7 +791,7 @@
       },
       {
         "card_id": "c_1003_uni2",
-        "description": "[ Retain ] Heal 120%. When a card is discarded, Heal 100%, 1 Decibel and 2 Elasticity for 1 turn."
+        "description": "[Retain] Heal 120%. When a card is discarded, Heal 100%, 1 Decibel and 2 Elasticity for 1 turn."
       },
       {
         "card_id": "c_1003_uni3",
@@ -881,7 +881,7 @@
       },
       {
         "card_id": "c_1024_uni3",
-        "description": "[ Retain ] Create 1 Creation★ card(s). Retain: Change this card to Creation★★★."
+        "description": "[Retain] Create 1 Creation★ card(s). Retain: Change this card to Creation★★★."
       },
       {
         "card_id": "c_1024_uni4",
@@ -1014,7 +1014,7 @@
       },
       {
         "card_id": "c_1041_uni4",
-        "description": "[ Retain ] 150% Damage (+0%). Discard all Dirge Bullets and +50% Damage Amount for each."
+        "description": "[Retain] 150% Damage (+0%). Discard all Dirge Bullets and +50% Damage Amount for each."
       },
       {
         "card_id": "c_1041_uni5"
@@ -1220,7 +1220,7 @@
     "epiphany_cards": [
       {
         "card_id": "c_30084_uni1",
-        "description": "[ Retain ] Draw 2 Archetype cards. Double a random effect of those cards for 1 turn."
+        "description": "[Retain] Draw 2 Archetype cards. Double a random effect of those cards for 1 turn."
       },
       {
         "card_id": "c_30084_uni2",
@@ -1353,7 +1353,7 @@
       },
       {
         "card_id": "c_1057_uni2",
-        "description": "[ Retain ] 180% Damage. Activate Inspiration for 1 random card of this unit in hand."
+        "description": "[Retain] 180% Damage. Activate Inspiration for 1 random card of this unit in hand."
       },
       {
         "card_id": "c_1057_uni3",

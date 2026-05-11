@@ -1,7 +1,7 @@
 import { DECK_BUILDER_CARD_IMAGE_BY_ID } from '@/pages/deck-builder/data/deck-builder-card-images'
 import type { CardEntry } from '@/lib/types'
 
-const cardImages = import.meta.glob(
+const combatantCardImages = import.meta.glob(
   '../pages/deck-builder/data/combatants/**/*.{webp,png,jpg,jpeg,avif}',
   {
     eager: true,
@@ -9,6 +9,20 @@ const cardImages = import.meta.glob(
     import: 'default',
   },
 ) as Record<string, string>
+
+const neutralAndMonsterCardImages = import.meta.glob(
+  '../pages/deck-builder/data/neutral-cards/**/*.{webp,png,jpg,jpeg,avif}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+) as Record<string, string>
+
+const cardImages = {
+  ...combatantCardImages,
+  ...neutralAndMonsterCardImages,
+}
 
 const faceImages = import.meta.glob(
   '../../api/assets/game/faces/*.{webp,png,jpg,jpeg,avif}',

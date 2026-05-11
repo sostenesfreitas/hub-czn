@@ -13,7 +13,16 @@ export type DeckBuilderEpiphanyVariant = {
   description: string
 }
 
-export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants'> & {
+export type DeckBuilderCardGroup =
+  | ApiDeckBuilderCard['group']
+  | 'neutral'
+  | 'monster'
+
+export type DeckBuilderCardWithVariants = Omit<
+  ApiDeckBuilderCard,
+  'variants' | 'group' | 'description'
+> & {
+  group: DeckBuilderCardGroup
   description?: string | null
   variants?: DeckBuilderEpiphanyVariant[]
 }
