@@ -11,6 +11,7 @@ class EffectResult:
     cs_added: dict[str, int] = field(default_factory=dict)
     shield_added: int = 0
     cards_moved: list[str] = field(default_factory=list)
+    dva_stacks_observed: dict[str, int] = field(default_factory=dict)
 
     @classmethod
     def skipped_with(cls, reason: str) -> "EffectResult":

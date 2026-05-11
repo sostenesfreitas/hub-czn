@@ -51,3 +51,16 @@ def test_runtime_skips_when_trigger_ineligible(runtime, minimal_state):
         pytest.skip("no client instances for passive type")
     result = runtime.apply(instances[0].id, caster, state, context="active")
     assert result.skipped
+
+
+def test_effect_result_has_dva_stacks_observed_default_empty():
+    from api.simulator.result import EffectResult
+    r = EffectResult()
+    assert r.dva_stacks_observed == {}
+
+
+def test_effect_result_dva_stacks_observed_accepts_dict():
+    from api.simulator.result import EffectResult
+    r = EffectResult(damage=100, dva_stacks_observed={"cs_91": 3, "cs_112": 1})
+    assert r.dva_stacks_observed["cs_91"] == 3
+    assert r.dva_stacks_observed["cs_112"] == 1
