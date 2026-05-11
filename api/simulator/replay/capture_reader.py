@@ -67,7 +67,11 @@ class CaptureReader:
             raw = json.loads(line)
         except json.JSONDecodeError:
             return None
-        if raw.get("dir") != "s2c":
+        # Accept either the newer "dir=s2c" schema or older captures that
+        # omit `dir` entirely (every frame is an s2c response with `data`).
+        # Reject only explicitly-non-s2c frames (e.g. dir=c2s, http_req, http_resp).
+        direction = raw.get("dir")
+        if direction is not None and direction != "s2c":
             return None
         data = raw.get("data")
         if not isinstance(data, dict):
