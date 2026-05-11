@@ -1,7 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
-  ChevronDown,
-  ChevronRight,
   Plus,
   Sparkles,
   Trash2,
@@ -15,14 +13,48 @@ import type {
 import {
   getInstanceCost,
   getNeutralAndMonsterDeckBuilderCards,
-  getVariants,
 } from '../deck-builder.utils'
-import { AvailableDeckBuilderCardButton } from './AvailableDeckBuilderCardButton'
 import { CharacterAvatar } from './CharacterAvatar'
-import { DeckCard } from './DeckCard'
+import { DeckBuilderCardSelectionModal } from './DeckBuilderCardSelectionModal'
+import { DeckCardCompact } from './DeckCardCompact'
 import { EgoSkillCard } from './EgoSkillCard'
 
+type CardSelectionModalType =
+  | 'starting'
+  | 'epiphany'
+  | 'neutral-monster'
+
+type GroupedDeckCard = {
+  key: string
+  item: DeckCardInstance
+  quantity: number
+}
+
 const NEUTRAL_AND_MONSTER_CARDS = getNeutralAndMonsterDeckBuilderCards()
+
+function getGroupedDeckCards(cards: DeckCardInstance[]): GroupedDeckCard[] {
+  const map = new Map<string, GroupedDeckCard>()
+
+  for (const item of cards) {
+    const variantId = item.selectedVariant?.variant_id ?? 'base'
+    const key = `${item.card.card_id}::${variantId}`
+
+    const existing = map.get(key)
+
+    if (existing) {
+      existing.quantity += 1
+      continue
+    }
+
+    map.set(key, {
+      key,
+      item,
+      quantity: 1,
+    })
+  }
+
+  return Array.from(map.values())
+}
 
 export function CombatantDeckColumn({
   slotIndex,
@@ -47,9 +79,7 @@ export function CombatantDeckColumn({
   onOpenAvailableCardVariants: (item: DeckBuilderCardWithVariants) => void
   onClearDeck: () => void
 }) {
-  const [showStartingCards, setShowStartingCards] = useState(false)
-  const [showEpiphanyCards, setShowEpiphanyCards] = useState(false)
-  const [showNeutralAndMonsterCards, setShowNeutralAndMonsterCards] = useState(false)
+  const [selectionModalType, setSelectionModalType] = useState<CardSelectionModalType | null>(null)
 
   const startingCards = slot.startingCards
   const epiphanyCards = slot.epiphanyCards
@@ -58,6 +88,42 @@ export function CombatantDeckColumn({
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
   const totalCost = slot.cards.reduce((sum, item) => sum + getInstanceCost(item), 0)
   const canShowNeutralAndMonsterCards = selectedCombatant != null && neutralAndMonsterCards.length > 0
+
+  const groupedDeckCards = useMemo(
+    () => getGroupedDeckCards(slot.cards),
+    [slot.cards],
+  )
+
+  const selectionModalConfig = (() => {
+    if (selectionModalType === 'starting') {
+      return {
+        title: 'Starting Cards',
+        subtitle: `${startingCards.length} cartas disponíveis para ${selectedCombatant?.name ?? 'este combatente'}.`,
+        cards: startingCards,
+        allowVariants: true,
+      }
+    }
+
+    if (selectionModalType === 'epiphany') {
+      return {
+        title: 'Epiphany Cards',
+        subtitle: `${epiphanyCards.length} cartas Epiphany disponíveis para ${selectedCombatant?.name ?? 'este combatente'}.`,
+        cards: epiphanyCards,
+        allowVariants: true,
+      }
+    }
+
+    if (selectionModalType === 'neutral-monster') {
+      return {
+        title: 'Neutral & Monster Cards',
+        subtitle: `${neutralAndMonsterCards.length} cartas neutras e de monstro disponíveis.`,
+        cards: neutralAndMonsterCards,
+        allowVariants: false,
+      }
+    }
+
+    return null
+  })()
 
   return (
     <section className="min-w-0 overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
@@ -133,166 +199,150 @@ export function CombatantDeckColumn({
             Carregando cartas do combatente...
           </div>
         ) : slot.cards.length === 0 ? (
-          <div className="flex h-[360px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
+          <div className="flex h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
             <Plus className="text-[#555]" size={32} />
+
             <p className="mt-3 text-sm font-medium text-[#aaa]">
               {selectedCombatant ? 'Nenhuma carta no deck' : 'Nenhum combatente selecionado'}
             </p>
-            <p className="mt-1 max-w-[220px] text-xs text-[#666]">
+
+            <p className="mt-1 max-w-[240px] text-xs text-[#666]">
               {selectedCombatant
-                ? 'Adicione cartas Starting, Epiphany, Neutral ou Monster para montar o deck.'
+                ? 'Use as seções abaixo para adicionar cartas ao deck.'
                 : 'Selecione um combatente para carregar as cartas base dele.'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 items-stretch gap-3">
-            {slot.cards.map(item => (
-              <DeckCard
-                key={item.instanceId}
-                item={item}
-                onDuplicate={() => onDuplicateCard(item.instanceId)}
-                onRemove={() => onRemoveCard(item.instanceId)}
-                onOpenVariants={
-                  item.variants.length > 0 || item.card.spark_count > 0
-                    ? () => onOpenDeckCardVariants(item)
-                    : undefined
-                }
-              />
-            ))}
-          </div>
-        )}
-
-        {startingCards.length > 0 && (
-          <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
-            <button
-              type="button"
-              onClick={() => setShowStartingCards(current => !current)}
-              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
-            >
-              <div className="flex items-center gap-2">
-                {showStartingCards ? (
-                  <ChevronDown size={14} className="text-[#c084fc]" />
-                ) : (
-                  <ChevronRight size={14} className="text-[#c084fc]" />
-                )}
-
+          <section className="rounded-xl border border-[#282838] bg-[#101018] p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
                 <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
-                  Starting Cards
+                  Cartas adicionadas
                 </h3>
+
+                <p className="mt-1 text-[10px] text-[#777]">
+                  {groupedDeckCards.length} grupos no deck montado.
+                </p>
               </div>
 
-              <span className="text-[10px] text-[#777]">
+              <span className="rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-bold text-[#93c5fd]">
+                {slot.cards.length} cartas
+              </span>
+            </div>
+
+            <div
+              className="mt-3 grid gap-3"
+              style={{
+                gridTemplateColumns: 'repeat(auto-fill, minmax(142px, 1fr))',
+              }}
+            >
+              {groupedDeckCards.map(group => (
+                <DeckCardCompact
+                  key={group.key}
+                  item={group.item}
+                  quantity={group.quantity}
+                  onDuplicate={() => onDuplicateCard(group.item.instanceId)}
+                  onRemove={() => onRemoveCard(group.item.instanceId)}
+                  onOpenVariants={
+                    group.item.variants.length > 0 || group.item.card.spark_count > 0
+                      ? () => onOpenDeckCardVariants(group.item)
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div className="mt-4 space-y-3">
+          {startingCards.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectionModalType('starting')}
+              className="flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition-colors hover:border-[#c084fc] hover:bg-[#171722]"
+            >
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                  Starting Cards
+                </p>
+
+                <p className="mt-1 text-[10px] text-[#777]">
+                  Clique para buscar e adicionar cartas iniciais.
+                </p>
+              </div>
+
+              <span className="rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-bold text-[#93c5fd]">
                 {startingCards.length} disponíveis
               </span>
             </button>
+          )}
 
-            {showStartingCards && (
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {startingCards.map(item => (
-                  <AvailableDeckBuilderCardButton
-                    key={item.card.card_id}
-                    item={item}
-                    onAdd={() => onAddDeckBuilderCard(item)}
-                    onOpenVariants={
-                      getVariants(item).length > 0 || item.card.spark_count > 0
-                        ? () => onOpenAvailableCardVariants(item)
-                        : undefined
-                    }
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-        )}
-
-        {epiphanyCards.length > 0 && (
-          <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
+          {epiphanyCards.length > 0 && (
             <button
               type="button"
-              onClick={() => setShowEpiphanyCards(current => !current)}
-              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
+              onClick={() => setSelectionModalType('epiphany')}
+              className="flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition-colors hover:border-[#c084fc] hover:bg-[#171722]"
             >
-              <div className="flex items-center gap-2">
-                {showEpiphanyCards ? (
-                  <ChevronDown size={14} className="text-[#c084fc]" />
-                ) : (
-                  <ChevronRight size={14} className="text-[#c084fc]" />
-                )}
-
+              <div>
                 <div className="flex items-center gap-2">
                   <Sparkles size={14} className="text-[#c084fc]" />
 
-                  <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
                     Epiphany Cards
-                  </h3>
+                  </p>
                 </div>
+
+                <p className="mt-1 text-[10px] text-[#777]">
+                  Clique para buscar variantes e cartas Epiphany.
+                </p>
               </div>
 
-              <span className="text-[10px] text-[#777]">
+              <span className="rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-bold text-[#93c5fd]">
                 {epiphanyCards.length} disponíveis
               </span>
             </button>
+          )}
 
-            {showEpiphanyCards && (
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {epiphanyCards.map(item => (
-                  <AvailableDeckBuilderCardButton
-                    key={item.card.card_id}
-                    item={item}
-                    onAdd={() => onAddDeckBuilderCard(item)}
-                    onOpenVariants={
-                      getVariants(item).length > 0 || item.card.spark_count > 0
-                        ? () => onOpenAvailableCardVariants(item)
-                        : undefined
-                    }
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-        )}
-
-        {canShowNeutralAndMonsterCards && (
-          <section className="mt-4 rounded-xl border border-[#282838] bg-[#101018] p-3">
+          {canShowNeutralAndMonsterCards && (
             <button
               type="button"
-              onClick={() => setShowNeutralAndMonsterCards(current => !current)}
-              className="flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#0f0f14] px-3 py-2 text-left"
+              onClick={() => setSelectionModalType('neutral-monster')}
+              className="flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition-colors hover:border-[#c084fc] hover:bg-[#171722]"
             >
-              <div className="flex items-center gap-2">
-                {showNeutralAndMonsterCards ? (
-                  <ChevronDown size={14} className="text-[#c084fc]" />
-                ) : (
-                  <ChevronRight size={14} className="text-[#c084fc]" />
-                )}
-
-                <h3 className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-[#e5e7eb]">
                   Neutral & Monster Cards
-                </h3>
+                </p>
+
+                <p className="mt-1 text-[10px] text-[#777]">
+                  Clique para buscar cartas neutras e de monstro.
+                </p>
               </div>
 
-              <span className="text-[10px] text-[#777]">
+              <span className="rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-bold text-[#93c5fd]">
                 {neutralAndMonsterCards.length} disponíveis
               </span>
             </button>
-
-            {showNeutralAndMonsterCards && (
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {neutralAndMonsterCards.map(item => (
-                  <AvailableDeckBuilderCardButton
-                    key={item.card.card_id}
-                    item={item}
-                    onAdd={() => onAddDeckBuilderCard(item)}
-                    onOpenVariants={undefined}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-        )}
+          )}
+        </div>
 
         {egoSkill && <EgoSkillCard egoSkill={egoSkill} />}
       </div>
+
+      {selectionModalConfig && (
+        <DeckBuilderCardSelectionModal
+          title={selectionModalConfig.title}
+          subtitle={selectionModalConfig.subtitle}
+          cards={selectionModalConfig.cards}
+          onClose={() => setSelectionModalType(null)}
+          onAddCard={onAddDeckBuilderCard}
+          onOpenVariants={
+            selectionModalConfig.allowVariants
+              ? onOpenAvailableCardVariants
+              : undefined
+          }
+        />
+      )}
     </section>
   )
 }
