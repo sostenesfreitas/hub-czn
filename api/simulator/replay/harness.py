@@ -1,6 +1,13 @@
 """
 ReplayHarness: walks CaptureEvents through the Sprint 1 Runtime and
 records per-event categorized reports.
+
+Split-frame protocol: dev_msg (SkillEff) and battle_wt arrive in separate
+s2c frames.  The harness therefore:
+  - State-update events  (is_state_update=True)  → re-sync state via
+    reconstructor; resolve obs_damage for any pending dispatched rows.
+  - Skill-fire events    (is_state_update=False)  → dispatch via runtime;
+    park result in pending list until the next state-update snapshot.
 """
 from dataclasses import dataclass, field
 
@@ -17,6 +24,7 @@ class EventReport:
     sim_damage: int = 0
     obs_damage: int | None = None
     delta_pct: float | None = None
+    target_id: str | None = None
     error: str = ""
 
 
@@ -61,15 +69,48 @@ class ReplayHarness:
         summary = ReplaySummary()
         reports: list[EventReport] = []
         state = None
+        pending_dispatches: list[EventReport] = []
         for event in reader.events():
-            if state is None:
-                state = self._reconstructor.reconstruct(event.snapshot)
-                continue
-            for skill_eff_id in event.skill_eff_ids:
-                row = self._dispatch_one(event, skill_eff_id, state)
-                reports.append(row)
-                summary.record(row.eff_type or "?", row.status, row.delta_pct)
+            if event.skill_eff_ids and state is not None:
+                for skill_eff_id in event.skill_eff_ids:
+                    row = self._dispatch_one(event, skill_eff_id, state)
+                    reports.append(row)
+                    summary.record(row.eff_type or "?", row.status, None)
+                    if row.status == "dispatched":
+                        pending_dispatches.append(row)
+            if event.is_state_update:
+                if state is None:
+                    state = self._reconstructor.reconstruct(event.snapshot)
+                else:
+                    self._resolve_pending(pending_dispatches, event.snapshot, summary)
+                    pending_dispatches = []
+                    state = self._reconstructor.reconstruct(event.snapshot)
         return summary, reports
+
+    @staticmethod
+    def _resolve_pending(pending: list, snapshot: dict, summary) -> None:
+        """Fill in obs_damage / delta_pct on pending dispatched rows using this snapshot.
+        Then increment within/outside counters."""
+        for row in pending:
+            obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, row.target_id)
+            if obs is not None and obs > 0:
+                row.obs_damage = obs
+                row.delta_pct = (row.sim_damage - obs) / obs
+                if abs(row.delta_pct) <= 0.05:
+                    summary.dispatched_dmg_within_5pct += 1
+                else:
+                    summary.dispatched_dmg_outside_5pct += 1
+
+    @staticmethod
+    def _extract_observed_damage_from_snapshot(snapshot: dict, target_id) -> "int | None":
+        if target_id is None:
+            return None
+        for m in snapshot.get("monsters", []):
+            if str(m.get("id", "")) != str(target_id):
+                continue
+            lde = m.get("lastDamageEvent") or {}
+            return int(lde.get("damage", 0) or 0) if "damage" in lde else None
+        return None
 
     def _dispatch_one(self, event, skill_eff_id: str, state) -> EventReport:
         row = EventReport(seq=event.seq, skill_eff_id=skill_eff_id)
@@ -96,27 +137,17 @@ class ReplayHarness:
             row.error = getattr(result, "skip_reason", "")
             return row
         row.sim_damage = int(getattr(result, "damage", 0) or 0)
+        row.target_id = getattr(result, "target_id", None)
         type_def = self._runtime._catalog.get(inst.eff_type) if hasattr(self._runtime, "_catalog") else None
         ref = (type_def or {}).get("effect", {}).get("formula_ref", "")
         if ref.startswith("F_UNKNOWN") or ref == "F_NOOP":
             row.status = "stub"
         else:
             row.status = "dispatched"
-            obs = self._extract_observed_damage(event, result.target_id)
-            if obs is not None:
-                row.obs_damage = obs
-                if obs > 0:
-                    row.delta_pct = (row.sim_damage - obs) / obs
         return row
 
     @staticmethod
-    def _extract_observed_damage(event, target_id) -> int | None:
-        """Read monster.lastDamageEvent.damage from the snapshot for the target."""
-        if target_id is None:
-            return None
-        for m in event.snapshot.get("monsters", []):
-            if str(m.get("id", "")) != str(target_id):
-                continue
-            lde = m.get("lastDamageEvent") or {}
-            return int(lde.get("damage", 0) or 0) if "damage" in lde else None
-        return None
+    def _extract_observed_damage(event, target_id) -> "int | None":
+        """Read monster.lastDamageEvent.damage from the snapshot for the target.
+        Kept for backwards-compat with existing tests; not called by replay()."""
+        return ReplayHarness._extract_observed_damage_from_snapshot(event.snapshot, target_id)

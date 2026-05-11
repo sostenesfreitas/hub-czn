@@ -34,10 +34,13 @@ def test_first_event_is_baseline_no_dispatch():
     runtime = MagicMock()
     runtime.apply = MagicMock()
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=_minimal_bw(), skill_eff_ids=["c_1057_srt1_01"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=_minimal_bw(), is_state_update=True, skill_eff_ids=["c_1057_srt1_01"]),
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
-    # baseline frame doesn't dispatch
+    # state is set on the first is_state_update event; skill_eff_ids are only
+    # dispatched when state is ALREADY set (i.e. after the first baseline).
+    # With only one event, skill fires but state was None when we checked,
+    # so nothing dispatches.
     runtime.apply.assert_not_called()
     assert summary.total_events == 0
     assert reports == []
@@ -49,8 +52,8 @@ def test_dispatch_records_event_report():
     runtime.apply = MagicMock(return_value=EffectResult(damage=500, target_id="79"))
     bw = _minimal_bw()
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=bw, skill_eff_ids=[]),
-        CaptureEvent(ts="t1", seq=1, snapshot=bw, skill_eff_ids=["c_1057_srt1_01"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True, skill_eff_ids=["c_1057_srt1_01"]),
     ])
     instances = MagicMock()
     fake_inst = MagicMock()
@@ -73,8 +76,8 @@ def test_runtime_keyerror_records_missing():
     runtime._instances = instances
     bw = _minimal_bw()
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=bw, skill_eff_ids=[]),
-        CaptureEvent(ts="t1", seq=1, snapshot=bw, skill_eff_ids=["unknown_id"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True, skill_eff_ids=["unknown_id"]),
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert summary.missing_from_index == 1
@@ -91,8 +94,8 @@ def test_runtime_unexpected_exception_records_crashed():
     runtime.apply = MagicMock(side_effect=RuntimeError("boom"))
     bw = _minimal_bw()
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=bw, skill_eff_ids=[]),
-        CaptureEvent(ts="t1", seq=1, snapshot=bw, skill_eff_ids=["c_x"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True, skill_eff_ids=["c_x"]),
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert summary.crashed == 1
@@ -114,8 +117,9 @@ def test_damage_within_5_percent_categorized_correctly():
     bw2 = _minimal_bw()
     bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=bw1, skill_eff_ids=[]),
-        CaptureEvent(ts="t1", seq=1, snapshot=bw2, skill_eff_ids=["c_x"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_ids=["c_x"]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_ids=[]),
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert reports[0].status == "dispatched"
@@ -139,8 +143,9 @@ def test_damage_outside_5_percent_counted_in_outliers():
     bw2 = _minimal_bw()
     bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
     reader = _FakeReader([
-        CaptureEvent(ts="t0", seq=0, snapshot=bw1, skill_eff_ids=[]),
-        CaptureEvent(ts="t1", seq=1, snapshot=bw2, skill_eff_ids=["c_x"]),
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_ids=["c_x"]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_ids=[]),
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert summary.dispatched_dmg_outside_5pct == 1

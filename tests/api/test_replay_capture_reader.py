@@ -26,7 +26,8 @@ def test_skips_non_s2c_frames(tmp_path):
     assert events[0].snapshot == {"foo": 1}
 
 
-def test_skips_s2c_frames_without_battle_wt(tmp_path):
+def test_skips_s2c_frames_without_battle_wt_and_without_skill_eff(tmp_path):
+    """Frames with no battle_wt AND no SkillEff lines are silently skipped."""
     cap = _write_jsonl(tmp_path, [
         {"ts": "t0", "dir": "s2c", "size": 1, "data": {"snapshot": {"cache": {}}}},
         {"ts": "t1", "dir": "s2c", "size": 1, "data": {"snapshot": {"cache": {"battle_wt": {"foo": 1}}}}},
@@ -63,3 +64,26 @@ def test_seq_is_zero_indexed(tmp_path):
     events = list(CaptureReader(cap).events())
     assert events[0].seq == 0
     assert events[1].seq == 1
+
+
+def test_yields_skill_eff_frame_without_battle_wt(tmp_path):
+    """SkillEff frame may arrive without battle_wt in the same s2c frame."""
+    dev_msg = "**battle log : SkillEff 3:c_x_01:SKILL_EFF_DMG\n"
+    cap = _write_jsonl(tmp_path, [{
+        "ts": "t0", "dir": "s2c", "size": 1,
+        "data": {"dev_msg": dev_msg},  # no snapshot at all
+    }])
+    events = list(CaptureReader(cap).events())
+    assert len(events) == 1
+    assert events[0].is_state_update is False
+    assert events[0].snapshot == {}
+    assert events[0].skill_eff_ids == ["c_x_01"]
+
+
+def test_state_update_frame_sets_flag(tmp_path):
+    cap = _write_jsonl(tmp_path, [
+        {"ts": "t0", "dir": "s2c", "size": 1, "data": {"snapshot": {"cache": {"battle_wt": {"foo": 1}}}}},
+    ])
+    events = list(CaptureReader(cap).events())
+    assert events[0].is_state_update is True
+    assert events[0].snapshot == {"foo": 1}
