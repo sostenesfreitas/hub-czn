@@ -104,13 +104,26 @@ class ReplayHarness:
 
     @staticmethod
     def _extract_observed_damage_from_snapshot(snapshot: dict, target_id) -> "int | None":
+        """Read monster.lastDamageEvent.damage for the target, but skip
+        auto-attack ticks (is_auto=true OR type contains DMG_ATTR_AUTO/FIX).
+        These represent a separate game mechanic, not the player's skill hit.
+        """
         if target_id is None:
             return None
         for m in snapshot.get("monsters", []):
             if str(m.get("id", "")) != str(target_id):
                 continue
             lde = m.get("lastDamageEvent") or {}
-            return int(lde.get("damage", 0) or 0) if "damage" in lde else None
+            if "damage" not in lde:
+                return None
+            if lde.get("is_auto", False) is True:
+                return None
+            attr_types = lde.get("type") or []
+            if isinstance(attr_types, list):
+                auto_markers = {"DMG_ATTR_AUTO", "DMG_ATTR_FIX"}
+                if any(t in auto_markers for t in attr_types):
+                    return None
+            return int(lde.get("damage", 0) or 0)
         return None
 
     def _dispatch_one(self, event, fire, state) -> EventReport:

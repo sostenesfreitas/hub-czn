@@ -284,3 +284,36 @@ def test_render_report_includes_char_names_in_outlier_table():
     md = render_report(summary, reports, capture_id="test", char_resolver=CharResolver())
     # caster char id 30093 → Heidemarie should appear in the outliers table
     assert "Heidemarie" in md
+
+
+def test_extract_obs_skips_auto_attack_last_damage_event():
+    """lastDamageEvent with is_auto=true represents an auto-attack tick,
+    not a player skill hit. Treat as no observation."""
+    snapshot = {
+        "monsters": [{
+            "id": 38,
+            "lastDamageEvent": {
+                "damage": 30, "is_auto": True,
+                "type": ["DMG_ATTR_FIX", "DMG_ATTR_AUTO"],
+                "old_hp": 1100, "new_hp": 1070,
+            },
+        }],
+    }
+    obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, "38")
+    assert obs is None  # auto-attack tick is filtered out
+
+
+def test_extract_obs_returns_damage_for_real_skill_hit():
+    """A non-auto lastDamageEvent IS a player skill hit — return its damage."""
+    snapshot = {
+        "monsters": [{
+            "id": 38,
+            "lastDamageEvent": {
+                "damage": 543, "is_auto": False,
+                "type": ["DMG_ATTR_BASE_ON_DEF"],
+                "old_hp": 1100, "new_hp": 557,
+            },
+        }],
+    }
+    obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, "38")
+    assert obs == 543

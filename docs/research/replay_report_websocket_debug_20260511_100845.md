@@ -8,7 +8,7 @@ char names from deck_builder manifest where parseable.
 - Total events: 759
 - Crashed: 4 (0.5%)
 - Dispatched within ±5%: 0 (0.0%)
-- Dispatched outside ±5%: 118 (15.5%)
+- Dispatched outside ±5%: 0 (0.0%)
 - Routed to stub: 0 (0.0%)
 - Missing from index: 51 (6.7%)
 - No target / skipped: 56 (7.4%)
@@ -38,59 +38,4 @@ char names from deck_builder manifest where parseable.
 | `SKILL_EFF_NONE` | 0 | 0 | 0 | 0 | 3 |
 | `SKILL_EFF_CARD_CHANGE` | 0 | 0 | 0 | 0 | 2 |
 | `SKILL_EFF_ENERGY_CHANGE` | 2 | 0 | 0 | 0 | 0 |
-
-## Top 50 outlier events (worst delta_pct first)
-
-| seq | char | skill_eff_id | eff_type | sim | obs | delta% |
-|---|---|---|---|---|---|---|
-| 11 | Heidemarie | `c_30093_uni4_lbk_mut1_01` | SKILL_EFF_DMG | 12227 | 30 | +40656.7% |
-| 4 | ? | `cs06_0157_03` | SKILL_EFF_DMG_COOP | 3494 | 30 | +11546.7% |
-| 4 | ? | `cs06_0157_04` | SKILL_EFF_DMG_COOP | 3494 | 30 | +11546.7% |
-| 4 | ? | `cs06_0157_05` | SKILL_EFF_DMG_COOP | 3494 | 30 | +11546.7% |
-| 10 | ? | `cs06_0157_03` | SKILL_EFF_DMG_COOP | 3494 | 30 | +11546.7% |
-| 10 | ? | `cs06_0157_04` | SKILL_EFF_DMG_COOP | 3494 | 30 | +11546.7% |
-| 3 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 2096 | 30 | +6886.7% |
-| 3 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 2096 | 30 | +6886.7% |
-| 4 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 2096 | 30 | +6886.7% |
-| 8 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 2096 | 30 | +6886.7% |
-| 10 | ? | `cs06_0157_05` | SKILL_EFF_DMG_COOP | 1792 | 30 | +5873.3% |
-| 8 | Heidemarie | `c_30093_uni2_rsp3_01` | SKILL_EFF_DMG | 1747 | 30 | +5723.3% |
-| 2 | Diana | `c_1061_uni2_rsp4_01` | SKILL_EFF_DMG | 1612 | 30 | +5273.3% |
-| 4 | Heidemarie | `c_30093_srt4_rsp1_01` | SKILL_EFF_DMG | 1397 | 30 | +4556.7% |
-| 4 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 1075 | 30 | +3483.3% |
-| 8 | Heidemarie | `c_30093_cre1_mut1_02` | SKILL_EFF_DMG | 1075 | 30 | +3483.3% |
-| 12 | ? | `rr_lux_01_01_01` | SKILL_EFF_DMG_IGNORE_COND | 873 | 30 | +2810.0% |
-| 3 | Heidemarie | `c_30093_srt4_rsp1_01` | SKILL_EFF_DMG | 717 | 30 | +2290.0% |
-| 8 | Heidemarie | `c_30093_srt4_rsp1_01` | SKILL_EFF_DMG | 717 | 30 | +2290.0% |
-| 5 | ? | `rr_lux_01_01_01` | SKILL_EFF_DMG_IGNORE_COND | 448 | 30 | +1393.3% |
-| 3 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1084_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs06_0157_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `eq_pub_032_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1084_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs06_0157_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `eq_pub_032_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1084_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs06_0157_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs07_0078_1` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `eq_pub_032_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1084_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs06_0157_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs07_0078_1` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `eq_pub_032_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1062_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c2_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c2_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c2_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | ? | `30094_c2_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 3 | Heidemarie | `c_30093_uni1_rsp1_01` | SKILL_EFF_CARD_DRAW | 0 | 30 | -100.0% |
-| 3 | Heidemarie | `c_30093_uni1_rsp1_02` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
-| 3 | ? | `cs01_1011_01` | SKILL_EFF_CARD_GET | 0 | 30 | -100.0% |
-| 4 | ? | `30094_c1_lv5_01_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 4 | ? | `cs01_1084_01` | SKILL_EFF_CS_SET_ADD_IGNORE_COND | 0 | 30 | -100.0% |
-| 4 | ? | `cs06_0157_01` | SKILL_EFF_CS_SET_ADD | 0 | 30 | -100.0% |
 
