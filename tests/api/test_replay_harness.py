@@ -264,3 +264,23 @@ def test_harness_uses_fire_target_id_for_obs_lookup():
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert reports[0].obs_damage == 1000  # read from monster id=200, not 79
+
+
+def test_render_report_includes_char_names_in_outlier_table():
+    from api.simulator.replay.char_resolver import CharResolver
+
+    summary = ReplaySummary(total_events=2, dispatched_dmg_within_5pct=0,
+                            dispatched_dmg_outside_5pct=1,
+                            by_eff_type={
+                                "SKILL_EFF_DMG": {"dispatched": 1, "stub": 0, "missing": 0,
+                                                  "crashed": 0, "no_target": 0},
+                            })
+    reports = [
+        EventReport(seq=11, skill_eff_id="c_30093_uni4_lbk_mut1_01",
+                    eff_type="SKILL_EFF_DMG", status="dispatched",
+                    sim_damage=12227, obs_damage=300, delta_pct=39.76,
+                    target_id="79"),
+    ]
+    md = render_report(summary, reports, capture_id="test", char_resolver=CharResolver())
+    # caster char id 30093 → Heidemarie should appear in the outliers table
+    assert "Heidemarie" in md

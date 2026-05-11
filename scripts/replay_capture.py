@@ -21,6 +21,7 @@ from api.simulator.replay.capture_reader import CaptureReader
 from api.simulator.replay.reconstructor import StateReconstructor
 from api.simulator.replay.harness import ReplayHarness
 from api.simulator.replay.report import render_report
+from api.simulator.replay.char_resolver import CharResolver
 
 
 CLIENT_DB = Path(r"C:\Users\soste\Downloads\output\db")
@@ -60,7 +61,7 @@ def main(argv: list[str]) -> int:
     summary, reports = harness.replay(reader)
 
     capture_id = capture_path.stem
-    md = render_report(summary, reports, capture_id=capture_id)
+    md = render_report(summary, reports, capture_id=capture_id, char_resolver=CharResolver())
     out_path = REPORT_DIR / f"replay_report_{capture_id}.md"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(md, encoding="utf-8")
