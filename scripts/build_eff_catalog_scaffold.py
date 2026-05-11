@@ -79,7 +79,7 @@ def load_skill_eff_instances() -> list[dict]:
 
 def load_observed_counts() -> dict[str, int]:
     """Count SkillEff lines in capture dev_msg streams, grouped by eff_type."""
-    pattern = re.compile(r"SkillEff\s+\d+:\d+:([A-Z_]+)")
+    pattern = re.compile(r"SkillEff\s+\d+:[^:]+:([A-Z_][A-Z_0-9]*)")
     counts: Counter[str] = Counter()
     sources = list(CAPTURE_DIR.glob("websocket_debug_*.jsonl")) + list(SNAPSHOT_DIR.glob("websocket_debug_*.jsonl"))
     for src in sources:

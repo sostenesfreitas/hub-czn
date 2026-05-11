@@ -132,5 +132,5 @@ def test_generated_catalog_validates():
     """The catalog produced by scripts/build_eff_catalog_scaffold.py must validate."""
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
-    assert len(catalog) >= 1, "catalog must have at least one entry"
+    assert len(catalog) >= 40, "scope shrank unexpectedly"
     jsonschema.validate(instance=catalog, schema=schema)
