@@ -97,3 +97,49 @@ def test_runtime_unexpected_exception_records_crashed():
     assert summary.crashed == 1
     assert reports[0].status == "crashed"
     assert "boom" in reports[0].error
+
+
+def test_damage_within_5_percent_categorized_correctly():
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=950, target_id="79"))
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw2, skill_eff_ids=["c_x"]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].status == "dispatched"
+    assert reports[0].obs_damage == 1000
+    assert reports[0].delta_pct is not None
+    assert abs(reports[0].delta_pct) <= 0.05
+    assert summary.dispatched_dmg_within_5pct == 1
+
+
+def test_damage_outside_5_percent_counted_in_outliers():
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=500, target_id="79"))
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, skill_eff_ids=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw2, skill_eff_ids=["c_x"]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert summary.dispatched_dmg_outside_5pct == 1

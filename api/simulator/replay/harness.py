@@ -31,7 +31,7 @@ class ReplaySummary:
     no_target: int = 0
     by_eff_type: dict[str, dict[str, int]] = field(default_factory=dict)
 
-    def record(self, eff_type: str, status: str):
+    def record(self, eff_type: str, status: str, delta_pct: float | None = None):
         self.total_events += 1
         slot = self.by_eff_type.setdefault(eff_type, {
             "dispatched": 0, "stub": 0, "missing": 0, "crashed": 0, "no_target": 0,
@@ -45,6 +45,11 @@ class ReplaySummary:
             self.missing_from_index += 1
         elif status == "no_target":
             self.no_target += 1
+        elif status == "dispatched" and delta_pct is not None:
+            if abs(delta_pct) <= 0.05:
+                self.dispatched_dmg_within_5pct += 1
+            else:
+                self.dispatched_dmg_outside_5pct += 1
 
 
 class ReplayHarness:
@@ -63,7 +68,7 @@ class ReplayHarness:
             for skill_eff_id in event.skill_eff_ids:
                 row = self._dispatch_one(event, skill_eff_id, state)
                 reports.append(row)
-                summary.record(row.eff_type or "?", row.status)
+                summary.record(row.eff_type or "?", row.status, row.delta_pct)
         return summary, reports
 
     def _dispatch_one(self, event, skill_eff_id: str, state) -> EventReport:
@@ -97,4 +102,21 @@ class ReplayHarness:
             row.status = "stub"
         else:
             row.status = "dispatched"
+            obs = self._extract_observed_damage(event, result.target_id)
+            if obs is not None:
+                row.obs_damage = obs
+                if obs > 0:
+                    row.delta_pct = (row.sim_damage - obs) / obs
         return row
+
+    @staticmethod
+    def _extract_observed_damage(event, target_id) -> int | None:
+        """Read monster.lastDamageEvent.damage from the snapshot for the target."""
+        if target_id is None:
+            return None
+        for m in event.snapshot.get("monsters", []):
+            if str(m.get("id", "")) != str(target_id):
+                continue
+            lde = m.get("lastDamageEvent") or {}
+            return int(lde.get("damage", 0) or 0) if "damage" in lde else None
+        return None
