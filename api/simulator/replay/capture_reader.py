@@ -9,15 +9,11 @@ events for frames that carry EITHER:
 Frames with neither are silently skipped.
 """
 import json
-import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterator
 
-
-# Same alphanumeric pattern as scripts/build_eff_catalog_scaffold.py.
-# res_id is alphanumeric+underscore, NOT digits-only.
-SKILL_EFF_PATTERN = re.compile(r"SkillEff\s+\d+:([^:]+):([A-Z_][A-Z_0-9]*)")
+from api.simulator.replay.dev_msg_parser import SkillEffFire, parse_dev_msg
 
 
 @dataclass(frozen=True)
@@ -28,7 +24,12 @@ class CaptureEvent:
     snapshot: dict
     is_state_update: bool = False
     dev_msg_lines: list[str] = field(default_factory=list)
-    skill_eff_ids: list[str] = field(default_factory=list)
+    skill_eff_fires: list[SkillEffFire] = field(default_factory=list)
+
+    @property
+    def skill_eff_ids(self) -> list[str]:
+        """Backwards-compat shim — equivalent to [f.skill_eff_id for f in skill_eff_fires]."""
+        return [f.skill_eff_id for f in self.skill_eff_fires]
 
 
 class CaptureReader:
@@ -76,16 +77,12 @@ class CaptureReader:
                 if not isinstance(bw, dict):
                     bw = None
         dev_msg = data.get("dev_msg", "")
-        skill_eff_ids: list[str] = []
+        skill_eff_fires: list[SkillEffFire] = []
         dev_msg_lines: list[str] = []
-        if isinstance(dev_msg, str):
-            for ln in dev_msg.split("\n"):
-                if "SkillEff" in ln:
-                    dev_msg_lines.append(ln)
-                    m = SKILL_EFF_PATTERN.search(ln)
-                    if m:
-                        skill_eff_ids.append(m.group(1))
-        if bw is None and not skill_eff_ids:
+        if isinstance(dev_msg, str) and dev_msg:
+            skill_eff_fires = parse_dev_msg(dev_msg)
+            dev_msg_lines = [ln for ln in dev_msg.split("\n") if "SkillEff" in ln]
+        if bw is None and not skill_eff_fires:
             return None
         return CaptureEvent(
             ts=raw.get("ts", ""),
@@ -93,5 +90,5 @@ class CaptureReader:
             snapshot=bw if bw is not None else {},
             is_state_update=bw is not None,
             dev_msg_lines=dev_msg_lines,
-            skill_eff_ids=skill_eff_ids,
+            skill_eff_fires=skill_eff_fires,
         )

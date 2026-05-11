@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from api.simulator.replay.capture_reader import CaptureReader, CaptureEvent
+from api.simulator.replay.dev_msg_parser import SkillEffFire
 
 
 def _write_jsonl(tmp_path: Path, frames: list[dict]) -> Path:
@@ -87,3 +88,23 @@ def test_state_update_frame_sets_flag(tmp_path):
     events = list(CaptureReader(cap).events())
     assert events[0].is_state_update is True
     assert events[0].snapshot == {"foo": 1}
+
+
+def test_capture_event_exposes_skill_eff_fires_with_caster(tmp_path):
+    dev_msg = (
+        "**battle log : --------card_use-start--------\n"
+        "**battle log : 103 used card 1006005_01_pt2_10\n"
+        "**battle log : SkillEff 5:1006005_01_pt2_10_01:SKILL_EFF_DMG\n"
+    )
+    cap = _write_jsonl(tmp_path, [{
+        "ts": "t0", "dir": "s2c", "size": 1,
+        "data": {"dev_msg": dev_msg},
+    }])
+    events = list(CaptureReader(cap).events())
+    assert len(events) == 1
+    assert len(events[0].skill_eff_fires) == 1
+    fire = events[0].skill_eff_fires[0]
+    assert isinstance(fire, SkillEffFire)
+    assert fire.caster_id == "103"
+    # backwards compat: skill_eff_ids still resolves via property
+    assert events[0].skill_eff_ids == ["1006005_01_pt2_10_01"]
