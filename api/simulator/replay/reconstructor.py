@@ -65,6 +65,9 @@ class StateReconstructor:
                 dmg_decrease_rate=float(info.get("S_DMG_DECREASE_RATE", 0) or 0),
                 weak=bool(m.get("weak", False)),
                 shield=int(info.get("S_CURRENT_SHIELD", 0) or 0),
+                atk=int(info.get("S_ATK", 0) or 0),
+                cri=float(info.get("S_CRI", 0) or 0),
+                cri_dmg_rate=float(info.get("S_CRI_DMG_RATE", 0) or 0),
             ))
         return out
 

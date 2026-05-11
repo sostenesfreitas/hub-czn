@@ -137,3 +137,15 @@ def test_ego_state_set_from_curEgo_on_cards():
     }
     state = StateReconstructor().reconstruct(bw)
     assert state.ego_state["1"].stage == 2
+
+
+def test_reconstructs_monster_with_atk_and_crit_fields():
+    bw = _minimal_battle_wt()
+    bw["monsters"][0]["status"]["info"]["S_ATK"] = 2903
+    bw["monsters"][0]["status"]["info"]["S_CRI"] = 15.0
+    bw["monsters"][0]["status"]["info"]["S_CRI_DMG_RATE"] = 180.0
+    state = StateReconstructor().reconstruct(bw)
+    m = state.enemies[0]
+    assert m.atk == 2903
+    assert m.cri == 15.0
+    assert m.cri_dmg_rate == 180.0

@@ -6,7 +6,7 @@ char names from deck_builder manifest where parseable.
 ## Summary
 
 - Total events: 759
-- Crashed: 4 (0.5%)
+- Crashed: 0 (0.0%)
 - Dispatched within ±5%: 0 (0.0%)
 - Dispatched outside ±5%: 0 (0.0%)
 - Routed to stub: 0 (0.0%)
@@ -19,10 +19,10 @@ char names from deck_builder manifest where parseable.
 |---|---|---|---|---|---|
 | `SKILL_EFF_CS_SET_ADD_IGNORE_COND` | 246 | 0 | 0 | 0 | 0 |
 | `SKILL_EFF_CS_SET_ADD` | 245 | 0 | 0 | 0 | 0 |
-| `SKILL_EFF_DMG` | 51 | 0 | 0 | 1 | 0 |
+| `SKILL_EFF_DMG` | 52 | 0 | 0 | 0 | 0 |
 | `?` | 0 | 0 | 51 | 0 | 0 |
 | `SKILL_EFF_CARD_DRAW` | 46 | 0 | 0 | 0 | 0 |
-| `SKILL_EFF_SHIELD` | 14 | 0 | 0 | 3 | 0 |
+| `SKILL_EFF_SHIELD` | 17 | 0 | 0 | 0 | 0 |
 | `SKILL_EFF_CARD_COPY_TO` | 0 | 0 | 0 | 0 | 17 |
 | `SKILL_EFF_DMG_IGNORE_COND` | 15 | 0 | 0 | 0 | 0 |
 | `SKILL_EFF_CARD_GET` | 14 | 0 | 0 | 0 | 0 |

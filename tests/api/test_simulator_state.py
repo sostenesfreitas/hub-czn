@@ -35,3 +35,20 @@ def test_cs_stacks_increment():
     s.add_cs("m1", "cs_91", 2)
     s.add_cs("m1", "cs_91", 3)
     assert s.cs_stacks["m1"]["cs_91"] == 5
+
+
+def test_monsterstate_has_caster_fields():
+    """MonsterState must expose atk/cri/cri_dmg_rate so it can serve as a
+    caster for formulas that read those fields."""
+    m = MonsterState(id="m1", def_=200, hp=5000, hp_current=5000,
+                     atk=1500, cri=10.0, cri_dmg_rate=200.0)
+    assert m.atk == 1500
+    assert m.cri == 10.0
+    assert m.cri_dmg_rate == 200.0
+
+
+def test_monsterstate_caster_fields_default_to_zero():
+    m = MonsterState(id="m1", def_=200, hp=5000, hp_current=5000)
+    assert m.atk == 0
+    assert m.cri == 0.0
+    assert m.cri_dmg_rate == 0.0

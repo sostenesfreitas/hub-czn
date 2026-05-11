@@ -31,6 +31,9 @@ class MonsterState:
     dmg_decrease_rate: float = 0.0
     weak: bool = False
     shield: int = 0
+    atk: int = 0                    # NEW — monsters can be casters
+    cri: float = 0.0                # NEW
+    cri_dmg_rate: float = 0.0       # NEW
 
     def apply_damage(self, amount: float) -> int:
         """Subtract damage from hp_current after shield. Returns damage actually dealt."""
