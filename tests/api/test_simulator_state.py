@@ -52,3 +52,19 @@ def test_monsterstate_caster_fields_default_to_zero():
     assert m.atk == 0
     assert m.cri == 0.0
     assert m.cri_dmg_rate == 0.0
+
+
+def test_battlestate_has_card_owner_lookup_default_empty():
+    s = BattleState(turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+                    morale=0, ego_state={}, spark_state={}, cs_stacks={},
+                    rng=random.Random(0))
+    assert s.card_owner_lookup == {}
+
+
+def test_battlestate_card_owner_lookup_accepts_initial_value():
+    s = BattleState(turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+                    morale=0, ego_state={}, spark_state={}, cs_stacks={},
+                    rng=random.Random(0),
+                    card_owner_lookup={"7": "1", "8": "2"})
+    assert s.card_owner_lookup["7"] == "1"
+    assert s.card_owner_lookup["8"] == "2"
