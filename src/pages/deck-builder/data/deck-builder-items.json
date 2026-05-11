@@ -1,0 +1,5233 @@
+[
+  {
+    "id": "item_0001",
+    "image_id": "item_0001",
+    "slug": "a-lonesome-wedding-ring",
+    "name": "A Lonesome Wedding Ring",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "At the start of the turn, Discard 1 random ally Quietus card in hand.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0001.webp"
+  },
+  {
+    "id": "item_0002",
+    "image_id": "item_0002",
+    "slug": "absolute-zero-tetrahedron",
+    "name": "Absolute Zero Tetrahedron",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, +20% Shield.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0002.webp"
+  },
+  {
+    "id": "item_0003",
+    "image_id": "item_0003",
+    "slug": "abyssal-bug-tooth",
+    "name": "Abyssal Bug Tooth",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "On Critical Hit, 50% chance to 1 Agony.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0003.webp"
+  },
+  {
+    "id": "item_0004",
+    "image_id": "item_0004",
+    "slug": "administrator-id-badge",
+    "name": "Administrator ID Badge",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of the battle, 1 Evade.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0004.webp"
+  },
+  {
+    "id": "item_0005",
+    "image_id": "item_0005",
+    "slug": "amorphous-cube",
+    "name": "Amorphous Cube",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, +25% Damage.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0005.webp"
+  },
+  {
+    "id": "item_0006",
+    "image_id": "item_0006",
+    "slug": "an-eye-plucked-from-a-mural",
+    "name": "An Eye Plucked from a Mural",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "At the start of the turn, increase Damage Amount of this unit by 20% for each ally Persona Card in hand.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0006.webp"
+  },
+  {
+    "id": "item_0007",
+    "image_id": "item_0007",
+    "slug": "announcement-of-catastrophe",
+    "name": "Announcement of Catastrophe",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "+12% Defense. Decrease the number of Break Recovery cards required by all Combatants by 1.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0007.webp"
+  },
+  {
+    "id": "item_0008",
+    "image_id": "item_0008",
+    "slug": "arm-of-lost-valor",
+    "name": "Arm of Lost Valor",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When an Attack Card was not activated for 1 turn and the turn ended, create 1 Rocket Punch.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0008.webp"
+  },
+  {
+    "id": "item_0009",
+    "image_id": "item_0009",
+    "slug": "assault-boots",
+    "name": "Assault Boots",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of your turn after 2 turns from battle start, +200% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0009.webp"
+  },
+  {
+    "id": "item_0010",
+    "image_id": "item_0010",
+    "slug": "assault-gauntlets",
+    "name": "Assault Gauntlets",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 3 Counterattack.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0010.webp"
+  },
+  {
+    "id": "item_0011",
+    "image_id": "item_0011",
+    "slug": "bangle-of-valor",
+    "name": "Bangle of Valor",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "Increase Damage Amount of ally Arena cards by 20%. At the start of battle, create 1 Forgotten Sword",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0011.webp"
+  },
+  {
+    "id": "item_0012",
+    "image_id": "item_0012",
+    "slug": "big-game-hunter",
+    "name": "Big Game Hunter",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "The first Attack Card used per battle +100% Tenacity Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0012.webp"
+  },
+  {
+    "id": "item_0013",
+    "image_id": "item_0013",
+    "slug": "blood-giant-claw",
+    "name": "Blood Giant Claw",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "On Ravage, 150% Fixed Damage to the target.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0013.webp"
+  },
+  {
+    "id": "item_0014",
+    "image_id": "item_0014",
+    "slug": "bloodstone-of-the-void",
+    "name": "Bloodstone of the Void",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When using an Attack Card, Recover HP equal to 6% of Damage dealt (1 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0014.webp"
+  },
+  {
+    "id": "item_0015",
+    "image_id": "item_0015",
+    "slug": "bloody-pendant",
+    "name": "Bloody Pendant",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When using Duplicated Cards, all enemies' Action Count does not decrease for 1 turn (1 per battle).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0015.webp"
+  },
+  {
+    "id": "item_0016",
+    "image_id": "item_0016",
+    "slug": "bone-cutter",
+    "name": "Bone Cutter",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When hitting a target under Weakened status, +30% Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0016.webp"
+  },
+  {
+    "id": "item_0017",
+    "image_id": "item_0017",
+    "slug": "bone-ring-of-wildfire",
+    "name": "Bone Ring of Wildfire",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When using a Upgrade card, +30% Damage for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0017.webp"
+  },
+  {
+    "id": "item_0018",
+    "image_id": "item_0018",
+    "slug": "brainwave-blocking-helmet",
+    "name": "Brainwave-Blocking Helmet",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When you Draw by an ability, +40% Fixed Shield (5 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0018.webp"
+  },
+  {
+    "id": "item_0019",
+    "image_id": "item_0019",
+    "slug": "branch-of-eternity",
+    "name": "Branch of Eternity",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "On Heal or Recover, Fixed Damage to all enemies equal to 50% of Recover amount.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0019.webp"
+  },
+  {
+    "id": "item_0020",
+    "image_id": "item_0020",
+    "slug": "branch-of-the-evil-tree",
+    "name": "Branch of the Evil Tree",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "On Heal or Recover, Fixed Damage to a random enemy equal to 50% of Recover amount.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0020.webp"
+  },
+  {
+    "id": "item_0021",
+    "image_id": "item_0021",
+    "slug": "branch-of-the-sacred-tree",
+    "name": "Branch of the Sacred Tree",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "On Heal or Recover, Fixed Damage to all enemies equal to 35% of Heal amount.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0021.webp"
+  },
+  {
+    "id": "item_0022",
+    "image_id": "item_0022",
+    "slug": "brilliant-eternal-flame",
+    "name": "Brilliant Eternal Flame?",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Increase Damage Amount of 2-cost or higher Exhaust cards by 40%.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0022.webp"
+  },
+  {
+    "id": "item_0023",
+    "image_id": "item_0023",
+    "slug": "broken-golden-quill-pen",
+    "name": "Broken Golden Quill Pen",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When a Linked card is Discarded through an ability, increase Damage Amount by 20% for 1 turn (1 time per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0023.webp"
+  },
+  {
+    "id": "item_0024",
+    "image_id": "item_0024",
+    "slug": "bug-killer",
+    "name": "Bug Killer",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When using an Attack Card, 1 Agony (1 per turn). If in Invader battle, +2 additional Agony.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0024.webp"
+  },
+  {
+    "id": "item_0025",
+    "image_id": "item_0025",
+    "slug": "call-of-the-ancient-spirit",
+    "name": "Call of the Ancient Spirit",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On Critical Hit, Heal 10%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0025.webp"
+  },
+  {
+    "id": "item_0026",
+    "image_id": "item_0026",
+    "slug": "cavalry-of-lightning",
+    "name": "Cavalry of Lightning",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When dealing Damage to a target with Shield, +100% Damage to the next Attack Card.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0026.webp"
+  },
+  {
+    "id": "item_0027",
+    "image_id": "item_0027",
+    "slug": "chains-of-obsession",
+    "name": "Chains of Obsession",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When using Attack cards, 1% HP Reduction, 60% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0027.webp"
+  },
+  {
+    "id": "item_0028",
+    "image_id": "item_0028",
+    "slug": "chaos-bible",
+    "name": "Chaos Bible",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of your turn after 4 turns from battle start, 400% Fixed Damage to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0028.webp"
+  },
+  {
+    "id": "item_0029",
+    "image_id": "item_0029",
+    "slug": "charger-of-weathered-glory",
+    "name": "Charger of Weathered Glory",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If a turn is ended while 1 or more AP remaining, at the start of the next turn, create 1 Charged Strike.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0029.webp"
+  },
+  {
+    "id": "item_0030",
+    "image_id": "item_0030",
+    "slug": "chimeranite",
+    "name": "Chimeranite",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When you Draw by an ability, +35% Damage amount to your own Attack Card(s) for 1 turn (Max 1 time per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0030.webp"
+  },
+  {
+    "id": "item_0031",
+    "image_id": "item_0031",
+    "slug": "cloak-of-the-heart",
+    "name": "Cloak of the Heart",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When a card is Discarded through an ally ability, 1 Damage Reduction (1 time per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0031.webp"
+  },
+  {
+    "id": "item_0032",
+    "image_id": "item_0032",
+    "slug": "cloud-walking-shoes",
+    "name": "Cloud-Walking Shoes",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When an ally inflicts Ravage, +40% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0032.webp"
+  },
+  {
+    "id": "item_0033",
+    "image_id": "item_0033",
+    "slug": "clover-of-the-forest",
+    "name": "Clover of the Forest",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When Recover via card, +10% ally Attack for 1 turn (Max 1 stack).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0033.webp"
+  },
+  {
+    "id": "item_0034",
+    "image_id": "item_0034",
+    "slug": "combat-drum",
+    "name": "Combat Drum",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When 5 Skill Cards are created, increase Damage Amount of the next ally card activated by 20% (max 1 stack).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0034.webp"
+  },
+  {
+    "id": "item_0035",
+    "image_id": "item_0035",
+    "slug": "command-108",
+    "name": "Command: #108",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+40% Attack Card Damage (1 per battle).",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0035.webp"
+  },
+  {
+    "id": "item_0036",
+    "image_id": "item_0036",
+    "slug": "consecrated-halo",
+    "name": "Consecrated Halo",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "+25% Shield Gain",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Fusion Mode, Foretold Ruin",
+    "sources": [
+      "Fusion Mode",
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0036.webp"
+  },
+  {
+    "id": "item_0037",
+    "image_id": "item_0037",
+    "slug": "contaminated-helmet",
+    "name": "Contaminated Helmet",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "Max HP +6%, Defense +12%.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0037.webp"
+  },
+  {
+    "id": "item_0038",
+    "image_id": "item_0038",
+    "slug": "corroded-core",
+    "name": "Corroded Core",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If an attack is perfectly blocked with Shield, 1 Impair on all enemies (1 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0038.webp"
+  },
+  {
+    "id": "item_0039",
+    "image_id": "item_0039",
+    "slug": "corrupted-core",
+    "name": "Corrupted Core",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+15% Defense, Retain +20% Shield.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0039.webp"
+  },
+  {
+    "id": "item_0040",
+    "image_id": "item_0040",
+    "slug": "corrupted-gauntlet",
+    "name": "Corrupted Gauntlet",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "On Extra Attack, increase Critical Chance by 2% for 1 turn (5 times per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0040.webp"
+  },
+  {
+    "id": "item_0041",
+    "image_id": "item_0041",
+    "slug": "crimson-bloodstone",
+    "name": "Crimson Bloodstone",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On using an Attack card, Recover Health equal to 9% of the damage dealt (1 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0041.webp"
+  },
+  {
+    "id": "item_0042",
+    "image_id": "item_0042",
+    "slug": "crimson-sword",
+    "name": "Crimson Sword",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When dealing Damage with a targeting Attack Card, 3 Agony (1 per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0042.webp"
+  },
+  {
+    "id": "item_0043",
+    "image_id": "item_0043",
+    "slug": "crushed-angel-feather",
+    "name": "Crushed Angel Feather",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When ally Linked cards are used, increase Action Count of all enemies by 2 (1 time per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0043.webp"
+  },
+  {
+    "id": "item_0044",
+    "image_id": "item_0044",
+    "slug": "crustacean-fluider",
+    "name": "Crustacean Fluider",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When taking damage, after 1 turn, +60% Fixed Shield at start of turn.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0044.webp"
+  },
+  {
+    "id": "item_0045",
+    "image_id": "item_0045",
+    "slug": "cursed-doll",
+    "name": "Cursed Doll",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of turn, Heal 60% for each Status Ailment and Curse card in hand.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0045.webp"
+  },
+  {
+    "id": "item_0046",
+    "image_id": "item_0046",
+    "slug": "dagger-that-tricked-the-shadow",
+    "name": "Dagger That Tricked the Shadow",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+12% Critical Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0046.webp"
+  },
+  {
+    "id": "item_0047",
+    "image_id": "item_0047",
+    "slug": "dance-of-the-night-butterflies",
+    "name": "Dance of the Night Butterflies",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "On Ravage, +60% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0047.webp"
+  },
+  {
+    "id": "item_0048",
+    "image_id": "item_0048",
+    "slug": "dark-grip-s-claws",
+    "name": "Dark Grip's Claws",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Increase the damage of attack on all enemies by 25%.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0048.webp"
+  },
+  {
+    "id": "item_0049",
+    "image_id": "item_0049",
+    "slug": "delicate-collarbone",
+    "name": "Delicate Collarbone",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "At the start of the turn, if an ally Persona Card is in hand, decrease Stress of allies by 2.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0049.webp"
+  },
+  {
+    "id": "item_0050",
+    "image_id": "item_0050",
+    "slug": "dice-of-derangement",
+    "name": "Dice of Derangement",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+8% max HP. At the end of battle, if HP below 50%, recover 8% max HP. If HP is 50% or higher, -5 for the combatant with the highest Stress.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0050.webp"
+  },
+  {
+    "id": "item_0051",
+    "image_id": "item_0051",
+    "slug": "dice-of-discord",
+    "name": "Dice of Discord",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the end of turn, 40% x 2-6 Fixed Damage to a random enemies, and trigger 200% Fixed Damage on allies with one random 1 effect.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0051.webp"
+  },
+  {
+    "id": "item_0052",
+    "image_id": "item_0052",
+    "slug": "dimensional-cube",
+    "name": "Dimensional Cube",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When a card is Discarded, +15% Damage Amount for 1 turn (max 3 stacks).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0052.webp"
+  },
+  {
+    "id": "item_0053",
+    "image_id": "item_0053",
+    "slug": "dormant-seeds",
+    "name": "Dormant Seeds",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On gaining Shield, +100% Fixed Shield (1 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0053.webp"
+  },
+  {
+    "id": "item_0054",
+    "image_id": "item_0054",
+    "slug": "dream-of-the-devoured",
+    "name": "Dream of the Devoured",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, next card used +25% Damage stacks up to 1 time.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0054.webp"
+  },
+  {
+    "id": "item_0055",
+    "image_id": "item_0055",
+    "slug": "dull-bone-blade",
+    "name": "Dull Bone Blade",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "10% Attack, -5% Critical Chance.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0055.webp"
+  },
+  {
+    "id": "item_0056",
+    "image_id": "item_0056",
+    "slug": "emblem-of-an-exceptional-entity",
+    "name": "Emblem of an Exceptional Entity",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+30% Damage Amount. Stress received becomes 0 (1 for each battle).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0056.webp"
+  },
+  {
+    "id": "item_0057",
+    "image_id": "item_0057",
+    "slug": "esophagus-of-madness",
+    "name": "Esophagus of Madness",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+20% Damage against targets with Agony.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0057.webp"
+  },
+  {
+    "id": "item_0058",
+    "image_id": "item_0058",
+    "slug": "eternal-stone",
+    "name": "Eternal Stone",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of turn, +25% Fixed Shield equal to the number of enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0058.webp"
+  },
+  {
+    "id": "item_0059",
+    "image_id": "item_0059",
+    "slug": "executioner-s-edge",
+    "name": "Executioner's Edge",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Against enemies with HP below 50%, +35% Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0059.webp"
+  },
+  {
+    "id": "item_0060",
+    "image_id": "item_0060",
+    "slug": "eye-of-gluttony",
+    "name": "Eye of Gluttony",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+40% Damage. At the end of the turn, 30% chance to Exhaust 1 card in hand.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0060.webp"
+  },
+  {
+    "id": "item_0061",
+    "image_id": "item_0061",
+    "slug": "eye-of-the-eyeless",
+    "name": "Eye of the Eyeless",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Increase damage of Basic attack cards by 40%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0061.webp"
+  },
+  {
+    "id": "item_0062",
+    "image_id": "item_0062",
+    "slug": "eye-of-the-punisher",
+    "name": "Eye of the Punisher",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If the enemy is alone, increase damage by 30%.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Fusion Mode, Foretold Ruin",
+    "sources": [
+      "Fusion Mode",
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0062.webp"
+  },
+  {
+    "id": "item_0063",
+    "image_id": "item_0063",
+    "slug": "fairy-king-s-crown",
+    "name": "Fairy King's Crown",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "+6% Critical Chance.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0063.webp"
+  },
+  {
+    "id": "item_0064",
+    "image_id": "item_0064",
+    "slug": "first-aid-kit",
+    "name": "First Aid Kit",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the end of battle, Recover 5%.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0064.webp"
+  },
+  {
+    "id": "item_0065",
+    "image_id": "item_0065",
+    "slug": "flame-of-purification",
+    "name": "Flame of Purification",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, 1 Retribution on a random enemy (2 per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0065.webp"
+  },
+  {
+    "id": "item_0066",
+    "image_id": "item_0066",
+    "slug": "flashbang",
+    "name": "Flashbang",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "At the start of battle, apply 3 Weaken to a random enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0066.webp"
+  },
+  {
+    "id": "item_0067",
+    "image_id": "item_0067",
+    "slug": "flower-of-dead-souls",
+    "name": "Flower of Dead Souls",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "From the second Attack Card each turn onward, +20% Damage.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0067.webp"
+  },
+  {
+    "id": "item_0068",
+    "image_id": "item_0068",
+    "slug": "foggy-crystal-ball",
+    "name": "Foggy Crystal Ball",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "40% Damage for Attack cards with Cost 0.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0068.webp"
+  },
+  {
+    "id": "item_0069",
+    "image_id": "item_0069",
+    "slug": "forbidden-bible",
+    "name": "Forbidden Bible",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of your turn after 4 turns from battle start, 550% Fixed Damage to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0069.webp"
+  },
+  {
+    "id": "item_0070",
+    "image_id": "item_0070",
+    "slug": "formica-s-broken-spear",
+    "name": "Formica's Broken Spear",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+6% Damage per enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0070.webp"
+  },
+  {
+    "id": "item_0071",
+    "image_id": "item_0071",
+    "slug": "formica-s-perfect-spear",
+    "name": "Formica's Perfect Spear",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+7% Damage per enemy. +10% All-Attack Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0071.webp"
+  },
+  {
+    "id": "item_0072",
+    "image_id": "item_0072",
+    "slug": "fragment-of-the-empty-void",
+    "name": "Fragment of the Empty Void",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, Discard up to 3 cards, Draw equal to the number.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0072.webp"
+  },
+  {
+    "id": "item_0073",
+    "image_id": "item_0073",
+    "slug": "gastronomicon",
+    "name": "Gastronomicon",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When using an Attack Card with cost 2 or more, 3 Agony.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0073.webp"
+  },
+  {
+    "id": "item_0074",
+    "image_id": "item_0074",
+    "slug": "gladiator-s-helmet",
+    "name": "Gladiator's Helmet",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 2 Damage Reduction.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0074.webp"
+  },
+  {
+    "id": "item_0075",
+    "image_id": "item_0075",
+    "slug": "gladiator-s-medallion",
+    "name": "Gladiator's Medallion",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When Shield is gained 3 times through cards, 100% Fixed Damage to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0075.webp"
+  },
+  {
+    "id": "item_0076",
+    "image_id": "item_0076",
+    "slug": "gloomy-prime-s-eye",
+    "name": "Gloomy Prime's Eye",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, +40% Shield.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0076.webp"
+  },
+  {
+    "id": "item_0077",
+    "image_id": "item_0077",
+    "slug": "gluttonous-tailcoat",
+    "name": "Gluttonous Tailcoat",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When taking damage, after 1 turn, +80% Fixed Shield at start of turn.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0077.webp"
+  },
+  {
+    "id": "item_0078",
+    "image_id": "item_0078",
+    "slug": "golden-bell",
+    "name": "Golden Bell",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of the battle, decrease Stress of a random ally by 3.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0078.webp"
+  },
+  {
+    "id": "item_0079",
+    "image_id": "item_0079",
+    "slug": "gospel-of-lament",
+    "name": "Gospel of Lament",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When the Action Count of enemies increases, +30% Damage Amount to ally Attack Cards for 1 turn (1 time per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0079.webp"
+  },
+  {
+    "id": "item_0080",
+    "image_id": "item_0080",
+    "slug": "grey-orb",
+    "name": "Grey Orb",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, gain 3 Damage Reduction.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0080.webp"
+  },
+  {
+    "id": "item_0081",
+    "image_id": "item_0081",
+    "slug": "growing-carapace",
+    "name": "Growing Carapace",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of the turn, gain 40% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0081.webp"
+  },
+  {
+    "id": "item_0082",
+    "image_id": "item_0082",
+    "slug": "guardian-core",
+    "name": "Guardian Core",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If an enemy with an intent to Attack is present, +60% Fixed Shield (1 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0082.webp"
+  },
+  {
+    "id": "item_0083",
+    "image_id": "item_0083",
+    "slug": "harp-of-conflict",
+    "name": "Harp of Conflict",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "For 1 turn, when each of Damage, Shield, and Heal has been activated through cards by allies, increase Damage Amount of allies by 15% for 1 turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0083.webp"
+  },
+  {
+    "id": "item_0084",
+    "image_id": "item_0084",
+    "slug": "harpoon-case-of-broken-resolve",
+    "name": "Harpoon Case of Broken Resolve",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Create 1 Pierce each odd turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0084.webp"
+  },
+  {
+    "id": "item_0085",
+    "image_id": "item_0085",
+    "slug": "heart-of-gold",
+    "name": "Heart of Gold",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the end of battle, if HP is below 50%, Recover 8%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0085.webp"
+  },
+  {
+    "id": "item_0086",
+    "image_id": "item_0086",
+    "slug": "heart-of-the-jewel",
+    "name": "Heart of the Jewel",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "X is applied as X+1.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Event",
+    "sources": [
+      "Event"
+    ],
+    "image_path": "itens/item_0086.webp"
+  },
+  {
+    "id": "item_0087",
+    "image_id": "item_0087",
+    "slug": "hymn-singing-lips",
+    "name": "Hymn-Singing Lips",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When a card is Discarded through an ability, 1 Resonance to all enemies (3 times per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0087.webp"
+  },
+  {
+    "id": "item_0088",
+    "image_id": "item_0088",
+    "slug": "hyperimmunity-hormone",
+    "name": "Hyperimmunity Hormone",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When you Draw by an ability, +25% Shield gain for 1 turn (Max 2 times per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0088.webp"
+  },
+  {
+    "id": "item_0089",
+    "image_id": "item_0089",
+    "slug": "immortal-scale",
+    "name": "Immortal Scale",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When gaining Counterattack via an ability, +1 additional Counterattack.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0089.webp"
+  },
+  {
+    "id": "item_0090",
+    "image_id": "item_0090",
+    "slug": "incomplete-carapace",
+    "name": "Incomplete Carapace",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the end of the turn, if you have 5 or more Cards in hand, +140% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0090.webp"
+  },
+  {
+    "id": "item_0091",
+    "image_id": "item_0091",
+    "slug": "incomprehensible-holy-object",
+    "name": "Incomprehensible Holy Object",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "Each time a Quietus card is Discarded through an ability, 80% Fixed Shield (2 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0091.webp"
+  },
+  {
+    "id": "item_0092",
+    "image_id": "item_0092",
+    "slug": "intellect-of-discord",
+    "name": "Intellect of Discord",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+18% Attack. On Ravage, allies' Stress -1.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0092.webp"
+  },
+  {
+    "id": "item_0093",
+    "image_id": "item_0093",
+    "slug": "kentris-chitin-armor",
+    "name": "Kentris Chitin Armor",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "+15% Ally Shield Gain.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0093.webp"
+  },
+  {
+    "id": "item_0094",
+    "image_id": "item_0094",
+    "slug": "key-of-sleep",
+    "name": "Key of Sleep",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When the target count of the Attack Card is 2 or more, -10% Damage Amount for each target (max -30%).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0094.webp"
+  },
+  {
+    "id": "item_0095",
+    "image_id": "item_0095",
+    "slug": "kirak-s-core",
+    "name": "Kirak's Core",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of turn, if HP below 40% max HP, Recover 5%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0095.webp"
+  },
+  {
+    "id": "item_0096",
+    "image_id": "item_0096",
+    "slug": "launcher-of-ruined-honor",
+    "name": "Launcher of Ruined Honor",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Create 1 Heavy Blow each even turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0096.webp"
+  },
+  {
+    "id": "item_0097",
+    "image_id": "item_0097",
+    "slug": "lead-colored-holy-water",
+    "name": "Lead-Colored Holy Water",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On Ravage, 2 Impair to the target.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0097.webp"
+  },
+  {
+    "id": "item_0098",
+    "image_id": "item_0098",
+    "slug": "leaf-of-the-world-tree",
+    "name": "Leaf of the World Tree",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When 3 cards of 2-cost or higher are used, Stockpile. (Stockpile = Retain AP, on activation, decrease Stockpile by 1).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0098.webp"
+  },
+  {
+    "id": "item_0099",
+    "image_id": "item_0099",
+    "slug": "lepidola-s-whip",
+    "name": "Lepidola's Whip",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+25% Damage for Attack Cards costing 1 or less.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0099.webp"
+  },
+  {
+    "id": "item_0100",
+    "image_id": "item_0100",
+    "slug": "lepidola-s-wing",
+    "name": "Lepidola's Wing",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, 1 Evade.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0100.webp"
+  },
+  {
+    "id": "item_0101",
+    "image_id": "item_0101",
+    "slug": "liberated-essence",
+    "name": "Liberated Essence",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of the turn, decrease Cost of 1 random Exhaust card in hand by 1 for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0101.webp"
+  },
+  {
+    "id": "item_0102",
+    "image_id": "item_0102",
+    "slug": "lightless-stem",
+    "name": "Lightless Stem",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Increase Heal Amount by 15%.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0102.webp"
+  },
+  {
+    "id": "item_0103",
+    "image_id": "item_0103",
+    "slug": "luminescent-shroom",
+    "name": "Luminescent Shroom",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Double the effect of Spore Propagation on the 6th Attack Card created for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0103.webp"
+  },
+  {
+    "id": "item_0104",
+    "image_id": "item_0104",
+    "slug": "lush-seaweed-armor",
+    "name": "Lush Seaweed Armor",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When gaining Shield, gain 30% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0104.webp"
+  },
+  {
+    "id": "item_0105",
+    "image_id": "item_0105",
+    "slug": "m-s-s-data-pad",
+    "name": "M.S.S Data Pad",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of Nihilum battle, 2 Vulnerable to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0105.webp"
+  },
+  {
+    "id": "item_0106",
+    "image_id": "item_0106",
+    "slug": "m-s-s-data-pad-se",
+    "name": "M.S.S Data Pad SE",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of Nihilum battle, 3 Vulnerable to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0106.webp"
+  },
+  {
+    "id": "item_0107",
+    "image_id": "item_0107",
+    "slug": "m-s-s-scope",
+    "name": "M.S.S Scope",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "If a harmful effect is inflicted for 1 turn, then +80% Fixed Shield at the end of turn.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0107.webp"
+  },
+  {
+    "id": "item_0108",
+    "image_id": "item_0108",
+    "slug": "m85-military-grenade",
+    "name": "M85 Military Grenade",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When using a Buff card, deal 150% Fixed Damage to all enemies.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0108.webp"
+  },
+  {
+    "id": "item_0109",
+    "image_id": "item_0109",
+    "slug": "madman-s-masterpiece",
+    "name": "Madman's Masterpiece",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of an Elite Battle, +50% Damage.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0109.webp"
+  },
+  {
+    "id": "item_0110",
+    "image_id": "item_0110",
+    "slug": "magic-infused-sapphire",
+    "name": "Magic-Infused Sapphire",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, if the Outbreak of War card is in hand, 1 Tenacity Damage to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0110.webp"
+  },
+  {
+    "id": "item_0111",
+    "image_id": "item_0111",
+    "slug": "mask-of-emotions",
+    "name": "Mask of Emotions",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When attacked, 2 Resonance to the attacker (3 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0111.webp"
+  },
+  {
+    "id": "item_0112",
+    "image_id": "item_0112",
+    "slug": "mask-of-evil-spirits",
+    "name": "Mask of Evil Spirits",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When taking damage, after 1 turn, +60% Fixed Shield at start of turn.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0112.webp"
+  },
+  {
+    "id": "item_0113",
+    "image_id": "item_0113",
+    "slug": "mask-of-flames",
+    "name": "Mask of Flames",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "Increase damage dealt to Vulnerable targets by 35%.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0113.webp"
+  },
+  {
+    "id": "item_0114",
+    "image_id": "item_0114",
+    "slug": "millenium-arbor",
+    "name": "Millenium Arbor",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a 3-cost or higher card is activated, 1 Vulnerable to a random enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0114.webp"
+  },
+  {
+    "id": "item_0115",
+    "image_id": "item_0115",
+    "slug": "moon-of-destruction",
+    "name": "Moon of Destruction",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, 200% Fixed Damage to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0115.webp"
+  },
+  {
+    "id": "item_0116",
+    "image_id": "item_0116",
+    "slug": "moss-armor",
+    "name": "Moss Armor",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When an ally Attack Card was no activated for 1 turn and the turn ended, 100% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0116.webp"
+  },
+  {
+    "id": "item_0117",
+    "image_id": "item_0117",
+    "slug": "mountain-of-corpses",
+    "name": "Mountain of Corpses",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+25% Attack Card Damage (1 per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0117.webp"
+  },
+  {
+    "id": "item_0118",
+    "image_id": "item_0118",
+    "slug": "multifaceted-parallel-universe-nexus",
+    "name": "Multifaceted Parallel Universe Nexus",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of turn, activate 1 random Initiative card in hand.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0118.webp"
+  },
+  {
+    "id": "item_0119",
+    "image_id": "item_0119",
+    "slug": "mutagenic-wave-amplifier",
+    "name": "Mutagenic Wave Amplifier",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When Drawing a Status Ailment or Curse Card, +12% Damage Amount for 1 turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0119.webp"
+  },
+  {
+    "id": "item_0120",
+    "image_id": "item_0120",
+    "slug": "mutant-predator-spike",
+    "name": "Mutant Predator Spike",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When there are 4 or more cards in hand, increase Damage Amount by 30%.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0120.webp"
+  },
+  {
+    "id": "item_0121",
+    "image_id": "item_0121",
+    "slug": "mutated-claws",
+    "name": "Mutated Claws",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When drawing a Status Ailment or Curse card, +15% Damage for 1 turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0121.webp"
+  },
+  {
+    "id": "item_0122",
+    "image_id": "item_0122",
+    "slug": "mutated-order",
+    "name": "Mutated Order",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Increase Damage Amount by 25% against targets that haven't acted.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0122.webp"
+  },
+  {
+    "id": "item_0123",
+    "image_id": "item_0123",
+    "slug": "natural-predator",
+    "name": "Natural Predator",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On Ravage, +100% Damage to next 1 Attack Card used.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0123.webp"
+  },
+  {
+    "id": "item_0124",
+    "image_id": "item_0124",
+    "slug": "nature-s-gift",
+    "name": "Nature's Gift",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Heal 40% at the end of turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0124.webp"
+  },
+  {
+    "id": "item_0125",
+    "image_id": "item_0125",
+    "slug": "nature-s-hostility",
+    "name": "Nature's Hostility",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When an enemy is defeated, 200% Fixed Damage to all enemies.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0125.webp"
+  },
+  {
+    "id": "item_0126",
+    "image_id": "item_0126",
+    "slug": "nerve-hacking-module",
+    "name": "Nerve Hacking Module",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When an ally uses a Forbidden Card, +20% Damage amount and +20% Shield gain for 1 turn (Max 2 times per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0126.webp"
+  },
+  {
+    "id": "item_0127",
+    "image_id": "item_0127",
+    "slug": "nightmare-hairpin",
+    "name": "Nightmare Hairpin",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "When a single target Attack Card is used, increase Action Count of the targeted enemy by 2 (1 time per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0127.webp"
+  },
+  {
+    "id": "item_0128",
+    "image_id": "item_0128",
+    "slug": "obsidian-sword",
+    "name": "Obsidian Sword",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Increase damage amount by 12%.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0128.webp"
+  },
+  {
+    "id": "item_0129",
+    "image_id": "item_0129",
+    "slug": "orders-baton",
+    "name": "Order’s Baton",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "Each time a card is created, +20% Damage Amount for 1 turn (2 times per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0129.webp"
+  },
+  {
+    "id": "item_0130",
+    "image_id": "item_0130",
+    "slug": "order-s-emblem",
+    "name": "Order's Emblem",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "In Chaos Order battles, +15% Defense.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0130.webp"
+  },
+  {
+    "id": "item_0131",
+    "image_id": "item_0131",
+    "slug": "overcurrent-shock-unit",
+    "name": "Overcurrent Shock Unit",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When you Draw by an ability, 50% Fixed Damage to a random enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0131.webp"
+  },
+  {
+    "id": "item_0132",
+    "image_id": "item_0132",
+    "slug": "palasia-s-orb",
+    "name": "Palasia's Orb",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When Vulnerable is applied by a card, also 1 Weaken to the target.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0132.webp"
+  },
+  {
+    "id": "item_0133",
+    "image_id": "item_0133",
+    "slug": "pale-eternal-flame",
+    "name": "Pale Eternal Flame",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, increase Damage Amount of alles by % for 1 turn (1 time per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0133.webp"
+  },
+  {
+    "id": "item_0134",
+    "image_id": "item_0134",
+    "slug": "phytotype-synthetic",
+    "name": "Phytotype Synthetic",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When Shield is gained, increase Damage Amount of the next 1 Attack Card activated by 20% for 1 turn (2 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0134.webp"
+  },
+  {
+    "id": "item_0135",
+    "image_id": "item_0135",
+    "slug": "plant-doll",
+    "name": "Plant Doll",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When 4 Skill Cards are Exhausted, decrease Stress of a random ally by 1.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0135.webp"
+  },
+  {
+    "id": "item_0136",
+    "image_id": "item_0136",
+    "slug": "poacher-s-pathfinder",
+    "name": "Poacher's Pathfinder",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "In Sekred battle, +25% Damage, 2 Vulnerable to all enemies.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0136.webp"
+  },
+  {
+    "id": "item_0137",
+    "image_id": "item_0137",
+    "slug": "primordial-discipline",
+    "name": "Primordial Discipline",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 2 Immunity.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0137.webp"
+  },
+  {
+    "id": "item_0138",
+    "image_id": "item_0138",
+    "slug": "proof-of-initiation",
+    "name": "Proof of Initiation",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "In Chaos Order battles, +10% Defense.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0138.webp"
+  },
+  {
+    "id": "item_0139",
+    "image_id": "item_0139",
+    "slug": "psionic-combat-suit",
+    "name": "Psionic Combat Suit",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When a card is Exhausted, 30% Fixed Shield (5 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0139.webp"
+  },
+  {
+    "id": "item_0140",
+    "image_id": "item_0140",
+    "slug": "pulsating-egg",
+    "name": "Pulsating Egg",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+15% Attack, +10% Max HP.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0140.webp"
+  },
+  {
+    "id": "item_0141",
+    "image_id": "item_0141",
+    "slug": "quantum-collector",
+    "name": "Quantum Collector",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When an ally uses a Upgrade card, +20% Damage, Shield, and Healing for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0141.webp"
+  },
+  {
+    "id": "item_0142",
+    "image_id": "item_0142",
+    "slug": "radiant-orb",
+    "name": "Radiant Orb",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+25% Damage to targets with Shield.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0142.webp"
+  },
+  {
+    "id": "item_0143",
+    "image_id": "item_0143",
+    "slug": "rage-potion",
+    "name": "Rage Potion",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When 4 Attack Cards are activated, increase Damage Amount of the next Attack Card activated by 40%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0143.webp"
+  },
+  {
+    "id": "item_0144",
+    "image_id": "item_0144",
+    "slug": "regenerative-ribcage",
+    "name": "Regenerative Ribcage",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "Max HP +12%.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0144.webp"
+  },
+  {
+    "id": "item_0145",
+    "image_id": "item_0145",
+    "slug": "reinforced-combat-suit",
+    "name": "Reinforced Combat Suit",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the end of the turn, if there is no Shield, gain 60% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0145.webp"
+  },
+  {
+    "id": "item_0146",
+    "image_id": "item_0146",
+    "slug": "replica-core",
+    "name": "Replica Core",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When drawing your own Attack Card by an ability, that card +50% Damage Amount for 1 turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0146.webp"
+  },
+  {
+    "id": "item_0147",
+    "image_id": "item_0147",
+    "slug": "resolute-gauntlets",
+    "name": "Resolute Gauntlets",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of Chaos Order battle, +20% Damage, 1 Damage Reduction.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0147.webp"
+  },
+  {
+    "id": "item_0148",
+    "image_id": "item_0148",
+    "slug": "revelation-s-of-futility",
+    "name": "Revelation's of Futility",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When using Attack Cards, +20% Fixed Shield (10 per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0148.webp"
+  },
+  {
+    "id": "item_0149",
+    "image_id": "item_0149",
+    "slug": "rfs-17",
+    "name": "RFS-17",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+10% Critical Chance of Attack Cards with cost 0.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0149.webp"
+  },
+  {
+    "id": "item_0150",
+    "image_id": "item_0150",
+    "slug": "ring-of-the-seraphim",
+    "name": "Ring of the Seraphim",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When using a Upgrade card, +30% Damage for 1 turn.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0150.webp"
+  },
+  {
+    "id": "item_0151",
+    "image_id": "item_0151",
+    "slug": "ritual-dagger",
+    "name": "Ritual Dagger",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When an enemy is defeated, +25% Attack Card Damage (Max 2 times).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0151.webp"
+  },
+  {
+    "id": "item_0152",
+    "image_id": "item_0152",
+    "slug": "robe-of-oblivion",
+    "name": "Robe of Oblivion",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When Shield is gained through an Exhaust card, increase Damage Amount by 20% for 1 turn (1 time per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0152.webp"
+  },
+  {
+    "id": "item_0153",
+    "image_id": "item_0153",
+    "slug": "rocket-adorned-cape",
+    "name": "Rocket-Adorned Cape",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of the battle, 1 Damage Reduction and Draw 1.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0153.webp"
+  },
+  {
+    "id": "item_0154",
+    "image_id": "item_0154",
+    "slug": "rune-chord",
+    "name": "Rune Chord",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If you have any Retained cards at the end of your turn, +60% Fixed Shield.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0154.webp"
+  },
+  {
+    "id": "item_0155",
+    "image_id": "item_0155",
+    "slug": "rune-lance",
+    "name": "Rune Lance",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "If use more than 5 AP, +25% Damage, Shield Gain, and Healing.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0155.webp"
+  },
+  {
+    "id": "item_0156",
+    "image_id": "item_0156",
+    "slug": "scout-s-combat-boots",
+    "name": "Scout's Combat Boots",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "On enemy defeat, +60% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0156.webp"
+  },
+  {
+    "id": "item_0157",
+    "image_id": "item_0157",
+    "slug": "second-method",
+    "name": "Second Method",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Extra Attack damage +30%.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0157.webp"
+  },
+  {
+    "id": "item_0158",
+    "image_id": "item_0158",
+    "slug": "shell-bug-horn",
+    "name": "Shell Bug Horn",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+20% Critical Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0158.webp"
+  },
+  {
+    "id": "item_0159",
+    "image_id": "item_0159",
+    "slug": "shell-of-aberration",
+    "name": "Shell of Aberration",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "+12% Defense. When Stress increases, 50% chance to increase Stress by 1 less.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0159.webp"
+  },
+  {
+    "id": "item_0160",
+    "image_id": "item_0160",
+    "slug": "shield-of-ashen-sacrifice",
+    "name": "Shield of Ashen Sacrifice",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "If Damage is completely blocked, at the start of the next turn, create 1 Shield Blast.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0160.webp"
+  },
+  {
+    "id": "item_0161",
+    "image_id": "item_0161",
+    "slug": "shield-of-the-watcher",
+    "name": "Shield of the Watcher",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When taking Damage, 1 Mark on the attacker.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0161.webp"
+  },
+  {
+    "id": "item_0162",
+    "image_id": "item_0162",
+    "slug": "shining-lyre",
+    "name": "Shining Lyre",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of the turn, if an ally Exhaust card is in hand, 60% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0162.webp"
+  },
+  {
+    "id": "item_0163",
+    "image_id": "item_0163",
+    "slug": "shining-world-tree-stem",
+    "name": "Shining World Tree Stem",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Increase Heal Amount by 25%.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0163.webp"
+  },
+  {
+    "id": "item_0164",
+    "image_id": "item_0164",
+    "slug": "singing-sword",
+    "name": "Singing Sword",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+15% Attack When dealing Damage to a target with Shield, 1 Punishment.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0164.webp"
+  },
+  {
+    "id": "item_0165",
+    "image_id": "item_0165",
+    "slug": "sneering-dagger",
+    "name": "Sneering Dagger",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When an enemy is defeated, 2 Vulnerable to all enemies.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0165.webp"
+  },
+  {
+    "id": "item_0166",
+    "image_id": "item_0166",
+    "slug": "someones-letter",
+    "name": "Someone’s Letter",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "At the end of the turn, if an ally Persona Card is in hand, 150% Fixed Damage to a random enemy.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0166.webp"
+  },
+  {
+    "id": "item_0167",
+    "image_id": "item_0167",
+    "slug": "soul-orb",
+    "name": "Soul Orb",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When a card is Exhausted, 1 Tenacity Damage to all enemies (1 time per battle).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0167.webp"
+  },
+  {
+    "id": "item_0168",
+    "image_id": "item_0168",
+    "slug": "source-of-the-forbidden",
+    "name": "Source of the Forbidden",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When hit, inflict 1 random effects among Vulnerable, Weaken, or Impair to the attacker (3 times per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0168.webp"
+  },
+  {
+    "id": "item_0169",
+    "image_id": "item_0169",
+    "slug": "sphere-of-randomness",
+    "name": "Sphere of Randomness",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+10% max HP. At the start of battle, +1 AP, Draw 1.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0169.webp"
+  },
+  {
+    "id": "item_0170",
+    "image_id": "item_0170",
+    "slug": "standard-gas-mask",
+    "name": "Standard Gas Mask",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 1 Immunity.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0170.webp"
+  },
+  {
+    "id": "item_0171",
+    "image_id": "item_0171",
+    "slug": "star-lit-cloak",
+    "name": "Star-Lit Cloak",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "-10% Damage (1 per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0171.webp"
+  },
+  {
+    "id": "item_0172",
+    "image_id": "item_0172",
+    "slug": "steeler-s-dagger",
+    "name": "Steeler's Dagger",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Upon Defeat, +5-10 Credits (1 per battle).",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0172.webp"
+  },
+  {
+    "id": "item_0173",
+    "image_id": "item_0173",
+    "slug": "stele-of-heresy",
+    "name": "Stele of Heresy",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "Each time 3 cards are Discarded through an ally ability, randomly inflict 1 of either Vulnerable or Mark on a random enemy (5 times per turn).",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0173.webp"
+  },
+  {
+    "id": "item_0174",
+    "image_id": "item_0174",
+    "slug": "summoned-lump-of-light",
+    "name": "Summoned Lump of Light",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Increase Damage Amount of the third Attack Card created by 30% for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0174.webp"
+  },
+  {
+    "id": "item_0175",
+    "image_id": "item_0175",
+    "slug": "sun-setting-bow",
+    "name": "Sun-Setting Bow",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "Attack Cards with cost 2 or higher, +30% Damage (1 per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0175.webp"
+  },
+  {
+    "id": "item_0176",
+    "image_id": "item_0176",
+    "slug": "superconductive-protein",
+    "name": "Superconductive Protein",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of the battle, change the cost of 1 card in your hand to 0 for 1 turn.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0176.webp"
+  },
+  {
+    "id": "item_0177",
+    "image_id": "item_0177",
+    "slug": "survivor-s-hood",
+    "name": "Survivor's Hood",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 140% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0177.webp"
+  },
+  {
+    "id": "item_0178",
+    "image_id": "item_0178",
+    "slug": "sword-of-judgment",
+    "name": "Sword of Judgment",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, increase Damage Amount by 10% for 1 turn (1 time per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0178.webp"
+  },
+  {
+    "id": "item_0179",
+    "image_id": "item_0179",
+    "slug": "sword-reflected-in-the-lake",
+    "name": "Sword Reflected in the Lake",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "If you have 6 or more cards in hand, +25% Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0179.webp"
+  },
+  {
+    "id": "item_0180",
+    "image_id": "item_0180",
+    "slug": "tentacles-of-chaos",
+    "name": "Tentacles of Chaos",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+8% ally Attack Upon enemy Defeat, -2 Stress to the Combatant with the highest Stress.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Cthulu Run Monster",
+    "sources": [
+      "Cthulu Run Monster"
+    ],
+    "image_path": "itens/item_0180.webp"
+  },
+  {
+    "id": "item_0181",
+    "image_id": "item_0181",
+    "slug": "the-chosen-vessel",
+    "name": "The Chosen Vessel",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of your turn after 3 turns from battle start, +250% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0181.webp"
+  },
+  {
+    "id": "item_0182",
+    "image_id": "item_0182",
+    "slug": "the-destruction-of-erysichthon",
+    "name": "The Destruction of Erysichthon",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When using an Attack Card, 5% chance to +1 hit.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0182.webp"
+  },
+  {
+    "id": "item_0183",
+    "image_id": "item_0183",
+    "slug": "the-fading-flower-of-life",
+    "name": "The Fading Flower of Life",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "If at max HP, +40% Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      25,
+      41,
+      56,
+      67,
+      74
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0183.webp"
+  },
+  {
+    "id": "item_0184",
+    "image_id": "item_0184",
+    "slug": "the-famished-one-s-belly",
+    "name": "The Famished One's Belly",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When a card is Exhausted, +25% Damage, Recover 5% (1 per battle).",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0184.webp"
+  },
+  {
+    "id": "item_0185",
+    "image_id": "item_0185",
+    "slug": "the-flower-of-life",
+    "name": "The Flower of Life",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "If at max HP, +50% Damage.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0185.webp"
+  },
+  {
+    "id": "item_0186",
+    "image_id": "item_0186",
+    "slug": "the-golden-rule",
+    "name": "The Golden Rule",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+20% Damage, +20% Shield at the start of battle.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0186.webp"
+  },
+  {
+    "id": "item_0187",
+    "image_id": "item_0187",
+    "slug": "time-regulator",
+    "name": "Time Regulator",
+    "rarity": "Rare",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "Activate Epiphany for the equipped combatant.",
+    "stat_type": "HP",
+    "stat_values": [
+      20,
+      37,
+      54,
+      66,
+      75
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0187.webp"
+  },
+  {
+    "id": "item_0188",
+    "image_id": "item_0188",
+    "slug": "titan-combat-suit",
+    "name": "Titan Combat Suit",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When taking Damage, Recover 2% HP (1 per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0188.webp"
+  },
+  {
+    "id": "item_0189",
+    "image_id": "item_0189",
+    "slug": "torch-of-wrath",
+    "name": "Torch of Wrath",
+    "rarity": "Rare",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "At the start of a turn, apply 2 Mark to a random enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0189.webp"
+  },
+  {
+    "id": "item_0190",
+    "image_id": "item_0190",
+    "slug": "torch-that-should-not-be-extinguished",
+    "name": "Torch That Should Not Be Extinguished",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "If you have Shield at the start of turn, 80% Fixed Shield.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0190.webp"
+  },
+  {
+    "id": "item_0191",
+    "image_id": "item_0191",
+    "slug": "torture-toolbox",
+    "name": "Torture Toolbox",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of turn, +3 Action Count to all enemies.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot, Twin Star's Shadow, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "The Blue Pot",
+      "Twin Star's Shadow",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0191.webp"
+  },
+  {
+    "id": "item_0192",
+    "image_id": "item_0192",
+    "slug": "trumpet-of-revelation",
+    "name": "Trumpet of Revelation",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When Draw a card, +20% Damage for 1 turn (2 per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0192.webp"
+  },
+  {
+    "id": "item_0193",
+    "image_id": "item_0193",
+    "slug": "twin-swords-of-greater-and-lesser-evil",
+    "name": "Twin Swords of Greater and Lesser Evil",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+30% Damage against Ravaged targets.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0193.webp"
+  },
+  {
+    "id": "item_0194",
+    "image_id": "item_0194",
+    "slug": "twisted-discipline",
+    "name": "Twisted Discipline",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When use 10 or more AP, 2 Immunity.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Foretold Ruin",
+    "sources": [
+      "Foretold Ruin"
+    ],
+    "image_path": "itens/item_0194.webp"
+  },
+  {
+    "id": "item_0195",
+    "image_id": "item_0195",
+    "slug": "unconfirmed-recovery-ampule",
+    "name": "Unconfirmed Recovery Ampule",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When an ally uses a Forbidden Card, Recover 3% of Max HP.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0195.webp"
+  },
+  {
+    "id": "item_0196",
+    "image_id": "item_0196",
+    "slug": "unexploded-plasma-bomb",
+    "name": "Unexploded Plasma Bomb",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, 40% Fixed Damage on a random enemy.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0196.webp"
+  },
+  {
+    "id": "item_0197",
+    "image_id": "item_0197",
+    "slug": "veiled-thorn",
+    "name": "Veiled Thorn",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "If allies do not inflict Damage for 1 turn, then at the start of the next turn, increase Damage Amount by 50% for 1 turn.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0197.webp"
+  },
+  {
+    "id": "item_0198",
+    "image_id": "item_0198",
+    "slug": "verdant-day",
+    "name": "Verdant Day",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On odd turns, +8% Attack, 12% Defense.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0198.webp"
+  },
+  {
+    "id": "item_0199",
+    "image_id": "item_0199",
+    "slug": "verdant-night",
+    "name": "Verdant Night",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "On even turns, +12% Attack, 8% Defense.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0199.webp"
+  },
+  {
+    "id": "item_0200",
+    "image_id": "item_0200",
+    "slug": "verdant-shackles",
+    "name": "Verdant Shackles",
+    "rarity": "Unique",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "+12% Attack, +12% Defense.",
+    "stat_type": "HP",
+    "stat_values": [
+      24,
+      45,
+      66,
+      80,
+      91
+    ],
+    "source": "Swamp of Judgment",
+    "sources": [
+      "Swamp of Judgment"
+    ],
+    "image_path": "itens/item_0200.webp"
+  },
+  {
+    "id": "item_0201",
+    "image_id": "item_0201",
+    "slug": "victor-s-laurel",
+    "name": "Victor's Laurel",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "Increase Damage Amount of Counterattack by 40%.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0201.webp"
+  },
+  {
+    "id": "item_0202",
+    "image_id": "item_0202",
+    "slug": "vine-camouflage",
+    "name": "Vine Camouflage",
+    "rarity": "Rare",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of the turn, if Health is 30% or less, 1 Evade (2 times per battle).",
+    "stat_type": "DEF",
+    "stat_values": [
+      9,
+      15,
+      21,
+      24,
+      28
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0202.webp"
+  },
+  {
+    "id": "item_0203",
+    "image_id": "item_0203",
+    "slug": "vine-lord-s-mask",
+    "name": "Vine Lord's Mask",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When Drawing an Exhaust card through an ally ability, 80% Fixed Shield (2 times per turn).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Burning Life",
+    "sources": [
+      "Burning Life"
+    ],
+    "image_path": "itens/item_0203.webp"
+  },
+  {
+    "id": "item_0204",
+    "image_id": "item_0204",
+    "slug": "violet-butterfly-s-whip",
+    "name": "Violet Butterfly's Whip",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "+20% Damage for Attack Cards costing 1 or less.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0204.webp"
+  },
+  {
+    "id": "item_0205",
+    "image_id": "item_0205",
+    "slug": "vladeus-s-reactor",
+    "name": "Vladeus's Reactor",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When using a Upgrade card, 1 Damage Reduction.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0205.webp"
+  },
+  {
+    "id": "item_0206",
+    "image_id": "item_0206",
+    "slug": "void-of-the-devourer",
+    "name": "Void of the Devourer",
+    "rarity": "Unique",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When a card is Exhausted, next card used +35% Damage stacks up to 1 time.",
+    "stat_type": "ATK",
+    "stat_values": [
+      31,
+      50,
+      68,
+      81,
+      90
+    ],
+    "source": "City of Mist",
+    "sources": [
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0206.webp"
+  },
+  {
+    "id": "item_0207",
+    "image_id": "item_0207",
+    "slug": "voracious-swarm",
+    "name": "Voracious Swarm",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "When taking Damage, 4 Agony on the attacker.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0207.webp"
+  },
+  {
+    "id": "item_0208",
+    "image_id": "item_0208",
+    "slug": "w-52-dopamine-injector",
+    "name": "W-52 Dopamine Injector",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [],
+    "description": "When you Draw by an ability, +20% Damage amount for 1 turn (Max 2 times per turn).",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0208.webp"
+  },
+  {
+    "id": "item_0209",
+    "image_id": "item_0209",
+    "slug": "water-drops-of-the-goddess",
+    "name": "Water Drops of the Goddess",
+    "rarity": "Legendary",
+    "slot": "Accessory",
+    "raw_slot": "Trinket",
+    "tags": [],
+    "description": "At the start of battle, 1 Storage.",
+    "stat_type": "HP",
+    "stat_values": [
+      22,
+      41,
+      60,
+      73,
+      83
+    ],
+    "source": "Shop",
+    "sources": [
+      "Shop"
+    ],
+    "image_path": "itens/item_0209.webp"
+  },
+  {
+    "id": "item_0210",
+    "image_id": "item_0210",
+    "slug": "wild-fur-cloak",
+    "name": "Wild Fur Cloak",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At turn start, Counter 1.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "The Blue Pot",
+    "sources": [
+      "The Blue Pot"
+    ],
+    "image_path": "itens/item_0210.webp"
+  },
+  {
+    "id": "item_0211",
+    "image_id": "item_0211",
+    "slug": "wings-of-freedom",
+    "name": "Wings of Freedom",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When hit, +10% Damage Amount (Max 3 stacks).",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Laboratory 0",
+    "sources": [
+      "Laboratory 0"
+    ],
+    "image_path": "itens/item_0211.webp"
+  },
+  {
+    "id": "item_0212",
+    "image_id": "item_0212",
+    "slug": "wings-of-light",
+    "name": "Wings of Light",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "When Ego Points are 3 or lower, 0.2 Ego Points on Critical Hit.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "Swamp of Judgment, Foretold Ruin, Theater of Illusions",
+    "sources": [
+      "Swamp of Judgment",
+      "Foretold Ruin",
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0212.webp"
+  },
+  {
+    "id": "item_0213",
+    "image_id": "item_0213",
+    "slug": "wings-of-the-swarm",
+    "name": "Wings of the Swarm",
+    "rarity": "Unique",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "At the start of battle, gain 2 Immunity.",
+    "stat_type": "DEF",
+    "stat_values": [
+      11,
+      19,
+      25,
+      30,
+      34
+    ],
+    "source": "Twin Star's Shadow",
+    "sources": [
+      "Twin Star's Shadow"
+    ],
+    "image_path": "itens/item_0213.webp"
+  },
+  {
+    "id": "item_0214",
+    "image_id": "item_0214",
+    "slug": "wolves-bane-s-spine",
+    "name": "Wolves Bane's Spine",
+    "rarity": "Legendary",
+    "slot": "Armor",
+    "raw_slot": "Armor",
+    "tags": [],
+    "description": "On Critical Hit, +10% Fixed Shield.",
+    "stat_type": "DEF",
+    "stat_values": [
+      10,
+      17,
+      23,
+      27,
+      31
+    ],
+    "source": "The Blue Pot, City of Mist",
+    "sources": [
+      "The Blue Pot",
+      "City of Mist"
+    ],
+    "image_path": "itens/item_0214.webp"
+  },
+  {
+    "id": "item_0215",
+    "image_id": "item_0215",
+    "slug": "yearning-left-hand",
+    "name": "Yearning Left Hand",
+    "rarity": "Legendary",
+    "slot": "Weapon",
+    "raw_slot": "Weapon",
+    "tags": [
+      "seasonal"
+    ],
+    "description": "Increase Damage Amount by 30% to targets in a Shockwave state.",
+    "stat_type": "ATK",
+    "stat_values": [
+      28,
+      45,
+      62,
+      74,
+      82
+    ],
+    "source": "Theater of Illusions",
+    "sources": [
+      "Theater of Illusions"
+    ],
+    "image_path": "itens/item_0215.webp"
+  }
+]
