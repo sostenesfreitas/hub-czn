@@ -89,7 +89,9 @@ class StateAccumulator:
         elif isinstance(ev, UsedCardEvent):
             self._segment_caster = ev.actor_id
         elif isinstance(ev, StackAddEvent):
-            unit = str(ev.target_id)
+            # Sprint 2f3: resolve card-instance-id → player char id via lookup
+            raw = str(ev.target_id)
+            unit = self._lookup.get(raw, raw)
             stacks = self._stacks.setdefault(unit, {})
             current = stacks.get(ev.cs_id, 0)
             new_value = _apply_sign(current, ev.value, ev.sign)

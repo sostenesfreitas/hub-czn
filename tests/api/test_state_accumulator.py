@@ -88,3 +88,35 @@ def test_initial_lookup_seed_preserved():
     acc = StateAccumulator(initial_lookup={"7": "1", "54": "103"})
     acc.feed([])
     assert acc.lookup_at(0) == {"7": "1", "54": "103"}
+
+
+def test_stack_add_resolves_card_inst_id_via_lookup():
+    """Sprint 2f3: when dev_msg's StackAddEvent target_id is a card-instance-id
+    that maps to a player char id via card_owner_lookup, the accumulator
+    stores stacks under the resolved player char id (not the raw card-inst-id).
+
+    This is what fixes the c_1052_uni4_lbk Track B oracle: dev_msg adds
+    'cs01_0805 to 21(card:c_1052_uni4_lbk)' should store stacks on player 38
+    (Narja), not under card-inst-id 21.
+    """
+    acc = StateAccumulator(initial_lookup={"21": "38"})
+    acc.feed([
+        _stack_add(0, "21", "cs01_0805", 1),
+    ])
+    # Stacks land under resolved id "38" (player char Narja), NOT raw "21"
+    assert acc.stacks_at(1, "38") == {"cs01_0805": 1}
+    assert acc.stacks_at(1, "21") == {}
+
+
+def test_stack_add_falls_back_to_raw_when_target_not_in_lookup():
+    """When target_id is not in card_owner_lookup (e.g., direct adds to a
+    monster id like '39'), the accumulator stores under the raw target_id.
+    Backwards-compat with all pre-2f3 tests."""
+    acc = StateAccumulator(initial_lookup={"21": "38"})
+    acc.feed([
+        _stack_add(0, "39", "cs00_0002", 1),
+    ])
+    # "39" not in lookup → falls back to raw "39"
+    assert acc.stacks_at(1, "39") == {"cs00_0002": 1}
+    assert acc.stacks_at(1, "21") == {}
+    assert acc.stacks_at(1, "38") == {}
