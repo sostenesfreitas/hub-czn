@@ -61,6 +61,8 @@ export interface SetupStatus {
   mitmproxy_version: string | null
   certificate: boolean
   certificate_trusted: boolean
+  can_write_hosts: boolean
+  hosts_block_reason: string | null
 }
 
 export interface SetupActionResponse {
@@ -397,4 +399,30 @@ export interface SimulateDamageResponse {
   total_normal: number
   total_crit: number
   total_avg: number
+}
+
+export interface DeckBuilderEpiphanyVariant {
+  variant_id: string
+  level: number
+  name: string
+  cost: number
+  card_type: string | null
+  tags: string[]
+  description: string
+}
+
+export interface DeckBuilderCard {
+  card: CardEntry
+  copies: number
+  group: 'starting' | 'epiphany' | 'ego'
+  variants: DeckBuilderEpiphanyVariant[]
+}
+
+export interface DeckBuilderCombatantResponse {
+  char_res_id: number
+  character_name: string | null
+  starting_cards: DeckBuilderCard[]
+  epiphany_cards: DeckBuilderCard[]
+  ego_skill: DeckBuilderCard | null
+  missing_card_ids: string[]
 }

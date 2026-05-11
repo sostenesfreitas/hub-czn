@@ -17,6 +17,7 @@ const ptBR = {
     setup: 'Configuração',
     rescue: 'Registros de Rescue',
     cards: 'Biblioteca de Cartas',
+    deckBuilder: 'Deck Builder',
     simulator: 'Simulador',
     battle: 'Histórico de Batalhas',
     about: 'Sobre',
@@ -195,6 +196,11 @@ const ptBR = {
       label: 'Administrador',
       ok: 'Executando com privilégios de administrador',
       fail: 'Feche o app e abra novamente com "Executar como administrador"',
+    },
+    hosts: {
+      label: 'Arquivo hosts gravável',
+      ok: 'Pode modificar o arquivo hosts',
+      fail: 'Não consegue escrever no arquivo hosts (veja erros de Captura)',
     },
     mitmproxy: {
       label: 'mitmproxy',
@@ -487,6 +493,16 @@ const ptBR = {
     unexpectedError: 'Ocorreu um erro inesperado',
     loading: 'Carregando...',
     error: 'Erro',
+  },
+  deckBuilder: {
+    title: 'Deck Builder',
+    description: 'Monte, visualize e valide decks por personagem antes de simular o dano.',
+    cardsSelected: 'Cartas selecionadas',
+    deckCost: 'Custo do deck',
+    status: 'Status',
+    empty: 'Nenhum deck montado',
+    placeholderTitle: 'Construtor de deck em desenvolvimento',
+    placeholderDescription: 'Em breve esta seção permitirá selecionar personagem, escolher cartas, validar custo e enviar o deck para o simulador.',
   },
 } as const
 

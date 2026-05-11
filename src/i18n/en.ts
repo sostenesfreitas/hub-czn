@@ -17,6 +17,7 @@ const en = {
     setup: 'Setup',
     rescue: 'Rescue Records',
     cards: 'Card Library',
+    deckBuilder: 'Deck Builder',
     simulator: 'Simulator',
     battle: 'Battle History',
     about: 'About',
@@ -195,6 +196,11 @@ const en = {
       label: 'Administrator',
       ok: 'Running with administrator privileges',
       fail: 'Close the app and reopen with "Run as administrator"',
+    },
+    hosts: {
+      label: 'Hosts file writable',
+      ok: 'Can modify hosts file',
+      fail: 'Cannot write to hosts file (see Capture errors)',
     },
     mitmproxy: {
       label: 'mitmproxy',
@@ -487,6 +493,16 @@ const en = {
     unexpectedError: 'An unexpected error occurred',
     loading: 'Loading...',
     error: 'Error',
+  },
+  deckBuilder: {
+  title: 'Deck Builder',
+  description: 'Build, preview and validate character decks before running damage simulations.',
+  cardsSelected: 'Selected cards',
+  deckCost: 'Deck cost',
+  status: 'Status',
+  empty: 'No deck built',
+  placeholderTitle: 'Deck builder under development',
+  placeholderDescription: 'Soon this section will let you select a character, choose cards, validate cost and send the deck to the simulator.',
   },
 } as const
 
