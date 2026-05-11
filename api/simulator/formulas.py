@@ -27,15 +27,28 @@ def _find_firing_card(inst_id: str, state):
 
 
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
-    """Validated Track B formula:
-       dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor
+    """Validated Track B formula + Sprint 2c weak/EGO multiplier:
+       dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor * weak_mult
+
+       weak_mult = caster.weak_ego_dmg_rate / 100
+                   IF firing_card.outline AND target.weak
+                   ELSE 1.0
+
+    The firing card is looked up via _find_firing_card. When state.hand is
+    empty (as in Track B's regression tests), no card is found → weak_mult=1.0
+    → behavior identical to pre-2c.
     """
     if not targets:
         return EffectResult(skipped=True, skip_reason="no target")
     target = targets[0]
     dr = target.dmg_decrease_rate if target.dmg_decrease_rate > 0 else _def_reduce(target.def_)
     cf = _crit_factor(caster, state)
-    raw = caster.atk * (inst.eff_value / 100.0) * (1.0 - dr) * cf
+    firing_card = _find_firing_card(inst.id, state)
+    outline = firing_card.outline if firing_card is not None else False
+    weak_mult = (caster.weak_ego_dmg_rate / 100.0
+                 if (outline and getattr(target, "weak", False))
+                 else 1.0)
+    raw = caster.atk * (inst.eff_value / 100.0) * (1.0 - dr) * cf * weak_mult
     dealt = target.apply_damage(raw)
     return EffectResult(damage=dealt, target_id=target.id)
 

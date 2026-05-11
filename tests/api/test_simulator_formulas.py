@@ -286,3 +286,61 @@ def test_find_firing_card_checks_deck_and_discard():
     )
     assert _find_firing_card("c_d_01", state).card_id == "c_d"
     assert _find_firing_card("c_e_01", state).card_id == "c_e"
+
+
+def test_f_base_dmg_applies_weak_mult_when_outline_and_weak():
+    """When firing card has outline=True AND target.weak=True, F_BASE_DMG
+    multiplies by caster.weak_ego_dmg_rate / 100."""
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0,
+                       weak_ego_dmg_rate=125.0)
+    target = MonsterState(id="m", def_=0, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.0, weak=True)
+    firing_card = CardState(card_id="c_x", cost=1, outline=True,
+                            skill_eff_ids=["fake"])
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[firing_card], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    # _def_reduce(0) = 268/503 ≈ 0.533
+    # cf with rng seed 0: random() first call returns 0.844; 84.4 vs cri=0.0 → no crit, cf=1.0
+    # weak_mult = 125/100 = 1.25
+    # expected: 1000 * 1.0 * (1 - 0.533) * 1.0 * 1.25 ≈ 583
+    result = _formula_base_damage(_fake_inst(100), caster, [target], state)
+    assert 570 <= result.damage <= 595
+
+
+def test_f_base_dmg_no_weak_mult_when_outline_but_target_not_weak():
+    """outline=True but target.weak=False → no weak_mult (×1.0)."""
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0,
+                       weak_ego_dmg_rate=125.0)
+    target = MonsterState(id="m", def_=0, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.0, weak=False)
+    firing_card = CardState(card_id="c_x", cost=1, outline=True,
+                            skill_eff_ids=["fake"])
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[firing_card], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    # weak_mult = 1.0; expected ≈ 1000 * 1.0 * (1 - 0.533) * 1.0 ≈ 467
+    result = _formula_base_damage(_fake_inst(100), caster, [target], state)
+    assert 460 <= result.damage <= 475
+
+
+def test_f_base_dmg_no_weak_mult_when_target_weak_but_no_outline():
+    """target.weak=True but no firing card with outline → no weak_mult."""
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0,
+                       weak_ego_dmg_rate=125.0)
+    target = MonsterState(id="m", def_=0, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.0, weak=True)
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    result = _formula_base_damage(_fake_inst(100), caster, [target], state)
+    assert 460 <= result.damage <= 475
