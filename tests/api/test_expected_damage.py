@@ -1,0 +1,61 @@
+"""Pure-math expected-damage helpers used by the optimizer."""
+import math
+
+import pytest
+
+from api.optimizer.expected_damage import (
+    DUMMY_DEF,
+    default_damage_reduction,
+    expected_crit_factor,
+    expected_damage,
+)
+
+
+def test_expected_crit_factor_at_zero_cri_returns_1():
+    assert expected_crit_factor(0.0, 200.0) == pytest.approx(1.0)
+
+
+def test_expected_crit_factor_at_100_cri_returns_cdmg_over_100():
+    assert expected_crit_factor(100.0, 200.0) == pytest.approx(2.0)
+
+
+def test_expected_crit_factor_50_200_is_1_5():
+    assert expected_crit_factor(50.0, 200.0) == pytest.approx(1.5)
+
+
+def test_expected_crit_factor_30_180_is_1_24():
+    assert expected_crit_factor(30.0, 180.0) == pytest.approx(1.24)
+
+
+def test_dummy_def_is_500():
+    assert DUMMY_DEF == 500
+
+
+def test_default_damage_reduction_at_dummy_def_500():
+    assert default_damage_reduction() == pytest.approx(268.0 / 1003.0, abs=1e-6)
+
+
+def test_default_damage_reduction_accepts_override():
+    assert default_damage_reduction(dummy_def=1000) == pytest.approx(268.0 / 1503.0, abs=1e-6)
+
+
+def test_expected_damage_known_inputs():
+    result = expected_damage(atk=10000.0, cri=50.0, cri_dmg_rate=200.0)
+    expected = 10000.0 * 1.0 * (1.0 - 268.0 / 1003.0) * 1.5
+    assert result == pytest.approx(expected, abs=1e-3)
+
+
+def test_expected_damage_eff_scales_linearly():
+    base = expected_damage(atk=10000.0, cri=50.0, cri_dmg_rate=200.0, eff_pct=100.0)
+    double = expected_damage(atk=10000.0, cri=50.0, cri_dmg_rate=200.0, eff_pct=200.0)
+    assert double == pytest.approx(2.0 * base, abs=1e-6)
+
+
+def test_expected_damage_atk_scales_linearly():
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    triple = expected_damage(atk=3000.0, cri=50.0, cri_dmg_rate=200.0)
+    assert triple == pytest.approx(3.0 * base, abs=1e-6)
+
+
+def test_expected_damage_non_negative_at_zero_atk():
+    assert expected_damage(atk=0.0, cri=0.0, cri_dmg_rate=125.0) == pytest.approx(0.0)
