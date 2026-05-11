@@ -151,6 +151,17 @@ export function OptimizerPanel({
     onChangeRef.current({ ...configRef.current, stat_weights: mapped })
   }, [config.char_name, charSavedWeights, globalPriorities])
 
+  // Clamp min_priority_substats if a weight change drops the priority-stat
+  // count below it -- otherwise the slot filter becomes mathematically
+  // unsatisfiable (each piece has at most 1 substat per stat name) and the
+  // optimizer returns "no build found" with no explanation.
+  useEffect(() => {
+    const priorityCount = Object.values(config.stat_weights ?? {}).filter((v) => v > 0).length
+    if (config.min_priority_substats > priorityCount) {
+      onChangeRef.current({ ...configRef.current, min_priority_substats: priorityCount })
+    }
+  }, [config.stat_weights, config.min_priority_substats])
+
   const dataLoaded = status?.data_loaded ?? false
   const disabled = isRunning
 
@@ -405,22 +416,32 @@ export function OptimizerPanel({
             <InfoPopover content={t('optimizer.minPrioritySubstatsTip')} />
           </label>
           <div className="flex gap-1">
-            {([0, 1, 2, 3] as const).map((n) => (
-              <button
-                key={n}
-                type="button"
-                disabled={disabled}
-                onClick={() => patch({ min_priority_substats: n })}
-                className={[
-                  'flex-1 text-xs py-1 rounded border transition-colors disabled:opacity-50',
-                  config.min_priority_substats === n
-                    ? 'bg-[#c084fc]/20 border-[#c084fc] text-[#c084fc] font-semibold'
-                    : 'bg-[#282828] border-[#333333] text-[#b3b3b3] hover:border-[#555555]',
-                ].join(' ')}
-              >
-                {n === 0 ? 'Any' : `${n}+`}
-              </button>
-            ))}
+            {([0, 1, 2, 3] as const).map((n) => {
+              // A piece can have at most 1 substat of any given stat. So a piece
+              // can satisfy "≥N priority substats" only if at least N distinct
+              // stats have weight > 0. Disable buttons that would make filtering
+              // mathematically impossible (and produce a misleading "no build").
+              const priorityStatCount = Object.values(sw).filter((v) => v > 0).length
+              const impossible = n > priorityStatCount
+              const isDisabled = disabled || impossible
+              return (
+                <button
+                  key={n}
+                  type="button"
+                  disabled={isDisabled}
+                  title={impossible ? t('optimizer.minPrioritySubstatsImpossible', { n, count: priorityStatCount }) : undefined}
+                  onClick={() => patch({ min_priority_substats: n })}
+                  className={[
+                    'flex-1 text-xs py-1 rounded border transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+                    config.min_priority_substats === n
+                      ? 'bg-[#c084fc]/20 border-[#c084fc] text-[#c084fc] font-semibold'
+                      : 'bg-[#282828] border-[#333333] text-[#b3b3b3] hover:border-[#555555]',
+                  ].join(' ')}
+                >
+                  {n === 0 ? 'Any' : `${n}+`}
+                </button>
+              )
+            })}
           </div>
         </div>
 

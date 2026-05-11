@@ -26,6 +26,8 @@ def get_setup_status():
         "mitmproxy_version": s.mitmproxy_version,
         "certificate": s.has_certificate,
         "certificate_trusted": s.certificate_trusted,
+        "can_write_hosts": s.can_write_hosts,
+        "hosts_block_reason": s.hosts_block_reason,
     }
 
 

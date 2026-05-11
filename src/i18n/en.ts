@@ -197,6 +197,11 @@ const en = {
       ok: 'Running with administrator privileges',
       fail: 'Close the app and reopen with "Run as administrator"',
     },
+    hosts: {
+      label: 'Hosts file writable',
+      ok: 'Can modify hosts file',
+      fail: 'Cannot write to hosts file (see Capture errors)',
+    },
     mitmproxy: {
       label: 'mitmproxy',
       ok: 'mitmproxy {{version}} installed',
@@ -285,6 +290,7 @@ const en = {
     topPercentTip: 'Only consider gear in the top X% by Gear Score. Lower % = faster search but may exclude viable pieces. 60% is a safe default.',
     minPrioritySubstats: 'Min priority substats',
     minPrioritySubstatsTip: 'Only consider pieces that have at least N substats matching your priority stats (weight > 0). Drastically reduces permutations without sacrificing relevant builds.',
+    minPrioritySubstatsImpossible: 'Needs ≥{{n}} stats with weight > 0 (you have {{count}}). Set weights on more stats to enable this.',
     statConstraints: 'Min stat requirements',
     statConstraintsTip: 'Filter out builds that do not meet these minimum final-stat values. Leave a field empty or at 0 to skip that constraint.',
     maxResultsTip: 'Maximum number of builds to display. Lower values are faster to browse.',

@@ -1,8 +1,9 @@
 def test_about_returns_version(client):
+    from hub_czn_version import __version__
     response = client.get("/api/about")
     assert response.status_code == 200
     body = response.json()
-    assert body["version"] == "1.8.0"
+    assert body["version"] == __version__
 
 
 def test_about_returns_github_urls(client):
