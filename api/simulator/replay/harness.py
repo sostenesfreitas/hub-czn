@@ -9,13 +9,23 @@ s2c frames.  The harness therefore:
   - Skill-fire events    (is_state_update=False)  → dispatch via runtime;
     park result in pending list until the next state-update snapshot.
 """
+import dataclasses
 import re
 from dataclasses import dataclass, field
 
+from api.simulator.replay.event_parser import (
+    BattleEvent, SkillEffEvent,
+)
 from api.simulator.replay.reconstructor import StateReconstructor
+from api.simulator.replay.state_accumulator import StateAccumulator
 
 _CHAR_PREFIX_RE = re.compile(r"^c_(\d+)_")
 _MONSTER_PREFIX_RE = re.compile(r"^(\d{5,})_")  # e.g., 1006005_*
+
+
+def _replace_seq(event, new_seq: int):
+    """Return a copy of event with seq replaced — works for any frozen BattleEvent."""
+    return dataclasses.replace(event, seq=new_seq)
 
 
 @dataclass
@@ -31,6 +41,7 @@ class EventReport:
     target_id: str | None = None
     inferred_caster: bool = False
     error: str = ""
+    dva_stacks_observed: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -73,11 +84,49 @@ class ReplayHarness:
     def replay(self, reader) -> tuple[ReplaySummary, list[EventReport]]:
         summary = ReplaySummary()
         reports: list[EventReport] = []
+        captured = list(reader.events())  # buffer once for two passes
+
+        # Pre-pass: build accumulator with monotonic global seq.
+        accumulator = StateAccumulator()
+        global_seq = 0
+        skill_eff_global_seq: dict[tuple[int, str], int] = {}
+        for ce_idx, ce in enumerate(captured):
+            renumbered: list[BattleEvent] = []
+            for pe in ce.parsed_events:
+                renumbered.append(_replace_seq(pe, global_seq))
+                if isinstance(pe, SkillEffEvent):
+                    skill_eff_global_seq[(ce_idx, pe.skill_eff_id)] = global_seq
+                global_seq += 1
+            accumulator.feed(renumbered)
+
+        # Second pass: dispatch using accumulator state for dva_stacks.
         state = None
         pending_dispatches: list[EventReport] = []
-        for event in reader.events():
+        for ce_idx, event in enumerate(captured):
             if event.skill_eff_fires and state is not None:
                 for fire in event.skill_eff_fires:
+                    fire_seq = skill_eff_global_seq.get((ce_idx, fire.skill_eff_id))
+                    if fire_seq is not None:
+                        # Collect candidate unit_ids from state AND from the
+                        # accumulator's own snapshot (covers targets not yet
+                        # reconstructed into state, e.g. monsters hit by stacks
+                        # before their snapshot appears).
+                        unit_ids: set = set()
+                        unit_ids.update(state.card_owner_lookup.values())
+                        unit_ids.update(m.id for m in state.enemies)
+                        unit_ids.update(c.id for c in state.player_team)
+                        # Include any unit that already has stacks in accumulator
+                        snap_idx = min(fire_seq, len(accumulator._snapshots) - 1)
+                        if snap_idx >= 0 and accumulator._snapshots:
+                            unit_ids.update(accumulator._snapshots[snap_idx].stack_state.keys())
+                        dva: dict[str, dict[str, int]] = {}
+                        for uid in unit_ids:
+                            stacks = accumulator.stacks_at(fire_seq, uid)
+                            if stacks:
+                                dva[uid] = stacks
+                        state.dva_stacks = dva
+                    else:
+                        state.dva_stacks = {}
                     row = self._dispatch_one(event, fire, state)
                     reports.append(row)
                     summary.record(row.eff_type or "?", row.status, None)
@@ -158,6 +207,7 @@ class ReplayHarness:
         row.sim_damage = int(getattr(result, "damage", 0) or 0)
         # prefer the fire's explicit target_id when present; fall back to runtime's
         row.target_id = fire.target_id or getattr(result, "target_id", None)
+        row.dva_stacks_observed = dict(getattr(result, "dva_stacks_observed", {}) or {})
         type_def = self._runtime._catalog.get(inst.eff_type) if hasattr(self._runtime, "_catalog") else None
         ref = (type_def or {}).get("effect", {}).get("formula_ref", "")
         if ref.startswith("F_UNKNOWN") or ref == "F_NOOP":

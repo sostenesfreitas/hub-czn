@@ -378,3 +378,47 @@ def test_harness_resolves_caster_via_card_owner_lookup():
     passed_caster = call_args.args[1] if len(call_args.args) > 1 else call_args.kwargs.get("caster")
     assert str(passed_caster.id) == "2"
     assert reports[0].inferred_caster is False
+
+
+def test_harness_populates_dva_stacks_on_dispatched_events():
+    """When the accumulator has stacks on target before a SkillEff fires,
+    EventReport.dva_stacks_observed reflects them via state.dva_stacks."""
+    from api.simulator.result import EffectResult
+    from api.simulator.replay.event_parser import StackAddEvent, SkillEffEvent
+
+    fake_runtime = MagicMock()
+    instances = MagicMock()
+    fake_runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    fake_inst.link_cs_id = ["cs_91"]
+    instances.get = MagicMock(return_value=fake_inst)
+    fake_runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+
+    def fake_apply(skill_eff_id, caster, state):
+        dva = getattr(state, "dva_stacks", None)
+        target_stacks = dva.get("38", {}) if dva else {}
+        observed = {cs_id: target_stacks.get(cs_id, 0) for cs_id in ["cs_91"]}
+        return EffectResult(damage=100, target_id="38",
+                             dva_stacks_observed=observed)
+    fake_runtime.apply = fake_apply
+
+    bw = _minimal_bw()
+    stack_add_ev = StackAddEvent(seq=0, raw_line="", actor_id="1",
+                                  target_id="38", target_role="monster",
+                                  cs_id="cs_91", value=3, sign="MATHSIGN_ADD")
+    skill_eff_ev = SkillEffEvent(seq=1, raw_line="", skill_eff_id="c_x_01",
+                                  eff_type="SKILL_EFF_DMG", seq_num=1)
+    fire = SkillEffFire(skill_eff_id="c_x_01", eff_type="SKILL_EFF_DMG",
+                       caster_id="1")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False,
+                     skill_eff_fires=[fire],
+                     parsed_events=[stack_add_ev, skill_eff_ev]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+    ])
+    summary, reports = ReplayHarness(fake_runtime, StateReconstructor()).replay(reader)
+    assert reports[0].dva_stacks_observed == {"cs_91": 3}
