@@ -68,7 +68,7 @@
       },
       {
         "card_id": "c_1017_uni4",
-        "description": "[ Exhaust ] [ Finale ] Decreases Damage Taken by 20% for 1 turn. Decrease up to 4 Metallization. Additionally decrease Damage Taken by 20% for each."
+        "description": "[Exhaust] [ Finale ] Decreases Damage Taken by 20% for 1 turn. Decrease up to 4 Metallization. Additionally decrease Damage Taken by 20% for each."
       }
     ],
     "ego_skill": {
@@ -103,7 +103,7 @@
       },
       {
         "card_id": "c_1040_uni2",
-        "description": "[ Exhaust ] Draw 3."
+        "description": "[Exhaust] Draw 3."
       },
       {
         "card_id": "c_1040_uni3",
@@ -146,7 +146,7 @@
       },
       {
         "card_id": "c_1049_uni2",
-        "description": "[ Exhaust ] Discard all cards in hand. Draw for each."
+        "description": "[Exhaust] Discard all cards in hand. Draw for each."
       },
       {
         "card_id": "c_1049_uni3",
@@ -179,7 +179,7 @@
       },
       {
         "card_id": "c_1060_srt4",
-        "description": "[ Initiation ] 100% Damage, 1 Cursed Shackles. Cursed Shackles: Add 2 Hits."
+        "description": "[Initiation] 100% Damage, 1 Cursed Shackles. Cursed Shackles: Add 2 Hits."
       }
     ],
     "epiphany_cards": [
@@ -189,7 +189,7 @@
       },
       {
         "card_id": "c_1060_uni2",
-        "description": "[ Initiation ] [ Unique ] At the start of the turn, gain Inhibit. Decrease Cost by 1 until 2 random cards of another Combatant is used"
+        "description": "[Initiation] [Unique] At the start of the turn, gain Inhibit. Decrease Cost by 1 until 2 random cards of another Combatant is used"
       },
       {
         "card_id": "c_1060_uni3",
@@ -326,7 +326,7 @@
       },
       {
         "card_id": "c_30093_uni4",
-        "description": "[ Unique ] [ Linked ] [ Retrieve 3 ] When moved to Graveyard, 1 Effulgent Light."
+        "description": "[Unique] [ Linked ] [ Retrieve 3 ] When moved to Graveyard, 1 Effulgent Light."
       }
     ],
     "ego_skill": {
@@ -351,7 +351,7 @@
       },
       {
         "card_id": "c_1043_srt4",
-        "description": "[ Initiation ] When an Upgrade or Skill Card of another Combatant is used, 1 Commence the Hunt."
+        "description": "[Initiation] When an Upgrade or Skill Card of another Combatant is used, 1 Commence the Hunt."
       }
     ],
     "epiphany_cards": [
@@ -369,7 +369,7 @@
       },
       {
         "card_id": "c_1043_uni4",
-        "description": "[ Unique ] Increase Extra Attack Damage Amount of Commence the Hunt by 40%."
+        "description": "[Unique] Increase Extra Attack Damage Amount of Commence the Hunt by 40%."
       }
     ],
     "ego_skill": {
@@ -408,7 +408,7 @@
       },
       {
         "card_id": "c_1064_uni3",
-        "description": "[ Unique ] When Futility is created, change those cards into 1 -Cost Attack Cards with 100% Damage and Heal effects."
+        "description": "[Unique] When Futility is created, change those cards into 1 -Cost Attack Cards with 100% Damage and Heal effects."
       },
       {
         "card_id": "c_1064_uni4",
@@ -541,7 +541,7 @@
       },
       {
         "card_id": "c_1004_uni4",
-        "description": "[ Unique ] [ Bullet ] 300% Damage. After using 5 Handgun Bullet card time(s), remove Unusable."
+        "description": "[Unique] [ Bullet ] 300% Damage. After using 5 Handgun Bullet card time(s), remove Unusable."
       }
     ],
     "ego_skill": {
@@ -652,7 +652,7 @@
       },
       {
         "card_id": "c_1027_srt4",
-        "description": "[ Unique ] [ Initiation ] Increases Damage Amount of Attack Cards of this unit by 20%. When an Attack Card is used, 1 Passion Weakness to the target."
+        "description": "[Unique] [Initiation] Increases Damage Amount of Attack Cards of this unit by 20%. When an Attack Card is used, 1 Passion Weakness to the target."
       }
     ],
     "epiphany_cards": [
@@ -713,7 +713,7 @@
       },
       {
         "card_id": "c_1039_uni4",
-        "description": "[ Unique ] 1 Wave. At the start of the turn, 1 Wave."
+        "description": "[Unique] 1 Wave. At the start of the turn, 1 Wave."
       }
     ],
     "ego_skill": {
@@ -756,7 +756,7 @@
       },
       {
         "card_id": "c_1052_uni4",
-        "description": "[ Retain ] [ Unique ] If Voracity is decreased, decrease Cost by 1 and add +30% Heal Amount (max 10) until used. 160% Defense-Based Damage to all enemies. Heal 100%. 4 Predation."
+        "description": "[ Retain ] [Unique] If Voracity is decreased, decrease Cost by 1 and add +30% Heal Amount (max 10) until used. 160% Defense-Based Damage to all enemies. Heal 100%. 4 Predation."
       }
     ],
     "ego_skill": {
@@ -824,7 +824,7 @@
       },
       {
         "card_id": "c_30047_srt4",
-        "description": "[ Unique ] [ Initiation ] [ Exhaust ] [ Ephemeral ] 350% Defense-Based Damage. Incinerate: Create 1 Hew Lv. 1"
+        "description": "[Unique] [Initiation] [Exhaust] [Ephemeral] 350% Defense-Based Damage. Incinerate: Create 1 Hew Lv. 1"
       }
     ],
     "epiphany_cards": [
@@ -838,7 +838,7 @@
       },
       {
         "card_id": "c_30047_uni3",
-        "description": "[ Unique ] When Shield is gained through an ability, gain 1 Honed Edge."
+        "description": "[Unique] When Shield is gained through an ability, gain 1 Honed Edge."
       },
       {
         "card_id": "c_30047_uni4",
@@ -867,7 +867,7 @@
       },
       {
         "card_id": "c_1024_srt4",
-        "description": "[ Initiation ] Create 2 Creation★"
+        "description": "[Initiation] Create 2 Creation★"
       }
     ],
     "epiphany_cards": [
@@ -959,11 +959,11 @@
     "epiphany_cards": [
       {
         "card_id": "c_1056_uni1",
-        "description": "[ Unique ] +40% Damage Amount of cards with Cost 1. At the end of the turn, Heal 60%."
+        "description": "[Unique] +40% Damage Amount of cards with Cost 1. At the end of the turn, Heal 60%."
       },
       {
         "card_id": "c_1056_uni2",
-        "description": "[ Exhaust ] Choose 1 card(s) in hand to Exhaust. Heal 200%. Draw 1."
+        "description": "[Exhaust] Choose 1 card(s) in hand to Exhaust. Heal 200%. Draw 1."
       },
       {
         "card_id": "c_1056_uni3",
@@ -1085,7 +1085,7 @@
       },
       {
         "card_id": "c_30097_srt4",
-        "description": "[ Unique ] [ Initiation ] When a card is activated, 1 Chronicle for each Cost of that card."
+        "description": "[Unique] [Initiation] When a card is activated, 1 Chronicle for each Cost of that card."
       }
     ],
     "epiphany_cards": [
@@ -1103,7 +1103,7 @@
       },
       {
         "card_id": "c_30097_uni4",
-        "description": "[ Unique ] Decrease all Chronicle. Gain Chronal Ascension for each decreased."
+        "description": "[Unique] Decrease all Chronicle. Gain Chronal Ascension for each decreased."
       }
     ],
     "ego_skill": {
@@ -1146,7 +1146,7 @@
       },
       {
         "card_id": "c_1005_uni4",
-        "description": "[ Unique ] +80% Mark Damage"
+        "description": "[Unique] +80% Mark Damage"
       }
     ],
     "ego_skill": {
@@ -1228,11 +1228,11 @@
       },
       {
         "card_id": "c_30084_uni3",
-        "description": "[ Unique ] When 2 Archetype cards are created, create 1 identical card in Discard Pile."
+        "description": "[Unique] When 2 Archetype cards are created, create 1 identical card in Discard Pile."
       },
       {
         "card_id": "c_30084_uni4",
-        "description": "[ Unique ] [ Form Upgrade ] 1 AP. Draw 1. Increase Damage Amount of the first Hit of the next Attack Card by 40%."
+        "description": "[Unique] [ Form Upgrade ] 1 AP. Draw 1. Increase Damage Amount of the first Hit of the next Attack Card by 40%."
       }
     ],
     "ego_skill": {
@@ -1300,7 +1300,7 @@
       },
       {
         "card_id": "c_1033_srt4",
-        "description": "[ Unique ] [ Initiation ] Create 1 Ballista card(s). At the start of the turn, create 1 Ballista card(s)."
+        "description": "[Unique] [Initiation] Create 1 Ballista card(s). At the start of the turn, create 1 Ballista card(s)."
       }
     ],
     "epiphany_cards": [
@@ -1318,7 +1318,7 @@
       },
       {
         "card_id": "c_1033_uni4",
-        "description": "[ Unique ] Increase max stack of Reload by 1. 2 Reload."
+        "description": "[Unique] Increase max stack of Reload by 1. 2 Reload."
       }
     ],
     "ego_skill": {
@@ -1357,7 +1357,7 @@
       },
       {
         "card_id": "c_1057_uni3",
-        "description": "[ Unique ] When using a card of this unit with an activated Inspiration, 120% Damage to all enemies."
+        "description": "[Unique] When using a card of this unit with an activated Inspiration, 120% Damage to all enemies."
       },
       {
         "card_id": "c_1057_uni4",

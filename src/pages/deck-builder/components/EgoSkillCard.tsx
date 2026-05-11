@@ -7,6 +7,8 @@ export function EgoSkillCard({
 }: {
   egoSkill: DeckBuilderCardWithVariants
 }) {
+  const displayDescription = egoSkill.description
+
   return (
     <section className="mt-4 overflow-hidden rounded-xl border border-[#3b2f1d] bg-[#1a1410]">
       <div className="flex gap-3 p-3">
@@ -40,6 +42,14 @@ export function EgoSkillCard({
               </span>
             )}
           </div>
+
+          {displayDescription && (
+            <div className="mt-2 rounded-md border border-[#f59e0b]/20 bg-[#78350f]/20 p-2">
+              <p className="line-clamp-3 text-[10px] leading-relaxed text-[#fde68a]">
+                {displayDescription}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
