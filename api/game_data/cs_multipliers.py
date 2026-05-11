@@ -71,8 +71,39 @@ class CSMultiplierIndex:
 
     @cached_property
     def _by_cs_id(self) -> dict[str, list[DamageModifier]]:
-        # Filled in Task 2.
-        return {}
+        out: dict[str, list[DamageModifier]] = {}
+        for shard_name in _CS_SHARDS:
+            shard_path = self._db_path / shard_name
+            if not shard_path.exists():
+                continue
+            try:
+                data = json.loads(shard_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            rows = data if isinstance(data, list) else list(data.values())
+            for row in rows:
+                if not isinstance(row, dict):
+                    continue
+                if row.get("eff") != "SKILL_EFF_DAMAGE_VALUE_ADD":
+                    continue
+                source_id = str(row.get("id", "") or "")
+                if not source_id:
+                    continue
+                cs_id = _strip_instance_suffix(source_id)
+                try:
+                    eff_value = int(row.get("eff_value", 0) or 0)
+                except (TypeError, ValueError):
+                    eff_value = 0
+                mod = DamageModifier(
+                    cs_id=cs_id,
+                    eff_value=eff_value,
+                    sign=str(row.get("eff_value_math_sign", "") or ""),
+                    direction=_parse_direction(row.get("eff_opt")),
+                    link_cs_id=_parse_list_field(row.get("link_cs_id")),
+                    source_id=source_id,
+                )
+                out.setdefault(cs_id, []).append(mod)
+        return out
 
     def lookup(self, cs_id: str) -> list[DamageModifier]:
         return list(self._by_cs_id.get(str(cs_id), []))
