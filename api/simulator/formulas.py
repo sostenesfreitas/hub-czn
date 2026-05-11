@@ -65,18 +65,19 @@ def _compose_dva_multiplier(state, unit_id, direction: str) -> float:
 
 
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
-    """Sprint 2e1 final formula:
+    """Sprint 2f2 final formula:
        dmg = ATK * (eff_value/100) * (1 - dr) * cf * weak_mult
-             * caster_dva * target_dva
+             * caster_dva_v1 * caster_dva_v2
+             * target_dva_v1 * target_dva_v2
 
-    caster_dva: multiplier from cs stacks on caster with direction='attack'
-    target_dva: multiplier from cs stacks on target with direction='take'
+    v1 (cs_multipliers / accumulator-based) and v2 (skill_map / snapshot-based)
+    paths compose multiplicatively. Synth fixtures + Track B verified_hit_1
+    construct state without either path's inputs -> both degrade to 1.0 ->
+    formula behavior identical to pre-2f2.
 
-    Backwards-compat: when state lacks cs_multiplier_index, both multipliers
-    degrade to 1.0.  Track B's 4 verified hits and all synth fixtures continue
-    to pass ±5% without modification.
-
-    dva_stacks_observed: kept for diagnostic; all target stacks at fire time.
+    Sprint 2f2 ships v2 as Branch E (no-op returning 1.0).  The composition
+    contract is wired so a future sprint (2f3) can swap the helper body
+    without touching this function.
     """
     if not targets:
         return EffectResult(skipped=True, skip_reason="no target")
@@ -88,10 +89,14 @@ def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
     weak_mult = (caster.weak_ego_dmg_rate / 100.0
                  if (outline and getattr(target, "weak", False))
                  else 1.0)
-    caster_dva = _compose_dva_multiplier(state, caster.id, direction="attack")
-    target_dva = _compose_dva_multiplier(state, target.id, direction="take")
+    caster_dva_v1 = _compose_dva_multiplier(state, caster.id, direction="attack")
+    caster_dva_v2 = _compose_skill_map_multiplier(state, caster.id, direction="attack")
+    target_dva_v1 = _compose_dva_multiplier(state, target.id, direction="take")
+    target_dva_v2 = _compose_skill_map_multiplier(state, target.id, direction="take")
     raw = (caster.atk * (inst.eff_value / 100.0) * (1.0 - dr)
-           * cf * weak_mult * caster_dva * target_dva)
+           * cf * weak_mult
+           * caster_dva_v1 * caster_dva_v2
+           * target_dva_v1 * target_dva_v2)
     dealt = target.apply_damage(raw)
 
     dva_stacks_observed: dict[str, int] = {}

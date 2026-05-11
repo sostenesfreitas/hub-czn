@@ -698,3 +698,32 @@ def test_compose_skill_map_multiplier_branch_E_returns_1_regardless_of_input():
     )
     # Branch E ignores everything and returns 1.0
     assert _compose_skill_map_multiplier(state, "39", direction="take") == 1.0
+
+
+def test_f_base_dmg_composes_skill_map_multiplier_alongside_v1():
+    """F_BASE_DMG calls _compose_skill_map_multiplier alongside v1 path.
+    With Branch E (no-op v2), the result equals v1-only result.
+    With non-empty v1 path here, expected damage = base * v1_mult * 1.0.
+    """
+    import random
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.0)
+    state = _state(caster, target)
+    state.dva_stacks = {"m1": {"cs_99": 1}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_99": [DamageModifier(
+            cs_id="cs_99", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="take", link_cs_id=[], source_id="cs_99_01",
+        )]
+    })
+    state.skill_map_raw = {"10": {"eff_value": 20, "eff_opts": [], "parent": {"type": "CS"}}}
+    state.cs_map_raw = {"100": {"owner_id": "m1", "term_value": 1, "skillEffs": [10]}}
+    raw = {"id": "fake", "eff": "SKILL_EFF_DMG", "eff_value": "100",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_DMG", raw=raw)
+    result = _formula_base_damage(inst, caster, [target], state)
+    # Base: 1000 * 1.0 * (1 - 268/503) * 1.0 * 1.5 (v1) * 1.0 (v2 no-op) ~= 700
+    assert 690 <= result.damage <= 710
