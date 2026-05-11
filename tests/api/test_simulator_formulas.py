@@ -509,3 +509,48 @@ def test_compose_dva_multiplier_skips_modifiers_with_link_cs_id():
     })
     # link_cs_id-gated modifier skipped in v1 (conditional gates not evaluated)
     assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
+
+
+def test_f_base_dmg_applies_caster_and_target_dva_when_state_has_index():
+    """When both caster and target have applicable modifiers, F_BASE_DMG
+    multiplies by both dva multipliers."""
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.0)
+    state = _state(caster, target)
+    state.dva_stacks = {
+        "c": {"cs_attack": 1},
+        "m1": {"cs_take": 1},
+    }
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_attack": [DamageModifier(
+            cs_id="cs_attack", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="attack", link_cs_id=[], source_id="cs_attack_01",
+        )],
+        "cs_take": [DamageModifier(
+            cs_id="cs_take", eff_value=100, sign="MATHSIGN_ADD_HUND_MULTIPLY_PCT",
+            direction="take", link_cs_id=[], source_id="cs_take_01",
+        )],
+    })
+    # Base: 1000 * 1.0 * (1 - 268/503) * 1.0 * 1.0 ≈ 467
+    # With caster_dva=1.5, target_dva=2.0: 467 * 1.5 * 2.0 ≈ 1401
+    raw = {"id": "fake", "eff": "SKILL_EFF_DMG", "eff_value": "100",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_DMG", raw=raw)
+    result = _formula_base_damage(inst, caster, [target], state)
+    assert 1380 <= result.damage <= 1420  # ~1401 ± 1.5%
+
+
+def test_f_base_dmg_track_b_verified_hit_1_unchanged_post_2e1():
+    """Regression: Track B's c_30075_srt4_mut hit MUST still pass ±5%.
+    No state.dva_stacks, no cs_multiplier_index → both multipliers degrade
+    to 1.0 → behavior identical."""
+    caster = CharState(id="c", atk=1087, def_=300, hp=1, hp_current=1,
+                       cri=10.0, cri_dmg_rate=221.0)
+    target = MonsterState(id="m", def_=540, hp=99999, hp_current=99999,
+                          dmg_decrease_rate=0.334)
+    state = _state(caster, target)
+    result = _formula_base_damage(_fake_inst(75), caster, [target], state)
+    assert abs(result.damage - 547) / 547 < 0.05

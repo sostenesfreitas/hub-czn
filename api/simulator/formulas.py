@@ -65,13 +65,18 @@ def _compose_dva_multiplier(state, unit_id, direction: str) -> float:
 
 
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
-    """Validated Track B formula + Sprint 2c weak_mult + Sprint 2d dva observation:
-       dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor * weak_mult
+    """Sprint 2e1 final formula:
+       dmg = ATK * (eff_value/100) * (1 - dr) * cf * weak_mult
+             * caster_dva * target_dva
 
-       dva_stacks_observed: dict of cs_id -> count for stacks referenced by
-       inst.link_cs_id that are currently present on the target.  Sprint 2d
-       OBSERVATION ONLY — does not affect damage calculation.  Sprint 2e
-       wires the actual multiplier.
+    caster_dva: multiplier from cs stacks on caster with direction='attack'
+    target_dva: multiplier from cs stacks on target with direction='take'
+
+    Backwards-compat: when state lacks cs_multiplier_index, both multipliers
+    degrade to 1.0.  Track B's 4 verified hits and all synth fixtures continue
+    to pass ±5% without modification.
+
+    dva_stacks_observed: kept for diagnostic; all target stacks at fire time.
     """
     if not targets:
         return EffectResult(skipped=True, skip_reason="no target")
@@ -83,11 +88,12 @@ def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
     weak_mult = (caster.weak_ego_dmg_rate / 100.0
                  if (outline and getattr(target, "weak", False))
                  else 1.0)
-    raw = caster.atk * (inst.eff_value / 100.0) * (1.0 - dr) * cf * weak_mult
+    caster_dva = _compose_dva_multiplier(state, caster.id, direction="attack")
+    target_dva = _compose_dva_multiplier(state, target.id, direction="take")
+    raw = (caster.atk * (inst.eff_value / 100.0) * (1.0 - dr)
+           * cf * weak_mult * caster_dva * target_dva)
     dealt = target.apply_damage(raw)
 
-    # Sprint 2d: observe (don't apply) ALL cs stacks on target at fire time.
-    # Sprint 2e will figure out which stacks actually multiply damage.
     dva_stacks_observed: dict[str, int] = {}
     dva_stacks = getattr(state, "dva_stacks", None)
     if dva_stacks is not None:
