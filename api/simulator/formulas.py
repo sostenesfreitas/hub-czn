@@ -26,6 +26,44 @@ def _find_firing_card(inst_id: str, state):
     return None
 
 
+def _compose_dva_multiplier(state, unit_id, direction: str) -> float:
+    """Compose damage modifiers from cs stacks on the given unit, filtered by direction.
+
+    Returns 1.0 (identity) when:
+    - state lacks dva_stacks attribute
+    - unit has no stacks
+    - state lacks cs_multiplier_index attribute
+    - no modifier matches the direction filter
+
+    Multiplicative composition over MATHSIGN_*_PCT modifiers.  Skips:
+    - MATHSIGN_ADD (flat-add modifiers, not multipliers)
+    - link_cs_id-gated modifiers (conditional gates not evaluated in v1)
+    - Modifiers whose direction doesn't match the caller's filter
+    """
+    dva_stacks = getattr(state, "dva_stacks", None)
+    if dva_stacks is None:
+        return 1.0
+    stack_counts = dva_stacks.get(str(unit_id), {})
+    if not stack_counts:
+        return 1.0
+    index = getattr(state, "cs_multiplier_index", None)
+    if index is None:
+        return 1.0
+    mult = 1.0
+    for cs_id, count in stack_counts.items():
+        if count <= 0:
+            continue
+        for mod in index.lookup(cs_id):
+            if mod.direction != direction:
+                continue
+            if mod.link_cs_id:
+                continue  # v1 skips conditional gates
+            if mod.sign in ("MATHSIGN_ADD_HUND_MULTIPLY_PCT", "MATHSIGN_MULTIPLY_PCT"):
+                mult *= (1.0 + mod.eff_value / 100.0)
+            # MATHSIGN_ADD and other signs skipped in v1
+    return mult
+
+
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
     """Validated Track B formula + Sprint 2c weak_mult + Sprint 2d dva observation:
        dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor * weak_mult

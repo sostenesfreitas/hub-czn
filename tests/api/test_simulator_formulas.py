@@ -395,3 +395,117 @@ def test_f_base_dmg_track_b_verified_hit_1_unchanged_post_sprint_2d():
     state = _state(caster, target)
     result = _formula_base_damage(_fake_inst(75), caster, [target], state)
     assert abs(result.damage - 547) / 547 < 0.05
+
+
+from api.simulator.formulas import _compose_dva_multiplier
+from api.game_data.cs_multipliers import DamageModifier
+
+
+class _MockMultiplierIndex:
+    """Mock CSMultiplierIndex for unit tests."""
+    def __init__(self, mods_by_cs_id: dict):
+        self._mods = mods_by_cs_id
+    def lookup(self, cs_id: str):
+        return list(self._mods.get(cs_id, []))
+
+
+def test_compose_dva_multiplier_empty_stacks_returns_1():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    # No dva_stacks attribute set
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
+
+
+def test_compose_dva_multiplier_no_index_returns_1():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_91": 3}}
+    # No cs_multiplier_index attribute set
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
+
+
+def test_compose_dva_multiplier_one_take_modifier_with_presence():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_91": 3}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_91": [DamageModifier(
+            cs_id="cs_91", eff_value=50, sign="MATHSIGN_ADD_HUND_MULTIPLY_PCT",
+            direction="take", link_cs_id=[], source_id="cs_91_01",
+        )]
+    })
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.5
+
+
+def test_compose_dva_multiplier_two_take_modifiers_compose_multiplicatively():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_a": 1, "cs_b": 1}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_a": [DamageModifier(
+            cs_id="cs_a", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="take", link_cs_id=[], source_id="cs_a_01",
+        )],
+        "cs_b": [DamageModifier(
+            cs_id="cs_b", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="take", link_cs_id=[], source_id="cs_b_01",
+        )],
+    })
+    # 1.5 * 1.5 = 2.25
+    assert _compose_dva_multiplier(state, "m", direction="take") == 2.25
+
+
+def test_compose_dva_multiplier_attack_modifier_skipped_for_take_call():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_91": 1}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_91": [DamageModifier(
+            cs_id="cs_91", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="attack", link_cs_id=[], source_id="cs_91_01",
+        )]
+    })
+    # attack-direction modifier not applied when caller asks for take
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
+
+
+def test_compose_dva_multiplier_skips_mathsign_add_in_v1():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_91": 1}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_91": [DamageModifier(
+            cs_id="cs_91", eff_value=120, sign="MATHSIGN_ADD",
+            direction="take", link_cs_id=[], source_id="cs_91_01",
+        )]
+    })
+    # MATHSIGN_ADD (flat add) not composed as multiplier in v1
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
+
+
+def test_compose_dva_multiplier_skips_modifiers_with_link_cs_id():
+    state = _state(
+        CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0),
+        MonsterState(id="m", def_=0, hp=1, hp_current=1),
+    )
+    state.dva_stacks = {"m": {"cs_91": 1}}
+    state.cs_multiplier_index = _MockMultiplierIndex({
+        "cs_91": [DamageModifier(
+            cs_id="cs_91", eff_value=50, sign="MATHSIGN_MULTIPLY_PCT",
+            direction="take", link_cs_id=["cs_other"], source_id="cs_91_01",
+        )]
+    })
+    # link_cs_id-gated modifier skipped in v1 (conditional gates not evaluated)
+    assert _compose_dva_multiplier(state, "m", direction="take") == 1.0
