@@ -110,5 +110,45 @@ def _parse_body(seq: int, raw_line: str, body: str) -> BattleEvent | None:
         return SegmentStartEvent(seq=seq, raw_line=raw_line)
     if _SEGMENT_END in body:
         return SegmentEndEvent(seq=seq, raw_line=raw_line)
-    # Sprint 2d Task 2 fills in the rest.
+    m = _RE_USED_CARD.match(body)
+    if m:
+        return UsedCardEvent(
+            seq=seq, raw_line=raw_line,
+            actor_id=m.group(1), card_res_id=m.group(2),
+        )
+    m = _RE_STACK_ADD.match(body)
+    if m:
+        try:
+            value = int(m.group(6))
+        except ValueError:
+            value = 0
+        return StackAddEvent(
+            seq=seq, raw_line=raw_line,
+            actor_id=m.group(1),
+            target_id=m.group(4),
+            target_role=m.group(5),
+            cs_id=m.group(3),
+            value=value,
+            sign=m.group(7),
+        )
+    m = _RE_SKILL_EFF.match(body)
+    if m:
+        try:
+            seq_num = int(m.group(1))
+        except ValueError:
+            seq_num = 0
+        return SkillEffEvent(
+            seq=seq, raw_line=raw_line,
+            skill_eff_id=m.group(2), eff_type=m.group(3),
+            seq_num=seq_num,
+        )
+    m = _RE_CONDITION.match(body)
+    if m:
+        return ConditionTriggeredEvent(
+            seq=seq, raw_line=raw_line,
+            condition_id=m.group(1).strip(), source=m.group(2),
+        )
+    m = _RE_TIMING.match(body)
+    if m:
+        return TimingEvent(seq=seq, raw_line=raw_line, timing=m.group(1))
     return None
