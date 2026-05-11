@@ -651,3 +651,50 @@ def test_track_b_oracle_c_1052_uni4_lbk_crit_10743():
     }, with_real_cs_index=True)
     result = _formula_base_damage(_track_b_dmg_inst(100), caster, [target], state)
     assert abs(result.damage - 10743) / 10743 < 0.05
+
+
+# ===========================================================================
+# Sprint 2f2 — _compose_skill_map_multiplier (v2 path, Branch E no-op)
+# ===========================================================================
+
+from api.simulator.formulas import _compose_skill_map_multiplier
+
+
+def test_compose_skill_map_multiplier_returns_1_when_state_lacks_skill_map():
+    """Synth/Track B states leave skill_map_raw=None -> identity 1.0."""
+    import random
+    from api.simulator.state import BattleState
+    state = BattleState(
+        turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+        rng=random.Random(0),
+    )
+    assert _compose_skill_map_multiplier(state, "any_unit", direction="take") == 1.0
+
+
+def test_compose_skill_map_multiplier_returns_1_when_state_lacks_cs_map():
+    """skill_map_raw populated but cs_map_raw absent -> identity 1.0."""
+    import random
+    from api.simulator.state import BattleState
+    state = BattleState(
+        turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+        rng=random.Random(0),
+        skill_map_raw={"1": {"eff_value": 50}},
+    )
+    assert _compose_skill_map_multiplier(state, "any_unit", direction="take") == 1.0
+
+
+def test_compose_skill_map_multiplier_branch_E_returns_1_regardless_of_input():
+    """Branch E no-op: returns 1.0 even with full state.skill_map_raw + cs_map_raw."""
+    import random
+    from api.simulator.state import BattleState
+    state = BattleState(
+        turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+        rng=random.Random(0),
+        skill_map_raw={"10": {"eff_value": 100, "eff_opts": [], "parent": {"type": "CS"}}},
+        cs_map_raw={"100": {"owner_id": 39, "term_value": 5, "skillEffs": [10]}},
+    )
+    # Branch E ignores everything and returns 1.0
+    assert _compose_skill_map_multiplier(state, "39", direction="take") == 1.0

@@ -266,6 +266,27 @@ def _formula_stress_add(inst, caster, targets, state) -> EffectResult:
     return EffectResult(cs_added={"__stress__": inst.eff_value}, target_id=target.id)
 
 
+def _compose_skill_map_multiplier(state, unit_id, direction: str) -> float:
+    """Sprint 2f2 — Branch E (no-op).
+
+    Sprint 2f2 deep-dive (see docs/research/track_b_skill_map_fit_notes.md)
+    found that none of the candidate formulas (A: naive PCT, B: count scaling,
+    C: linear in eff*term, D: direct ratio) close any Track B oracle within
+    +/-5% without breaking other hits. The actual game mechanism uses
+    lastDamageEvent.dva_css (cs INSTANCE ids consumed at hit time) coupled
+    with per-instance term_values, both of which are unreliably observable
+    from the snapshot frame written AFTER the hit lands.
+
+    The skill_map_raw and cs_map_raw machinery (Sprint 2f2 T2) is in place;
+    a future sprint (2f3) can iterate the formula once per-instance
+    accumulator tracking OR dva_css extraction is built.
+
+    Returns 1.0 unconditionally. This preserves all existing behavior:
+    Track B verified_hit_1, synth fixtures, slow regression — all unchanged.
+    """
+    return 1.0
+
+
 FORMULA_REGISTRY: dict[str, Callable] = {
     "F_BASE_DMG": _formula_base_damage,
     "F_ADD_CS": _formula_add_cs,
