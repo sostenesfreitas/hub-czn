@@ -15,6 +15,17 @@ def _crit_factor(caster, state) -> float:
     return (caster.cri_dmg_rate / 100.0) if is_crit else 1.0
 
 
+def _find_firing_card(inst_id: str, state):
+    """Locate the CardState whose skill_eff_ids contains inst_id.
+    Walks hand → deck → discard. Returns None if not found
+    (e.g., card was exhausted or never present in synthetic state).
+    """
+    for card in state.hand + state.deck + state.discard:
+        if inst_id in card.skill_eff_ids:
+            return card
+    return None
+
+
 def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
     """Validated Track B formula:
        dmg = ATK * (eff_value/100) * (1 - dmg_decrease_rate) * crit_factor

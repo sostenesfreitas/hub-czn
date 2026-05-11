@@ -242,3 +242,47 @@ def test_all_catalog_formula_refs_registered():
     refs = {body["effect"]["formula_ref"] for body in catalog.values() if body["effect"].get("formula_ref")}
     missing = refs - set(FORMULA_REGISTRY.keys())
     assert not missing, f"missing: {missing}"
+
+
+from api.simulator.formulas import _find_firing_card
+
+
+def test_find_firing_card_finds_card_in_hand():
+    caster = CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    card_with_skill = CardState(card_id="c_x", cost=1, outline=True,
+                                skill_eff_ids=["c_x_01", "c_x_02"])
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[card_with_skill], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    found = _find_firing_card("c_x_01", state)
+    assert found is not None
+    assert found.card_id == "c_x"
+    assert found.outline is True
+
+
+def test_find_firing_card_returns_none_when_not_found():
+    caster = CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    assert _find_firing_card("c_anything_01", state) is None
+
+
+def test_find_firing_card_checks_deck_and_discard():
+    caster = CharState(id="c", atk=100, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    card_in_deck = CardState(card_id="c_d", cost=1, outline=False, skill_eff_ids=["c_d_01"])
+    card_in_discard = CardState(card_id="c_e", cost=1, outline=False, skill_eff_ids=["c_e_01"])
+    state = BattleState(
+        turn=1, player_team=[caster], enemies=[target],
+        hand=[], deck=[card_in_deck], discard=[card_in_discard],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0),
+    )
+    assert _find_firing_card("c_d_01", state).card_id == "c_d"
+    assert _find_firing_card("c_e_01", state).card_id == "c_e"
