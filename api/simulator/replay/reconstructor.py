@@ -20,6 +20,7 @@ class StateReconstructor:
         hand, deck, discard = self._build_cards(battle_wt.get("cardMap", {}))
         ego_state = self._build_ego_state(battle_wt.get("cardMap", {}))
         spark_state = self._build_spark_state(battle_wt.get("cardMap", {}))
+        card_owner_lookup = self._build_card_owner_lookup(battle_wt.get("cardMap", {}))
         morale = int(battle_wt.get("ep", 0) or 0)
         return BattleState(
             turn=int(battle_wt.get("turn", 1) or 1),
@@ -31,6 +32,7 @@ class StateReconstructor:
             spark_state=spark_state,
             cs_stacks=cs_stacks,
             rng=random.Random(rng_seed),
+            card_owner_lookup=card_owner_lookup,
         )
 
     @staticmethod
@@ -137,4 +139,16 @@ class StateReconstructor:
                 out[char_id] = SparkState(enhanced=True)
             else:
                 out.setdefault(char_id, SparkState(enhanced=False))
+        return out
+
+    @staticmethod
+    def _build_card_owner_lookup(card_map: dict) -> dict[str, str]:
+        """Map card-instance-id (string) to owning char_id (string).
+        Used by ReplayHarness to translate dev_msg 'X used card Y' caster_ids
+        (which are card-instance ids) into actual unit ids."""
+        out: dict[str, str] = {}
+        for card_inst_id, entry in card_map.items():
+            char_id = entry.get("char_id")
+            if char_id is not None:
+                out[str(card_inst_id)] = str(char_id)
         return out

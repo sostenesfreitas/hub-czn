@@ -149,3 +149,35 @@ def test_reconstructs_monster_with_atk_and_crit_fields():
     assert m.atk == 2903
     assert m.cri == 15.0
     assert m.cri_dmg_rate == 180.0
+
+
+def test_card_owner_lookup_populated_from_cardmap_char_id():
+    bw = _minimal_battle_wt()
+    bw["cardMap"] = {
+        "7": {"id": 7, "res_id": "c_1057_srt1", "char_id": 1, "cost": 1,
+              "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["c_1057_srt1_01"],
+              "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+        "8": {"id": 8, "res_id": "c_1062_srt1", "char_id": 2, "cost": 1,
+              "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["c_1062_srt1_01"],
+              "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+        "54": {"id": 54, "res_id": "1006005_01_pt2_10", "char_id": 103, "cost": 1,
+               "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["1006005_01_pt2_10_01"],
+               "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+    }
+    state = StateReconstructor().reconstruct(bw)
+    assert state.card_owner_lookup == {"7": "1", "8": "2", "54": "103"}
+
+
+def test_card_owner_lookup_skips_entries_without_char_id():
+    bw = _minimal_battle_wt()
+    bw["cardMap"] = {
+        "7": {"id": 7, "res_id": "c_x", "char_id": 1, "cost": 1,
+              "card_place": "CARD_PLACE_HAND", "skill_eff_ids": [],
+              "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+        "9": {"id": 9, "res_id": "c_y", "cost": 1,
+              "card_place": "CARD_PLACE_HAND", "skill_eff_ids": [],
+              "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+    }
+    state = StateReconstructor().reconstruct(bw)
+    assert "7" in state.card_owner_lookup
+    assert "9" not in state.card_owner_lookup
