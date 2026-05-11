@@ -272,22 +272,31 @@ def _formula_stress_add(inst, caster, targets, state) -> EffectResult:
 
 
 def _compose_skill_map_multiplier(state, unit_id, direction: str) -> float:
-    """Sprint 2f2 — Branch E (no-op).
+    """Sprint 2f2 + 2f3 — Branch E (no-op).
 
-    Sprint 2f2 deep-dive (see docs/research/track_b_skill_map_fit_notes.md)
-    found that none of the candidate formulas (A: naive PCT, B: count scaling,
-    C: linear in eff*term, D: direct ratio) close any Track B oracle within
-    +/-5% without breaking other hits. The actual game mechanism uses
-    lastDamageEvent.dva_css (cs INSTANCE ids consumed at hit time) coupled
-    with per-instance term_values, both of which are unreliably observable
-    from the snapshot frame written AFTER the hit lands.
+    Sprint 2f2's investigation (see docs/research/track_b_skill_map_fit_notes.md)
+    found that snapshot.skillMap entries duplicate CSMultiplierIndex's static
+    data; the genuine damage contributors are consumed-before-snapshot.
 
-    The skill_map_raw and cs_map_raw machinery (Sprint 2f2 T2) is in place;
-    a future sprint (2f3) can iterate the formula once per-instance
-    accumulator tracking OR dva_css extraction is built.
+    Sprint 2f3 pivoted to walking state.cs_map_raw by caster_id (for
+    direction='attack') or owner_id (for 'take') using snapshot term_value
+    as input. 5 candidate formulas were tested empirically against measurable
+    Track B hits. Findings in docs/research/track_b_lbk_fit_notes.md:
+      - LBK_RICH (obs=4197): best fit (d) eff+tv → err=-14.3% (still > ±5%)
+      - LBK_LOW (obs=547): same formulas over-predict by 57-995%
+      - Opposite error signs across captures = static MATHSIGN_ADD on cs01_0805
+        is NOT the LBK driver.  The per-fire variance (same csMap snapshot →
+        different observed damage) confirms the LBK damage uses information
+        invisible to any post-hit snapshot.
 
-    Returns 1.0 unconditionally. This preserves all existing behavior:
-    Track B verified_hit_1, synth fixtures, slow regression — all unchanged.
+    The state.skill_map_raw and state.cs_map_raw machinery (Sprint 2f2 T2)
+    remain in place; the F_BASE_DMG composition shell calls this helper
+    multiplicatively (Sprint 2f2 T5).  A future sprint can swap this body
+    when a viable data source emerges (e.g., capture-infrastructure refactor
+    to intercept per-event data instead of snapshot polling).
+
+    Returns 1.0 unconditionally.  Track B verified_hit_1, synth fixtures,
+    slow regression — all unchanged.
     """
     return 1.0
 
