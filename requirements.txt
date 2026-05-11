@@ -8,6 +8,7 @@ pillow
 packaging
 requests
 zstandard
+jsonschema
 
 # Build tooling (not bundled into the sidecar)
 pyinstaller
