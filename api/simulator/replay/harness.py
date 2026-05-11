@@ -25,6 +25,7 @@ class EventReport:
     obs_damage: int | None = None
     delta_pct: float | None = None
     target_id: str | None = None
+    inferred_caster: bool = False
     error: str = ""
 
 
@@ -71,9 +72,9 @@ class ReplayHarness:
         state = None
         pending_dispatches: list[EventReport] = []
         for event in reader.events():
-            if event.skill_eff_ids and state is not None:
-                for skill_eff_id in event.skill_eff_ids:
-                    row = self._dispatch_one(event, skill_eff_id, state)
+            if event.skill_eff_fires and state is not None:
+                for fire in event.skill_eff_fires:
+                    row = self._dispatch_one(event, fire, state)
                     reports.append(row)
                     summary.record(row.eff_type or "?", row.status, None)
                     if row.status == "dispatched":
@@ -112,22 +113,23 @@ class ReplayHarness:
             return int(lde.get("damage", 0) or 0) if "damage" in lde else None
         return None
 
-    def _dispatch_one(self, event, skill_eff_id: str, state) -> EventReport:
-        row = EventReport(seq=event.seq, skill_eff_id=skill_eff_id)
+    def _dispatch_one(self, event, fire, state) -> EventReport:
+        row = EventReport(seq=event.seq, skill_eff_id=fire.skill_eff_id)
         try:
-            inst = self._runtime._instances.get(skill_eff_id)
+            inst = self._runtime._instances.get(fire.skill_eff_id)
         except KeyError as e:
             row.status = "missing"
             row.error = str(e)
             return row
         row.eff_type = inst.eff_type
-        caster = state.player_team[0] if state.player_team else None
+        caster, inferred = self._resolve_caster(fire.caster_id, state)
+        row.inferred_caster = inferred
         if caster is None:
             row.status = "no_target"
             row.error = "no caster"
             return row
         try:
-            result = self._runtime.apply(skill_eff_id, caster, state)
+            result = self._runtime.apply(fire.skill_eff_id, caster, state)
         except Exception as e:
             row.status = "crashed"
             row.error = f"{type(e).__name__}: {e}"
@@ -137,7 +139,8 @@ class ReplayHarness:
             row.error = getattr(result, "skip_reason", "")
             return row
         row.sim_damage = int(getattr(result, "damage", 0) or 0)
-        row.target_id = getattr(result, "target_id", None)
+        # prefer the fire's explicit target_id when present; fall back to runtime's
+        row.target_id = fire.target_id or getattr(result, "target_id", None)
         type_def = self._runtime._catalog.get(inst.eff_type) if hasattr(self._runtime, "_catalog") else None
         ref = (type_def or {}).get("effect", {}).get("formula_ref", "")
         if ref.startswith("F_UNKNOWN") or ref == "F_NOOP":
@@ -145,6 +148,22 @@ class ReplayHarness:
         else:
             row.status = "dispatched"
         return row
+
+    @staticmethod
+    def _resolve_caster(caster_id: "str | None", state) -> tuple:
+        """Find the unit (char or monster) whose id matches caster_id.
+        Returns (unit, inferred) where inferred=True if fallback to player_team[0] was used."""
+        if caster_id is not None:
+            for unit in state.player_team:
+                if str(unit.id) == str(caster_id):
+                    return unit, False
+            for unit in state.enemies:
+                if str(unit.id) == str(caster_id):
+                    return unit, False
+        # fallback
+        if state.player_team:
+            return state.player_team[0], True
+        return None, True
 
     @staticmethod
     def _extract_observed_damage(event, target_id) -> "int | None":

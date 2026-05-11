@@ -179,3 +179,88 @@ def test_render_report_contains_summary_and_per_eff_type():
     assert "SKILL_EFF_NONE" in md
     # outliers section sorts by abs(delta_pct) desc
     assert md.index("c_a") < md.index("c_b")
+
+
+def test_harness_resolves_caster_from_fire_caster_id():
+    """If SkillEffFire has caster_id matching a unit's id, the harness uses that
+    unit as caster (not player_team[0])."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    # extend bw to have two chars; second one has id="2"
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG", caster_id="2")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    # the caster passed to runtime.apply should be the char with id="2"
+    call_args = runtime.apply.call_args
+    assert call_args is not None
+    passed_caster = call_args.args[1] if len(call_args.args) > 1 else call_args.kwargs.get("caster")
+    assert str(passed_caster.id) == "2"
+
+
+def test_harness_falls_back_when_caster_id_not_in_state():
+    """If SkillEffFire.caster_id doesn't match any unit, fall back to player_team[0]."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG", caster_id="999")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].status == "dispatched"
+    # row records inferred_caster=True
+    assert reports[0].inferred_caster is True
+
+
+def test_harness_uses_fire_target_id_for_obs_lookup():
+    """When SkillEffFire.target_id is set, obs_damage is read from that monster's lastDamageEvent."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=950, target_id=None))
+
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    # second monster id 200, with lastDamageEvent.damage=1000
+    bw2["monsters"].append({"id": 200, "res_id": "z", "state": "alive",
+                            "status": {"info": {"S_HP": 9999, "S_DEF": 100, "S_CURRENT_HP": 9999}},
+                            "lastDamageEvent": {"damage": 1000, "old_hp": 9999, "new_hp": 8999}})
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG",
+                        caster_id="1", target_id="200")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].obs_damage == 1000  # read from monster id=200, not 79
