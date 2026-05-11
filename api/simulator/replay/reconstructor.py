@@ -108,7 +108,13 @@ class StateReconstructor:
         out: dict[str, EgoState] = {}
         for entry in card_map.values():
             char_id = str(entry.get("char_id", "") or "")
-            cur_ego = int(entry.get("curEgo", 0) or 0)
+            cur_ego_raw = entry.get("curEgo", 0) or 0
+            # Handle both int (stage) and str (enum like 'EGO_NARCISSISM')
+            if isinstance(cur_ego_raw, str):
+                # String enum: map to a non-zero stage (we don't know exact stage from enum alone)
+                cur_ego = 1 if cur_ego_raw != "none" else 0
+            else:
+                cur_ego = int(cur_ego_raw)
             if not char_id:
                 continue
             current = out.get(char_id)
