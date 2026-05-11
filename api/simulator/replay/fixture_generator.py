@@ -1,11 +1,16 @@
 """
 SynthFixture generator: walks the deck_builder manifest and emits one
-fixture per parseable card.  Each fixture pairs a CharState (built from
-char_base_l1.json at level 60 / ascend 5) with a dummy MonsterState and
-the description-derived expected_eff_pct.
+fixture per card with a SKILL_EFF_DMG instance.
 
-Cards whose description cannot be parsed are recorded in
-docs/research/unparseable_descriptions.md.
+`expected_eff_pct` reflects the unepiphanied baseline read from the client
+db (matches `CardEntry.eff_value` from api/routes/cards). The variant
+description's parsed percentage is captured separately in
+`description_eff_pct` for diagnostic comparison — useful for detecting
+cards whose default variant has an epiphany bonus baked in (e.g. cards
+with [Retain]/[Initiation]/[Quietus] tags whose L1 variant adds +50%).
+
+Cards skipped (no SKILL_EFF_DMG instance, no char base stats) are recorded
+in docs/research/unparseable_descriptions.md.
 """
 from dataclasses import dataclass
 from pathlib import Path
@@ -30,14 +35,15 @@ class SynthFixture:
     target_state: MonsterState
     card_id: str
     skill_eff_id: str
-    expected_eff_pct: int
+    expected_eff_pct: int                       # baseline from inst.eff_value
+    description_eff_pct: int | None             # parsed variant description text
     expected_target_class: str | None
     expected_scaling: str | None
 
 
 def generate_fixtures(char_resolver, instances) -> list[SynthFixture]:
     fixtures: list[SynthFixture] = []
-    unparseable: list[tuple[int, str, str, str]] = []
+    skipped: list[tuple[int, str, str, str]] = []
 
     for char_info in char_resolver.all_chars():
         all_card_ids = (
@@ -46,22 +52,21 @@ def generate_fixtures(char_resolver, instances) -> list[SynthFixture]:
             + ([char_info.ego_card_id] if char_info.ego_card_id else [])
         )
         for card_id in all_card_ids:
-            exp = char_resolver.card_expectation(card_id)
-            if exp is None or exp.eff_pct is None:
-                unparseable.append((
-                    char_info.char_res_id,
-                    char_info.name,
-                    card_id,
-                    "no eff_pct in description" if exp else "no variant data",
-                ))
-                continue
             inst = _find_dmg_instance_for_card(instances, card_id)
             if inst is None:
-                unparseable.append((
+                skipped.append((
                     char_info.char_res_id,
                     char_info.name,
                     card_id,
                     "no SKILL_EFF_DMG instance in client db",
+                ))
+                continue
+            if inst.eff_value <= 0:
+                skipped.append((
+                    char_info.char_res_id,
+                    char_info.name,
+                    card_id,
+                    f"instance eff_value is {inst.eff_value}",
                 ))
                 continue
             try:
@@ -71,13 +76,14 @@ def generate_fixtures(char_resolver, instances) -> list[SynthFixture]:
                     ascend=FIXTURE_ASCEND,
                 )
             except KeyError:
-                unparseable.append((
+                skipped.append((
                     char_info.char_res_id,
                     char_info.name,
                     card_id,
                     "no entry in char_base_l1.json",
                 ))
                 continue
+            exp = char_resolver.card_expectation(card_id)
             char_state = CharState(
                 id=str(char_info.char_res_id),
                 atk=int(base.get("ATK", 0)),
@@ -100,12 +106,13 @@ def generate_fixtures(char_resolver, instances) -> list[SynthFixture]:
                 target_state=target,
                 card_id=card_id,
                 skill_eff_id=inst.id,
-                expected_eff_pct=exp.eff_pct,
-                expected_target_class=exp.target_class,
-                expected_scaling=exp.scaling_stat,
+                expected_eff_pct=inst.eff_value,
+                description_eff_pct=exp.eff_pct if exp else None,
+                expected_target_class=exp.target_class if exp else None,
+                expected_scaling=exp.scaling_stat if exp else None,
             ))
 
-    _write_unparseable(unparseable)
+    _write_skipped(skipped)
     return fixtures
 
 
@@ -118,14 +125,14 @@ def _find_dmg_instance_for_card(instances, card_id: str):
     return None
 
 
-def _write_unparseable(items: list[tuple[int, str, str, str]]) -> None:
+def _write_skipped(items: list[tuple[int, str, str, str]]) -> None:
     UNPARSEABLE_PATH.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# Cards skipped during synthetic fixture generation",
         "",
-        "These cards either have no parseable percentage in the variant description,",
-        "or lack a SKILL_EFF_DMG instance, or have no scaling data. Sprint 2c can",
-        "extend the parser or add manual fixtures to fill these gaps.",
+        "These cards lack a SKILL_EFF_DMG instance, or have no scaling data,",
+        "or have a zero eff_value. Sprint 2c may extend coverage to dual-eff",
+        "cards (CS_SET_ADD + DMG combos) and ego-skill cards.",
         "",
         "| char_res_id | char | card_id | reason |",
         "|---|---|---|---|",
