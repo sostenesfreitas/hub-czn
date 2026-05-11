@@ -52,3 +52,55 @@ def test_f_base_dmg_applies_to_first_target_only():
     assert result.target_id == "m1"
     assert t1.hp_current < 99999
     assert t2.hp_current == 99999
+
+
+from api.simulator.formulas import (
+    _formula_add_cs,
+    _formula_shield,
+    _formula_heal,
+)
+
+
+def test_f_add_cs_increments_target_stacks():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=1, hp_current=1)
+    state = _state(caster, target)
+    # SKILL_EFF_CS_SET_ADD uses link_cs_id for the cs_id; eff_count_value for quantity.
+    raw = {"id": "fake", "eff": "SKILL_EFF_CS_SET_ADD", "eff_value": "0",
+           "eff_count_value": "2", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[cs_91]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_CS_SET_ADD", raw=raw)
+    result = _formula_add_cs(inst, caster, [target], state)
+    assert state.cs_stacks["m1"]["cs_91"] == 2
+    assert result.cs_added == {"cs_91": 2}
+
+
+def test_f_shield_adds_to_target():
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    ally = CharState(id="a1", atk=0, def_=0, hp=5000, hp_current=5000, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster, ally], enemies=[],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_SHIELD", "eff_value": "30",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_SHIELD", raw=raw)
+    # 30% of caster.atk = 300
+    result = _formula_shield(inst, caster, [ally], state)
+    assert ally.shield == 300
+    assert result.shield_added == 300
+
+
+def test_f_heal_restores_hp():
+    caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    ally = CharState(id="a1", atk=0, def_=0, hp=5000, hp_current=2000, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster, ally], enemies=[],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_HEAL", "eff_value": "50",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_HEAL", raw=raw)
+    # 50% of caster.atk = 500
+    _formula_heal(inst, caster, [ally], state)
+    assert ally.hp_current == 2500
