@@ -126,3 +126,11 @@ def test_unknown_property_in_effect_rejected():
     }
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(instance={"SKILL_EFF_X": body}, schema=schema)
+
+
+def test_generated_catalog_validates():
+    """The catalog produced by scripts/build_eff_catalog_scaffold.py must validate."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    assert len(catalog) >= 1, "catalog must have at least one entry"
+    jsonschema.validate(instance=catalog, schema=schema)
