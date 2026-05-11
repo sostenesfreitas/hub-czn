@@ -5,6 +5,7 @@
   "type": "object",
   "additionalProperties": {
     "type": "object",
+    "additionalProperties": false,
     "required": [
       "category", "trigger", "target_resolution", "effect", "stack_rule",
       "params_used", "confidence", "observed_count", "client_instances",
@@ -25,6 +26,7 @@
       },
       "effect": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["kind", "formula_ref"],
         "properties": {
           "kind": {

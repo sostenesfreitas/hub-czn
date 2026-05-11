@@ -61,3 +61,68 @@ def test_invalid_category_rejected():
     }
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(instance=bad, schema=schema)
+
+
+def test_missing_required_field_rejected():
+    """A valid-shape entry missing a required field must fail."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    body = {
+        "category": "damage",
+        # trigger intentionally missing
+        "target_resolution": "selected_unit",
+        "effect": {"kind": "deal_damage", "formula_ref": "F_BASE_DMG"},
+        "stack_rule": "instant",
+        "params_used": [],
+        "confidence": "confirmed",
+        "observed_count": 0,
+        "client_instances": 0,
+        "linked_conditions": [],
+        "linked_cs_ids": [],
+        "notes": "",
+        "todos": [],
+    }
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance={"SKILL_EFF_X": body}, schema=schema)
+
+
+def test_negative_observed_count_rejected():
+    """observed_count below 0 must fail."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    body = {
+        "category": "damage", "trigger": "on_skill_use", "target_resolution": "selected_unit",
+        "effect": {"kind": "deal_damage", "formula_ref": "F_BASE_DMG"},
+        "stack_rule": "instant", "params_used": [], "confidence": "confirmed",
+        "observed_count": -1, "client_instances": 0,
+        "linked_conditions": [], "linked_cs_ids": [], "notes": "", "todos": [],
+    }
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance={"SKILL_EFF_X": body}, schema=schema)
+
+
+def test_unknown_property_at_entry_level_rejected():
+    """An entry with a typo'd field name (e.g., 'trgger') must fail."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    body = {
+        "category": "damage", "trigger": "on_skill_use", "target_resolution": "selected_unit",
+        "effect": {"kind": "deal_damage", "formula_ref": "F_BASE_DMG"},
+        "stack_rule": "instant", "params_used": [], "confidence": "confirmed",
+        "observed_count": 0, "client_instances": 0,
+        "linked_conditions": [], "linked_cs_ids": [], "notes": "", "todos": [],
+        "linked_cs_ds": [],  # typo of linked_cs_ids
+    }
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance={"SKILL_EFF_X": body}, schema=schema)
+
+
+def test_unknown_property_in_effect_rejected():
+    """An effect with extra property must fail."""
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    body = {
+        "category": "damage", "trigger": "on_skill_use", "target_resolution": "selected_unit",
+        "effect": {"kind": "deal_damage", "formula_ref": "F_BASE_DMG", "amount": 100},
+        "stack_rule": "instant", "params_used": [], "confidence": "confirmed",
+        "observed_count": 0, "client_instances": 0,
+        "linked_conditions": [], "linked_cs_ids": [], "notes": "", "todos": [],
+    }
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance={"SKILL_EFF_X": body}, schema=schema)
