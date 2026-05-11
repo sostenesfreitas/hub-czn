@@ -2,26 +2,10 @@
 Runtime dispatcher: resolves a SKILL_EFF instance id via the catalog,
 checks trigger eligibility, resolves targets, and invokes the formula.
 """
-from dataclasses import dataclass, field
-
 from api.game_data.eff_instances import EffInstanceIndex
 from api.simulator.formulas import FORMULA_REGISTRY
+from api.simulator.result import EffectResult
 from api.simulator.state import BattleState, CharState, MonsterState
-
-
-@dataclass
-class EffectResult:
-    skipped: bool = False
-    skip_reason: str = ""
-    damage: int = 0
-    target_id: str | None = None
-    cs_added: dict[str, int] = field(default_factory=dict)
-    shield_added: int = 0
-    cards_moved: list[str] = field(default_factory=list)
-
-    @classmethod
-    def skipped_with(cls, reason: str) -> "EffectResult":
-        return cls(skipped=True, skip_reason=reason)
 
 
 _ACTIVE_TRIGGERS = {"on_skill_use", "on_card_play", "manual", "on_hit"}
