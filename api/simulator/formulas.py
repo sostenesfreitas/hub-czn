@@ -48,15 +48,13 @@ def _formula_base_damage(inst, caster, targets, state) -> EffectResult:
     raw = caster.atk * (inst.eff_value / 100.0) * (1.0 - dr) * cf * weak_mult
     dealt = target.apply_damage(raw)
 
-    # Sprint 2d: observe (don't apply) dva_css stack counts on target
+    # Sprint 2d: observe (don't apply) ALL cs stacks on target at fire time.
+    # Sprint 2e will figure out which stacks actually multiply damage.
     dva_stacks_observed: dict[str, int] = {}
-    if inst.link_cs_id:
-        dva_stacks = getattr(state, "dva_stacks", None)
-        if dva_stacks is not None:
-            target_stacks = dva_stacks.get(str(target.id), {})
-            dva_stacks_observed = {
-                cs_id: int(target_stacks.get(cs_id, 0)) for cs_id in inst.link_cs_id
-            }
+    dva_stacks = getattr(state, "dva_stacks", None)
+    if dva_stacks is not None:
+        target_stacks = dva_stacks.get(str(target.id), {})
+        dva_stacks_observed = dict(target_stacks)
 
     return EffectResult(
         damage=dealt,

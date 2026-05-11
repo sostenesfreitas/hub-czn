@@ -346,9 +346,10 @@ def test_f_base_dmg_no_weak_mult_when_target_weak_but_no_outline():
     assert 460 <= result.damage <= 475
 
 
-def test_f_base_dmg_records_dva_stacks_when_state_has_dva_and_inst_has_link_cs():
-    """When state.dva_stacks has target stacks AND inst.link_cs_id is non-empty,
-    EffectResult.dva_stacks_observed reports the counts."""
+def test_f_base_dmg_records_dva_stacks_when_state_has_dva():
+    """When state.dva_stacks has target stacks, EffectResult.dva_stacks_observed
+    reports them ALL (regardless of inst.link_cs_id — Sprint 2e applies the
+    multiplier; Sprint 2d just observes)."""
     caster = CharState(id="c", atk=1000, def_=0, hp=1, hp_current=1,
                        cri=0.0, cri_dmg_rate=0)
     target = MonsterState(id="m1", def_=0, hp=99999, hp_current=99999,
@@ -356,12 +357,14 @@ def test_f_base_dmg_records_dva_stacks_when_state_has_dva_and_inst_has_link_cs()
     state = _state(caster, target)
     state.dva_stacks = {"m1": {"cs_91": 3, "cs_112": 1}}
 
-    raw = {"id": "fake_w_link", "eff": "SKILL_EFF_DMG", "eff_value": "100",
+    # inst with EMPTY link_cs_id (matches real DMG data)
+    raw = {"id": "fake_empty_link", "eff": "SKILL_EFF_DMG", "eff_value": "100",
            "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
-           "link_cs_id": "[cs_91,cs_112]"}
-    inst = EffInstance(id="fake_w_link", eff_type="SKILL_EFF_DMG", raw=raw)
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake_empty_link", eff_type="SKILL_EFF_DMG", raw=raw)
 
     result = _formula_base_damage(inst, caster, [target], state)
+    # All target stacks observed, regardless of inst.link_cs_id
     assert result.dva_stacks_observed == {"cs_91": 3, "cs_112": 1}
 
 
