@@ -1,0 +1,24 @@
+=== Sprint 2f3 T2 — Caster-side state.dva_stacks at LBK fire times ===
+Total c_1052_uni4_lbk dispatched: 70
+With obs_damage (measurable): 5
+
+LBK fires where caster_dva_stacks contains 'cs01_0805': 0 / 35
+
+First 10 LBK fires' caster_stacks (truncated to 8 stacks per fire):
+  fire 1: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=889 stacks=0
+  fire 2: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=889 stacks=0
+  fire 3: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=1732 stacks=0
+  fire 4: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=894 stacks=0
+  fire 5: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=1742 stacks=0
+  fire 6: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=894 stacks=0
+  fire 7: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=1742 stacks=0
+  fire 8: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=1742 stacks=0
+  fire 9: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=899 stacks=0
+  fire 10: skill_eff_id=c_1052_uni4_lbk_02 caster=3 sim=1752 stacks=0
+
+Measurable LBK hits (sim, obs, ratio):
+  seq=425 target=39 sim=1771 obs=4197 ratio=2.3698
+  seq=439 target=39 sim=1771 obs=4197 ratio=2.3698
+  seq=459 target=39 sim=909 obs=4197 ratio=4.6172
+  seq=478 target=39 sim=909 obs=4197 ratio=4.6172
+  seq=493 target=39 sim=1771 obs=4197 ratio=2.3698
