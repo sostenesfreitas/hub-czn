@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { save } from '@tauri-apps/plugin-dialog'
+import { writeTextFile } from '@tauri-apps/plugin-fs'
 import { api } from '@/lib/api'
 import type { CardCharacter } from '@/lib/types'
 import type {
@@ -8,21 +10,25 @@ import type {
   DeckBuilderExportPayload,
   DeckBuilderExportSlot,
   DeckBuilderImportedCard,
+  DeckBuilderImportedEquipment,
+  DeckBuilderItem,
+  DeckBuilderItemSlot,
   DeckCardInstance,
   SquadSlot,
   VariantModalTarget,
 } from '../deck-builder.types'
+import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
+import { findDeckBuilderItemById } from '../deck-builder-items.utils'
 import {
   cloneCardInstance,
   createCardInstanceFromDeckBuilderCard,
+  createEmptyEquipment,
   createEmptySlot,
   createInitialSquad,
   getInstanceCost,
 } from '../deck-builder.utils'
-import { save } from '@tauri-apps/plugin-dialog'
-import { writeTextFile } from '@tauri-apps/plugin-fs'
 
-const DECK_BUILDER_EXPORT_VERSION = 1
+const DECK_BUILDER_EXPORT_VERSION = 2
 const DECK_BUILDER_MAX_SLOTS = 3
 
 function getDeckBuilderExportFileName() {
@@ -72,6 +78,7 @@ function getAllDeckBuilderCards(
     ...startingCards,
     ...epiphanyCards,
     ...(egoSkill ? [egoSkill] : []),
+    ...SHARED_DECK_BUILDER_CARDS,
   ]
 }
 
@@ -123,10 +130,39 @@ function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
   }
 }
 
+function normalizeImportedEquipment(value: unknown): DeckBuilderImportedEquipment {
+  if (!isRecord(value)) {
+    return {
+      weapon_id: null,
+      armor_id: null,
+      accessory_id: null,
+    }
+  }
+
+  return {
+    weapon_id: typeof value.weapon_id === 'string' ? value.weapon_id : null,
+    armor_id: typeof value.armor_id === 'string' ? value.armor_id : null,
+    accessory_id: typeof value.accessory_id === 'string' ? value.accessory_id : null,
+  }
+}
+
+function resolveImportedEquipment(equipment: DeckBuilderImportedEquipment) {
+  return {
+    weapon: findDeckBuilderItemById(equipment.weapon_id),
+    armor: findDeckBuilderItemById(equipment.armor_id),
+    accessory: findDeckBuilderItemById(equipment.accessory_id),
+  }
+}
+
 function normalizeImportedSlot(value: unknown): DeckBuilderExportSlot {
   if (!isRecord(value)) {
     return {
       combatant_id: null,
+      equipment: {
+        weapon_id: null,
+        armor_id: null,
+        accessory_id: null,
+      },
       cards: [],
     }
   }
@@ -140,6 +176,7 @@ function normalizeImportedSlot(value: unknown): DeckBuilderExportSlot {
 
   return {
     combatant_id: combatantId,
+    equipment: normalizeImportedEquipment(value.equipment),
     cards: rawCards
       .map(normalizeImportedCard)
       .filter((card): card is DeckBuilderImportedCard => card !== null),
@@ -206,6 +243,7 @@ export function useDeckBuilder() {
           ...slot,
           combatantId,
           cards: [],
+          equipment: createEmptyEquipment(),
           startingCards: [],
           epiphanyCards: [],
           egoSkill: null,
@@ -240,6 +278,7 @@ export function useDeckBuilder() {
             ...slot,
             combatantId,
             cards,
+            equipment: createEmptyEquipment(),
             startingCards,
             epiphanyCards,
             egoSkill,
@@ -257,6 +296,7 @@ export function useDeckBuilder() {
             ...slot,
             combatantId,
             cards: [],
+            equipment: createEmptyEquipment(),
             startingCards: [],
             epiphanyCards: [],
             egoSkill: null,
@@ -327,6 +367,45 @@ export function useDeckBuilder() {
     )
   }
 
+  function selectEquipment(
+    slotIndex: number,
+    equipmentSlot: DeckBuilderItemSlot,
+    item: DeckBuilderItem,
+  ) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          equipment: {
+            ...slot.equipment,
+            [equipmentSlot]: item,
+          },
+        }
+      }),
+    )
+  }
+
+  function clearEquipment(
+    slotIndex: number,
+    equipmentSlot: DeckBuilderItemSlot,
+  ) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          equipment: {
+            ...slot.equipment,
+            [equipmentSlot]: null,
+          },
+        }
+      }),
+    )
+  }
+
   function clearDeck(slotIndex: number) {
     setVariantModalTarget(current => {
       if (current?.slotIndex === slotIndex) {
@@ -343,6 +422,7 @@ export function useDeckBuilder() {
         return {
           ...slot,
           cards: [],
+          equipment: createEmptyEquipment(),
         }
       }),
     )
@@ -455,6 +535,11 @@ export function useDeckBuilder() {
       exported_at: new Date().toISOString(),
       slots: squad.map(slot => ({
         combatant_id: slot.combatantId,
+        equipment: {
+          weapon_id: slot.equipment.weapon?.id ?? null,
+          armor_id: slot.equipment.armor?.id ?? null,
+          accessory_id: slot.equipment.accessory?.id ?? null,
+        },
         cards: slot.cards.map(item => ({
           card_id: item.card.card_id,
           selected_variant_id: item.selectedVariant?.variant_id ?? null,
@@ -495,6 +580,8 @@ export function useDeckBuilder() {
         if (!importedSlot?.combatant_id) {
           return createEmptySlot()
         }
+
+        const importedEquipment = resolveImportedEquipment(importedSlot.equipment)
 
         try {
           const deckBuilderData = await api.deckBuilderCombatant(importedSlot.combatant_id)
@@ -541,6 +628,7 @@ export function useDeckBuilder() {
           return {
             combatantId: importedSlot.combatant_id,
             cards,
+            equipment: importedEquipment,
             startingCards,
             epiphanyCards,
             egoSkill,
@@ -551,6 +639,7 @@ export function useDeckBuilder() {
           return {
             ...createEmptySlot(),
             combatantId: importedSlot.combatant_id,
+            equipment: importedEquipment,
             isLoading: false,
             error: error instanceof Error
               ? error.message
@@ -575,6 +664,8 @@ export function useDeckBuilder() {
     duplicateCard,
     removeCard,
     addDeckBuilderCard,
+    selectEquipment,
+    clearEquipment,
     clearDeck,
     resetBuilder,
     openDeckCardVariants,

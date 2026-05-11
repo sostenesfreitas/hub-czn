@@ -18,10 +18,7 @@ export type DeckBuilderCardGroup =
   | 'neutral'
   | 'monster'
 
-export type DeckBuilderCardWithVariants = Omit<
-  ApiDeckBuilderCard,
-  'variants' | 'group' | 'description'
-> & {
+export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants' | 'group'> & {
   group: DeckBuilderCardGroup
   description?: string | null
   variants?: DeckBuilderEpiphanyVariant[]
@@ -35,9 +32,34 @@ export type DeckCardInstance = {
   selectedVariant: DeckBuilderEpiphanyVariant | null
 }
 
+export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'
+
+export type DeckBuilderItem = {
+  id: string
+  image_id: string
+  slug: string
+  name: string
+  rarity: string
+  slot: 'Weapon' | 'Armor' | 'Accessory' | string
+  raw_slot?: string
+  original_slot?: string
+  tags: string[]
+  description: string
+  stat_type: string | null
+  stat_values: number[]
+  source: string
+  sources: string[]
+  image_path: string
+}
+
+export type DeckBuilderEquipment = Record<DeckBuilderItemSlot, DeckBuilderItem | null>
+
+export type DeckBuilderImportedEquipment = Record<`${DeckBuilderItemSlot}_id`, string | null>
+
 export type SquadSlot = {
   combatantId: number | null
   cards: DeckCardInstance[]
+  equipment: DeckBuilderEquipment
   startingCards: DeckBuilderCardWithVariants[]
   epiphanyCards: DeckBuilderCardWithVariants[]
   egoSkill: DeckBuilderCardWithVariants | null
@@ -68,6 +90,7 @@ export type DeckBuilderImportedCard = {
 
 export type DeckBuilderExportSlot = {
   combatant_id: number | null
+  equipment: DeckBuilderImportedEquipment
   cards: DeckBuilderImportedCard[]
 }
 

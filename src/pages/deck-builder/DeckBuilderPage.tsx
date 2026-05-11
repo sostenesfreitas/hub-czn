@@ -35,6 +35,12 @@ export function DeckBuilderPage() {
               onAddDeckBuilderCard={item => deckBuilder.addDeckBuilderCard(index, item)}
               onOpenDeckCardVariants={item => deckBuilder.openDeckCardVariants(index, item)}
               onOpenAvailableCardVariants={item => deckBuilder.openAvailableCardVariants(index, item)}
+              onSelectEquipment={(equipmentSlot, item) =>
+                deckBuilder.selectEquipment(index, equipmentSlot, item)
+              }
+              onClearEquipment={equipmentSlot =>
+                deckBuilder.clearEquipment(index, equipmentSlot)
+              }
               onClearDeck={() => deckBuilder.clearDeck(index)}
             />
           ))}
