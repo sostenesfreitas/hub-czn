@@ -13,6 +13,7 @@ import dataclasses
 import re
 from dataclasses import dataclass, field
 
+from api.game_data.cs_multipliers import CSMultiplierIndex
 from api.simulator.replay.event_parser import (
     BattleEvent, SkillEffEvent,
 )
@@ -80,6 +81,12 @@ class ReplayHarness:
     def __init__(self, runtime, reconstructor: StateReconstructor):
         self._runtime = runtime
         self._reconstructor = reconstructor
+        self._cs_index: CSMultiplierIndex | None = None
+
+    def _get_cs_index(self) -> CSMultiplierIndex:
+        if self._cs_index is None:
+            self._cs_index = CSMultiplierIndex()
+        return self._cs_index
 
     def replay(self, reader) -> tuple[ReplaySummary, list[EventReport]]:
         summary = ReplaySummary()
@@ -125,8 +132,10 @@ class ReplayHarness:
                             if stacks:
                                 dva[uid] = stacks
                         state.dva_stacks = dva
+                        state.cs_multiplier_index = self._get_cs_index()
                     else:
                         state.dva_stacks = {}
+                        state.cs_multiplier_index = self._get_cs_index()
                     row = self._dispatch_one(event, fire, state)
                     reports.append(row)
                     summary.record(row.eff_type or "?", row.status, None)
