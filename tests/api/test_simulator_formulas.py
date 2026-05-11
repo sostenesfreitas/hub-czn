@@ -150,3 +150,95 @@ def test_f_heal_restores_hp():
     # 50% of caster.atk = 500
     _formula_heal(inst, caster, [ally], state)
     assert ally.hp_current == 2500
+
+
+from api.simulator.formulas import (
+    _formula_add_cs_random,
+    _formula_add_card,
+    _formula_kill,
+    _formula_max_hp_modify,
+    _formula_energy_change,
+    _formula_stress_add,
+    FORMULA_REGISTRY,
+)
+
+
+def test_f_add_cs_random_picks_one_from_list():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=1, hp_current=1)
+    state = _state(caster, target)
+    raw = {"id": "fake", "eff": "SKILL_EFF_CS_SET_ADD_RANDOM", "eff_value": "0",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[cs_a,cs_b,cs_c]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_CS_SET_ADD_RANDOM", raw=raw)
+    result = _formula_add_cs_random(inst, caster, [target], state)
+    # exactly one cs_id was added
+    assert len(result.cs_added) == 1
+    chosen = next(iter(result.cs_added))
+    assert chosen in {"cs_a", "cs_b", "cs_c"}
+    assert state.cs_stacks["m1"][chosen] == 1
+
+
+def test_f_add_card_appends_to_hand():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster], enemies=[],
+                        hand=[], deck=[], discard=[],
+                        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_CARD_GET", "eff_value": "1",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_CARD_GET", raw=raw)
+    result = _formula_add_card(inst, caster, [caster], state)
+    assert len(state.hand) == 1
+    assert result.cards_moved
+
+
+def test_f_kill_zeros_target_hp():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=9999, hp_current=9999)
+    state = _state(caster, target)
+    raw = {"id": "fake", "eff": "SKILL_EFF_KILL", "eff_value": "0",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_KILL", raw=raw)
+    _formula_kill(inst, caster, [target], state)
+    assert target.hp_current == 0
+
+
+def test_f_energy_change_adjusts_morale():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    state = BattleState(turn=1, player_team=[caster], enemies=[],
+                        hand=[], deck=[], discard=[], morale=5,
+                        ego_state={}, spark_state={}, cs_stacks={}, rng=random.Random(0))
+    raw = {"id": "fake", "eff": "SKILL_EFF_ENERGY_CHANGE", "eff_value": "2",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_CASTER",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_ENERGY_CHANGE", raw=raw)
+    _formula_energy_change(inst, caster, [caster], state)
+    assert state.morale == 7
+
+
+def test_f_stress_add_accumulates():
+    caster = CharState(id="c", atk=0, def_=0, hp=1, hp_current=1, cri=0.0, cri_dmg_rate=0)
+    target = MonsterState(id="m1", def_=0, hp=9999, hp_current=9999)
+    state = _state(caster, target)
+    raw = {"id": "fake", "eff": "SKILL_EFF_STRESS_ADD", "eff_value": "3",
+           "eff_count_value": "1", "target_unit_type": "TARGET_UNIT_SELECTED",
+           "link_cs_id": "[]"}
+    inst = EffInstance(id="fake", eff_type="SKILL_EFF_STRESS_ADD", raw=raw)
+    _formula_stress_add(inst, caster, [target], state)
+    _formula_stress_add(inst, caster, [target], state)
+    # __stress__ key holds the running counter
+    assert state.cs_stacks["m1"]["__stress__"] == 6
+
+
+def test_all_catalog_formula_refs_registered():
+    """The schema test relies on this — every formula_ref must be in the registry."""
+    import json
+    from pathlib import Path
+    REPO = Path(__file__).resolve().parents[2]
+    catalog = json.loads((REPO / "api" / "data" / "eff_type_catalog.json").read_text(encoding="utf-8"))
+    refs = {body["effect"]["formula_ref"] for body in catalog.values() if body["effect"].get("formula_ref")}
+    missing = refs - set(FORMULA_REGISTRY.keys())
+    assert not missing, f"missing: {missing}"
