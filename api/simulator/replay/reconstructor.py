@@ -22,6 +22,10 @@ class StateReconstructor:
         spark_state = self._build_spark_state(battle_wt.get("cardMap", {}))
         card_owner_lookup = self._build_card_owner_lookup(battle_wt.get("cardMap", {}))
         morale = int(battle_wt.get("ep", 0) or 0)
+        # Sprint 2f2: keep raw maps for v2 multiplier composition (None when absent/empty)
+        skill_map_raw = battle_wt.get("skillMap") if isinstance(battle_wt.get("skillMap"), dict) else None
+        cs_map_input = battle_wt.get("csMap")
+        cs_map_raw = cs_map_input if (isinstance(cs_map_input, dict) and cs_map_input) else None
         return BattleState(
             turn=int(battle_wt.get("turn", 1) or 1),
             player_team=chars,
@@ -33,6 +37,8 @@ class StateReconstructor:
             cs_stacks=cs_stacks,
             rng=random.Random(rng_seed),
             card_owner_lookup=card_owner_lookup,
+            skill_map_raw=skill_map_raw,
+            cs_map_raw=cs_map_raw,
         )
 
     @staticmethod

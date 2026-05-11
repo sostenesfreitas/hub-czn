@@ -193,3 +193,42 @@ def test_monsters_have_res_id_from_snapshot():
     bw = _minimal_battle_wt()
     state = StateReconstructor().reconstruct(bw)
     assert state.enemies[0].res_id == "1006017_01"
+
+
+def test_state_reconstructor_populates_skill_map_raw_from_battle_wt():
+    """Sprint 2f2: reconstructor copies battle_wt.skillMap into state.skill_map_raw."""
+    from api.simulator.replay.reconstructor import StateReconstructor
+    battle_wt = {
+        "turn": 1,
+        "chars": [],
+        "monsters": [],
+        "csMap": {},
+        "cardMap": {},
+        "skillMap": {"1": {"eff_value": 50, "res_id": "test"}},
+    }
+    state = StateReconstructor().reconstruct(battle_wt)
+    assert state.skill_map_raw == {"1": {"eff_value": 50, "res_id": "test"}}
+
+
+def test_state_reconstructor_populates_cs_map_raw_from_battle_wt():
+    """Sprint 2f2: reconstructor copies battle_wt.csMap into state.cs_map_raw."""
+    from api.simulator.replay.reconstructor import StateReconstructor
+    battle_wt = {
+        "turn": 1,
+        "chars": [],
+        "monsters": [],
+        "csMap": {"5": {"owner_id": 39, "term_value": 3, "skillEffs": [10]}},
+        "cardMap": {},
+        "skillMap": {},
+    }
+    state = StateReconstructor().reconstruct(battle_wt)
+    assert state.cs_map_raw == {"5": {"owner_id": 39, "term_value": 3, "skillEffs": [10]}}
+
+
+def test_state_reconstructor_handles_missing_skill_map_gracefully():
+    """When battle_wt has no skillMap key, state.skill_map_raw should be None."""
+    from api.simulator.replay.reconstructor import StateReconstructor
+    battle_wt = {"turn": 1, "chars": [], "monsters": [], "csMap": {}, "cardMap": {}}
+    state = StateReconstructor().reconstruct(battle_wt)
+    assert state.skill_map_raw is None
+    assert state.cs_map_raw is None

@@ -79,3 +79,33 @@ def test_charstate_supports_res_id():
 def test_monsterstate_supports_res_id():
     m = MonsterState(id="38", def_=200, hp=5000, hp_current=5000, res_id="1006017_01")
     assert m.res_id == "1006017_01"
+
+
+def test_battle_state_skill_map_raw_defaults_to_none():
+    """Sprint 2f2: BattleState carries optional skill_map_raw populated by
+    StateReconstructor from battle_wt.skillMap. Synth states leave it None
+    so the v2 multiplier helper degrades to identity (1.0)."""
+    import random
+    from api.simulator.state import BattleState
+    state = BattleState(
+        turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+        rng=random.Random(0),
+    )
+    assert state.skill_map_raw is None
+    assert state.cs_map_raw is None
+
+
+def test_battle_state_skill_map_raw_can_be_set_explicitly():
+    """Allow constructor or attribute assignment to populate the fields."""
+    import random
+    from api.simulator.state import BattleState
+    state = BattleState(
+        turn=1, player_team=[], enemies=[], hand=[], deck=[], discard=[],
+        morale=0, ego_state={}, spark_state={}, cs_stacks={},
+        rng=random.Random(0),
+        skill_map_raw={1: {"eff_value": 50}},
+        cs_map_raw={2: {"owner_id": 39, "term_value": 1}},
+    )
+    assert state.skill_map_raw == {1: {"eff_value": 50}}
+    assert state.cs_map_raw == {2: {"owner_id": 39, "term_value": 1}}
