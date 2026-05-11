@@ -6,6 +6,7 @@ import pytest
 
 from api.simulator.replay.capture_reader import CaptureReader, CaptureEvent
 from api.simulator.replay.dev_msg_parser import SkillEffFire
+from api.simulator.replay.event_parser import UsedCardEvent, SkillEffEvent
 
 
 def _write_jsonl(tmp_path: Path, frames: list[dict]) -> Path:
@@ -108,3 +109,25 @@ def test_capture_event_exposes_skill_eff_fires_with_caster(tmp_path):
     assert fire.caster_id == "103"
     # backwards compat: skill_eff_ids still resolves via property
     assert events[0].skill_eff_ids == ["1006005_01_pt2_10_01"]
+
+
+def test_capture_event_populates_parsed_events(tmp_path):
+    dev_msg = (
+        "**battle log : --------card_use-start--------\n"
+        "**battle log : 103 used card 1006005_01_pt2_10\n"
+        "**battle log : SkillEff 5:1006005_01_pt2_10_01:SKILL_EFF_DMG\n"
+    )
+    cap = _write_jsonl(tmp_path, [{
+        "ts": "t0", "dir": "s2c", "size": 1,
+        "data": {"dev_msg": dev_msg},
+    }])
+    events = list(CaptureReader(cap).events())
+    assert len(events) == 1
+    parsed = events[0].parsed_events
+    assert len(parsed) == 3  # segment_start + used_card + skill_eff
+    types = [type(e).__name__ for e in parsed]
+    assert "SegmentStartEvent" in types
+    assert "UsedCardEvent" in types
+    assert "SkillEffEvent" in types
+    # Backwards-compat: skill_eff_fires still populated
+    assert len(events[0].skill_eff_fires) == 1

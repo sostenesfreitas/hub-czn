@@ -14,6 +14,9 @@ from pathlib import Path
 from typing import Iterator
 
 from api.simulator.replay.dev_msg_parser import SkillEffFire, parse_dev_msg
+from api.simulator.replay.event_parser import (
+    BattleEvent, parse_dev_msg as parse_full_dev_msg,
+)
 
 
 @dataclass(frozen=True)
@@ -25,6 +28,7 @@ class CaptureEvent:
     is_state_update: bool = False
     dev_msg_lines: list[str] = field(default_factory=list)
     skill_eff_fires: list[SkillEffFire] = field(default_factory=list)
+    parsed_events: list[BattleEvent] = field(default_factory=list)
 
     @property
     def skill_eff_ids(self) -> list[str]:
@@ -79,9 +83,11 @@ class CaptureReader:
         dev_msg = data.get("dev_msg", "")
         skill_eff_fires: list[SkillEffFire] = []
         dev_msg_lines: list[str] = []
+        parsed_events: list[BattleEvent] = []
         if isinstance(dev_msg, str) and dev_msg:
             skill_eff_fires = parse_dev_msg(dev_msg)
             dev_msg_lines = [ln for ln in dev_msg.split("\n") if "SkillEff" in ln]
+            parsed_events = parse_full_dev_msg(dev_msg)
         if bw is None and not skill_eff_fires:
             return None
         return CaptureEvent(
@@ -91,4 +97,5 @@ class CaptureReader:
             is_state_update=bw is not None,
             dev_msg_lines=dev_msg_lines,
             skill_eff_fires=skill_eff_fires,
+            parsed_events=parsed_events,
         )
