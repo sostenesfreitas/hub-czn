@@ -2,7 +2,7 @@
 import random
 
 from api.simulator.replay.reconstructor import StateReconstructor
-from api.simulator.state import BattleState
+from api.simulator.state import BattleState, CardState, EgoState, SparkState
 
 
 def _minimal_battle_wt():
@@ -89,3 +89,51 @@ def test_rng_seed_is_applied():
     assert isinstance(state, BattleState)
     expected = random.Random(42).random()
     assert state.rng.random() == expected
+
+
+def test_cs_stacks_initialized_from_csmap():
+    bw = _minimal_battle_wt()
+    bw["csMap"] = {
+        "1": {"cs_id": 1, "res_id": "cs19_0071", "term_value": 3, "owner_id": 1, "is_passive": True},
+        "2": {"cs_id": 2, "res_id": "cs00_0002", "term_value": 5, "owner_id": 79, "is_passive": False},
+    }
+    state = StateReconstructor().reconstruct(bw)
+    assert state.cs_stacks["1"]["cs19_0071"] == 3
+    assert state.cs_stacks["79"]["cs00_0002"] == 5
+
+
+def test_cards_populated_into_hand():
+    """cardMap entries with card_place=CARD_PLACE_HAND go into state.hand."""
+    bw = _minimal_battle_wt()
+    bw["cardMap"] = {
+        "7": {
+            "id": 7, "res_id": "c_1057_srt1", "char_id": 1, "cost": 1,
+            "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["c_1057_srt1_01"],
+            "r_spark": "none", "curEgo": 0, "interruptOutline": False,
+        },
+        "8": {
+            "id": 8, "res_id": "c_1057_srt2", "char_id": 1, "cost": 2,
+            "card_place": "CARD_PLACE_DECK", "skill_eff_ids": ["c_1057_srt2_01"],
+            "r_spark": "none", "curEgo": 0, "interruptOutline": False,
+        },
+    }
+    state = StateReconstructor().reconstruct(bw)
+    assert len(state.hand) == 1
+    assert state.hand[0].card_id == "c_1057_srt1"
+    assert state.hand[0].cost == 1
+    assert len(state.deck) == 1
+    assert state.deck[0].card_id == "c_1057_srt2"
+
+
+def test_ego_state_set_from_curEgo_on_cards():
+    """If any of the caster's cards has curEgo > 0, mark is_ego_active."""
+    bw = _minimal_battle_wt()
+    bw["cardMap"] = {
+        "7": {
+            "id": 7, "res_id": "c_x", "char_id": 1, "cost": 1,
+            "card_place": "CARD_PLACE_HAND", "skill_eff_ids": [],
+            "r_spark": "none", "curEgo": 2, "interruptOutline": False,
+        },
+    }
+    state = StateReconstructor().reconstruct(bw)
+    assert state.ego_state["1"].stage == 2

@@ -7,7 +7,7 @@ frame of a capture often is).
 """
 import random
 
-from api.simulator.state import BattleState, CharState, MonsterState
+from api.simulator.state import BattleState, CharState, MonsterState, CardState, EgoState, SparkState
 
 
 class StateReconstructor:
@@ -16,15 +16,20 @@ class StateReconstructor:
     def reconstruct(self, battle_wt: dict, rng_seed: int = 0) -> BattleState:
         chars = self._build_chars(battle_wt.get("chars", []))
         monsters = self._build_monsters(battle_wt.get("monsters", []))
+        cs_stacks = self._build_cs_stacks(battle_wt.get("csMap", {}))
+        hand, deck, discard = self._build_cards(battle_wt.get("cardMap", {}))
+        ego_state = self._build_ego_state(battle_wt.get("cardMap", {}))
+        spark_state = self._build_spark_state(battle_wt.get("cardMap", {}))
         morale = int(battle_wt.get("ep", 0) or 0)
         return BattleState(
             turn=int(battle_wt.get("turn", 1) or 1),
             player_team=chars,
             enemies=monsters,
-            hand=[], deck=[], discard=[],
+            hand=hand, deck=deck, discard=discard,
             morale=morale,
-            ego_state={}, spark_state={},
-            cs_stacks={},
+            ego_state=ego_state,
+            spark_state=spark_state,
+            cs_stacks=cs_stacks,
             rng=random.Random(rng_seed),
         )
 
@@ -61,4 +66,66 @@ class StateReconstructor:
                 weak=bool(m.get("weak", False)),
                 shield=int(info.get("S_CURRENT_SHIELD", 0) or 0),
             ))
+        return out
+
+    @staticmethod
+    def _build_cs_stacks(cs_map: dict) -> dict[str, dict[str, int]]:
+        out: dict[str, dict[str, int]] = {}
+        for entry in cs_map.values():
+            owner = str(entry.get("owner_id", "") or "")
+            res_id = str(entry.get("res_id", "") or "")
+            term = int(entry.get("term_value", 0) or 0)
+            if not owner or not res_id:
+                continue
+            out.setdefault(owner, {})[res_id] = term
+        return out
+
+    @staticmethod
+    def _build_cards(card_map: dict) -> tuple[list[CardState], list[CardState], list[CardState]]:
+        hand: list[CardState] = []
+        deck: list[CardState] = []
+        discard: list[CardState] = []
+        for entry in card_map.values():
+            card = CardState(
+                card_id=str(entry.get("res_id", "")),
+                cost=int(entry.get("cost", 0) or 0),
+                outline=bool(entry.get("interruptOutline", False)),
+                skill_eff_ids=list(entry.get("skill_eff_ids", []) or []),
+            )
+            place = entry.get("card_place", "")
+            if place == "CARD_PLACE_HAND":
+                hand.append(card)
+            elif place == "CARD_PLACE_DECK":
+                deck.append(card)
+            elif place == "CARD_PLACE_DISCARD":
+                discard.append(card)
+            else:
+                hand.append(card)
+        return hand, deck, discard
+
+    @staticmethod
+    def _build_ego_state(card_map: dict) -> dict[str, EgoState]:
+        out: dict[str, EgoState] = {}
+        for entry in card_map.values():
+            char_id = str(entry.get("char_id", "") or "")
+            cur_ego = int(entry.get("curEgo", 0) or 0)
+            if not char_id:
+                continue
+            current = out.get(char_id)
+            if current is None or cur_ego > current.stage:
+                out[char_id] = EgoState(stage=cur_ego)
+        return out
+
+    @staticmethod
+    def _build_spark_state(card_map: dict) -> dict[str, SparkState]:
+        out: dict[str, SparkState] = {}
+        for entry in card_map.values():
+            char_id = str(entry.get("char_id", "") or "")
+            r_spark = entry.get("r_spark", "none")
+            if not char_id:
+                continue
+            if r_spark and r_spark != "none":
+                out[char_id] = SparkState(enhanced=True)
+            else:
+                out.setdefault(char_id, SparkState(enhanced=False))
         return out
