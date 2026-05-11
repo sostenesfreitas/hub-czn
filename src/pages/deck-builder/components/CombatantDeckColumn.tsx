@@ -17,6 +17,9 @@ import type {
   SquadSlot,
 } from '../deck-builder.types'
 import {
+  canUseDeckBuilderEpiphanies,
+  getDeckCardEpiphanySummary,
+  getDeckCardIdentityKey,
   getDisplayTypes,
   getInstanceCost,
   getVariants,
@@ -28,7 +31,6 @@ import { CharacterAvatar } from './CharacterAvatar'
 import { EgoSkillCard } from './EgoSkillCard'
 import { EquipmentSelectionModal } from './EquipmentSelectionModal'
 import { EquipmentSlot } from './EquipmentSlot'
-import { TypeBadge } from './TypeBadge'
 
 type CardSelectionKind = 'starting' | 'epiphany' | 'shared'
 
@@ -74,10 +76,7 @@ function getCardSectionDescription(kind: CardSelectionKind) {
 }
 
 function getCardGroupKey(item: DeckCardInstance) {
-  return [
-    item.card.card_id,
-    item.selectedVariant?.variant_id ?? 'base',
-  ].join('::')
+  return getDeckCardIdentityKey(item)
 }
 
 function groupDeckCards(cards: DeckCardInstance[]) {
@@ -101,6 +100,46 @@ function groupDeckCards(cards: DeckCardInstance[]) {
   return Array.from(groups.values())
 }
 
+function getCompactTypeClassName(type: string) {
+  const normalizedType = type.toLowerCase()
+
+  if (normalizedType.includes('attack') || normalizedType.includes('dmg')) {
+    return 'bg-[#7f1d1d]/95 text-[#fecaca] border-[#ef4444]/40'
+  }
+
+  if (normalizedType.includes('skill')) {
+    return 'bg-[#075985]/95 text-[#bae6fd] border-[#38bdf8]/40'
+  }
+
+  if (normalizedType.includes('upgrade') || normalizedType.includes('get')) {
+    return 'bg-[#064e3b]/95 text-[#bbf7d0] border-[#22c55e]/40'
+  }
+
+  if (normalizedType.includes('unique')) {
+    return 'bg-[#713f12]/95 text-[#fef3c7] border-[#facc15]/40'
+  }
+
+  if (normalizedType.includes('linked')) {
+    return 'bg-[#312e81]/95 text-[#ddd6fe] border-[#a78bfa]/40'
+  }
+
+  return 'bg-black/70 text-[#e5e7eb] border-white/10'
+}
+
+function CompactTypeBadge({ type }: { type: string }) {
+  return (
+    <span
+      title={type}
+      className={[
+        'max-w-[58px] truncate rounded border px-1.5 py-[1px] text-[8px] font-black uppercase leading-none tracking-wide shadow',
+        getCompactTypeClassName(type),
+      ].join(' ')}
+    >
+      {type}
+    </span>
+  )
+}
+
 function CompactDeckCard({
   item,
   count,
@@ -118,102 +157,95 @@ function CompactDeckCard({
   const displayCost = getInstanceCost(item)
   const displayDescription = item.selectedVariant?.description ?? item.description
   const displayTypes = getDisplayTypes(item.card, item.selectedVariant)
-  const hasVariants = item.variants.length > 0 || item.card.spark_count > 0
+  const hasEpiphanySettings = item.variants.length > 0 || canUseDeckBuilderEpiphanies(item.card)
+  const epiphanySummary = getDeckCardEpiphanySummary(item)
 
-  const isLongTitle = displayName.length > 16
-  const isVeryLongTitle = displayName.length > 24
-  const isLongDescription = Boolean(displayDescription && displayDescription.length > 80)
-
-  const titleClassName = isVeryLongTitle
-    ? 'text-[12px] leading-[1.05]'
-    : isLongTitle
-      ? 'text-[13px] leading-[1.08]'
-      : 'text-base leading-tight'
-
-  const descriptionClassName = isLongDescription
-    ? 'text-[9.5px] leading-[1.12]'
-    : 'text-[10.5px] leading-snug'
+  const hasCombatStats =
+    item.card.eff_value > 0 ||
+    item.card.hits > 0 ||
+    item.card.spark_count > 0
 
   return (
-    <article className="relative flex h-[230px] flex-col overflow-hidden rounded-xl border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#c084fc]">
+    <article className="group relative flex h-[218px] flex-col overflow-hidden rounded-xl border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#60a5fa]">
       <div className="absolute inset-0">
-        <CardImage card={item.card} />
+        <CardImage
+          card={item.card}
+          variant="cover"
+          className="opacity-95 transition-transform duration-300 group-hover:scale-105"
+        />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/25 to-black/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/95" />
+      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/90 to-transparent" />
 
       <div className="absolute left-2 right-2 top-2 z-20 flex items-start justify-between gap-2">
-        {count > 0 ? (
-          <span className="rounded-md border border-[#facc15] bg-black/85 px-2 py-0.5 text-xs font-black text-[#facc15] shadow">
-            {count}x
-          </span>
-        ) : (
-          <span />
-        )}
+        <span className="rounded-md border border-[#facc15]/80 bg-black/85 px-2 py-0.5 text-xs font-black text-[#facc15] shadow">
+          {count}x
+        </span>
 
         <span className="grid h-8 min-w-8 place-items-center rounded-md border border-[#075985] bg-[#082f49]/95 px-2 text-sm font-black text-[#93c5fd] shadow">
           {displayCost}
         </span>
       </div>
 
-      <div className="relative z-10 mt-auto flex min-h-[122px] flex-col justify-end bg-gradient-to-t from-black/95 via-black/75 to-transparent px-3 pb-3 pt-8">
-        <div className="mb-1.5 flex min-h-[18px] flex-wrap gap-1 pr-1">
-          {displayTypes.slice(0, 3).map(type => (
-            <TypeBadge key={type} type={type} />
-          ))}
-        </div>
+      <div className="relative z-10 mt-auto flex min-h-[116px] flex-col justify-end px-3 pb-2.5 pt-9">
+        {displayTypes.length > 0 && (
+          <div className="mb-1 flex min-h-[13px] flex-wrap gap-1">
+            {displayTypes.slice(0, 2).map(type => (
+              <CompactTypeBadge key={type} type={type} />
+            ))}
+          </div>
+        )}
 
-        <h3
-          className={[
-            'line-clamp-2 font-black text-white drop-shadow',
-            titleClassName,
-          ].join(' ')}
-        >
+        <h3 className="line-clamp-2 text-[15px] font-black leading-[1.05] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]">
           {displayName}
         </h3>
 
         {displayDescription && (
-          <p
-            className={[
-              'mt-1 line-clamp-4 font-semibold text-white/95 drop-shadow',
-              descriptionClassName,
-            ].join(' ')}
-          >
+          <p className="mt-1 line-clamp-3 text-[10px] font-bold leading-[1.12] text-white/95 drop-shadow-[0_2px_2px_rgba(0,0,0,0.95)]">
             {displayDescription}
           </p>
         )}
 
-        <div className="mt-1.5 flex min-h-[14px] flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] font-bold">
-          {item.card.eff_value > 0 && (
-            <span>
-              Dano <span className="text-[#93c5fd]">{item.card.eff_value}%</span>
-            </span>
-          )}
+        {epiphanySummary && (
+          <p className="mt-1 line-clamp-1 text-[9px] font-black leading-tight text-[#c4b5fd] drop-shadow">
+            {epiphanySummary}
+          </p>
+        )}
 
-          {item.card.hits > 0 && (
-            <span>
-              Hits <span className="text-white">{item.card.hits}</span>
-            </span>
-          )}
+        {hasCombatStats && (
+          <div className="mt-1.5 flex min-h-[14px] flex-wrap items-center gap-x-2 gap-y-0.5 text-[9.5px] font-bold">
+            {item.card.eff_value > 0 && (
+              <span>
+                Dano <span className="text-[#93c5fd]">{item.card.eff_value}%</span>
+              </span>
+            )}
 
-          {item.card.spark_count > 0 && (
-            <span>
-              Spark <span className="text-[#facc15]">+{item.card.spark_count}</span>
-            </span>
-          )}
-        </div>
+            {item.card.hits > 0 && (
+              <span>
+                Hits <span className="text-white">{item.card.hits}</span>
+              </span>
+            )}
+
+            {item.card.spark_count > 0 && (
+              <span>
+                Spark <span className="text-[#facc15]">+{item.card.spark_count}</span>
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
-      <div className="relative z-10 flex items-center justify-end gap-2 border-t border-white/10 bg-black/70 px-2 py-2">
-        {hasVariants && onOpenVariants && (
+      <div className="relative z-10 flex h-9 shrink-0 items-center justify-end gap-1.5 border-t border-white/10 bg-black/80 px-2">
+        {hasEpiphanySettings && onOpenVariants && (
           <button
             type="button"
             onClick={onOpenVariants}
-            title="Selecionar variante"
-            className="inline-flex h-7 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/90 px-2 text-[10px] font-bold text-[#7dd3fc] hover:bg-[#0c4a6e]"
+            title="Configurar epifanias"
+            className="inline-flex h-6 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/90 px-2 text-[9px] font-black text-[#7dd3fc] hover:bg-[#0c4a6e]"
           >
             <Sparkles size={11} />
-            Var.
+            Epi.
           </button>
         )}
 
@@ -221,18 +253,18 @@ function CompactDeckCard({
           type="button"
           onClick={onDuplicate}
           title="Duplicar carta"
-          className="grid h-7 w-7 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
+          className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
         >
-          <Copy size={13} />
+          <Copy size={12} />
         </button>
 
         <button
           type="button"
           onClick={onRemove}
           title="Remover carta"
-          className="grid h-7 w-7 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
+          className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
         >
-          <X size={13} />
+          <X size={12} />
         </button>
       </div>
     </article>
@@ -252,7 +284,7 @@ function CardSectionButton({
     <button
       type="button"
       onClick={onClick}
-      className="mt-3 flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition hover:border-[#c084fc] hover:bg-[#151522]"
+      className="mt-3 flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition hover:border-[#60a5fa] hover:bg-[#151522]"
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
@@ -363,7 +395,7 @@ function CardSelectionModal({
               value={search}
               onChange={event => handleSearch(event.target.value)}
               placeholder="Buscar por nome, descrição, efeito ou variante..."
-              className="w-full rounded-lg border border-[#333348] bg-[#0f0f14] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#666] focus:border-[#c084fc]"
+              className="w-full rounded-lg border border-[#333348] bg-[#0f0f14] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#666] focus:border-[#60a5fa]"
             />
           </div>
         </div>
@@ -381,7 +413,7 @@ function CardSelectionModal({
                   item={item}
                   onAdd={() => onAdd(item)}
                   onOpenVariants={
-                    getVariants(item).length > 0 || item.card.spark_count > 0
+                    getVariants(item).length > 0 || canUseDeckBuilderEpiphanies(item.card)
                       ? () => onOpenVariants(item)
                       : undefined
                   }
@@ -496,7 +528,7 @@ export function CombatantDeckColumn({
               <select
                 value={slot.combatantId ?? ''}
                 onChange={e => onSelectCombatant(e.target.value ? Number(e.target.value) : null)}
-                className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-sm text-white outline-none focus:border-[#c084fc]"
+                className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-sm text-white outline-none focus:border-[#60a5fa]"
               >
                 <option value="">Selecionar combatente...</option>
                 {characters.map(character => (
@@ -630,7 +662,7 @@ export function CombatantDeckColumn({
                   onDuplicate={() => onDuplicateCard(group.item.instanceId)}
                   onRemove={() => onRemoveCard(group.item.instanceId)}
                   onOpenVariants={
-                    group.item.variants.length > 0 || group.item.card.spark_count > 0
+                    group.item.variants.length > 0 || canUseDeckBuilderEpiphanies(group.item.card)
                       ? () => onOpenDeckCardVariants(group.item)
                       : undefined
                   }

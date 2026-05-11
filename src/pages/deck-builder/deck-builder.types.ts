@@ -13,6 +13,55 @@ export type DeckBuilderEpiphanyVariant = {
   description: string
 }
 
+export type DeckBuilderDivineGodId =
+  | 'Nihilum'
+  | 'Secred'
+  | 'Vitor'
+  | 'Caligo'
+  | 'Circen'
+  | 'Diallos'
+
+export type DeckBuilderDivineGod = {
+  id: DeckBuilderDivineGodId
+  name: string
+  displayName: string
+}
+
+export type DeckBuilderDivineEpiphany = {
+  id: string
+  god: string
+  display_god: string
+  description: string
+  rarity: string
+  card_types: string[]
+  allowed_classes: string[]
+  levels: string[]
+  tags: string[]
+  source_key: string
+  raw_text: string
+}
+
+export type DeckBuilderCommonEpiphany = {
+  id: string
+  section: string
+  display_section: string
+  description: string
+  rarity: string
+  card_types: string[]
+  allowed_classes: string[]
+  levels: string[]
+  tags: string[]
+  source_key: string
+  raw_text: string
+}
+
+export type DeckCardEpiphanySettings = {
+  selectedVariant: DeckBuilderEpiphanyVariant | null
+  selectedDivineGod: DeckBuilderDivineGod | null
+  selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
+  selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
+}
+
 export type DeckBuilderCardGroup =
   | ApiDeckBuilderCard['group']
   | 'neutral'
@@ -30,6 +79,9 @@ export type DeckCardInstance = {
   description: string | null
   variants: DeckBuilderEpiphanyVariant[]
   selectedVariant: DeckBuilderEpiphanyVariant | null
+  selectedDivineGod: DeckBuilderDivineGod | null
+  selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
+  selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
 }
 
 export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'
@@ -76,6 +128,9 @@ export type VariantModalTarget =
       description: string | null
       variants: DeckBuilderEpiphanyVariant[]
       selectedVariant: DeckBuilderEpiphanyVariant | null
+      selectedDivineGod: DeckBuilderDivineGod | null
+      selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
+      selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
     }
   | {
       type: 'available'
@@ -86,6 +141,9 @@ export type VariantModalTarget =
 export type DeckBuilderImportedCard = {
   card_id: string
   selected_variant_id: string | null
+  selected_divine_god: string | null
+  selected_divine_epiphany_id: string | null
+  selected_common_epiphany_id: string | null
 }
 
 export type DeckBuilderExportSlot = {

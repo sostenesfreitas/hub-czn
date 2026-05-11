@@ -13,6 +13,7 @@ import type {
   DeckBuilderImportedEquipment,
   DeckBuilderItem,
   DeckBuilderItemSlot,
+  DeckCardEpiphanySettings,
   DeckCardInstance,
   SquadSlot,
   VariantModalTarget,
@@ -25,10 +26,13 @@ import {
   createEmptyEquipment,
   createEmptySlot,
   createInitialSquad,
+  findCommonEpiphanyById,
+  findDivineEpiphanyById,
+  findDivineGodById,
   getInstanceCost,
 } from '../deck-builder.utils'
 
-const DECK_BUILDER_EXPORT_VERSION = 2
+const DECK_BUILDER_EXPORT_VERSION = 3
 const DECK_BUILDER_MAX_SLOTS = 3
 
 function getDeckBuilderExportFileName() {
@@ -109,6 +113,12 @@ function findVariantById(
   return variants.find(variant => variant.variant_id === variantId) ?? null
 }
 
+function normalizeOptionalString(value: unknown) {
+  return typeof value === 'string' && value.trim()
+    ? value
+    : null
+}
+
 function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
   if (!isRecord(value)) {
     return null
@@ -120,13 +130,12 @@ function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
     return null
   }
 
-  const selectedVariantId = value.selected_variant_id
-
   return {
     card_id: cardId,
-    selected_variant_id: typeof selectedVariantId === 'string'
-      ? selectedVariantId
-      : null,
+    selected_variant_id: normalizeOptionalString(value.selected_variant_id),
+    selected_divine_god: normalizeOptionalString(value.selected_divine_god),
+    selected_divine_epiphany_id: normalizeOptionalString(value.selected_divine_epiphany_id),
+    selected_common_epiphany_id: normalizeOptionalString(value.selected_common_epiphany_id),
   }
 }
 
@@ -198,6 +207,35 @@ function normalizeImportedPayload(value: unknown): DeckBuilderExportPayload {
     slots: value.slots
       .slice(0, DECK_BUILDER_MAX_SLOTS)
       .map(normalizeImportedSlot),
+  }
+}
+
+function resolveImportedCardSettings(
+  source: DeckBuilderCardWithVariants,
+  importedCard: DeckBuilderImportedCard,
+): DeckCardEpiphanySettings {
+  const selectedVariant = findVariantById(
+    source.variants ?? [],
+    importedCard.selected_variant_id,
+  )
+
+  const selectedDivineEpiphany = findDivineEpiphanyById(
+    importedCard.selected_divine_epiphany_id,
+  )
+
+  const selectedDivineGod =
+    findDivineGodById(importedCard.selected_divine_god) ??
+    findDivineGodById(selectedDivineEpiphany?.god)
+
+  const selectedCommonEpiphany = findCommonEpiphanyById(
+    importedCard.selected_common_epiphany_id,
+  )
+
+  return {
+    selectedVariant,
+    selectedDivineGod,
+    selectedDivineEpiphany,
+    selectedCommonEpiphany,
   }
 }
 
@@ -350,7 +388,7 @@ export function useDeckBuilder() {
   function addDeckBuilderCard(
     slotIndex: number,
     item: DeckBuilderCardWithVariants,
-    selectedVariant: DeckBuilderEpiphanyVariant | null = null,
+    settings: Partial<DeckCardEpiphanySettings> = {},
   ) {
     setSquad(current =>
       current.map((slot, index) => {
@@ -360,7 +398,7 @@ export function useDeckBuilder() {
           ...slot,
           cards: [
             ...slot.cards,
-            createCardInstanceFromDeckBuilderCard(item, selectedVariant),
+            createCardInstanceFromDeckBuilderCard(item, settings),
           ],
         }
       }),
@@ -442,6 +480,9 @@ export function useDeckBuilder() {
       description: item.description,
       variants: item.variants,
       selectedVariant: item.selectedVariant,
+      selectedDivineGod: item.selectedDivineGod,
+      selectedDivineEpiphany: item.selectedDivineEpiphany,
+      selectedCommonEpiphany: item.selectedCommonEpiphany,
     })
   }
 
@@ -453,11 +494,11 @@ export function useDeckBuilder() {
     })
   }
 
-  function applyVariant(variant: DeckBuilderEpiphanyVariant) {
+  function applyEpiphanySettings(settings: DeckCardEpiphanySettings) {
     if (!variantModalTarget) return
 
     if (variantModalTarget.type === 'available') {
-      addDeckBuilderCard(variantModalTarget.slotIndex, variantModalTarget.item, variant)
+      addDeckBuilderCard(variantModalTarget.slotIndex, variantModalTarget.item, settings)
       setVariantModalTarget(null)
       return
     }
@@ -475,7 +516,10 @@ export function useDeckBuilder() {
 
             return {
               ...item,
-              selectedVariant: variant,
+              selectedVariant: settings.selectedVariant,
+              selectedDivineGod: settings.selectedDivineGod,
+              selectedDivineEpiphany: settings.selectedDivineEpiphany,
+              selectedCommonEpiphany: settings.selectedCommonEpiphany,
             }
           }),
         }
@@ -487,12 +531,15 @@ export function useDeckBuilder() {
 
       return {
         ...current,
-        selectedVariant: variant,
+        selectedVariant: settings.selectedVariant,
+        selectedDivineGod: settings.selectedDivineGod,
+        selectedDivineEpiphany: settings.selectedDivineEpiphany,
+        selectedCommonEpiphany: settings.selectedCommonEpiphany,
       }
     })
   }
 
-  function clearVariant() {
+  function clearEpiphanySettings() {
     if (!variantModalTarget || variantModalTarget.type !== 'deck') return
 
     const { slotIndex, instanceId } = variantModalTarget
@@ -509,6 +556,9 @@ export function useDeckBuilder() {
             return {
               ...item,
               selectedVariant: null,
+              selectedDivineGod: null,
+              selectedDivineEpiphany: null,
+              selectedCommonEpiphany: null,
             }
           }),
         }
@@ -521,6 +571,9 @@ export function useDeckBuilder() {
       return {
         ...current,
         selectedVariant: null,
+        selectedDivineGod: null,
+        selectedDivineEpiphany: null,
+        selectedCommonEpiphany: null,
       }
     })
   }
@@ -543,6 +596,9 @@ export function useDeckBuilder() {
         cards: slot.cards.map(item => ({
           card_id: item.card.card_id,
           selected_variant_id: item.selectedVariant?.variant_id ?? null,
+          selected_divine_god: item.selectedDivineGod?.id ?? null,
+          selected_divine_epiphany_id: item.selectedDivineEpiphany?.id ?? null,
+          selected_common_epiphany_id: item.selectedCommonEpiphany?.id ?? null,
         })),
       })),
     }
@@ -613,14 +669,9 @@ export function useDeckBuilder() {
                 return null
               }
 
-              const selectedVariant = findVariantById(
-                source.variants ?? [],
-                importedCard.selected_variant_id,
-              )
-
               return createCardInstanceFromDeckBuilderCard(
                 source,
-                selectedVariant,
+                resolveImportedCardSettings(source, importedCard),
               )
             })
             .filter((card): card is DeckCardInstance => card !== null)
@@ -670,8 +721,8 @@ export function useDeckBuilder() {
     resetBuilder,
     openDeckCardVariants,
     openAvailableCardVariants,
-    applyVariant,
-    clearVariant,
+    applyEpiphanySettings,
+    clearEpiphanySettings,
     closeVariantModal,
     exportDeck,
     importDeck,
