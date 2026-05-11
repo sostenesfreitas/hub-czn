@@ -8,6 +8,7 @@ import pytest
 from api.simulator.replay.capture_reader import CaptureEvent
 from api.simulator.replay.harness import ReplayHarness, EventReport, ReplaySummary
 from api.simulator.replay.reconstructor import StateReconstructor
+from api.simulator.replay.report import render_report
 
 
 class _FakeReader:
@@ -143,3 +144,26 @@ def test_damage_outside_5_percent_counted_in_outliers():
     ])
     summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
     assert summary.dispatched_dmg_outside_5pct == 1
+
+
+def test_render_report_contains_summary_and_per_eff_type():
+    summary = ReplaySummary(total_events=10, crashed=0,
+                            dispatched_dmg_within_5pct=4, dispatched_dmg_outside_5pct=2,
+                            stubbed=3, missing_from_index=1, no_target=0,
+                            by_eff_type={
+                                "SKILL_EFF_DMG": {"dispatched": 6, "stub": 0, "missing": 0, "crashed": 0, "no_target": 0},
+                                "SKILL_EFF_NONE": {"dispatched": 0, "stub": 3, "missing": 0, "crashed": 0, "no_target": 0},
+                            })
+    reports = [
+        EventReport(seq=5, skill_eff_id="c_a", eff_type="SKILL_EFF_DMG",
+                    status="dispatched", sim_damage=1200, obs_damage=1000, delta_pct=0.20),
+        EventReport(seq=6, skill_eff_id="c_b", eff_type="SKILL_EFF_DMG",
+                    status="dispatched", sim_damage=950, obs_damage=1000, delta_pct=-0.05),
+    ]
+    md = render_report(summary, reports, capture_id="test_capture")
+    assert "test_capture" in md
+    assert "Total events: 10" in md
+    assert "SKILL_EFF_DMG" in md
+    assert "SKILL_EFF_NONE" in md
+    # outliers section sorts by abs(delta_pct) desc
+    assert md.index("c_a") < md.index("c_b")
