@@ -134,3 +134,27 @@ def test_generated_catalog_validates():
     catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     assert len(catalog) >= 40, "scope shrank unexpectedly"
     jsonschema.validate(instance=catalog, schema=schema)
+
+
+def test_catalog_has_no_null_semantic_fields():
+    """After Phase B completes, every entry must have non-null semantic fields."""
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    failures = []
+    for eff_type, body in catalog.items():
+        for field in ("trigger", "target_resolution", "stack_rule"):
+            if body.get(field) is None:
+                failures.append(f"{eff_type}.{field} is null")
+        if body["effect"].get("kind") is None:
+            failures.append(f"{eff_type}.effect.kind is null")
+        if body["effect"].get("formula_ref") is None:
+            failures.append(f"{eff_type}.effect.formula_ref is null")
+    assert not failures, f"{len(failures)} null semantic fields remain:\n" + "\n".join(failures[:20])
+
+
+def test_catalog_formula_refs_exist_in_registry():
+    """Every formula_ref in the catalog must be a key in FORMULA_REGISTRY."""
+    from api.simulator.formulas import FORMULA_REGISTRY
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    refs = {body["effect"]["formula_ref"] for body in catalog.values() if body["effect"].get("formula_ref")}
+    missing = refs - set(FORMULA_REGISTRY.keys())
+    assert not missing, f"formula_refs in catalog with no FORMULA_REGISTRY entry: {missing}"
