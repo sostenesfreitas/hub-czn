@@ -20,6 +20,7 @@ class CharState:
     weak_ego_dmg_rate: float = 100.0
     shield: int = 0
     is_ego_active: bool = False  # toggled when card.outline triggers
+    res_id: str = ""  # NEW — for skill_eff_id prefix resolution
 
 
 @dataclass
@@ -34,6 +35,7 @@ class MonsterState:
     atk: int = 0                    # NEW — monsters can be casters
     cri: float = 0.0                # NEW
     cri_dmg_rate: float = 0.0       # NEW
+    res_id: str = ""                # NEW — for skill_eff_id prefix resolution
 
     def apply_damage(self, amount: float) -> int:
         """Subtract damage from hp_current after shield. Returns damage actually dealt."""

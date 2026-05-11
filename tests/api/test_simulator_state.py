@@ -68,3 +68,14 @@ def test_battlestate_card_owner_lookup_accepts_initial_value():
                     card_owner_lookup={"7": "1", "8": "2"})
     assert s.card_owner_lookup["7"] == "1"
     assert s.card_owner_lookup["8"] == "2"
+
+
+def test_charstate_supports_res_id():
+    c = CharState(id="1", atk=1000, def_=200, hp=8000, hp_current=8000,
+                  cri=10.0, cri_dmg_rate=200.0, res_id="1057")
+    assert c.res_id == "1057"
+
+
+def test_monsterstate_supports_res_id():
+    m = MonsterState(id="38", def_=200, hp=5000, hp_current=5000, res_id="1006017_01")
+    assert m.res_id == "1006017_01"

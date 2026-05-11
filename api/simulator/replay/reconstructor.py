@@ -49,6 +49,7 @@ class StateReconstructor:
                 cri=float(info.get("S_CRI", 0) or 0),
                 cri_dmg_rate=float(info.get("S_CRI_DMG_RATE", 0) or 0),
                 weak_ego_dmg_rate=float(info.get("S_WEAK_EGO_DMG_RATE", 100) or 100),
+                res_id=str(c.get("res_id", "")),
             ))
         return out
 
@@ -70,6 +71,7 @@ class StateReconstructor:
                 atk=int(info.get("S_ATK", 0) or 0),
                 cri=float(info.get("S_CRI", 0) or 0),
                 cri_dmg_rate=float(info.get("S_CRI_DMG_RATE", 0) or 0),
+                res_id=str(m.get("res_id", "")),
             ))
         return out
 

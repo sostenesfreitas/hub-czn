@@ -181,3 +181,15 @@ def test_card_owner_lookup_skips_entries_without_char_id():
     state = StateReconstructor().reconstruct(bw)
     assert "7" in state.card_owner_lookup
     assert "9" not in state.card_owner_lookup
+
+
+def test_chars_have_res_id_from_snapshot():
+    bw = _minimal_battle_wt()
+    state = StateReconstructor().reconstruct(bw)
+    assert state.player_team[0].res_id == "1057"  # the minimal fixture's char
+
+
+def test_monsters_have_res_id_from_snapshot():
+    bw = _minimal_battle_wt()
+    state = StateReconstructor().reconstruct(bw)
+    assert state.enemies[0].res_id == "1006017_01"

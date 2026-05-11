@@ -319,6 +319,33 @@ def test_extract_obs_returns_damage_for_real_skill_hit():
     assert obs == 543
 
 
+def test_harness_resolves_caster_via_skill_eff_id_prefix():
+    """When dev_msg has no caster_id but skill_eff_id encodes a char_res_id,
+    the harness resolves via res_id prefix match."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="38"))
+
+    bw = _minimal_bw()
+    bw["chars"][0]["res_id"] = "30093"  # Heidemarie's res_id
+    # caster_id absent, but skill_eff_id encodes char 30093
+    fire = SkillEffFire(skill_eff_id="c_30093_uni4_lbk_mut1_01",
+                        eff_type="SKILL_EFF_DMG", caster_id=None)
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].inferred_caster is False
+
+
 def test_harness_resolves_caster_via_card_owner_lookup():
     """When SkillEffFire.caster_id is a card-instance-id (not a unit id),
     the harness translates via state.card_owner_lookup."""

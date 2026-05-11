@@ -9,9 +9,13 @@ s2c frames.  The harness therefore:
   - Skill-fire events    (is_state_update=False)  → dispatch via runtime;
     park result in pending list until the next state-update snapshot.
 """
+import re
 from dataclasses import dataclass, field
 
 from api.simulator.replay.reconstructor import StateReconstructor
+
+_CHAR_PREFIX_RE = re.compile(r"^c_(\d+)_")
+_MONSTER_PREFIX_RE = re.compile(r"^(\d{5,})_")  # e.g., 1006005_*
 
 
 @dataclass
@@ -135,7 +139,7 @@ class ReplayHarness:
             row.error = str(e)
             return row
         row.eff_type = inst.eff_type
-        caster, inferred = self._resolve_caster(fire.caster_id, state)
+        caster, inferred = self._resolve_caster(fire.caster_id, state, skill_eff_id=fire.skill_eff_id)
         row.inferred_caster = inferred
         if caster is None:
             row.status = "no_target"
@@ -163,17 +167,18 @@ class ReplayHarness:
         return row
 
     @staticmethod
-    def _resolve_caster(caster_id: "str | None", state) -> tuple:
-        """Find the unit (char or monster) whose id matches caster_id.
+    def _resolve_caster(caster_id: "str | None", state, skill_eff_id: "str | None" = None) -> tuple:
+        """Resolve a caster unit.
 
         Resolution order:
-        1. Direct match: caster_id == unit.id in player_team or enemies.
-        2. Indirect via card_owner_lookup: caster_id is a card-instance-id,
-           translate to owning char_id, then match.
-        3. Fallback to player_team[0] with inferred=True.
+        1. Direct match: caster_id == unit.id (player_team or enemies).
+        2. Indirect via card_owner_lookup: caster_id is a card-instance-id.
+        3. Skill-eff-id prefix: extract char_res_id from skill_eff_id (c_<N>_ or <N>_).
+        4. Fallback: player_team[0] with inferred=True.
 
-        Returns (unit, inferred) where inferred=True if the fallback was used.
+        Returns (unit, inferred) where inferred=True if fallback was used.
         """
+        # 1. Direct match
         if caster_id is not None:
             for unit in state.player_team:
                 if str(unit.id) == str(caster_id):
@@ -181,6 +186,7 @@ class ReplayHarness:
             for unit in state.enemies:
                 if str(unit.id) == str(caster_id):
                     return unit, False
+            # 2. card_owner_lookup
             owner_id = state.card_owner_lookup.get(str(caster_id))
             if owner_id is not None:
                 for unit in state.player_team:
@@ -189,7 +195,23 @@ class ReplayHarness:
                 for unit in state.enemies:
                     if str(unit.id) == owner_id:
                         return unit, False
-        # fallback
+        # 3. skill_eff_id prefix
+        if skill_eff_id:
+            char_match = _CHAR_PREFIX_RE.match(skill_eff_id)
+            if char_match:
+                char_res_id = char_match.group(1)
+                for unit in state.player_team:
+                    if unit.res_id == char_res_id:
+                        return unit, False
+            else:
+                mon_match = _MONSTER_PREFIX_RE.match(skill_eff_id)
+                if mon_match:
+                    mon_prefix = mon_match.group(1)
+                    for unit in state.enemies:
+                        # monster res_id is often like "1006005_01" — match starting prefix
+                        if unit.res_id.startswith(mon_prefix):
+                            return unit, False
+        # 4. Fallback
         if state.player_team:
             return state.player_team[0], True
         return None, True
