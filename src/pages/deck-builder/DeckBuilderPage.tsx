@@ -35,9 +35,15 @@ export function DeckBuilderPage() {
         selectedCombatants={deckBuilder.selectedCombatants}
         totalCards={deckBuilder.totalCards}
         totalCost={deckBuilder.totalCost}
+        savedDecks={deckBuilder.savedDecks}
+        selectedSavedDeckId={deckBuilder.selectedSavedDeckId}
         onReset={deckBuilder.resetBuilder}
         onImportDeck={deckBuilder.importDeck}
         onExportDeck={deckBuilder.exportDeck}
+        onLoadSavedDeck={deckBuilder.loadSavedDeck}
+        onSaveCurrentDeck={deckBuilder.saveCurrentDeck}
+        onSaveCurrentDeckAs={deckBuilder.saveCurrentDeckAs}
+        onDeleteSavedDeck={deckBuilder.deleteSavedDeck}
       />
 
       {deckBuilder.isLoading ? (
