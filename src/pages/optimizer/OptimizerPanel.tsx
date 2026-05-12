@@ -575,6 +575,33 @@ export function OptimizerPanel({
               Treat target as weak (apply EGO/weak multiplier)
             </span>
           </label>
+
+          {/* Sprint 2h3: AoE / multi-target modeling */}
+          <div className="space-y-1">
+            <label htmlFor="optimizer-target-count" className="text-[9px] uppercase tracking-wider text-[#666666]">
+              Target count
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="optimizer-target-count"
+                type="number"
+                min={1}
+                max={5}
+                step={1}
+                value={config.target_count ?? 1}
+                onChange={(e) =>
+                  patch({
+                    target_count: Math.max(1, Math.min(5, parseInt(e.target.value) || 1)),
+                  })
+                }
+                disabled={disabled}
+                className="w-20 bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <span className="text-[10px] text-[#666666]">
+                (1=single boss, 3-5=mob wave)
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-1">
