@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronRight, Play, Square } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { OptimizerConfig, EquipmentSet, Combatant, OptimizeProgress, CharPreset } from '@/lib/types'
+import type { OptimizerConfig, EquipmentSet, Monster, Combatant, OptimizeProgress, CharPreset } from '@/lib/types'
 import { InfoPopover } from '@/components/ui/info-popover'
 import { CharacterCombobox } from '@/components/ui/character-combobox'
 import { SetCombobox } from './SetCombobox'
@@ -74,6 +74,13 @@ export function OptimizerPanel({
   const { data: sets = [], isLoading: setsLoading } = useQuery<EquipmentSet[]>({
     queryKey: ['optimize/sets'],
     queryFn: () => api.optimizeSets(),
+  })
+
+  // Sprint 2h1: monster catalog feeds the Monster Picker dropdown.
+  const { data: monsterCatalog = [] } = useQuery<Monster[]>({
+    queryKey: ['optimize/monster-catalog'],
+    queryFn: () => api.monsterCatalog(),
+    staleTime: Infinity,  // catalog is static (built offline)
   })
 
   const selectedCombatant = combatants.find((c) => c.char_id === config.char_name)
@@ -484,11 +491,51 @@ export function OptimizerPanel({
           </div>
         </div>
 
-        {/* Sprint 2f4: AvgDMG configuration */}
+        {/* Sprint 2f4 + 2h1: AvgDMG configuration */}
         <div className="border-t border-[#282828] pt-3 space-y-2">
           <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
-            AvgDMG (Sprint 2f4)
+            AvgDMG (Sprint 2f4 / 2h1)
           </p>
+
+          {/* Sprint 2h1: Monster Picker — selecting a monster auto-populates
+              target_def AND treat_target_as_weak. The manual DEF input below
+              still works as an override. */}
+          {monsterCatalog.length > 0 && (
+            <div className="space-y-1">
+              <label htmlFor="optimizer-monster-picker" className="text-[9px] uppercase tracking-wider text-[#666666]">
+                Monster (preset)
+              </label>
+              <select
+                id="optimizer-monster-picker"
+                value={
+                  monsterCatalog.find(
+                    (m) =>
+                      m.def === (config.target_def ?? 500) &&
+                      m.has_weak === (config.treat_target_as_weak ?? false)
+                  )?.id ?? ''
+                }
+                onChange={(e) => {
+                  const m = monsterCatalog.find((m) => m.id === e.target.value)
+                  if (m) {
+                    patch({
+                      target_def: m.def,
+                      treat_target_as_weak: m.has_weak,
+                    })
+                  }
+                }}
+                disabled={disabled}
+                className="w-full bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <option value="">— Custom DEF —</option>
+                {monsterCatalog.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name} (DEF {m.def}
+                    {m.has_weak ? ', weak' : ''})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="space-y-1">
             <label htmlFor="optimizer-target-def" className="text-[9px] uppercase tracking-wider text-[#666666]">
