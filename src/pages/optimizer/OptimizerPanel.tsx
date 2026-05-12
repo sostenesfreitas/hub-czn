@@ -497,25 +497,35 @@ export function OptimizerPanel({
             AvgDMG (Sprint 2f4 / 2h1)
           </p>
 
-          {/* Sprint 2h1: Monster Picker — selecting a monster auto-populates
+          {/* Sprint 2h1 + 2h4: Monster Picker — selecting a monster auto-populates
               target_def AND treat_target_as_weak. The manual DEF input below
-              still works as an override. */}
+              still works as an override. Sprint 2h4 upgraded the flat <select>
+              (510 monsters) to a searchable SetCombobox. Removing the chip clears
+              the preset, falling back to manual DEF input ("— Custom DEF —"). */}
           {monsterCatalog.length > 0 && (
             <div className="space-y-1">
-              <label htmlFor="optimizer-monster-picker" className="text-[9px] uppercase tracking-wider text-[#666666]">
+              <label className="text-[9px] uppercase tracking-wider text-[#666666]">
                 Monster (preset)
               </label>
-              <select
-                id="optimizer-monster-picker"
-                value={
-                  monsterCatalog.find(
+              <SetCombobox
+                options={monsterCatalog.map((m) => ({
+                  id: m.id,
+                  label: `${m.name} (DEF ${m.def}${m.has_weak ? ', weak' : ''})`,
+                }))}
+                selected={(() => {
+                  const matched = monsterCatalog.find(
                     (m) =>
                       m.def === (config.target_def ?? 500) &&
                       m.has_weak === (config.treat_target_as_weak ?? false)
-                  )?.id ?? ''
-                }
-                onChange={(e) => {
-                  const m = monsterCatalog.find((m) => m.id === e.target.value)
+                  )
+                  return matched ? [matched.id] : []
+                })()}
+                onChange={(ids) => {
+                  if (ids.length === 0) {
+                    // Cleared — keep current target_def, just behaves as "Custom DEF".
+                    return
+                  }
+                  const m = monsterCatalog.find((mm) => mm.id === ids[0])
                   if (m) {
                     patch({
                       target_def: m.def,
@@ -523,17 +533,10 @@ export function OptimizerPanel({
                     })
                   }
                 }}
+                maxSelect={1}
+                placeholder="— Custom DEF — (search monster…)"
                 disabled={disabled}
-                className="w-full bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <option value="">— Custom DEF —</option>
-                {monsterCatalog.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name} (DEF {m.def}
-                    {m.has_weak ? ', weak' : ''})
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           )}
 
