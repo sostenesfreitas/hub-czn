@@ -91,7 +91,13 @@ class StateAccumulator:
             # next SegmentStartEvent or overwritten by next UsedCardEvent.
             pass
         elif isinstance(ev, UsedCardEvent):
-            self._segment_caster = ev.actor_id
+            # Sprint 2f6: monster cards get a synthetic "monster_<res_id>" actor_id.
+            # We don't track monster casters as path-4 candidates (no monster
+            # unit_id mapping), so CLEAR segment_caster instead.
+            if str(ev.actor_id).startswith("monster_"):
+                self._segment_caster = None
+            else:
+                self._segment_caster = ev.actor_id
         elif isinstance(ev, StackAddEvent):
             # Sprint 2f3: resolve card-instance-id → player char id via lookup
             raw = str(ev.target_id)

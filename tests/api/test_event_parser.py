@@ -94,3 +94,16 @@ def test_seq_is_monotonic_across_mixed_events():
     events = parse_dev_msg(log)
     assert len(events) == 5
     assert [e.seq for e in events] == [0, 1, 2, 3, 4]
+
+
+def test_parse_monster_use_card_emits_used_card_event():
+    """Sprint 2f6 Feature 2: monster_use_card lines are parsed as UsedCardEvent
+    with actor_id='monster_<res_id>' (synthetic prefix so the accumulator
+    can distinguish player vs monster casters).
+    """
+    dev_msg = "**battle log : monster_use_card 1003009_01_pt1_00\n"
+    events = parse_dev_msg(dev_msg)
+    used_card_events = [e for e in events if isinstance(e, UsedCardEvent)]
+    assert len(used_card_events) == 1
+    assert used_card_events[0].actor_id == "monster_1003009_01_pt1_00"
+    assert used_card_events[0].card_res_id == "1003009_01_pt1_00"

@@ -162,3 +162,20 @@ def test_segment_caster_overwritten_by_next_used_card():
         UsedCardEvent(seq=3, raw_line="", actor_id="42", card_res_id="Y"),
     ])
     assert acc.caster_at(3) == "42"
+
+
+def test_monster_use_card_clears_segment_caster():
+    """Sprint 2f6 Feature 2: when a monster uses a card (after a player's
+    segment ends), the player's segment_caster should be CLEARED — not
+    carried over to the monster's chain effects.
+    """
+    acc = StateAccumulator()
+    acc.feed([
+        SegmentStartEvent(seq=0, raw_line=""),
+        UsedCardEvent(seq=1, raw_line="", actor_id="103", card_res_id="X"),
+        SegmentEndEvent(seq=2, raw_line=""),
+        UsedCardEvent(seq=3, raw_line="", actor_id="monster_1003009_01_pt1_00",
+                      card_res_id="1003009_01_pt1_00"),
+    ])
+    # After the monster card, segment_caster should be CLEARED
+    assert acc.caster_at(3) is None

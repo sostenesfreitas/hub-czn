@@ -77,6 +77,7 @@ BattleEvent = Union[
 
 
 _RE_USED_CARD = re.compile(r"^(\d+)\s+used\s+card\s+(\S+)")
+_RE_MONSTER_USE_CARD = re.compile(r"^monster_use_card\s+(\S+)")
 _RE_STACK_ADD = re.compile(
     r"^(\d+)\((\w+)\)\s+added\s+(\S+)\s+to\s+(\d+)\((\w+)\)\s+value\s+(-?\d+)\s+sign\s+(\S+)"
 )
@@ -115,6 +116,18 @@ def _parse_body(seq: int, raw_line: str, body: str) -> BattleEvent | None:
         return UsedCardEvent(
             seq=seq, raw_line=raw_line,
             actor_id=m.group(1), card_res_id=m.group(2),
+        )
+    m = _RE_MONSTER_USE_CARD.match(body)
+    if m:
+        # Sprint 2f6: parse monster_use_card lines.  Synthetic actor_id
+        # 'monster_<res_id>' so the accumulator can distinguish a monster
+        # caster from a player one (and clear segment_caster rather than
+        # set it, since we don't have a monster unit_id mapping).
+        res_id = m.group(1)
+        return UsedCardEvent(
+            seq=seq, raw_line=raw_line,
+            actor_id=f"monster_{res_id}",
+            card_res_id=res_id,
         )
     m = _RE_STACK_ADD.match(body)
     if m:
