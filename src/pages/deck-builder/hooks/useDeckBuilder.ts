@@ -36,6 +36,7 @@ import {
   findCommonEpiphanyById,
   findDivineEpiphanyById,
   findDivineGodById,
+  getDeckCardIdentityKey,
 } from '../deck-builder.utils'
 
 const DECK_BUILDER_EXPORT_VERSION = 3
@@ -119,6 +120,62 @@ function findVariantById(
   }
 
   return variants.find(variant => variant.variant_id === variantId) ?? null
+}
+
+function getLastDeckCardGroupIndex(
+  cards: DeckCardInstance[],
+  item: DeckCardInstance,
+) {
+  const itemKey = getDeckCardIdentityKey(item)
+
+  for (let index = cards.length - 1; index >= 0; index -= 1) {
+    const card = cards[index]
+
+    if (card && getDeckCardIdentityKey(card) === itemKey) {
+      return index
+    }
+  }
+
+  return -1
+}
+
+function insertDeckCardNearGroup(
+  cards: DeckCardInstance[],
+  item: DeckCardInstance,
+) {
+  const lastSameGroupIndex = getLastDeckCardGroupIndex(cards, item)
+
+  if (lastSameGroupIndex < 0) {
+    return [...cards, item]
+  }
+
+  const nextCards = [...cards]
+  nextCards.splice(lastSameGroupIndex + 1, 0, item)
+
+  return nextCards
+}
+
+function getLastDeckCardGroupInstanceId(
+  cards: DeckCardInstance[],
+  instanceId: string,
+) {
+  const target = cards.find(card => card.instanceId === instanceId)
+
+  if (!target) {
+    return instanceId
+  }
+
+  const targetKey = getDeckCardIdentityKey(target)
+
+  for (let index = cards.length - 1; index >= 0; index -= 1) {
+    const card = cards[index]
+
+    if (card && getDeckCardIdentityKey(card) === targetKey) {
+      return card.instanceId
+    }
+  }
+
+  return instanceId
 }
 
 function normalizeOptionalString(value: unknown) {
@@ -482,7 +539,7 @@ export function useDeckBuilder() {
 
         return {
           ...slot,
-          cards: [...slot.cards, cloneCardInstance(item)],
+          cards: insertDeckCardNearGroup(slot.cards, cloneCardInstance(item)),
         }
       }),
     )
@@ -491,8 +548,13 @@ export function useDeckBuilder() {
   function removeCard(slotIndex: number, instanceId: string) {
     setSelectedSavedDeckId(null)
 
+    const removeInstanceId = getLastDeckCardGroupInstanceId(
+      squad[slotIndex]?.cards ?? [],
+      instanceId,
+    )
+
     setVariantModalTarget(current => {
-      if (current?.type === 'deck' && current.instanceId === instanceId) {
+      if (current?.type === 'deck' && current.instanceId === removeInstanceId) {
         return null
       }
 
@@ -505,7 +567,7 @@ export function useDeckBuilder() {
 
         return {
           ...slot,
-          cards: slot.cards.filter(card => card.instanceId !== instanceId),
+          cards: slot.cards.filter(card => card.instanceId !== removeInstanceId),
         }
       }),
     )
@@ -522,12 +584,11 @@ export function useDeckBuilder() {
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
 
+        const nextCard = createCardInstanceFromDeckBuilderCard(item, settings)
+
         return {
           ...slot,
-          cards: [
-            ...slot.cards,
-            createCardInstanceFromDeckBuilderCard(item, settings),
-          ],
+          cards: insertDeckCardNearGroup(slot.cards, nextCard),
         }
       }),
     )
