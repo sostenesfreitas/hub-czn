@@ -37,6 +37,9 @@ class OptimizeStartRequest(BaseModel):
     allow_wildcards: bool = False
     min_priority_substats: int = Field(default=0, ge=0, le=4)
     stat_constraints: dict[str, float] | None = None
+    # Sprint 2f4: AvgDMG configuration knobs
+    target_def: int = Field(default=500, ge=0)
+    treat_target_as_weak: bool = False
 
 
 def _format_results(results: list) -> list[dict]:
@@ -129,6 +132,9 @@ async def optimize_start(body: OptimizeStartRequest):
         "allow_wildcards": body.allow_wildcards,
         "min_priority_substats": body.min_priority_substats,
         "stat_constraints": body.stat_constraints,
+        # Sprint 2f4: AvgDMG configuration knobs
+        "target_def": body.target_def,
+        "treat_target_as_weak": body.treat_target_as_weak,
     }
 
     loop = asyncio.get_running_loop()
