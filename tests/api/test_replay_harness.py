@@ -734,3 +734,64 @@ def test_resolve_caster_path_6_handles_eq_prefix():
     assert path == 6
     assert unit is nia
     assert inferred is False
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g2 — T3: path 3 consults monster_history for cross-snapshot resolution
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_3_uses_monster_history():
+    """Sprint 2g2 T3: when monster prefix doesn't match state.enemies, fall
+    back to state.monster_history (monsters from previous snapshots)."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    # State has Diana (player) and a DIFFERENT monster (3000489) visible.
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    other_monster = MonsterState(id="m_visible", def_=200, hp=2000, hp_current=2000,
+                                   res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[other_monster],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # But monster_history has the firing monster from an earlier snapshot
+    historical = MonsterState(id="m_hist", def_=100, hp=1000, hp_current=1000,
+                                res_id="1001012_01")
+    state.monster_history = {"1001012_01": historical}
+
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="1001012_01_pt1_00_01"
+    )
+    assert path == 3
+    assert unit is historical
+    assert inferred is False
+
+
+def test_resolve_caster_path_3_prefers_state_enemies_over_history():
+    """When a monster is in state.enemies, that takes precedence over history."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    monster_now = MonsterState(id="m_now", def_=200, hp=2000, hp_current=2000,
+                                 res_id="1001012_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[monster_now],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # History has a DIFFERENT instance with same res_id
+    historical = MonsterState(id="m_hist", def_=999, hp=999, hp_current=999,
+                                res_id="1001012_01")
+    state.monster_history = {"1001012_01": historical}
+
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="1001012_01_pt1_00_01"
+    )
+    # state.enemies match wins
+    assert unit is monster_now
+    assert path == 3

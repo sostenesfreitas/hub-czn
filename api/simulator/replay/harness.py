@@ -292,6 +292,13 @@ class ReplayHarness:
                         # monster res_id is often like "1006005_01" — match starting prefix
                         if unit.res_id.startswith(mon_prefix):
                             return unit, False, 3
+                    # Sprint 2g2: fall back to monster_history (monsters seen in
+                    # earlier/later snapshots but not in the current frame).
+                    history = getattr(state, "monster_history", None)
+                    if history:
+                        for hist_res_id, hist_unit in history.items():
+                            if hist_res_id.startswith(mon_prefix):
+                                return hist_unit, False, 3
         # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
         if segment_caster is not None:
             for unit in state.player_team:
