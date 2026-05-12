@@ -446,7 +446,14 @@ class GearOptimizer:
             weak_mult = float(base_weak_ego_dmg_rate or 100.0) / 100.0
         else:
             weak_mult = 1.0
-        target_count = getattr(self, "_config_target_count", None) or 1
+        target_count_raw = getattr(self, "_config_target_count", None)
+        if target_count_raw is None or target_count_raw <= 0:
+            # Sprint 2h9: 0 (or None) is the "auto" sentinel — detect from
+            # char's best damage card's target_class.
+            from game_data.char_eff import best_damage_card_target_count
+            target_count = best_damage_card_target_count(char_name) if char_name else 1
+        else:
+            target_count = target_count_raw
         avg_dmg_base = expected_damage(
             atk=total_atk,
             cri=total_cr,

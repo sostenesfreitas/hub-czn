@@ -513,6 +513,56 @@ def test_calculate_build_stats_uses_dot_ticks_from_config():
     assert actual_delta == pytest.approx(expected_delta, abs=1.0)
 
 
+def test_calculate_build_stats_target_count_0_means_auto():
+    """Sprint 2h9: _config_target_count=0 triggers auto-detection via
+    best_damage_card_target_count. Result should be >= 1."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.game_data.char_eff import best_damage_card_target_count
+
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    opt._config_target_count = 0  # AUTO sentinel
+    opt._config_dot_ticks = 3
+    stats = opt.calculate_build_stats([], char_name="Diana")
+    if stats.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    # The detected count should be applied to AvgDMG
+    auto_count = best_damage_card_target_count("Diana")
+    # With auto count, AvgDMG should equal: build_stats result given target_count=auto_count
+    opt._config_target_count = auto_count
+    stats_manual = opt.calculate_build_stats([], char_name="Diana")
+    assert stats["Avg DMG"] == pytest.approx(stats_manual["Avg DMG"], abs=0.1)
+
+
+def test_calculate_build_stats_target_count_0_auto_uses_aoe_for_aoe_char():
+    """Sprint 2h9: For an AoE char (e.g. Haru, target_class=all_enemies),
+    auto mode must produce ~3x the AvgDMG of manual target_count=1."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.game_data.char_eff import best_damage_card_target_count
+
+    auto_count = best_damage_card_target_count("Haru")
+    if auto_count < 2:
+        pytest.skip(f"Haru auto_count={auto_count}, not AoE per data")
+
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    opt._config_dot_ticks = 3
+    opt._config_target_count = 1
+    stats_single = opt.calculate_build_stats([], char_name="Haru")
+    if stats_single.get("ATK", 0) <= 0:
+        pytest.skip("Haru base stats not loaded")
+    opt._config_target_count = 0  # AUTO
+    stats_auto = opt.calculate_build_stats([], char_name="Haru")
+    # Auto detected count of auto_count should mean AvgDMG = single × auto_count
+    assert stats_auto["Avg DMG"] == pytest.approx(
+        auto_count * stats_single["Avg DMG"], abs=1.0
+    )
+
+
 def test_optimize_route_accepts_dot_ticks_field(client):
     """Sprint 2h6: POST /api/optimize/start accepts dot_ticks."""
     payload = {
