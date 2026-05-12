@@ -48,15 +48,21 @@ def expected_damage(
     eff_pct: float = 100.0,
     dummy_def: int = DUMMY_DEF,
     weak_mult: float = 1.0,
+    extra_dmg_pct: float = 0.0,
 ) -> float:
     """Expected per-hit damage against a default target.
 
-    Formula: atk * (eff_pct / 100) * (1 - DR) * cf_ev * weak_mult
+    Formula: atk * (eff_pct / 100) * (1 - DR) * cf_ev * weak_mult * (1 + extra_dmg_pct/100)
 
-    Sprint 2f4: added weak_mult parameter. Default 1.0 preserves pre-2f4
-    behavior. Optimizer passes caster.weak_ego_dmg_rate / 100 when user
-    toggles 'treat target as weak'.
+    Sprint 2h2: added extra_dmg_pct parameter. Default 0.0 preserves
+    pre-2h2 behavior. Optimizer passes total_stats['Extra DMG%'] from
+    gear/sets/partner sources.
+
+    Note: DoT% is intentionally NOT included — DoT is a damage-over-time
+    mechanic that needs N-ticks assumption per char. Deferred to a future
+    sprint.
     """
     cf_ev = expected_crit_factor(cri, cri_dmg_rate)
     dr = default_damage_reduction(dummy_def)
-    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult
+    extra_mult = 1.0 + extra_dmg_pct / 100.0
+    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult * extra_mult

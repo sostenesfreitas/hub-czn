@@ -81,3 +81,32 @@ def test_expected_damage_weak_mult_scales_linearly():
         base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
         scaled = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, weak_mult=wm)
         assert scaled == pytest.approx(base * wm)
+
+
+def test_expected_damage_extra_dmg_pct_default_is_no_op():
+    """Sprint 2h2: extra_dmg_pct parameter defaults to 0.0 — pre-2h2 behavior."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    with_zero = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, extra_dmg_pct=0.0)
+    assert base == with_zero
+
+
+def test_expected_damage_extra_dmg_pct_50_increases_result_by_1_5x():
+    """Sprint 2h2: extra_dmg_pct=50 multiplies result by 1.5."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    boosted = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, extra_dmg_pct=50.0)
+    assert boosted == pytest.approx(1.5 * base)
+
+
+def test_expected_damage_extra_dmg_pct_100_doubles_result():
+    """extra_dmg_pct=100 doubles."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    doubled = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, extra_dmg_pct=100.0)
+    assert doubled == pytest.approx(2.0 * base)
+
+
+def test_expected_damage_extra_dmg_composes_multiplicatively_with_weak():
+    """When both extra_dmg_pct and weak_mult set, both apply multiplicatively."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    both = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0,
+                           extra_dmg_pct=50.0, weak_mult=2.0)
+    assert both == pytest.approx(base * 1.5 * 2.0)
