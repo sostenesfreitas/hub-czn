@@ -232,7 +232,9 @@ Simulate how much damage your characters deal:
 7. Toggle **Apply Epiphany** to factor in spark bonuses
 8. Click **Simulate** — results show Normal / Crit / Avg damage per card and totals
 
-> The simulator uses the formula: `ATK × coefficient × crit_factor × morale_mult × buff_mult × (300 / (300 + DEF))`
+> The simulator uses the empirically-fit Track B formula and matches verified game hits to within ±5%. Three known oracle hits remain xfailed (LBK + 2× c_30093) due to capture-format limits where the relevant `dva_css` term values are consumed before the WebSocket snapshot lands. See `docs/research/combat_mechanics.md` for the full derivation.
+
+The **Optimizer's AvgDMG column** uses the same empirical fit with per-character `eff_pct` resolved through `EffInstanceIndex`, and exposes `target_def` and `treat_target_as_weak` toggles so rankings can match the encounter you're tuning for.
 
 ---
 
