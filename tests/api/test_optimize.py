@@ -478,3 +478,50 @@ def test_calculate_build_stats_weak_ego_dmg_rate_is_populated_from_char_data():
         f"Likely base_weak_ego_dmg_rate is defaulting to 100 instead of being sourced from char data."
     )
 
+
+def test_calculate_build_stats_uses_dot_ticks_from_config():
+    """Sprint 2h6: _config_dot_ticks (default 3) flows into expected_dot_damage."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.models.memory_fragment import MemoryFragment
+    from api.models.stat import Stat
+
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    opt._config_target_count = 1
+    dot_piece = MemoryFragment(
+        id=99999, slot_name="slot6", slot_num=6, rarity="Legendary", rarity_num=4,
+        set_name="test", set_id=0, level=0, locked=False,
+        equipped_to=None, equipped_char_id=0,
+        main_stat=Stat(name="DoT%", raw_name="S_DOT_ATK_DMG_RATE_INC_ADD",
+                       value=80.0, is_percentage=True, is_main=True),
+        substats=[],
+    )
+
+    opt._config_dot_ticks = 3
+    stats_3 = opt.calculate_build_stats([dot_piece], char_name="Diana")
+    if stats_3.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    opt._config_dot_ticks = 6
+    stats_6 = opt.calculate_build_stats([dot_piece], char_name="Diana")
+    # Doubling ticks doubles the DoT contribution → AvgDMG increases
+    assert stats_6["Avg DMG"] > stats_3["Avg DMG"]
+    # The delta should match: extra DoT = ATK × 0.80 × 3 (3 more ticks) × 1 × 1
+    expected_delta = stats_6["ATK"] * 0.80 * 3
+    actual_delta = stats_6["Avg DMG"] - stats_3["Avg DMG"]
+    assert actual_delta == pytest.approx(expected_delta, abs=1.0)
+
+
+def test_optimize_route_accepts_dot_ticks_field(client):
+    """Sprint 2h6: POST /api/optimize/start accepts dot_ticks."""
+    payload = {
+        "char_name": "Diana", "four_piece_sets": [], "two_piece_sets": [],
+        "main_stat_4": None, "main_stat_5": None, "main_stat_6": None,
+        "top_percent": 100, "include_equipped": True, "excluded_heroes": [],
+        "max_results": 1, "target_def": 500, "treat_target_as_weak": False,
+        "target_count": 1, "dot_ticks": 5,
+    }
+    resp = client.post("/api/optimize/start", json=payload)
+    assert resp.status_code != 500, f"500 error: {resp.text[:300]}"
+

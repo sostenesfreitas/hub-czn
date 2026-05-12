@@ -50,6 +50,8 @@ class GearOptimizer:
         self._config_treat_target_as_weak: bool = False
         # Sprint 2h3: AoE / multi-target modeling
         self._config_target_count: int = 1
+        # Sprint 2h6: DoT ticks knob
+        self._config_dot_ticks: int = 3
 
     def load_data(self, filepath: str):
         """
@@ -459,6 +461,7 @@ class GearOptimizer:
         avg_dmg_dot = expected_dot_damage(
             atk=total_atk,
             dot_pct=dot_dmg,
+            ticks=getattr(self, "_config_dot_ticks", None) or 3,  # Sprint 2h6
             target_count=target_count,
             extra_dmg_pct=extra_dmg,
         )
@@ -504,6 +507,8 @@ class GearOptimizer:
         self._config_treat_target_as_weak = bool(settings.get("treat_target_as_weak", False))
         # Sprint 2h3: thread target_count from settings
         self._config_target_count = int(settings.get("target_count", 1) or 1)
+        # Sprint 2h6: thread dot_ticks from settings
+        self._config_dot_ticks = int(settings.get("dot_ticks", 3) or 3)
 
         stat_weights = settings.get("stat_weights")
 
