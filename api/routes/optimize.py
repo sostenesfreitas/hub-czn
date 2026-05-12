@@ -44,6 +44,8 @@ class OptimizeStartRequest(BaseModel):
     treat_target_as_weak: bool = False
     # Sprint 2h3: AoE / multi-target modeling
     target_count: int = Field(default=1, ge=1, le=5)
+    # Sprint 2h6: DoT ticks knob
+    dot_ticks: int = Field(default=3, ge=1, le=10)
 
 
 def _format_results(results: list) -> list[dict]:
@@ -157,6 +159,8 @@ async def optimize_start(body: OptimizeStartRequest):
         "treat_target_as_weak": body.treat_target_as_weak,
         # Sprint 2h3: AoE / multi-target modeling
         "target_count": body.target_count,
+        # Sprint 2h6: DoT ticks knob
+        "dot_ticks": body.dot_ticks,
     }
 
     loop = asyncio.get_running_loop()
