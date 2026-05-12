@@ -519,7 +519,7 @@ def test_resolve_caster_uses_segment_caster_when_paths_1_to_3_fail():
     state = _make_state_for_resolve()
     # caster_id=None (no direct/lookup), skill_eff_id is a chain effect
     # whose prefix doesn't match any char res_id => paths 1-3 all miss.
-    unit, inferred = ReplayHarness._resolve_caster(
+    unit, inferred, _ = ReplayHarness._resolve_caster(
         None, state, skill_eff_id="cs01_0473_01", segment_caster="2",
     )
     assert unit is not None
@@ -534,7 +534,7 @@ def test_resolve_caster_prefix_match_preferred_over_segment_caster():
     state = _make_state_for_resolve()
     # state.chars: id=1 res_id=1057, id=2 res_id=1062
     # skill_eff_id encodes char 1057 (player_team[0]), segment_caster says "2"
-    unit, inferred = ReplayHarness._resolve_caster(
+    unit, inferred, _ = ReplayHarness._resolve_caster(
         None, state, skill_eff_id="c_1057_srt1_01", segment_caster="2",
     )
     assert str(unit.id) == "1"
@@ -546,7 +546,7 @@ def test_resolve_caster_falls_back_when_segment_caster_does_not_match():
     player_team or enemies, path 4 falls through to path 5 (player_team[0]
     with inferred=True). This guards against stale segment_caster values."""
     state = _make_state_for_resolve()
-    unit, inferred = ReplayHarness._resolve_caster(
+    unit, inferred, _ = ReplayHarness._resolve_caster(
         None, state, skill_eff_id="cs01_0473_01", segment_caster="999",
     )
     assert str(unit.id) == "1"  # player_team[0]
@@ -557,8 +557,46 @@ def test_resolve_caster_segment_caster_none_falls_through():
     """When segment_caster is None (no active UsedCardEvent), path 4
     is a no-op and we fall through to player_team[0] fallback."""
     state = _make_state_for_resolve()
-    unit, inferred = ReplayHarness._resolve_caster(
+    unit, inferred, _ = ReplayHarness._resolve_caster(
         None, state, skill_eff_id="cs01_0473_01", segment_caster=None,
     )
     assert str(unit.id) == "1"
+    assert inferred is True
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g1 — resolution_path instrumentation
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_returns_path_num():
+    """Sprint 2g1: _resolve_caster returns (unit, inferred, path_num)."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    nia = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+
+    # Path 1: direct match
+    result = ReplayHarness._resolve_caster("1", state)
+    assert len(result) == 3
+    assert result[2] == 1
+
+    # Path 3: prefix match via skill_eff_id
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "c_1003_srt1_01", state, skill_eff_id="c_1003_srt1_01"
+    )
+    assert path == 3
+
+    # Path 5: fallback
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="unknown"
+    )
+    assert path == 5
     assert inferred is True

@@ -43,6 +43,7 @@ class EventReport:
     inferred_caster: bool = False
     error: str = ""
     dva_stacks_observed: dict[str, int] = field(default_factory=dict)
+    resolution_path: int = 5  # Sprint 2g1: which _resolve_caster branch succeeded (1-5)
 
 
 @dataclass
@@ -199,13 +200,14 @@ class ReplayHarness:
             row.error = str(e)
             return row
         row.eff_type = inst.eff_type
-        caster, inferred = self._resolve_caster(
+        caster, inferred, path_num = self._resolve_caster(
             fire.caster_id,
             state,
             skill_eff_id=fire.skill_eff_id,
             segment_caster=segment_caster,
         )
         row.inferred_caster = inferred
+        row.resolution_path = path_num
         if caster is None:
             row.status = "no_target"
             row.error = "no caster"
@@ -250,25 +252,26 @@ class ReplayHarness:
            StateAccumulator.caster_at). Authoritative — not inferred.
         5. Fallback: player_team[0] with inferred=True.
 
-        Returns (unit, inferred) where inferred=True if fallback was used.
+        Returns (unit, inferred, path_num) where inferred=True if fallback was
+        used and path_num (1-5) records which branch succeeded (Sprint 2g1).
         """
         # 1. Direct match
         if caster_id is not None:
             for unit in state.player_team:
                 if str(unit.id) == str(caster_id):
-                    return unit, False
+                    return unit, False, 1
             for unit in state.enemies:
                 if str(unit.id) == str(caster_id):
-                    return unit, False
+                    return unit, False, 1
             # 2. card_owner_lookup
             owner_id = state.card_owner_lookup.get(str(caster_id))
             if owner_id is not None:
                 for unit in state.player_team:
                     if str(unit.id) == owner_id:
-                        return unit, False
+                        return unit, False, 2
                 for unit in state.enemies:
                     if str(unit.id) == owner_id:
-                        return unit, False
+                        return unit, False, 2
         # 3. skill_eff_id prefix
         if skill_eff_id:
             char_match = _CHAR_PREFIX_RE.match(skill_eff_id)
@@ -276,7 +279,7 @@ class ReplayHarness:
                 char_res_id = char_match.group(1)
                 for unit in state.player_team:
                     if unit.res_id == char_res_id:
-                        return unit, False
+                        return unit, False, 3
             else:
                 mon_match = _MONSTER_PREFIX_RE.match(skill_eff_id)
                 if mon_match:
@@ -284,19 +287,19 @@ class ReplayHarness:
                     for unit in state.enemies:
                         # monster res_id is often like "1006005_01" — match starting prefix
                         if unit.res_id.startswith(mon_prefix):
-                            return unit, False
+                            return unit, False, 3
         # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
         if segment_caster is not None:
             for unit in state.player_team:
                 if str(unit.id) == str(segment_caster):
-                    return unit, False
+                    return unit, False, 4
             for unit in state.enemies:
                 if str(unit.id) == str(segment_caster):
-                    return unit, False
+                    return unit, False, 4
         # 5. Fallback
         if state.player_team:
-            return state.player_team[0], True
-        return None, True
+            return state.player_team[0], True, 5
+        return None, True, 5
 
     @staticmethod
     def _extract_observed_damage(event, target_id) -> "int | None":
