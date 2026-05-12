@@ -449,6 +449,7 @@ class GearOptimizer:
             eff_pct=eff_pct,
             dummy_def=target_def,
             weak_mult=weak_mult,
+            extra_dmg_pct=extra_dmg,  # Sprint 2h2: include Extra DMG%
         )
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)

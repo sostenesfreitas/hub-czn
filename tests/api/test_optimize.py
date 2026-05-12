@@ -311,6 +311,67 @@ def test_monster_catalog_endpoint_entries_have_plausible_def(client):
         )
 
 
+def test_calculate_build_stats_includes_extra_dmg_in_avgdmg():
+    """Sprint 2h2: total_stats['Extra DMG%'] flows into AvgDMG via
+    expected_damage's extra_dmg_pct parameter."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.optimizer.expected_damage import expected_damage
+    from api.game_data.char_eff import best_damage_eff_for
+    from api.models.memory_fragment import MemoryFragment
+    from api.models.stat import Stat
+
+    opt = GearOptimizer()
+    # Baseline with no Extra DMG (synthetic gear-less calc)
+    stats_base = opt.calculate_build_stats([], char_name="Diana")
+    if stats_base.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+
+    # Confirm the formula consistency: AvgDMG must equal expected_damage
+    # with extra_dmg_pct=total_stats['Extra DMG%'].
+    eff = best_damage_eff_for("Diana")
+    want = expected_damage(
+        atk=stats_base["ATK"],
+        cri=stats_base["CRate"],
+        cri_dmg_rate=stats_base["CDmg"],
+        eff_pct=eff,
+        extra_dmg_pct=stats_base.get("Extra DMG%", 0.0),
+    )
+    assert stats_base["Avg DMG"] == pytest.approx(want, abs=1e-3)
+
+    # Now build a synthetic gear piece that grants Extra DMG% = 50%.
+    # AvgDMG with that piece should be ~1.5x the AvgDMG of an equivalent
+    # piece that grants 0 Extra DMG% (with everything else equal).
+    piece_extra = MemoryFragment(
+        id=1, slot_name="slot4", slot_num=4, rarity="Epic", rarity_num=3,
+        set_name="test", set_id=0, level=0, locked=False,
+        equipped_to=None, equipped_char_id=0,
+        main_stat=Stat(name="Extra DMG%", raw_name="S_DMG_INCR_PER",
+                       value=50.0, is_percentage=True, is_main=True),
+        substats=[],
+    )
+    piece_zero = MemoryFragment(
+        id=2, slot_name="slot4", slot_num=4, rarity="Epic", rarity_num=3,
+        set_name="test", set_id=0, level=0, locked=False,
+        equipped_to=None, equipped_char_id=0,
+        main_stat=Stat(name="Extra DMG%", raw_name="S_DMG_INCR_PER",
+                       value=0.0, is_percentage=True, is_main=True),
+        substats=[],
+    )
+    stats_extra = opt.calculate_build_stats([piece_extra], char_name="Diana")
+    stats_zero = opt.calculate_build_stats([piece_zero], char_name="Diana")
+    # Total ATK/CR/CD identical between the two builds; only Extra DMG% differs.
+    assert stats_extra["ATK"] == pytest.approx(stats_zero["ATK"])
+    assert stats_extra["Extra DMG%"] == pytest.approx(50.0)
+    assert stats_zero["Extra DMG%"] == pytest.approx(0.0)
+    # AvgDMG with 50 Extra DMG% must be 1.5x AvgDMG with 0 Extra DMG%.
+    ratio = stats_extra["Avg DMG"] / stats_zero["Avg DMG"]
+    assert ratio == pytest.approx(1.5, abs=1e-6), (
+        f"Expected AvgDMG ratio 1.5 (50% Extra DMG), got {ratio:.6f}. "
+        f"Likely optimizer is not passing extra_dmg_pct to expected_damage."
+    )
+
+
 def test_calculate_build_stats_weak_ego_dmg_rate_is_populated_from_char_data():
     """Sprint 2f5 Feature 3: base_weak_ego_dmg_rate must be sourced from real
     char data (125 for every live combatant), not silently defaulted to 100.
