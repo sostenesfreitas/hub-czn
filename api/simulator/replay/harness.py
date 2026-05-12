@@ -19,6 +19,7 @@ from api.simulator.replay.event_parser import (
 )
 from api.simulator.replay.reconstructor import StateReconstructor
 from api.simulator.replay.state_accumulator import StateAccumulator
+from api.simulator.state import MonsterState
 
 _CHAR_PREFIX_RE = re.compile(r"^c_(\d+)_")
 _MONSTER_PREFIX_RE = re.compile(r"^(\d{5,})_")  # e.g., 1006005_*
@@ -152,6 +153,21 @@ class ReplayHarness:
                     self._resolve_pending(pending_dispatches, event.snapshot, summary)
                     pending_dispatches = []
                     state = self._reconstructor.reconstruct(event.snapshot)
+                # Sprint 2g3: enrich monster_history with synthetic monsters
+                # seen via monster_use_card events. These monsters fired
+                # skill_eff events but may never have appeared in any
+                # snapshot battle_wt frame, so path 3's history fallback
+                # (added in 2g2) needs explicit entries to resolve them.
+                if state.monster_history is None:
+                    state.monster_history = {}
+                for synth_prefix in accumulator.synthetic_monsters_seen():
+                    synth_key = f"{synth_prefix}_synth"
+                    if synth_key not in state.monster_history:
+                        state.monster_history[synth_key] = MonsterState(
+                            id=f"synth_{synth_prefix}",
+                            def_=0, hp=1, hp_current=1,
+                            res_id=synth_key,
+                        )
         return summary, reports
 
     @staticmethod

@@ -795,3 +795,48 @@ def test_resolve_caster_path_3_prefers_state_enemies_over_history():
     # state.enemies match wins
     assert unit is monster_now
     assert path == 3
+
+
+def test_replay_enriches_monster_history_with_synthetic_entries():
+    """Sprint 2g3: after replay, monsters mentioned in monster_use_card
+    events are in monster_history even if they never appear in a snapshot.
+    Verifies that 1003009_* skill_eff events — fired by a monster that may
+    only appear via monster_use_card and not always in a snapshot frame —
+    now resolve via path 3 (monster_history with synthetic entries)."""
+    import json
+    from pathlib import Path
+    from api.game_data.eff_instances import EffInstanceIndex
+    from api.simulator.runtime import Runtime
+    from api.simulator.replay.capture_reader import CaptureReader
+    from api.simulator.replay.reconstructor import StateReconstructor
+    from api.simulator.replay.harness import ReplayHarness
+
+    REPO = Path(__file__).resolve().parents[2]
+    CAP = Path(r"C:\Users\soste\AppData\Local\hub-czn\snapshots\websocket_debug_20260509_111039.jsonl")
+    if not CAP.exists():
+        pytest.skip("capture not available")
+
+    catalog = json.loads((REPO / "api" / "data" / "eff_type_catalog.json").read_text(encoding="utf-8"))
+    instances = EffInstanceIndex(Path(r"C:\Users\soste\Downloads\output\db"))
+    harness = ReplayHarness(Runtime(catalog=catalog, instances=instances), StateReconstructor())
+    summary, reports = harness.replay(CaptureReader(CAP))
+    # 3000332 is a monster res_id known to fire monster_use_card events
+    # but the monster never appears in any battle_wt snapshot frame.
+    # Pre-2g3: all 3000332 skill_eff events fell to path 5 (fallback,
+    # inferred=True). Post-2g3: synthetic monster_history entry catches
+    # them on path 3.
+    monster_reports = [r for r in reports
+                       if r.skill_eff_id.startswith("3000332_")
+                       and r.status == "dispatched"]
+    assert len(monster_reports) > 0, "no 3000332 events in this capture"
+    path3 = [r for r in monster_reports if r.resolution_path == 3]
+    path5 = [r for r in monster_reports if r.resolution_path == 5]
+    # Pre-2g3: path5 dominated; Post-2g3: path3 dominates.
+    assert len(path3) > 0, (
+        f"expected path-3 resolutions for 3000332 post-2g3, got 0; paths="
+        f"{[r.resolution_path for r in monster_reports]}"
+    )
+    assert len(path3) > len(path5), (
+        f"expected path 3 > path 5 for 3000332, got path3={len(path3)} "
+        f"path5={len(path5)}"
+    )
