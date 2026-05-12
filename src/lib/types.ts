@@ -207,6 +207,7 @@ export interface OptimizerConfig {
   stat_constraints: Record<string, number> | null
   target_def?: number  // Sprint 2f4: default 500 (handled by backend)
   treat_target_as_weak?: boolean  // Sprint 2f4: default false (handled by backend)
+  target_count?: number  // Sprint 2h3: default 1 (handled by backend)
 }
 
 export interface OptimizeProgress {
