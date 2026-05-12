@@ -74,14 +74,17 @@ def test_caster_at_picks_up_used_card():
     assert acc.caster_at(1) == "103"
 
 
-def test_segment_end_clears_caster():
+def test_segment_end_does_not_clear_caster_2f6_change():
+    """Sprint 2f6 changed SegmentEnd to NOT clear segment_caster.
+    Previously was test_segment_end_clears_caster (Sprint 2d). This test
+    documents the change: caster persists past SegmentEnd."""
     acc = StateAccumulator()
     acc.feed([
         SegmentStartEvent(seq=0, raw_line=""),
         UsedCardEvent(seq=1, raw_line="", actor_id="103", card_res_id="X"),
         SegmentEndEvent(seq=2, raw_line=""),
     ])
-    assert acc.caster_at(2) is None
+    assert acc.caster_at(2) == "103"
 
 
 def test_initial_lookup_seed_preserved():
@@ -120,3 +123,42 @@ def test_stack_add_falls_back_to_raw_when_target_not_in_lookup():
     assert acc.stacks_at(1, "39") == {"cs00_0002": 1}
     assert acc.stacks_at(1, "21") == {}
     assert acc.stacks_at(1, "38") == {}
+
+
+def test_segment_caster_persists_across_segment_end():
+    """Sprint 2f6: SegmentEnd no longer clears segment_caster.
+    Chain effects firing AFTER SegmentEnd should still attribute to the
+    actor of the most recent UsedCardEvent.
+    """
+    acc = StateAccumulator()
+    acc.feed([
+        SegmentStartEvent(seq=0, raw_line=""),
+        UsedCardEvent(seq=1, raw_line="", actor_id="103", card_res_id="X"),
+        SegmentEndEvent(seq=2, raw_line=""),
+    ])
+    # caster_at(2) inspects state AFTER SegmentEnd; persistence preserves "103"
+    assert acc.caster_at(2) == "103"
+
+
+def test_segment_caster_clears_on_next_segment_start():
+    """When a new segment starts, the previous segment_caster clears."""
+    acc = StateAccumulator()
+    acc.feed([
+        SegmentStartEvent(seq=0, raw_line=""),
+        UsedCardEvent(seq=1, raw_line="", actor_id="103", card_res_id="X"),
+        SegmentEndEvent(seq=2, raw_line=""),
+        SegmentStartEvent(seq=3, raw_line=""),
+    ])
+    assert acc.caster_at(3) is None
+
+
+def test_segment_caster_overwritten_by_next_used_card():
+    """A new UsedCardEvent overwrites the persisted segment_caster."""
+    acc = StateAccumulator()
+    acc.feed([
+        SegmentStartEvent(seq=0, raw_line=""),
+        UsedCardEvent(seq=1, raw_line="", actor_id="103", card_res_id="X"),
+        SegmentEndEvent(seq=2, raw_line=""),
+        UsedCardEvent(seq=3, raw_line="", actor_id="42", card_res_id="Y"),
+    ])
+    assert acc.caster_at(3) == "42"

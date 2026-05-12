@@ -85,7 +85,11 @@ class StateAccumulator:
         if isinstance(ev, SegmentStartEvent):
             self._segment_caster = None
         elif isinstance(ev, SegmentEndEvent):
-            self._segment_caster = None
+            # Sprint 2f6: don't clear segment_caster on SegmentEnd. Chain
+            # effects fired AFTER the segment ends should still attribute
+            # to the actor of the most recent UsedCardEvent.  Cleared by
+            # next SegmentStartEvent or overwritten by next UsedCardEvent.
+            pass
         elif isinstance(ev, UsedCardEvent):
             self._segment_caster = ev.actor_id
         elif isinstance(ev, StackAddEvent):
