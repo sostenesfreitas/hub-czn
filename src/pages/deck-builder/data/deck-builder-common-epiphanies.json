@@ -1,0 +1,6203 @@
+[
+  {
+    "id": "com_0001",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "08417ccb26ba",
+    "raw_text": "Morale 1\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0002",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1f6c564cbf6e",
+    "raw_text": "Morale 1\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0003",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "61fab4143d85",
+    "raw_text": "Morale 2\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0004",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "182d05d7199d",
+    "raw_text": "Morale 2\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0005",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "4ab97bdaa09b",
+    "raw_text": "Morale 2\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0006",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "4b265e0393a9",
+    "raw_text": "Morale 1\nCOMMON\nUpgrade\nStriker\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0007",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "4e37e6c59461",
+    "raw_text": "Morale 1\nCOMMON\nUpgrade\nStriker\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0008",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "cfa35df47bc5",
+    "raw_text": "Morale 2\nCOMMON\nUpgrade\nStriker\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0009",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e07dab9c8e12",
+    "raw_text": "Morale 2\nCOMMON\nUpgrade\nStriker\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0010",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Morale 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c7042f4c6661",
+    "raw_text": "Morale 2\nCOMMON\nUpgrade\nStriker\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0011",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 1 Morale",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "6b91d07c462d",
+    "raw_text": "For 1 turn, gain 1 Morale\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0012",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 2 Morale",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "f76628721789",
+    "raw_text": "For 1 turn, gain 2 Morale\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0013",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Morale",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "b7bef5b454bf",
+    "raw_text": "For 1 turn, gain 3 Morale\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0014",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 4 Morale",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "98b8ee839fde",
+    "raw_text": "For 1 turn, gain 4 Morale\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0015",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Morale",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "40a41fc72b52",
+    "raw_text": "For 1 turn, gain 3 Morale\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0016",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 1 Resolve",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "737bdbcb5b43",
+    "raw_text": "For 1 turn, gain 1 Resolve\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0017",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 2 Resolve",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "6a4492f0331d",
+    "raw_text": "For 1 turn, gain 2 Resolve\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0018",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Resolve",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "a2f800782cc4",
+    "raw_text": "For 1 turn, gain 3 Resolve\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0019",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 4 Resolve",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e98950b9ba7a",
+    "raw_text": "For 1 turn, gain 4 Resolve\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0020",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Resolve",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c73d1cfb7449",
+    "raw_text": "For 1 turn, gain 3 Resolve\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0021",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 1 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "cfb896e7fbc1",
+    "raw_text": "For 1 turn, gain 1 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0022",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 2 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "fcab48c81b6c",
+    "raw_text": "For 1 turn, gain 2 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0023",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "6adb582fe7f2",
+    "raw_text": "For 1 turn, gain 3 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0024",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 4 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "54793c58efb4",
+    "raw_text": "For 1 turn, gain 4 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0025",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "78363f8c0b57",
+    "raw_text": "For 1 turn, gain 3 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0026",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "e3d15c9ae85b",
+    "raw_text": "Draw 1\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0027",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "d791223c64c6",
+    "raw_text": "Draw 2\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0028",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "c7f236aa66f3",
+    "raw_text": "Draw 2\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0029",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "c267e9047d3a",
+    "raw_text": "Draw 3\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0030",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "020c8a7be395",
+    "raw_text": "Draw 2\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0031",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1ac9ffa14ac3",
+    "raw_text": "Draw 1\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0032",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "e7774b73c485",
+    "raw_text": "Draw 1\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0033",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e2723249a113",
+    "raw_text": "Draw 2\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0034",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "266cc2355741",
+    "raw_text": "Draw 1\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0035",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "fa527f584175",
+    "raw_text": "Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0036",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "82136ac8e71d",
+    "raw_text": "Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n1"
+  },
+  {
+    "id": "com_0037",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "6ef30adf5843",
+    "raw_text": "Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n2"
+  },
+  {
+    "id": "com_0038",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "24040859b00b",
+    "raw_text": "Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n3"
+  },
+  {
+    "id": "com_0039",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a9b6f30dfbdf",
+    "raw_text": "Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n4+"
+  },
+  {
+    "id": "com_0040",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "2327cfb711e5",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0041",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "4fc9072551eb",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n1"
+  },
+  {
+    "id": "com_0042",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "b32c72457257",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n2"
+  },
+  {
+    "id": "com_0043",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "9abc774c2238",
+    "raw_text": "At turn start, Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n3"
+  },
+  {
+    "id": "com_0044",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "bffdbf440508",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nAttack\nSkill\nVanguard\n4+"
+  },
+  {
+    "id": "com_0045",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1cdbaddcb5f5",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nUpgrade\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0046",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "9ce19a0e7f0a",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nUpgrade\nVanguard\n1"
+  },
+  {
+    "id": "com_0047",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "e5444a00b42a",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nUpgrade\nVanguard\n2"
+  },
+  {
+    "id": "com_0048",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "34b83bc0ec23",
+    "raw_text": "At turn start, Counterattack 2\nCOMMON\nUpgrade\nVanguard\n3"
+  },
+  {
+    "id": "com_0049",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At turn start, Counterattack 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c7bd445d923a",
+    "raw_text": "At turn start, Counterattack 1\nCOMMON\nUpgrade\nVanguard\n4+"
+  },
+  {
+    "id": "com_0050",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c4d51f5802c7",
+    "raw_text": "Apply 2 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0051",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1f7fbd82b860",
+    "raw_text": "Apply 2 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0052",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "e70e0e96852f",
+    "raw_text": "Apply 3 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0053",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "f82a56e6bd32",
+    "raw_text": "Apply 3 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0054",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "8232abbbd0a0",
+    "raw_text": "Apply 3 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0055",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "895496215966",
+    "raw_text": "Apply 1 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0056",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "be531d834f40",
+    "raw_text": "Apply 1 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0057",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "14374bbfc41c",
+    "raw_text": "Apply 2 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0058",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "ec174062d9b1",
+    "raw_text": "Apply 2 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0059",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Weaken to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "9c4061b8c058",
+    "raw_text": "Apply 2 Weaken to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0060",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "ca430b190268",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0061",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "8dabceaf09a8",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0062",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "db718c6c1cc9",
+    "raw_text": "Apply 3 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0063",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "9e65ae2c13fd",
+    "raw_text": "Apply 3 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0064",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "dda409ff4119",
+    "raw_text": "Apply 3 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0065",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "81bc4a4789a1",
+    "raw_text": "Apply 1 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0066",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "4297d7579c94",
+    "raw_text": "Apply 1 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0067",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "08f9ce640274",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0068",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "2054a594ae49",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0069",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1fcc120d9d67",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0070",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "7fd090d9fdce",
+    "raw_text": "Apply 2 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0071",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "cf4ea2a748f2",
+    "raw_text": "Apply 2 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0072",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "60ff11615fab",
+    "raw_text": "Apply 3 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0073",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "d51d696aa648",
+    "raw_text": "Apply 3 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0074",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "067181d51ceb",
+    "raw_text": "Apply 3 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0075",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "f68ace7a1601",
+    "raw_text": "Apply 1 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0076",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 1 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "602175ae9ff6",
+    "raw_text": "Apply 1 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0077",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "587ec4727363",
+    "raw_text": "Apply 2 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0078",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "bfe5544af918",
+    "raw_text": "Apply 2 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0079",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Mark to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "148d49f19f71",
+    "raw_text": "Apply 2 Mark to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0080",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "35e8a4a58f6f",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0081",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "e48963a17ebd",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0082",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "d809f6350fe2",
+    "raw_text": "3 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0083",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "a3f0b2a8e592",
+    "raw_text": "3 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0084",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "bc8fbf504c40",
+    "raw_text": "3 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0085",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "6eaf74e2c919",
+    "raw_text": "1 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0086",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "55165ef9dc7d",
+    "raw_text": "1 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0087",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "751edb87ed46",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0088",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "78e135c3d225",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0089",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "548dae23dab5",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0090",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "37d3be339167",
+    "raw_text": "Increase Action Count by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0091",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "5fc441d0a484",
+    "raw_text": "Increase Action Count by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0092",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "e933e62d54ef",
+    "raw_text": "Increase Action Count by 3\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0093",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "0a32472af691",
+    "raw_text": "Increase Action Count by 3\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0094",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "8dfa0c92777a",
+    "raw_text": "Increase Action Count by 3\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0095",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "f6d7d0d563fe",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0096",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "d64a12c5b03d",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0097",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "8bbd176891f3",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0098",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "29a90b83f061",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0099",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "c073e1f28905",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0100",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "77eececdc8b6",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0101",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "5f3a62d76f74",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0102",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c54603d2e00f",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nAttack\nSkill\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0103",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b400ca593f56",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0104",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "48b50d64b69d",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0105",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "2831359d873f",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0106",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Reduce Cost of this card by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "e8649e68ef4e",
+    "raw_text": "Reduce Cost of this card by 1\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0107",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "53cb5a6739db",
+    "raw_text": "1 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0108",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b854ead7a869",
+    "raw_text": "2 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n1"
+  },
+  {
+    "id": "com_0109",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "9bc96c349e5e",
+    "raw_text": "2 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n2"
+  },
+  {
+    "id": "com_0110",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "a31ab3d2198c",
+    "raw_text": "3 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n3"
+  },
+  {
+    "id": "com_0111",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a702745c9a64",
+    "raw_text": "2 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n4+"
+  },
+  {
+    "id": "com_0112",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "0.5 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "07878b9d913d",
+    "raw_text": "0.5 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0113",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "323862c02899",
+    "raw_text": "1 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n1"
+  },
+  {
+    "id": "com_0114",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "03c3c2f2c1d8",
+    "raw_text": "1 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n2"
+  },
+  {
+    "id": "com_0115",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "3a2df8dca41d",
+    "raw_text": "2 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n3"
+  },
+  {
+    "id": "com_0116",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Tenacity Damage",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "fe83930663e8",
+    "raw_text": "1 Tenacity Damage\nCOMMON\nAttack\nSkill\nStriker\nPsionic\n4+"
+  },
+  {
+    "id": "com_0117",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "7ce861d72716",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0118",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1ae3575e4c3d",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0119",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "b776f02710b8",
+    "raw_text": "Gain 2 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0120",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "988871099ffb",
+    "raw_text": "Gain 2 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0121",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "7980d603663c",
+    "raw_text": "Gain 2 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0122",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "52d0c57764e9",
+    "raw_text": "Gain 1 Ego Points\nCOMMON\nAttack\nSkill\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0123",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "36a7027d1ac3",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nAttack\nSkill\nController\n1"
+  },
+  {
+    "id": "com_0124",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "807535575b96",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nAttack\nSkill\nController\n2"
+  },
+  {
+    "id": "com_0125",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 3 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "14a36b711a5a",
+    "raw_text": "Gain 3 Ego Points\nCOMMON\nAttack\nSkill\nController\n3"
+  },
+  {
+    "id": "com_0126",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "cb423fb69db4",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nAttack\nSkill\nController\n4+"
+  },
+  {
+    "id": "com_0127",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "df994e8c93ae",
+    "raw_text": "Gain 1 Ego Points\nCOMMON\nUpgrade\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0128",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "cdf4dc0abaf6",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nUpgrade\nController\n1"
+  },
+  {
+    "id": "com_0129",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "f7291d431d8f",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nUpgrade\nController\n2"
+  },
+  {
+    "id": "com_0130",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 3 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "9cae02475c26",
+    "raw_text": "Gain 3 Ego Points\nCOMMON\nUpgrade\nController\n3"
+  },
+  {
+    "id": "com_0131",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 2 Ego Points",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "95e84aa831cd",
+    "raw_text": "Gain 2 Ego Points\nCOMMON\nUpgrade\nController\n4+"
+  },
+  {
+    "id": "com_0132",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "7fcebff3f53d",
+    "raw_text": "1 Immunity\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0133",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "4ad39059c666",
+    "raw_text": "1 Immunity\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0134",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "d8babcb23a70",
+    "raw_text": "1 Immunity\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0135",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "97d37bfe7162",
+    "raw_text": "1 Immunity\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0136",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "6783e7441dec",
+    "raw_text": "1 Immunity\nCOMMON\nUpgrade\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0137",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "f112bf1a2a3d",
+    "raw_text": "1 Immunity\nCOMMON\nUpgrade\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0138",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "baaba37a6578",
+    "raw_text": "1 Immunity\nCOMMON\nUpgrade\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0139",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Immunity",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "27f7608eb16d",
+    "raw_text": "1 Immunity\nCOMMON\nUpgrade\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0140",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "574c395e9cd8",
+    "raw_text": "Apply 3 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0141",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "4df281fe233d",
+    "raw_text": "Apply 3 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0142",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 4 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "994aa5dd3748",
+    "raw_text": "Apply 4 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0143",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 4 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "08c63b0c36df",
+    "raw_text": "Apply 4 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0144",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 4 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "cbee16081b35",
+    "raw_text": "Apply 4 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0145",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "2a6df15b1e73",
+    "raw_text": "Apply 2 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0146",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "96a0ec1bee8e",
+    "raw_text": "Apply 2 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0147",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "a1f149f4c329",
+    "raw_text": "Apply 3 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0148",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "5f2ca33833da",
+    "raw_text": "Apply 3 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0149",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 3 Agony to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "9b132431a4ee",
+    "raw_text": "Apply 3 Agony to the target\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0150",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the start of the turn, 2 Agony to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "0e8ecf6a4dea",
+    "raw_text": "At the start of the turn, 2 Agony to all enemies\nCOMMON\nUpgrade\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0151",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the start of the turn, 2 Agony to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "f1244a91d099",
+    "raw_text": "At the start of the turn, 2 Agony to all enemies\nCOMMON\nUpgrade\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0152",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the start of the turn, 2 Agony to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "4c64507d50a1",
+    "raw_text": "At the start of the turn, 2 Agony to all enemies\nCOMMON\nUpgrade\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0153",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the start of the turn, 4 Agony to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "996fa3edce24",
+    "raw_text": "At the start of the turn, 4 Agony to all enemies\nCOMMON\nUpgrade\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0154",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the start of the turn, 2 Agony to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "4d45a77c1664",
+    "raw_text": "At the start of the turn, 2 Agony to all enemies\nCOMMON\nUpgrade\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0155",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Shield 20%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a43d352146ee",
+    "raw_text": "At the end of the turn, Fixed Shield 20%\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0156",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Shield 20%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b1a47618580f",
+    "raw_text": "At the end of the turn, Fixed Shield 20%\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0157",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Shield 40%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "4cc661d0c4d3",
+    "raw_text": "At the end of the turn, Fixed Shield 40%\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0158",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Shield 60%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "bb40e79ae585",
+    "raw_text": "At the end of the turn, Fixed Shield 60%\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0159",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Shield 40%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "fca27043e5c8",
+    "raw_text": "At the end of the turn, Fixed Shield 40%\nCOMMON\nUpgrade\nStriker\nVanguard\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0160",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Heal 20%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "7e03dac4eba5",
+    "raw_text": "At the end of the turn, Fixed Heal 20%\nCOMMON\nUpgrade\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0161",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Heal 20%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "868dd688a670",
+    "raw_text": "At the end of the turn, Fixed Heal 20%\nCOMMON\nUpgrade\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0162",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Heal 40%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "fb993eb150af",
+    "raw_text": "At the end of the turn, Fixed Heal 40%\nCOMMON\nUpgrade\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0163",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Heal 60%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "4dbdffee9668",
+    "raw_text": "At the end of the turn, Fixed Heal 60%\nCOMMON\nUpgrade\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0164",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "At the end of the turn, Fixed Heal 40%",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "33ffad564db8",
+    "raw_text": "At the end of the turn, Fixed Heal 40%\nCOMMON\nUpgrade\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0165",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1aa0bfcd7c17",
+    "raw_text": "Resolve 1\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0166",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "2c1ec2c571e6",
+    "raw_text": "Resolve 1\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0167",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "365495e39072",
+    "raw_text": "Resolve 2\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0168",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "ea1a4df9e641",
+    "raw_text": "Resolve 2\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0169",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a593429c2233",
+    "raw_text": "Resolve 2\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0170",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "fe5c45f85b88",
+    "raw_text": "Resolve 1\nCOMMON\nUpgrade\nStriker\nRanger\nHunter\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0171",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "20b8242993ad",
+    "raw_text": "Resolve 1\nCOMMON\nUpgrade\nStriker\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0172",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "672214f5b4f4",
+    "raw_text": "Resolve 2\nCOMMON\nUpgrade\nStriker\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0173",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "f6c2308da41e",
+    "raw_text": "Resolve 2\nCOMMON\nUpgrade\nStriker\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0174",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Resolve 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "b0f8337821fd",
+    "raw_text": "Resolve 2\nCOMMON\nUpgrade\nStriker\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0175",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1f7c74f6deda",
+    "raw_text": "Fortitude 1\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0176",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "23d45331f4fa",
+    "raw_text": "Fortitude 1\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0177",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "82dc3cf992a6",
+    "raw_text": "Fortitude 2\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0178",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "0dc51f95a120",
+    "raw_text": "Fortitude 2\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0179",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a1a2aabffc97",
+    "raw_text": "Fortitude 2\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0180",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "358e2a455f01",
+    "raw_text": "Fortitude 1\nCOMMON\nUpgrade\nVanguard\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0181",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 1",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "acc0f2304279",
+    "raw_text": "Fortitude 1\nCOMMON\nUpgrade\nVanguard\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0182",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "7f4fa7791055",
+    "raw_text": "Fortitude 2\nCOMMON\nUpgrade\nVanguard\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0183",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "80250c6287d8",
+    "raw_text": "Fortitude 2\nCOMMON\nUpgrade\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0184",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Fortitude 2",
+    "rarity": "Common",
+    "card_types": [
+      "Upgrade"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "bf3f7b02c5c5",
+    "raw_text": "Fortitude 2\nCOMMON\nUpgrade\nVanguard\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0185",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "af25c76b187b",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0186",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e67811203fed",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0187",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "662a3830b714",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0188",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Morale next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "ad9f4d38ac3c",
+    "raw_text": "1 Morale next turn\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0189",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Morale next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "92f5a95e1e14",
+    "raw_text": "2 Morale next turn\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0190",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Morale next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "dcacc542ead2",
+    "raw_text": "3 Morale next turn\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0191",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "4 Morale next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "35b84c6f8873",
+    "raw_text": "4 Morale next turn\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0192",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Morale next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "03a075026ff3",
+    "raw_text": "3 Morale next turn\nCOMMON\nAttack\nSkill\nStriker\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0193",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Resolve next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "f070758755ab",
+    "raw_text": "1 Resolve next turn\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0194",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Resolve next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "3db5927f26f6",
+    "raw_text": "2 Resolve next turn\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0195",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Resolve next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "8c23d8f07729",
+    "raw_text": "3 Resolve next turn\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0196",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "4 Resolve next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "0fbbf130324c",
+    "raw_text": "4 Resolve next turn\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0197",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Resolve next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller",
+      "Psionic",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "5fd9e8cc2780",
+    "raw_text": "3 Resolve next turn\nCOMMON\nAttack\nSkill\nStriker\nRanger\nHunter\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0198",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "479eff43be86",
+    "raw_text": "1 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0199",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "79f1d5d90baf",
+    "raw_text": "2 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n1"
+  },
+  {
+    "id": "com_0200",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "ace9ccb4d16d",
+    "raw_text": "3 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n2"
+  },
+  {
+    "id": "com_0201",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "4 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "04e096009d01",
+    "raw_text": "4 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0202",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "14e8a772daf5",
+    "raw_text": "3 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0203",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "f93c9b077248",
+    "raw_text": "Draw 1 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0204",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1d7209bc210d",
+    "raw_text": "Draw 2 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0205",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "1fd0cafb107d",
+    "raw_text": "Draw 2 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0206",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 3 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "eb8642775c61",
+    "raw_text": "Draw 3 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0207",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1b98a6b91858",
+    "raw_text": "Draw 2 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0208",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1db0379cea0b",
+    "raw_text": "Draw 1 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0209",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "c15cf3bac9e5",
+    "raw_text": "Draw 1 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0210",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 2 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "ad36106cf0bb",
+    "raw_text": "Draw 2 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0211",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1 next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1f62b382b6b6",
+    "raw_text": "Draw 1 next turn\nCOMMON\nAttack\nSkill\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0212",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 AP next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "5472f5a0db3a",
+    "raw_text": "1 AP next turn\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0213",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "1 AP next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "86429e0b2b02",
+    "raw_text": "1 AP next turn\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n1"
+  },
+  {
+    "id": "com_0214",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 AP next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "3a2e09245bb1",
+    "raw_text": "2 AP next turn\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n2"
+  },
+  {
+    "id": "com_0215",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 AP next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "c32a44584f96",
+    "raw_text": "2 AP next turn\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0216",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 AP next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "0aba1c505b69",
+    "raw_text": "2 AP next turn\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0217",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Draw 1",
+    "rarity": "Common",
+    "card_types": [],
+    "allowed_classes": [],
+    "levels": [
+      "X",
+      "1"
+    ],
+    "tags": [],
+    "source_key": "781cd5818b43",
+    "raw_text": "Draw 1\nCOMMON\nX\n1"
+  },
+  {
+    "id": "com_0218",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c3c0337ef6ad",
+    "raw_text": "Apply Weaken 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0219",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "5c5a8c97c210",
+    "raw_text": "Apply Weaken 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0220",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "c686b5757fea",
+    "raw_text": "Apply Weaken 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0221",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "d7b30a8b2103",
+    "raw_text": "Apply Weaken 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0222",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "0ba036382552",
+    "raw_text": "Apply Weaken 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0223",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "ec3622ef691d",
+    "raw_text": "Apply Weaken 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0224",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "1584293b08f6",
+    "raw_text": "Apply Weaken 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0225",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "3b44f3c8c519",
+    "raw_text": "Apply Weaken 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0226",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "37e10baeb2bc",
+    "raw_text": "Apply Weaken 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0227",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Weaken 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "79025dc26613",
+    "raw_text": "Apply Weaken 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0228",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "95115f0d0bca",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0229",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b417e792a057",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0230",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "49f6fabccbf9",
+    "raw_text": "Apply Vulnerable 3 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0231",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e35683a6a653",
+    "raw_text": "Apply Vulnerable 3 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0232",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "c4cc90a2f31a",
+    "raw_text": "Apply Vulnerable 3 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0233",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1f221a41884d",
+    "raw_text": "Apply Vulnerable 1 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0234",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "e70c31f38c57",
+    "raw_text": "Apply Vulnerable 1 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n1"
+  },
+  {
+    "id": "com_0235",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "06f94920f9a9",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n2"
+  },
+  {
+    "id": "com_0236",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "46222c853a1b",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0237",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "417df07a2a2d",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0238",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "1b81bfb6e0f4",
+    "raw_text": "Apply Mark 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0239",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "b14ae98f09e3",
+    "raw_text": "Apply Mark 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0240",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "d59b7d6331f8",
+    "raw_text": "Apply Mark 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0241",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "8a3f53beeaa1",
+    "raw_text": "Apply Mark 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0242",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "8d58e83941cc",
+    "raw_text": "Apply Mark 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0243",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "5718e9170181",
+    "raw_text": "Apply Mark 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0244",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "788e880a5ffc",
+    "raw_text": "Apply Mark 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n1"
+  },
+  {
+    "id": "com_0245",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "d7c6e920a52f",
+    "raw_text": "Apply Mark 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n2"
+  },
+  {
+    "id": "com_0246",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "30ebb8cb2f73",
+    "raw_text": "Apply Mark 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n3"
+  },
+  {
+    "id": "com_0247",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Mark 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "b1bb3b045129",
+    "raw_text": "Apply Mark 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\n4+"
+  },
+  {
+    "id": "com_0248",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "dd7bf62baf58",
+    "raw_text": "Apply Agony 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0249",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "aaeca2be4596",
+    "raw_text": "Apply Agony 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0250",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "35c32818b0a9",
+    "raw_text": "Apply Agony 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0251",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e4ab0a002be8",
+    "raw_text": "Apply Agony 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0252",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 3 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "50545dfe0a07",
+    "raw_text": "Apply Agony 3 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0253",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "f2ebb39aefa4",
+    "raw_text": "Apply Agony 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0254",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 1 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "ec4ae0cef197",
+    "raw_text": "Apply Agony 1 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0255",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "94ed0fa1f400",
+    "raw_text": "Apply Agony 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0256",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "6070ef4f1f0d",
+    "raw_text": "Apply Agony 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0257",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Agony 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "2acb1abd9238",
+    "raw_text": "Apply Agony 2 to all enemies\nCOMMON\nAttack\nSkill\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0258",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1",
+      "2",
+      "3",
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "6801c179008d",
+    "raw_text": "Increase Action Count of all enemies by 1\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n1\n2\n3\n4+"
+  },
+  {
+    "id": "com_0259",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 1",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "1"
+    ],
+    "tags": [],
+    "source_key": "a7423055f7dc",
+    "raw_text": "Increase Action Count of all enemies by 1\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n1"
+  },
+  {
+    "id": "com_0260",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "2"
+    ],
+    "tags": [],
+    "source_key": "c9cd4ad592de",
+    "raw_text": "Increase Action Count of all enemies by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n2"
+  },
+  {
+    "id": "com_0261",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "58b6d9d0258b",
+    "raw_text": "Increase Action Count of all enemies by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0262",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "4521d4df84f4",
+    "raw_text": "Increase Action Count of all enemies by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0263",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 4 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "3f56daca6a49",
+    "raw_text": "For 1 turn, gain 4 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0264",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "For 1 turn, gain 3 Fortitude",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "a58369538a46",
+    "raw_text": "For 1 turn, gain 3 Fortitude\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n4+"
+  },
+  {
+    "id": "com_0265",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "2a68aa9554f6",
+    "raw_text": "Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n3"
+  },
+  {
+    "id": "com_0266",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Counterattack 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "22b092b6423f",
+    "raw_text": "Counterattack 2\nCOMMON\nAttack\nSkill\nVanguard\n4+"
+  },
+  {
+    "id": "com_0267",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "e8e4b2b9ae31",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0268",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply 2 Vulnerable to the target",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "efe1ea5eb951",
+    "raw_text": "Apply 2 Vulnerable to the target\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0269",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "c3f14c045fae",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0270",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "2 Damage Reduction",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "54ce5a8ca5b4",
+    "raw_text": "2 Damage Reduction\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0271",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "dc0421e92908",
+    "raw_text": "Increase Action Count by 3\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0272",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count by 3",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "41540ff19128",
+    "raw_text": "Increase Action Count by 3\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0273",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "1073d93cc318",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n3"
+  },
+  {
+    "id": "com_0274",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Gain 1 AP",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Controller"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "180eeda2c387",
+    "raw_text": "Gain 1 AP\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nController\n4+"
+  },
+  {
+    "id": "com_0275",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "98c1f4b312bd",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n3"
+  },
+  {
+    "id": "com_0276",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Apply Vulnerable 2 to all enemies",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Striker"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "06eead3ab994",
+    "raw_text": "Apply Vulnerable 2 to all enemies\nCOMMON\nAttack\nSkill\nStriker\nVanguard\n4+"
+  },
+  {
+    "id": "com_0277",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "f0cb482da1f7",
+    "raw_text": "Increase Action Count of all enemies by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n3"
+  },
+  {
+    "id": "com_0278",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "Increase Action Count of all enemies by 2",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Ranger",
+      "Hunter",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "aaa53f6567aa",
+    "raw_text": "Increase Action Count of all enemies by 2\nCOMMON\nAttack\nSkill\nVanguard\nRanger\nHunter\nPsionic\n4+"
+  },
+  {
+    "id": "com_0279",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "4 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "3"
+    ],
+    "tags": [],
+    "source_key": "0de2a5cf40c7",
+    "raw_text": "4 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n3"
+  },
+  {
+    "id": "com_0280",
+    "section": "Other",
+    "display_section": "Other",
+    "description": "3 Fortitude next turn",
+    "rarity": "Common",
+    "card_types": [
+      "Attack",
+      "Skill"
+    ],
+    "allowed_classes": [
+      "Vanguard",
+      "Controller",
+      "Psionic"
+    ],
+    "levels": [
+      "4+"
+    ],
+    "tags": [],
+    "source_key": "20745171d0ef",
+    "raw_text": "3 Fortitude next turn\nCOMMON\nAttack\nSkill\nVanguard\nPsionic\nController\n4+"
+  }
+]

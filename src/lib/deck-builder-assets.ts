@@ -1,7 +1,8 @@
 import { DECK_BUILDER_CARD_IMAGE_BY_ID } from '@/pages/deck-builder/data/deck-builder-card-images'
 import type { CardEntry } from '@/lib/types'
+import type { DeckBuilderDivineGod } from '@/pages/deck-builder/deck-builder.types'
 
-const cardImages = import.meta.glob(
+const combatantCardImages = import.meta.glob(
   '../pages/deck-builder/data/combatants/**/*.{webp,png,jpg,jpeg,avif}',
   {
     eager: true,
@@ -9,6 +10,29 @@ const cardImages = import.meta.glob(
     import: 'default',
   },
 ) as Record<string, string>
+
+const neutralAndMonsterCardImages = import.meta.glob(
+  '../pages/deck-builder/data/neutral-cards/**/*.{webp,png,jpg,jpeg,avif}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+) as Record<string, string>
+
+const divineGodImages = import.meta.glob(
+  '../pages/deck-builder/data/divine-gods/*.{webp,png,jpg,jpeg,avif}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+) as Record<string, string>
+
+const cardImages = {
+  ...combatantCardImages,
+  ...neutralAndMonsterCardImages,
+}
 
 const faceImages = import.meta.glob(
   '../../api/assets/game/faces/*.{webp,png,jpg,jpeg,avif}',
@@ -23,6 +47,7 @@ const mappedCardImages = DECK_BUILDER_CARD_IMAGE_BY_ID as Record<string, string>
 
 const warnedMissingCardImages = new Set<string>()
 const warnedMissingCharacterFaces = new Set<number | string>()
+const warnedMissingDivineGodIcons = new Set<string>()
 
 function normalizePath(value: string) {
   return value.replace(/\\/g, '/').toLowerCase()
@@ -103,6 +128,22 @@ function warnMissingCharacterFace(charResId: number | string) {
   )
 }
 
+function warnMissingDivineGodIcon(god: DeckBuilderDivineGod) {
+  if (!import.meta.env.DEV) {
+    return
+  }
+
+  if (warnedMissingDivineGodIcons.has(god.id)) {
+    return
+  }
+
+  warnedMissingDivineGodIcons.add(god.id)
+
+  console.warn(
+    `[Deck Builder] Ícone de Divine God não encontrado: ${god.id}`,
+  )
+}
+
 export function getCharacterFaceUrl(charResId: number | string) {
   const imageUrl = findAssetUrl(
     `bookmark_face_character_map_${charResId}.png`,
@@ -142,4 +183,14 @@ export function getCardImageUrl(card: CardEntry) {
   }
 
   return mappedImageUrl
+}
+
+export function getDivineGodIconUrl(god: DeckBuilderDivineGod) {
+  const imageUrl = findAssetUrl(`${god.id.toLowerCase()}.webp`, divineGodImages)
+
+  if (!imageUrl) {
+    warnMissingDivineGodIcon(god)
+  }
+
+  return imageUrl
 }

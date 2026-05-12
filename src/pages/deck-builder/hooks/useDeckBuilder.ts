@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { save } from '@tauri-apps/plugin-dialog'
+import { writeTextFile } from '@tauri-apps/plugin-fs'
 import { api } from '@/lib/api'
 import type { CardCharacter } from '@/lib/types'
 import type {
@@ -8,21 +10,29 @@ import type {
   DeckBuilderExportPayload,
   DeckBuilderExportSlot,
   DeckBuilderImportedCard,
+  DeckBuilderImportedEquipment,
+  DeckBuilderItem,
+  DeckBuilderItemSlot,
+  DeckCardEpiphanySettings,
   DeckCardInstance,
   SquadSlot,
   VariantModalTarget,
 } from '../deck-builder.types'
+import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
+import { findDeckBuilderItemById } from '../deck-builder-items.utils'
 import {
   cloneCardInstance,
   createCardInstanceFromDeckBuilderCard,
+  createEmptyEquipment,
   createEmptySlot,
   createInitialSquad,
+  findCommonEpiphanyById,
+  findDivineEpiphanyById,
+  findDivineGodById,
   getInstanceCost,
 } from '../deck-builder.utils'
-import { save } from '@tauri-apps/plugin-dialog'
-import { writeTextFile } from '@tauri-apps/plugin-fs'
 
-const DECK_BUILDER_EXPORT_VERSION = 1
+const DECK_BUILDER_EXPORT_VERSION = 3
 const DECK_BUILDER_MAX_SLOTS = 3
 
 function getDeckBuilderExportFileName() {
@@ -54,6 +64,9 @@ function normalizeDeckBuilderCard(
 ): DeckBuilderCardWithVariants {
   return {
     ...item,
+    description: typeof item.description === 'string'
+      ? item.description
+      : null,
     variants: (item.variants ?? []).map(variant =>
       normalizeVariant(variant as DeckBuilderEpiphanyVariant),
     ),
@@ -69,6 +82,7 @@ function getAllDeckBuilderCards(
     ...startingCards,
     ...epiphanyCards,
     ...(egoSkill ? [egoSkill] : []),
+    ...SHARED_DECK_BUILDER_CARDS,
   ]
 }
 
@@ -99,6 +113,12 @@ function findVariantById(
   return variants.find(variant => variant.variant_id === variantId) ?? null
 }
 
+function normalizeOptionalString(value: unknown) {
+  return typeof value === 'string' && value.trim()
+    ? value
+    : null
+}
+
 function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
   if (!isRecord(value)) {
     return null
@@ -110,13 +130,36 @@ function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
     return null
   }
 
-  const selectedVariantId = value.selected_variant_id
-
   return {
     card_id: cardId,
-    selected_variant_id: typeof selectedVariantId === 'string'
-      ? selectedVariantId
-      : null,
+    selected_variant_id: normalizeOptionalString(value.selected_variant_id),
+    selected_divine_god: normalizeOptionalString(value.selected_divine_god),
+    selected_divine_epiphany_id: normalizeOptionalString(value.selected_divine_epiphany_id),
+    selected_common_epiphany_id: normalizeOptionalString(value.selected_common_epiphany_id),
+  }
+}
+
+function normalizeImportedEquipment(value: unknown): DeckBuilderImportedEquipment {
+  if (!isRecord(value)) {
+    return {
+      weapon_id: null,
+      armor_id: null,
+      accessory_id: null,
+    }
+  }
+
+  return {
+    weapon_id: typeof value.weapon_id === 'string' ? value.weapon_id : null,
+    armor_id: typeof value.armor_id === 'string' ? value.armor_id : null,
+    accessory_id: typeof value.accessory_id === 'string' ? value.accessory_id : null,
+  }
+}
+
+function resolveImportedEquipment(equipment: DeckBuilderImportedEquipment) {
+  return {
+    weapon: findDeckBuilderItemById(equipment.weapon_id),
+    armor: findDeckBuilderItemById(equipment.armor_id),
+    accessory: findDeckBuilderItemById(equipment.accessory_id),
   }
 }
 
@@ -124,6 +167,11 @@ function normalizeImportedSlot(value: unknown): DeckBuilderExportSlot {
   if (!isRecord(value)) {
     return {
       combatant_id: null,
+      equipment: {
+        weapon_id: null,
+        armor_id: null,
+        accessory_id: null,
+      },
       cards: [],
     }
   }
@@ -137,6 +185,7 @@ function normalizeImportedSlot(value: unknown): DeckBuilderExportSlot {
 
   return {
     combatant_id: combatantId,
+    equipment: normalizeImportedEquipment(value.equipment),
     cards: rawCards
       .map(normalizeImportedCard)
       .filter((card): card is DeckBuilderImportedCard => card !== null),
@@ -158,6 +207,35 @@ function normalizeImportedPayload(value: unknown): DeckBuilderExportPayload {
     slots: value.slots
       .slice(0, DECK_BUILDER_MAX_SLOTS)
       .map(normalizeImportedSlot),
+  }
+}
+
+function resolveImportedCardSettings(
+  source: DeckBuilderCardWithVariants,
+  importedCard: DeckBuilderImportedCard,
+): DeckCardEpiphanySettings {
+  const selectedVariant = findVariantById(
+    source.variants ?? [],
+    importedCard.selected_variant_id,
+  )
+
+  const selectedDivineEpiphany = findDivineEpiphanyById(
+    importedCard.selected_divine_epiphany_id,
+  )
+
+  const selectedDivineGod =
+    findDivineGodById(importedCard.selected_divine_god) ??
+    findDivineGodById(selectedDivineEpiphany?.god)
+
+  const selectedCommonEpiphany = findCommonEpiphanyById(
+    importedCard.selected_common_epiphany_id,
+  )
+
+  return {
+    selectedVariant,
+    selectedDivineGod,
+    selectedDivineEpiphany,
+    selectedCommonEpiphany,
   }
 }
 
@@ -203,6 +281,7 @@ export function useDeckBuilder() {
           ...slot,
           combatantId,
           cards: [],
+          equipment: createEmptyEquipment(),
           startingCards: [],
           epiphanyCards: [],
           egoSkill: null,
@@ -237,6 +316,7 @@ export function useDeckBuilder() {
             ...slot,
             combatantId,
             cards,
+            equipment: createEmptyEquipment(),
             startingCards,
             epiphanyCards,
             egoSkill,
@@ -254,6 +334,7 @@ export function useDeckBuilder() {
             ...slot,
             combatantId,
             cards: [],
+            equipment: createEmptyEquipment(),
             startingCards: [],
             epiphanyCards: [],
             egoSkill: null,
@@ -307,7 +388,7 @@ export function useDeckBuilder() {
   function addDeckBuilderCard(
     slotIndex: number,
     item: DeckBuilderCardWithVariants,
-    selectedVariant: DeckBuilderEpiphanyVariant | null = null,
+    settings: Partial<DeckCardEpiphanySettings> = {},
   ) {
     setSquad(current =>
       current.map((slot, index) => {
@@ -317,8 +398,47 @@ export function useDeckBuilder() {
           ...slot,
           cards: [
             ...slot.cards,
-            createCardInstanceFromDeckBuilderCard(item, selectedVariant),
+            createCardInstanceFromDeckBuilderCard(item, settings),
           ],
+        }
+      }),
+    )
+  }
+
+  function selectEquipment(
+    slotIndex: number,
+    equipmentSlot: DeckBuilderItemSlot,
+    item: DeckBuilderItem,
+  ) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          equipment: {
+            ...slot.equipment,
+            [equipmentSlot]: item,
+          },
+        }
+      }),
+    )
+  }
+
+  function clearEquipment(
+    slotIndex: number,
+    equipmentSlot: DeckBuilderItemSlot,
+  ) {
+    setSquad(current =>
+      current.map((slot, index) => {
+        if (index !== slotIndex) return slot
+
+        return {
+          ...slot,
+          equipment: {
+            ...slot.equipment,
+            [equipmentSlot]: null,
+          },
         }
       }),
     )
@@ -340,6 +460,7 @@ export function useDeckBuilder() {
         return {
           ...slot,
           cards: [],
+          equipment: createEmptyEquipment(),
         }
       }),
     )
@@ -356,8 +477,12 @@ export function useDeckBuilder() {
       slotIndex,
       instanceId: item.instanceId,
       card: item.card,
+      description: item.description,
       variants: item.variants,
       selectedVariant: item.selectedVariant,
+      selectedDivineGod: item.selectedDivineGod,
+      selectedDivineEpiphany: item.selectedDivineEpiphany,
+      selectedCommonEpiphany: item.selectedCommonEpiphany,
     })
   }
 
@@ -369,11 +494,11 @@ export function useDeckBuilder() {
     })
   }
 
-  function applyVariant(variant: DeckBuilderEpiphanyVariant) {
+  function applyEpiphanySettings(settings: DeckCardEpiphanySettings) {
     if (!variantModalTarget) return
 
     if (variantModalTarget.type === 'available') {
-      addDeckBuilderCard(variantModalTarget.slotIndex, variantModalTarget.item, variant)
+      addDeckBuilderCard(variantModalTarget.slotIndex, variantModalTarget.item, settings)
       setVariantModalTarget(null)
       return
     }
@@ -391,7 +516,10 @@ export function useDeckBuilder() {
 
             return {
               ...item,
-              selectedVariant: variant,
+              selectedVariant: settings.selectedVariant,
+              selectedDivineGod: settings.selectedDivineGod,
+              selectedDivineEpiphany: settings.selectedDivineEpiphany,
+              selectedCommonEpiphany: settings.selectedCommonEpiphany,
             }
           }),
         }
@@ -403,12 +531,15 @@ export function useDeckBuilder() {
 
       return {
         ...current,
-        selectedVariant: variant,
+        selectedVariant: settings.selectedVariant,
+        selectedDivineGod: settings.selectedDivineGod,
+        selectedDivineEpiphany: settings.selectedDivineEpiphany,
+        selectedCommonEpiphany: settings.selectedCommonEpiphany,
       }
     })
   }
 
-  function clearVariant() {
+  function clearEpiphanySettings() {
     if (!variantModalTarget || variantModalTarget.type !== 'deck') return
 
     const { slotIndex, instanceId } = variantModalTarget
@@ -425,6 +556,9 @@ export function useDeckBuilder() {
             return {
               ...item,
               selectedVariant: null,
+              selectedDivineGod: null,
+              selectedDivineEpiphany: null,
+              selectedCommonEpiphany: null,
             }
           }),
         }
@@ -437,6 +571,9 @@ export function useDeckBuilder() {
       return {
         ...current,
         selectedVariant: null,
+        selectedDivineGod: null,
+        selectedDivineEpiphany: null,
+        selectedCommonEpiphany: null,
       }
     })
   }
@@ -451,9 +588,17 @@ export function useDeckBuilder() {
       exported_at: new Date().toISOString(),
       slots: squad.map(slot => ({
         combatant_id: slot.combatantId,
+        equipment: {
+          weapon_id: slot.equipment.weapon?.id ?? null,
+          armor_id: slot.equipment.armor?.id ?? null,
+          accessory_id: slot.equipment.accessory?.id ?? null,
+        },
         cards: slot.cards.map(item => ({
           card_id: item.card.card_id,
           selected_variant_id: item.selectedVariant?.variant_id ?? null,
+          selected_divine_god: item.selectedDivineGod?.id ?? null,
+          selected_divine_epiphany_id: item.selectedDivineEpiphany?.id ?? null,
+          selected_common_epiphany_id: item.selectedCommonEpiphany?.id ?? null,
         })),
       })),
     }
@@ -492,6 +637,8 @@ export function useDeckBuilder() {
           return createEmptySlot()
         }
 
+        const importedEquipment = resolveImportedEquipment(importedSlot.equipment)
+
         try {
           const deckBuilderData = await api.deckBuilderCombatant(importedSlot.combatant_id)
 
@@ -522,14 +669,9 @@ export function useDeckBuilder() {
                 return null
               }
 
-              const selectedVariant = findVariantById(
-                source.variants ?? [],
-                importedCard.selected_variant_id,
-              )
-
               return createCardInstanceFromDeckBuilderCard(
                 source,
-                selectedVariant,
+                resolveImportedCardSettings(source, importedCard),
               )
             })
             .filter((card): card is DeckCardInstance => card !== null)
@@ -537,6 +679,7 @@ export function useDeckBuilder() {
           return {
             combatantId: importedSlot.combatant_id,
             cards,
+            equipment: importedEquipment,
             startingCards,
             epiphanyCards,
             egoSkill,
@@ -547,6 +690,7 @@ export function useDeckBuilder() {
           return {
             ...createEmptySlot(),
             combatantId: importedSlot.combatant_id,
+            equipment: importedEquipment,
             isLoading: false,
             error: error instanceof Error
               ? error.message
@@ -571,12 +715,14 @@ export function useDeckBuilder() {
     duplicateCard,
     removeCard,
     addDeckBuilderCard,
+    selectEquipment,
+    clearEquipment,
     clearDeck,
     resetBuilder,
     openDeckCardVariants,
     openAvailableCardVariants,
-    applyVariant,
-    clearVariant,
+    applyEpiphanySettings,
+    clearEpiphanySettings,
     closeVariantModal,
     exportDeck,
     importDeck,

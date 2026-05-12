@@ -415,6 +415,7 @@ export interface DeckBuilderCard {
   card: CardEntry
   copies: number
   group: 'starting' | 'epiphany' | 'ego'
+  description: string | null
   variants: DeckBuilderEpiphanyVariant[]
 }
 

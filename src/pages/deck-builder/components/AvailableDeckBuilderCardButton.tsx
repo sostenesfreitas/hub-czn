@@ -16,6 +16,8 @@ export function AvailableDeckBuilderCardButton({
   const card = item.card
   const variants = getVariants(item)
   const hasVariants = variants.length > 0 || card.spark_count > 0
+  const displayDescription = item.description
+  const hasDamage = card.eff_value > 0
 
   return (
     <div className="overflow-hidden rounded-lg border border-[#333348] bg-[#15151f] transition-colors hover:border-[#c084fc] hover:bg-[#1f1b2e]">
@@ -51,10 +53,20 @@ export function AvailableDeckBuilderCardButton({
             )}
           </div>
 
+          {displayDescription && (
+            <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[#b3b3b3]">
+              {displayDescription}
+            </p>
+          )}
+
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
-            <span className="text-[#888]">
-              {card.eff_value > 0 ? `${card.eff_value}% dano` : 'suporte'}
-            </span>
+            {hasDamage ? (
+              <span className="text-[#888]">
+                {card.eff_value}% dano
+              </span>
+            ) : (
+              <span />
+            )}
 
             <span className="font-semibold text-[#c084fc]">
               + adicionar

@@ -1,10 +1,27 @@
+import type { CardCharacter } from '@/lib/types'
 import { CombatantDeckColumn } from './components/CombatantDeckColumn'
 import { DeckBuilderHeader } from './components/DeckBuilderHeader'
 import { VariantSettingsModal } from './components/VariantSettingsModal'
 import { useDeckBuilder } from './hooks/useDeckBuilder'
 
+type DeckBuilderCardCharacter = CardCharacter & {
+  class?: string | null
+  attribute?: string | null
+}
+
 export function DeckBuilderPage() {
   const deckBuilder = useDeckBuilder()
+  const variantModalTarget = deckBuilder.variantModalTarget
+
+  const variantModalCombatantClass = variantModalTarget
+    ? (
+        deckBuilder.characters.find(
+          character =>
+            character.char_res_id ===
+            deckBuilder.squad[variantModalTarget.slotIndex]?.combatantId,
+        ) as DeckBuilderCardCharacter | undefined
+      )?.class ?? null
+    : null
 
   return (
     <div className="min-h-full bg-[#0f0f14] text-white">
@@ -29,26 +46,45 @@ export function DeckBuilderPage() {
               slotIndex={index}
               slot={slot}
               characters={deckBuilder.characters}
-              onSelectCombatant={combatantId => deckBuilder.selectCombatant(index, combatantId)}
-              onDuplicateCard={instanceId => deckBuilder.duplicateCard(index, instanceId)}
-              onRemoveCard={instanceId => deckBuilder.removeCard(index, instanceId)}
-              onAddDeckBuilderCard={item => deckBuilder.addDeckBuilderCard(index, item)}
-              onOpenDeckCardVariants={item => deckBuilder.openDeckCardVariants(index, item)}
-              onOpenAvailableCardVariants={item => deckBuilder.openAvailableCardVariants(index, item)}
+              onSelectCombatant={combatantId =>
+                deckBuilder.selectCombatant(index, combatantId)
+              }
+              onDuplicateCard={instanceId =>
+                deckBuilder.duplicateCard(index, instanceId)
+              }
+              onRemoveCard={instanceId =>
+                deckBuilder.removeCard(index, instanceId)
+              }
+              onAddDeckBuilderCard={item =>
+                deckBuilder.addDeckBuilderCard(index, item)
+              }
+              onOpenDeckCardVariants={item =>
+                deckBuilder.openDeckCardVariants(index, item)
+              }
+              onOpenAvailableCardVariants={item =>
+                deckBuilder.openAvailableCardVariants(index, item)
+              }
+              onSelectEquipment={(equipmentSlot, item) =>
+                deckBuilder.selectEquipment(index, equipmentSlot, item)
+              }
+              onClearEquipment={equipmentSlot =>
+                deckBuilder.clearEquipment(index, equipmentSlot)
+              }
               onClearDeck={() => deckBuilder.clearDeck(index)}
             />
           ))}
         </main>
       )}
 
-      {deckBuilder.variantModalTarget && (
+      {variantModalTarget && (
         <VariantSettingsModal
-          target={deckBuilder.variantModalTarget}
+          target={variantModalTarget}
+          combatantClass={variantModalCombatantClass}
           onClose={deckBuilder.closeVariantModal}
-          onApplyVariant={deckBuilder.applyVariant}
-          onClearVariant={
-            deckBuilder.variantModalTarget.type === 'deck'
-              ? deckBuilder.clearVariant
+          onApplySettings={deckBuilder.applyEpiphanySettings}
+          onClearSettings={
+            variantModalTarget.type === 'deck'
+              ? deckBuilder.clearEpiphanySettings
               : undefined
           }
         />
