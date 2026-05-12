@@ -20,7 +20,7 @@ from game_data import (
 )
 from game_data.scaling import get_char_base_stats
 from game_data.char_eff import best_damage_eff_for
-from optimizer.expected_damage import expected_damage
+from optimizer.expected_damage import expected_damage, expected_dot_damage
 
 
 class GearOptimizer:
@@ -445,7 +445,7 @@ class GearOptimizer:
         else:
             weak_mult = 1.0
         target_count = getattr(self, "_config_target_count", None) or 1
-        avg_dmg = expected_damage(
+        avg_dmg_base = expected_damage(
             atk=total_atk,
             cri=total_cr,
             cri_dmg_rate=total_cd,
@@ -453,8 +453,16 @@ class GearOptimizer:
             dummy_def=target_def,
             weak_mult=weak_mult,
             extra_dmg_pct=extra_dmg,  # Sprint 2h2: include Extra DMG%
-            target_count=target_count,  # NEW Sprint 2h3
+            target_count=target_count,  # Sprint 2h3
         )
+        # Sprint 2h5: DoT damage contribution (separate damage source)
+        avg_dmg_dot = expected_dot_damage(
+            atk=total_atk,
+            dot_pct=dot_dmg,
+            target_count=target_count,
+            extra_dmg_pct=extra_dmg,
+        )
+        avg_dmg = avg_dmg_base + avg_dmg_dot
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)
 

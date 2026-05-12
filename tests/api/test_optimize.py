@@ -372,6 +372,50 @@ def test_calculate_build_stats_includes_extra_dmg_in_avgdmg():
     )
 
 
+def test_calculate_build_stats_includes_dot_in_avgdmg():
+    """Sprint 2h5: total_stats['DoT%'] contributes to AvgDMG via
+    expected_dot_damage. Tested via synthetic gear with DoT% main stat."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.optimizer.expected_damage import expected_damage, expected_dot_damage
+    from api.game_data.char_eff import best_damage_eff_for
+    from api.models.memory_fragment import MemoryFragment
+    from api.models.stat import Stat
+
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    opt._config_target_count = 1
+    # Build a synthetic gear piece with DoT% main stat
+    dot_piece = MemoryFragment(
+        id=99999, slot_name="slot6", slot_num=6, rarity="Legendary", rarity_num=4,
+        set_name="test", set_id=0, level=0, locked=False,
+        equipped_to=None, equipped_char_id=0,
+        main_stat=Stat(name="DoT%", raw_name="S_DOT_ATK_DMG_RATE_INC_ADD",
+                       value=80.0, is_percentage=True, is_main=True),
+        substats=[],
+    )
+    stats_with_dot = opt.calculate_build_stats([dot_piece], char_name="Diana")
+    if stats_with_dot.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    # The new DoT contribution should boost AvgDMG. Verify the formula.
+    eff = best_damage_eff_for("Diana")
+    base = expected_damage(
+        atk=stats_with_dot["ATK"], cri=stats_with_dot["CRate"],
+        cri_dmg_rate=stats_with_dot["CDmg"], eff_pct=eff,
+        dummy_def=500, weak_mult=1.0,
+        extra_dmg_pct=stats_with_dot.get("Extra DMG%", 0.0),
+        target_count=1,
+    )
+    dot = expected_dot_damage(
+        atk=stats_with_dot["ATK"], dot_pct=stats_with_dot["DoT%"],
+        target_count=1, extra_dmg_pct=stats_with_dot.get("Extra DMG%", 0.0),
+    )
+    assert stats_with_dot["Avg DMG"] == pytest.approx(base + dot, abs=1e-2)
+    # And verify the DoT actually contributes (>0)
+    assert dot > 0
+
+
 def test_optimize_route_accepts_target_count_field(client):
     """Sprint 2h3: POST /optimize accepts target_count field."""
     payload = {
