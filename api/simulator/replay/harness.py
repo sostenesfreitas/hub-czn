@@ -341,16 +341,43 @@ class ReplayHarness:
                 stripped = re.sub(r"_\d{2}$", "", skill_eff_id)
                 if stripped != skill_eff_id:
                     candidate_res_ids.append(stripped)
+            elif re.match(r"^\d{5,}_", skill_eff_id):
+                # Sprint 2g4: numeric-prefix monster-applied buffs
+                # (e.g., 30094_c1_lv5_01_01). Try full id (might be exact
+                # res_id) AND stripped form.
+                candidate_res_ids.append(skill_eff_id)
+                stripped = re.sub(r"_\d{2}$", "", skill_eff_id)
+                if stripped != skill_eff_id:
+                    candidate_res_ids.append(stripped)
             if candidate_res_ids and cs_map:
                 for target_res_id in candidate_res_ids:
                     char_ids: set = set()
+                    owner_ids: set = set()
                     for entry in cs_map.values():
                         if not isinstance(entry, dict):
                             continue
                         if str(entry.get("res_id", "")) == target_res_id:
                             cid = entry.get("char_id")
+                            oid = entry.get("owner_id")
                             if cid is not None:
                                 char_ids.add(str(cid))
+                            if oid is not None:
+                                owner_ids.add(str(oid))
+                    # Sprint 2g4: prefer owner_id for monster-carried buffs.
+                    # If owner_id matches a monster (or player), return it.
+                    # This is the key signal for monster-applied buffs whose
+                    # char_id points to the player who originally cast.
+                    if len(owner_ids) == 1:
+                        only_owner = next(iter(owner_ids))
+                        # Prefer monster match (typical for monster-applied buffs)
+                        for unit in state.enemies:
+                            if str(unit.id) == only_owner:
+                                return unit, False, 6
+                        # Also try player match (for player-carried stacks)
+                        for unit in state.player_team:
+                            if str(unit.id) == only_owner:
+                                return unit, False, 6
+                    # Otherwise fall back to char_id resolution
                     if len(char_ids) == 1:
                         only = next(iter(char_ids))
                         for unit in state.player_team:

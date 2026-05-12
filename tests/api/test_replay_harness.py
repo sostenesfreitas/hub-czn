@@ -840,3 +840,86 @@ def test_replay_enriches_monster_history_with_synthetic_entries():
         f"expected path 3 > path 5 for 3000332, got path3={len(path3)} "
         f"path5={len(path5)}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g4 — widen path 6 to handle numeric-prefix monster-applied buffs
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_6_handles_numeric_buff_prefix():
+    """Sprint 2g4: path 6 also handles numeric-prefix buff skill_eff_ids
+    (e.g., 30094_c1_lv5_01_01) by stripping _NN and looking up cs_map_raw."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    monster = MonsterState(id="37", def_=200, hp=2000, hp_current=2000,
+                            res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[monster],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "30094_c1_lv5_01", "char_id": 1,
+                "owner_id": 37, "caster_id": 1, "skillEffs": [10]}
+    }
+    # When char_id (1) and owner_id (37) both available, prefer owner_id
+    # for monster-applied buffs because the skill_eff fires "FROM" the
+    # monster carrying it.
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="30094_c1_lv5_01_01"
+    )
+    assert path == 6
+    # Should resolve to the monster (owner_id=37), not the player (char_id=1)
+    assert unit is monster
+    assert inferred is False
+
+
+def test_resolve_caster_path_6_falls_back_to_char_id_when_owner_not_in_state():
+    """If owner_id doesn't match any unit, fall back to char_id."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m_visible", def_=200, hp=2000, hp_current=2000,
+                            res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # owner_id=99 doesn't match any unit; char_id=1 does
+    state.cs_map_raw = {
+        "55": {"res_id": "30094_c1_lv5_01", "char_id": 1,
+                "owner_id": 99, "skillEffs": [10]}
+    }
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="30094_c1_lv5_01_01"
+    )
+    assert path == 6
+    assert unit is diana  # falls back to char_id=1 player
+
+
+def test_resolve_caster_path_6_falls_through_when_no_cs_map_entry():
+    """If no cs_map_raw entry matches, fall through to path 5."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {}
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="99999_unknown_01"
+    )
+    assert path == 5
+    assert inferred is True
