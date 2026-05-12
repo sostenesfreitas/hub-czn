@@ -14,12 +14,15 @@ Queries return snapshot data at a given seq:
 - caster_at(seq) -> caster active when that event's snapshot was taken
 - lookup_at(seq) -> card_owner_lookup state at that snapshot
 """
+import re
 from dataclasses import dataclass, field
 
 from api.simulator.replay.event_parser import (
     BattleEvent, SegmentStartEvent, SegmentEndEvent, UsedCardEvent,
     StackAddEvent, SkillEffEvent, TimingEvent, ConditionTriggeredEvent,
 )
+
+_MONSTER_RES_PREFIX_RE = re.compile(r"^(\d{5,})_")
 
 
 @dataclass
@@ -53,6 +56,10 @@ class StateAccumulator:
         self._lookup: dict[str, str] = dict(self._lookup_seed)
         self._segment_caster: str | None = None
         self._timing: str | None = None
+        # Sprint 2g3: track synthetic monsters seen via monster_use_card events.
+        # These monsters may never appear in any snapshot battle_wt frame but
+        # still fire skill_eff events that the harness needs to resolve.
+        self._synthetic_monsters: set[str] = set()
 
     def feed(self, events: list[BattleEvent]) -> None:
         for ev in events:
@@ -81,6 +88,12 @@ class StateAccumulator:
         idx = min(max(seq, 0), len(self._snapshots) - 1)
         return dict(self._snapshots[idx].card_owner_lookup)
 
+    def synthetic_monsters_seen(self) -> "set[str]":
+        """Sprint 2g3: return all monster res_id prefixes (e.g. '1003009') seen
+        via monster_use_card events during feed(). Used by the harness to enrich
+        state.monster_history for monsters never observed in a snapshot frame."""
+        return set(self._synthetic_monsters)
+
     def _apply(self, ev: BattleEvent) -> None:
         if isinstance(ev, SegmentStartEvent):
             self._segment_caster = None
@@ -96,6 +109,10 @@ class StateAccumulator:
             # unit_id mapping), so CLEAR segment_caster instead.
             if str(ev.actor_id).startswith("monster_"):
                 self._segment_caster = None
+                # Sprint 2g3: track synthetic monster res_id prefix
+                m = _MONSTER_RES_PREFIX_RE.match(ev.card_res_id or "")
+                if m:
+                    self._synthetic_monsters.add(m.group(1))
             else:
                 self._segment_caster = ev.actor_id
         elif isinstance(ev, StackAddEvent):

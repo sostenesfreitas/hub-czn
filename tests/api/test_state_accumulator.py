@@ -179,3 +179,19 @@ def test_monster_use_card_clears_segment_caster():
     ])
     # After the monster card, segment_caster should be CLEARED
     assert acc.caster_at(3) is None
+
+
+def test_accumulator_tracks_synthetic_monsters_from_monster_use_card():
+    """Sprint 2g3: when a monster_use_card UsedCardEvent fires (actor_id
+    prefixed 'monster_'), the accumulator records the monster res_id prefix
+    in a synthetic_monsters set."""
+    acc = StateAccumulator()
+    acc.feed([
+        UsedCardEvent(seq=0, raw_line="", actor_id="monster_1003009_01_pt1_00",
+                      card_res_id="1003009_01_pt1_00"),
+        UsedCardEvent(seq=1, raw_line="", actor_id="monster_1001012_01_pt1_00",
+                      card_res_id="1001012_01_pt1_00"),
+    ])
+    synthetics = acc.synthetic_monsters_seen()
+    assert "1003009" in synthetics
+    assert "1001012" in synthetics
