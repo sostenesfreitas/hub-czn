@@ -513,6 +513,19 @@ def test_calculate_build_stats_uses_dot_ticks_from_config():
     assert actual_delta == pytest.approx(expected_delta, abs=1.0)
 
 
+def test_optimize_route_accepts_target_count_0_for_auto(client):
+    """Sprint 2h9: target_count=0 is accepted (auto sentinel)."""
+    payload = {
+        "char_name": "Diana", "four_piece_sets": [], "two_piece_sets": [],
+        "main_stat_4": None, "main_stat_5": None, "main_stat_6": None,
+        "top_percent": 100, "include_equipped": True, "excluded_heroes": [],
+        "max_results": 1, "target_def": 500, "treat_target_as_weak": False,
+        "target_count": 0, "dot_ticks": 3,
+    }
+    resp = client.post("/api/optimize/start", json=payload)
+    assert resp.status_code != 500, f"500 error: {resp.text[:300]}"
+
+
 def test_calculate_build_stats_target_count_0_means_auto():
     """Sprint 2h9: _config_target_count=0 triggers auto-detection via
     best_damage_card_target_count. Result should be >= 1."""

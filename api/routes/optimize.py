@@ -43,7 +43,8 @@ class OptimizeStartRequest(BaseModel):
     target_def: int = Field(default=500, ge=0)
     treat_target_as_weak: bool = False
     # Sprint 2h3: AoE / multi-target modeling
-    target_count: int = Field(default=1, ge=1, le=5)
+    # Sprint 2h9: 0 = auto-detect from char's best damage card's target_class
+    target_count: int = Field(default=1, ge=0, le=5)
     # Sprint 2h6: DoT ticks knob
     dot_ticks: int = Field(default=3, ge=1, le=10)
 
