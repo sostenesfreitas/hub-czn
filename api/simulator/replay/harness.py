@@ -300,30 +300,42 @@ class ReplayHarness:
             for unit in state.enemies:
                 if str(unit.id) == str(segment_caster):
                     return unit, False, 4
-        # 6. cs_map_raw lookup for cs_* skill_eff_ids (Sprint 2g1).
-        # Strip the trailing _NN suffix to get the cs res_id base, then look
-        # for unique char_id across cs_map_raw entries with that res_id.
+        # 6. cs_map_raw lookup for cs_* or eq_* skill_eff_ids (Sprint 2g1/2g2).
+        # For cs_* ids: strip trailing _NN suffix to get the cs res_id base.
+        # For eq_* ids: try the full skill_eff_id as res_id (eq_* entries in
+        # cs_map_raw store res_id WITH the _NN suffix, e.g. eq_p_sec_003_01).
+        # Match against cs_map_raw entries; if exactly one char_id, use it.
         if skill_eff_id:
-            cs_match = _CS_PREFIX_RE.match(skill_eff_id)
             cs_map = getattr(state, "cs_map_raw", None)
-            if cs_match and cs_map:
-                cs_res_id = cs_match.group(1)
-                char_ids: set = set()
-                for entry in cs_map.values():
-                    if not isinstance(entry, dict):
-                        continue
-                    if str(entry.get("res_id", "")) == cs_res_id:
-                        cid = entry.get("char_id")
-                        if cid is not None:
-                            char_ids.add(str(cid))
-                if len(char_ids) == 1:
-                    only = next(iter(char_ids))
-                    for unit in state.player_team:
-                        if str(unit.id) == only:
-                            return unit, False, 6
-                    for unit in state.enemies:
-                        if str(unit.id) == only:
-                            return unit, False, 6
+            candidate_res_ids: list[str] = []
+            if skill_eff_id.startswith("cs"):
+                cs_match = _CS_PREFIX_RE.match(skill_eff_id)
+                if cs_match:
+                    candidate_res_ids.append(cs_match.group(1))
+            elif skill_eff_id.startswith("eq_"):
+                # Try full id first (eq_p_sec_003_01), then stripped (eq_p_sec_003)
+                candidate_res_ids.append(skill_eff_id)
+                stripped = re.sub(r"_\d{2}$", "", skill_eff_id)
+                if stripped != skill_eff_id:
+                    candidate_res_ids.append(stripped)
+            if candidate_res_ids and cs_map:
+                for target_res_id in candidate_res_ids:
+                    char_ids: set = set()
+                    for entry in cs_map.values():
+                        if not isinstance(entry, dict):
+                            continue
+                        if str(entry.get("res_id", "")) == target_res_id:
+                            cid = entry.get("char_id")
+                            if cid is not None:
+                                char_ids.add(str(cid))
+                    if len(char_ids) == 1:
+                        only = next(iter(char_ids))
+                        for unit in state.player_team:
+                            if str(unit.id) == only:
+                                return unit, False, 6
+                        for unit in state.enemies:
+                            if str(unit.id) == only:
+                                return unit, False, 6
         # 5. Fallback
         if state.player_team:
             return state.player_team[0], True, 5

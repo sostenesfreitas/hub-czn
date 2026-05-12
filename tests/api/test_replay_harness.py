@@ -677,17 +677,17 @@ def test_resolve_caster_path6_resolves_monster_caster():
     assert path == 6
 
 
-def test_resolve_caster_path6_only_runs_for_cs_prefix():
-    """Path 6 only applies to skill_eff_ids starting with 'cs'. Other
-    prefixes (eq_*, add_r_spark_*, monster res ids) fall through to path 5."""
+def test_resolve_caster_path6_only_runs_for_cs_or_eq_prefix():
+    """Path 6 applies to skill_eff_ids starting with 'cs' or 'eq_' (Sprint 2g2).
+    Other prefixes (add_r_spark_*, monster res ids) fall through to path 5."""
     cs_map = {
-        "1": {"res_id": "eq_pub_001", "char_id": 3, "caster_id": 3, "owner_id": 3},
+        "1": {"res_id": "add_r_spark_001", "char_id": 3, "caster_id": 3, "owner_id": 3},
     }
     state = _make_state_for_cs_resolve(cs_map)
     unit, inferred, path = ReplayHarness._resolve_caster(
-        None, state, skill_eff_id="eq_pub_001_01", segment_caster=None,
+        None, state, skill_eff_id="add_r_spark_001_01", segment_caster=None,
     )
-    assert path == 5  # path 6 should not resolve eq_* effects
+    assert path == 5  # path 6 should not resolve non-cs/non-eq effects
 
 
 def test_resolve_caster_path6_preferred_over_path5_only():
@@ -703,3 +703,34 @@ def test_resolve_caster_path6_preferred_over_path5_only():
     )
     assert str(unit.id) == "1"
     assert path == 1
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g2 — T1: widen path 6 to include eq_* prefix
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_6_handles_eq_prefix():
+    """Sprint 2g2 T1: path 6 (cs_map_raw lookup) extends to eq_* skill_eff_ids.
+    eq_*_01 entries in cs_map_raw carry char_id pointing to equipped player."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    nia = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "19": {"res_id": "eq_p_sec_003_01", "char_id": 1,
+               "caster_id": 27, "owner_id": 38, "skillEffs": [82]}
+    }
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="eq_p_sec_003_01"
+    )
+    assert path == 6
+    assert unit is nia
+    assert inferred is False
