@@ -10,7 +10,7 @@ Inputs (from C:\\Users\\soste\\Downloads\\output\\db):
 Outputs (to api/data/):
   - level_scaling.json     {group_id: {level_str: {ATK, DEF, HP}}}
   - ascend_scaling.json    {group_id: [ {ATK, DEF, HP} CUMULATIVE per ascend 0..N ]}
-  - char_base_l1.json      {combatant_id: {atk, def, hp, cri, cri_dmg, level_group, ascend_group, limit_break_group, friendship_group}}
+  - char_base_l1.json      {combatant_id: {atk, def, hp, cri, cri_dmg, weak_ego_dmg_rate, level_group, ascend_group, limit_break_group, friendship_group}}
 
 Note: ascend_scaling stores CUMULATIVE bonuses. Index N = sum of per-tier deltas 0..N.
 For example, dev_ascend with per-tier delta ATK=16 for tiers 1..5 yields:
@@ -82,6 +82,9 @@ def build_char_base() -> dict:
             "hp": int(row["s_hp"]),
             "cri": float(row["s_cri"]),
             "cri_dmg": float(row["s_cri_dmg_rate"]),
+            # Sprint 2f5 Feature 3: needed for optimizer "treat target as weak"
+            # toggle. Source field is a string in the raw db; coerce to float.
+            "weak_ego_dmg_rate": float(row["s_weak_ego_dmg_rate"]),
             "level_group": row["link_combatant_level_group"],
             "ascend_group": row["link_combatant_ascend_group"],
             "limit_break_group": row["link_combatant_limit_break_group"],

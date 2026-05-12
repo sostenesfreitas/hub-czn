@@ -4,7 +4,11 @@ Stat scaling lookup using compiled tables from api/data/.
 Public API:
   get_char_base_stats(combatant_id: str, level: int, ascend: int) -> dict
 
-Returns a dict with keys: ATK, DEF, HP, CRate, CDmg.
+Returns a dict with keys: ATK, DEF, HP, CRate, CDmg, WeakEgoDmgRate.
+(WeakEgoDmgRate was added in Sprint 2f5 to wire the optimizer's
+"treat target as weak" toggle. Empirically all live characters have 125.0,
+so it is constant in practice, but we still source it from char data so a
+future char with a different value won't silently fall back to 100.)
 
 Note: tables are loaded once via lru_cache and cached for the process lifetime.
 If api/data/ JSONs are regenerated while the API process is running, call
@@ -71,4 +75,7 @@ def get_char_base_stats(combatant_id: str, level: int, ascend: int) -> dict:
         "HP": char["hp"] + level_bonus["HP"] + ascend_bonus["HP"],
         "CRate": char["cri"],
         "CDmg": char["cri_dmg"],
+        # Sprint 2f5: weak/EGO multiplier base (default 100.0 for legacy
+        # char_base_l1.json files that pre-date this field).
+        "WeakEgoDmgRate": char.get("weak_ego_dmg_rate", 100.0),
     }

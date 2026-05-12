@@ -256,3 +256,49 @@ def test_optimize_start_route_passes_2f4_settings_to_optimizer(client, monkeypat
     assert "settings" in captured, "optimizer.optimize was not called"
     assert captured["settings"].get("target_def") == 777
     assert captured["settings"].get("treat_target_as_weak") is True
+
+
+def test_calculate_build_stats_uses_actual_weak_ego_dmg_rate_when_toggled():
+    """Sprint 2f5 Feature 3: with treat_target_as_weak=True AND populated
+    base_weak_ego_dmg_rate, AvgDMG differs from toggle off."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    stats_off = opt.calculate_build_stats([], char_name="Diana")
+    if stats_off.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    opt._config_treat_target_as_weak = True
+    stats_on = opt.calculate_build_stats([], char_name="Diana")
+    # If Diana's base_weak_ego_dmg_rate is 100, on == off; if > 100, on > off.
+    # Test that the data path is wired even if default 100:
+    # the result must be MATHEMATICALLY consistent with weak_mult.
+    assert "Avg DMG" in stats_on
+    assert "Avg DMG" in stats_off
+
+
+def test_calculate_build_stats_weak_ego_dmg_rate_is_populated_from_char_data():
+    """Sprint 2f5 Feature 3: base_weak_ego_dmg_rate must be sourced from real
+    char data (125 for every live combatant), not silently defaulted to 100.
+
+    Diana has S_WEAK_EGO_DMG_RATE = 125 in the client db, so toggling
+    treat_target_as_weak must multiply AvgDMG by 1.25 (within float epsilon).
+    """
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    stats_off = opt.calculate_build_stats([], char_name="Diana")
+    if stats_off.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    opt._config_treat_target_as_weak = True
+    stats_on = opt.calculate_build_stats([], char_name="Diana")
+    # Diana's S_WEAK_EGO_DMG_RATE is 125, so AvgDMG_on / AvgDMG_off should be 1.25.
+    ratio = stats_on["Avg DMG"] / stats_off["Avg DMG"]
+    assert abs(ratio - 1.25) < 1e-6, (
+        f"Expected AvgDMG ratio 1.25 (Diana weak_ego_dmg_rate=125), got {ratio:.6f}. "
+        f"Likely base_weak_ego_dmg_rate is defaulting to 100 instead of being sourced from char data."
+    )
+

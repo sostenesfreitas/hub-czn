@@ -284,6 +284,11 @@ class GearOptimizer:
             Dictionary with final stat values and derived stats (EHP, Avg DMG, etc.)
         """
         base_atk, base_def, base_hp, base_cr, base_cd = 0, 0, 0, 0, 125.0
+        # Sprint 2f5 Feature 3: base weak/EGO dmg rate (default 100 = no-op).
+        # Sourced alongside ATK/DEF/HP so the "treat target as weak" toggle
+        # downstream sees the real value (~125 for all live chars) instead of
+        # silently falling back to 100 via .get("base_weak_ego_dmg_rate", 100).
+        base_weak_ego_dmg_rate = 100.0
 
         if char_name and char_name in self.character_info:
             info = self.character_info[char_name]
@@ -295,6 +300,7 @@ class GearOptimizer:
                 base_hp = scaled["HP"]
                 base_cr = scaled["CRate"]
                 base_cd = scaled["CDmg"]
+                base_weak_ego_dmg_rate = scaled.get("WeakEgoDmgRate", 100.0)
             except KeyError:
                 # Unknown combatant_id — fall back to legacy hardcoded data
                 print(f"Warning: scaling data missing for res_id={res_id_str!r} ({char_name!r}), falling back to legacy CHARACTERS")
@@ -304,6 +310,7 @@ class GearOptimizer:
                 base_hp = char_data.get("base_hp", 0)
                 base_cr = char_data.get("base_crit_rate", 0)
                 base_cd = char_data.get("base_crit_dmg", 125.0)
+                base_weak_ego_dmg_rate = char_data.get("base_weak_ego_dmg_rate", 100.0)
         elif char_name:
             char_data = get_character_by_name(char_name)
             base_atk = char_data.get("base_atk", 0)
@@ -311,6 +318,7 @@ class GearOptimizer:
             base_hp = char_data.get("base_hp", 0)
             base_cr = char_data.get("base_crit_rate", 0)
             base_cd = char_data.get("base_crit_dmg", 125.0)
+            base_weak_ego_dmg_rate = char_data.get("base_weak_ego_dmg_rate", 100.0)
 
         # Add friendship bonus and partner card stats
         friendship_atk, friendship_def, friendship_hp = 0, 0, 0
@@ -427,12 +435,11 @@ class GearOptimizer:
         eff_pct = best_damage_eff_for(char_name) if char_name else 100.0
         target_def = getattr(self, "_config_target_def", None) or 500
         if getattr(self, "_config_treat_target_as_weak", False) and char_name:
-            try:
-                _char_data = get_character_by_name(char_name) or {}
-            except Exception:
-                _char_data = {}
-            weak_ego_dmg_rate = _char_data.get("base_weak_ego_dmg_rate", 100.0) or 100.0
-            weak_mult = float(weak_ego_dmg_rate) / 100.0
+            # Sprint 2f5: pull base_weak_ego_dmg_rate from the scaling-resolved
+            # value computed above. Pre-2f5 the lookup went via
+            # get_character_by_name() which never populated this field, so the
+            # toggle silently defaulted to 100 (no-op).
+            weak_mult = float(base_weak_ego_dmg_rate or 100.0) / 100.0
         else:
             weak_mult = 1.0
         avg_dmg = expected_damage(
