@@ -372,6 +372,27 @@ def test_calculate_build_stats_includes_extra_dmg_in_avgdmg():
     )
 
 
+def test_optimize_route_accepts_target_count_field(client):
+    """Sprint 2h3: POST /optimize accepts target_count field."""
+    payload = {
+        "char_name": "Diana",
+        "four_piece_sets": [],
+        "two_piece_sets": [],
+        "main_stat_4": None,
+        "main_stat_5": None,
+        "main_stat_6": None,
+        "top_percent": 100,
+        "include_equipped": True,
+        "excluded_heroes": [],
+        "max_results": 1,
+        "target_def": 500,
+        "treat_target_as_weak": False,
+        "target_count": 3,
+    }
+    resp = client.post("/api/optimize/start", json=payload)
+    assert resp.status_code != 500, f"500 error: {resp.text[:300]}"
+
+
 def test_calculate_build_stats_uses_target_count_from_config():
     """Sprint 2h3: _config_target_count flows into AvgDMG via expected_damage."""
     import pytest

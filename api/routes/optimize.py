@@ -42,6 +42,8 @@ class OptimizeStartRequest(BaseModel):
     # Sprint 2f4: AvgDMG configuration knobs
     target_def: int = Field(default=500, ge=0)
     treat_target_as_weak: bool = False
+    # Sprint 2h3: AoE / multi-target modeling
+    target_count: int = Field(default=1, ge=1, le=5)
 
 
 def _format_results(results: list) -> list[dict]:
@@ -153,6 +155,8 @@ async def optimize_start(body: OptimizeStartRequest):
         # Sprint 2f4: AvgDMG configuration knobs
         "target_def": body.target_def,
         "treat_target_as_weak": body.treat_target_as_weak,
+        # Sprint 2h3: AoE / multi-target modeling
+        "target_count": body.target_count,
     }
 
     loop = asyncio.get_running_loop()
