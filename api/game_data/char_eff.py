@@ -163,3 +163,48 @@ def best_damage_eff_for(char_name: str,
     if not candidates:
         return 100.0
     return float(max(candidates))
+
+
+_AOE_TARGET_COUNT_DEFAULT = 3  # mid-content average for "all_enemies" damage cards
+
+
+@functools.lru_cache(maxsize=None)
+def best_damage_card_target_count(char_name: str,
+                                   _resolver: Optional[CharResolver] = None,
+                                   _eff_index: Optional[EffInstanceIndex] = None) -> int:
+    """Auto-detect target count from char's best damage card's target_class.
+
+    Returns 3 for AoE cards (target_class == 'all_enemies'), 1 for
+    single-target / unknown. Used by the optimizer when _config_target_count
+    is set to 0 (auto sentinel).
+
+    Sprint 2h9: builds on best_damage_eff_for's classifier (EffInstanceIndex
+    when available, else v1 string-match). Falls back to 1 for unknown char.
+    """
+    info = _lookup_char_info_by_name(char_name)
+    if info is None:
+        return 1
+    resolver = _resolver if _resolver is not None else _get_resolver()
+    eff_index = _eff_index if _eff_index is not None else _get_default_eff_index()
+    damage_card_ids = _damage_card_ids_via_eff_index(eff_index) if eff_index else None
+
+    # Walk char's damage cards and pick the highest target_count
+    counts: list[int] = []
+    for card_id in list(info.starting_card_ids) + list(info.epiphany_card_ids):
+        exp = resolver.card_expectation(card_id, level=1)
+        if exp is None:
+            continue
+        if damage_card_ids is not None:
+            if not _is_damage_card_v2(card_id, damage_card_ids, exp):
+                continue
+        else:
+            if not _is_damage_card(exp):
+                continue
+        # Map target_class → count
+        if exp.target_class == "all_enemies":
+            counts.append(_AOE_TARGET_COUNT_DEFAULT)
+        else:
+            counts.append(1)
+    if not counts:
+        return 1
+    return max(counts)
