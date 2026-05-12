@@ -1,0 +1,79 @@
+======================================================================
+Per-capture path distribution:
+  websocket_debug_20260511_100845.jsonl: dispatched=652 resolved=485 (74.4%)
+    path 1: 13
+    path 2: 0
+    path 3: 183
+    path 4: 0
+    path 5: 167
+    path 6: 289
+  websocket_debug_20260510_154057.jsonl: dispatched=6874 resolved=5091 (74.1%)
+    path 1: 643
+    path 2: 0
+    path 3: 2041
+    path 4: 2
+    path 5: 1783
+    path 6: 2405
+  websocket_debug_20260509_111039.jsonl: dispatched=10215 resolved=8166 (79.9%)
+    path 1: 2355
+    path 2: 0
+    path 3: 3216
+    path 4: 1
+    path 5: 2049
+    path 6: 2594
+  websocket_debug_20260505_104037.jsonl: dispatched=4318 resolved=3576 (82.8%)
+    path 1: 930
+    path 2: 0
+    path 3: 1192
+    path 4: 0
+    path 5: 742
+    path 6: 1454
+
+======================================================================
+Overall path totals: {6: 6742, 3: 6632, 5: 4741, 1: 3941, 4: 3}
+  path 1: 3941 (17.9%)
+  path 2: 0 (0.0%)
+  path 3: 6632 (30.1%)
+  path 4: 3 (0.0%)
+  path 5: 4741 (21.5%)
+  path 6: 6742 (30.6%)
+
+======================================================================
+Top path-5 (fallback) skill_eff_id patterns:
+    770  other
+    297  cs-prefix (cs01_0473*)
+    296  cs-prefix (cs01_1072*)
+    257  cs-prefix (cs01_0833*)
+    248  add_r_spark_*
+    210  cs-prefix (cs00_0004*)
+    198  cs-prefix (cs00_0288*)
+    156  cs-prefix (cs00_0010*)
+    146  cs-prefix (cs01_0421*)
+    143  cs-prefix (cs01_0806*)
+    126  p_* (partner?)
+    113  cs-prefix (cs01_0416*)
+    112  cs-prefix (cs06_0134*)
+     88  cs-prefix (cs01_0708*)
+     83  cs-prefix (cs02_0421*)
+     76  cs-prefix (cs01_0877*)
+     63  cs-prefix (cs02_0582*)
+     61  cs-prefix (cs01_0124*)
+     57  eq-prefix (eq_pub*)
+     51  cs-prefix (cs01_0780*)
+
+Top path-5 eff_types:
+   1712  SKILL_EFF_CS_SET_ADD
+   1046  SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    693  SKILL_EFF_DMG_IGNORE_COND
+    301  SKILL_EFF_DMG_COOP
+    286  SKILL_EFF_CARD_DRAW
+    257  SKILL_EFF_SHIELD_IGNORE_COND
+    124  SKILL_EFF_CARD_GET
+    113  SKILL_EFF_DMG
+     57  SKILL_EFF_HEAL
+     44  SKILL_EFF_STRESS_ADD_NONE_COLLAPSE
+     33  SKILL_EFF_CS_ADD_COND_AUTO
+     26  SKILL_EFF_ENERGY_CHANGE
+     23  SKILL_EFF_STRESS_ADD
+     20  SKILL_EFF_CS_SET_ADD_IGNORE_BLOCK
+      2  SKILL_EFF_CS_SET_ADD_RANDOM
