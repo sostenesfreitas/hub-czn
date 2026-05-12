@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import type { CardCharacter } from '@/lib/types'
 import { CombatantDeckColumn } from './components/CombatantDeckColumn'
 import { DeckBuilderHeader } from './components/DeckBuilderHeader'
-import { VariantSettingsModal } from './components/VariantSettingsModal'
+import {
+  VariantSettingsModal,
+  type VariantModalInitialSection,
+} from './components/VariantSettingsModal'
 import { useDeckBuilder } from './hooks/useDeckBuilder'
 
 type DeckBuilderCardCharacter = CardCharacter & {
@@ -12,6 +16,8 @@ type DeckBuilderCardCharacter = CardCharacter & {
 export function DeckBuilderPage() {
   const deckBuilder = useDeckBuilder()
   const variantModalTarget = deckBuilder.variantModalTarget
+  const [variantModalInitialSection, setVariantModalInitialSection] =
+    useState<VariantModalInitialSection>('epiphany')
 
   const variantModalCombatantClass = variantModalTarget
     ? (
@@ -58,12 +64,14 @@ export function DeckBuilderPage() {
               onAddDeckBuilderCard={item =>
                 deckBuilder.addDeckBuilderCard(index, item)
               }
-              onOpenDeckCardVariants={item =>
+              onOpenDeckCardVariants={(item, initialSection = 'epiphany') => {
+                setVariantModalInitialSection(initialSection)
                 deckBuilder.openDeckCardVariants(index, item)
-              }
-              onOpenAvailableCardVariants={item =>
+              }}
+              onOpenAvailableCardVariants={item => {
+                setVariantModalInitialSection('epiphany')
                 deckBuilder.openAvailableCardVariants(index, item)
-              }
+              }}
               onSelectEquipment={(equipmentSlot, item) =>
                 deckBuilder.selectEquipment(index, equipmentSlot, item)
               }
@@ -80,6 +88,7 @@ export function DeckBuilderPage() {
         <VariantSettingsModal
           target={variantModalTarget}
           combatantClass={variantModalCombatantClass}
+          initialSection={variantModalInitialSection}
           onClose={deckBuilder.closeVariantModal}
           onApplySettings={deckBuilder.applyEpiphanySettings}
           onClearSettings={

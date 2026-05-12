@@ -83,4 +83,4 @@ extracted_db/
 docs/superpowers/
 
 # Local scripts
-local_scripts/
+.scripts/

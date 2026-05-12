@@ -33,6 +33,7 @@ import { EquipmentSelectionModal } from './EquipmentSelectionModal'
 import { EquipmentSlot } from './EquipmentSlot'
 
 type CardSelectionKind = 'starting' | 'epiphany' | 'shared'
+type VariantModalInitialSection = 'description' | 'epiphany'
 
 const CARD_SELECTION_PAGE_SIZE = 12
 
@@ -145,12 +146,14 @@ function CompactDeckCard({
   count,
   onDuplicate,
   onRemove,
+  onOpenDetails,
   onOpenVariants,
 }: {
   item: DeckCardInstance
   count: number
   onDuplicate: () => void
   onRemove: () => void
+  onOpenDetails: () => void
   onOpenVariants?: () => void
 }) {
   const displayName = item.selectedVariant?.name ?? item.card.name ?? 'Unnamed card'
@@ -160,13 +163,28 @@ function CompactDeckCard({
   const hasEpiphanySettings = item.variants.length > 0 || canUseDeckBuilderEpiphanies(item.card)
   const epiphanySummary = getDeckCardEpiphanySummary(item)
 
+  const isLongTitle = displayName.length > 16
+  const isVeryLongTitle = displayName.length > 24
+  const isLongDescription = Boolean(displayDescription && displayDescription.length > 80)
+
   const hasCombatStats =
     item.card.eff_value > 0 ||
     item.card.hits > 0 ||
     item.card.spark_count > 0
 
   return (
-    <article className="group relative flex h-[218px] flex-col overflow-hidden rounded-xl border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#60a5fa]">
+    <article
+      role="button"
+      tabIndex={0}
+      onClick={onOpenDetails}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onOpenDetails()
+        }
+      }}
+      className="group relative flex h-[210px] cursor-pointer flex-col overflow-hidden rounded-xl border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#60a5fa] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]/45"
+    >
       <div className="absolute inset-0">
         <CardImage
           card={item.card}
@@ -188,7 +206,7 @@ function CompactDeckCard({
         </span>
       </div>
 
-      <div className="relative z-10 mt-auto flex min-h-[116px] flex-col justify-end px-3 pb-2.5 pt-9">
+      <div className="relative z-10 mt-auto flex min-h-[112px] flex-col justify-end px-3 pb-2.5 pt-9">
         {displayTypes.length > 0 && (
           <div className="mb-1 flex min-h-[13px] flex-wrap gap-1">
             {displayTypes.slice(0, 2).map(type => (
@@ -197,12 +215,28 @@ function CompactDeckCard({
           </div>
         )}
 
-        <h3 className="line-clamp-2 text-[15px] font-black leading-[1.05] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]">
+        <h3
+          className={[
+            'line-clamp-2 font-black text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]',
+            isVeryLongTitle
+              ? 'text-[13px] leading-[1.06]'
+              : isLongTitle
+                ? 'text-[14px] leading-[1.08]'
+                : 'text-[15px] leading-[1.1]',
+          ].join(' ')}
+        >
           {displayName}
         </h3>
 
         {displayDescription && (
-          <p className="mt-1 line-clamp-3 text-[10px] font-bold leading-[1.12] text-white/95 drop-shadow-[0_2px_2px_rgba(0,0,0,0.95)]">
+          <p
+            className={[
+              'mt-1 font-bold text-white/95 drop-shadow-[0_2px_2px_rgba(0,0,0,0.95)]',
+              isLongDescription
+                ? 'line-clamp-3 text-[10px] leading-[1.1]'
+                : 'line-clamp-3 text-[10.5px] leading-[1.14]',
+            ].join(' ')}
+          >
             {displayDescription}
           </p>
         )}
@@ -236,11 +270,14 @@ function CompactDeckCard({
         )}
       </div>
 
-      <div className="relative z-10 flex h-9 shrink-0 items-center justify-end gap-1.5 border-t border-white/10 bg-black/80 px-2">
+      <div className="relative z-10 flex h-8 shrink-0 items-center justify-end gap-1.5 border-t border-white/10 bg-black/80 px-2">
         {hasEpiphanySettings && onOpenVariants && (
           <button
             type="button"
-            onClick={onOpenVariants}
+            onClick={event => {
+              event.stopPropagation()
+              onOpenVariants()
+            }}
             title="Configurar epifanias"
             className="inline-flex h-6 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/90 px-2 text-[9px] font-black text-[#7dd3fc] hover:bg-[#0c4a6e]"
           >
@@ -251,7 +288,10 @@ function CompactDeckCard({
 
         <button
           type="button"
-          onClick={onDuplicate}
+          onClick={event => {
+            event.stopPropagation()
+            onDuplicate()
+          }}
           title="Duplicar carta"
           className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
         >
@@ -260,7 +300,10 @@ function CompactDeckCard({
 
         <button
           type="button"
-          onClick={onRemove}
+          onClick={event => {
+            event.stopPropagation()
+            onRemove()
+          }}
           title="Remover carta"
           className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
         >
@@ -284,23 +327,23 @@ function CardSectionButton({
     <button
       type="button"
       onClick={onClick}
-      className="mt-3 flex w-full items-center justify-between rounded-xl border border-[#282838] bg-[#101018] px-4 py-3 text-left transition hover:border-[#60a5fa] hover:bg-[#151522]"
+      className="mt-2 flex w-full items-center justify-between rounded-lg border border-[#282838] bg-[#101018] px-3 py-2 text-left transition hover:border-[#60a5fa] hover:bg-[#151522]"
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <ChevronRight size={14} className="text-[#c084fc]" />
+          <ChevronRight size={13} className="text-[#c084fc]" />
 
-          <h3 className="text-xs font-black uppercase tracking-wide text-white">
+          <h3 className="text-[11px] font-black uppercase tracking-wide text-white">
             {getCardSelectionTitle(kind)}
           </h3>
         </div>
 
-        <p className="mt-1 text-[11px] text-[#777]">
+        <p className="mt-0.5 text-[10px] text-[#777]">
           {getCardSectionDescription(kind)}
         </p>
       </div>
 
-      <span className="shrink-0 rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-black text-[#93c5fd]">
+      <span className="shrink-0 rounded-md bg-[#0f172a] px-2 py-1 text-[10px] font-black text-[#93c5fd]">
         {count} disponíveis
       </span>
     </button>
@@ -478,7 +521,10 @@ export function CombatantDeckColumn({
   onDuplicateCard: (instanceId: string) => void
   onRemoveCard: (instanceId: string) => void
   onAddDeckBuilderCard: (item: DeckBuilderCardWithVariants) => void
-  onOpenDeckCardVariants: (item: DeckCardInstance) => void
+  onOpenDeckCardVariants: (
+    item: DeckCardInstance,
+    initialSection?: VariantModalInitialSection,
+  ) => void
   onOpenAvailableCardVariants: (item: DeckBuilderCardWithVariants) => void
   onSelectEquipment: (equipmentSlot: DeckBuilderItemSlot, item: DeckBuilderItem) => void
   onClearEquipment: (equipmentSlot: DeckBuilderItemSlot) => void
@@ -515,20 +561,20 @@ export function CombatantDeckColumn({
 
   return (
     <section className="min-w-0 overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
-      <header className="border-b border-[#282838] p-4">
-        <div className="flex items-start justify-between gap-3">
+      <header className="border-b border-[#282838] p-3">
+        <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-wide text-[#777]">
+            <p className="text-[9px] uppercase tracking-wide text-[#777]">
               Combatente {slotIndex + 1}
             </p>
 
-            <div className="mt-2 flex items-center gap-3">
+            <div className="mt-1.5 flex items-center gap-2">
               <CharacterAvatar character={selectedCombatant} />
 
               <select
                 value={slot.combatantId ?? ''}
                 onChange={e => onSelectCombatant(e.target.value ? Number(e.target.value) : null)}
-                className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-sm text-white outline-none focus:border-[#60a5fa]"
+                className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-1.5 text-xs text-white outline-none focus:border-[#60a5fa]"
               >
                 <option value="">Selecionar combatente...</option>
                 {characters.map(character => (
@@ -545,25 +591,25 @@ export function CombatantDeckColumn({
             onClick={onClearDeck}
             disabled={slot.cards.length === 0 && !hasEquipment}
             title="Limpar deck"
-            className="mt-6 grid h-9 w-9 place-items-center rounded-lg border border-[#333348] text-[#888] hover:border-[#7f1d1d] hover:text-[#fca5a5] disabled:opacity-40 disabled:hover:border-[#333348] disabled:hover:text-[#888]"
+            className="mt-5 grid h-8 w-8 place-items-center rounded-lg border border-[#333348] text-[#888] hover:border-[#7f1d1d] hover:text-[#fca5a5] disabled:opacity-40 disabled:hover:border-[#333348] disabled:hover:text-[#888]"
           >
-            <Trash2 size={15} />
+            <Trash2 size={14} />
           </button>
         </div>
 
         {selectedCombatant && (
-          <div className="mt-3 rounded-xl border border-[#282838] bg-[#101018] p-2">
-            <div className="mb-1.5 flex items-center justify-between">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-[#777]">
+          <div className="mt-2 rounded-lg border border-[#282838] bg-[#101018] p-1.5">
+            <div className="mb-1 flex items-center justify-between">
+              <p className="text-[9px] font-bold uppercase tracking-wide text-[#777]">
                 Equipamentos
               </p>
 
-              <span className="text-[10px] text-[#666]">
+              <span className="text-[9px] text-[#666]">
                 Weapon / Armor / Accessory
               </span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-1.5">
               <EquipmentSlot
                 slot="weapon"
                 item={slot.equipment.weapon}
@@ -588,45 +634,45 @@ export function CombatantDeckColumn({
           </div>
         )}
 
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded-lg bg-[#101018] px-3 py-2">
-            <p className="text-[9px] uppercase text-[#666]">Cartas</p>
-            <p className="text-sm font-bold text-white">{slot.cards.length}</p>
+        <div className="mt-3 grid grid-cols-3 gap-1.5">
+          <div className="rounded-lg bg-[#101018] px-2 py-1.5">
+            <p className="text-[8.5px] uppercase text-[#666]">Cartas</p>
+            <p className="text-xs font-bold text-white">{slot.cards.length}</p>
           </div>
 
-          <div className="rounded-lg bg-[#101018] px-3 py-2">
-            <p className="text-[9px] uppercase text-[#666]">Custo</p>
-            <p className="text-sm font-bold text-[#fb923c]">{totalCost}</p>
+          <div className="rounded-lg bg-[#101018] px-2 py-1.5">
+            <p className="text-[8.5px] uppercase text-[#666]">Custo</p>
+            <p className="text-xs font-bold text-[#fb923c]">{totalCost}</p>
           </div>
 
-          <div className="rounded-lg bg-[#101018] px-3 py-2">
-            <p className="text-[9px] uppercase text-[#666]">Epiphany</p>
-            <p className="text-sm font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
+          <div className="rounded-lg bg-[#101018] px-2 py-1.5">
+            <p className="text-[8.5px] uppercase text-[#666]">Epiphany</p>
+            <p className="text-xs font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
           </div>
         </div>
 
         {selectedCombatant && (
-          <p className="mt-3 truncate text-xs text-[#b3b3b3]">
+          <p className="mt-2 truncate text-[11px] text-[#b3b3b3]">
             Deck de <span className="font-semibold text-white">{selectedCombatant.name}</span>
           </p>
         )}
       </header>
 
-      <div className="h-[calc(100vh-455px)] min-h-[420px] overflow-y-auto p-3">
+      <div className="h-[calc(100vh-345px)] min-h-[360px] overflow-y-auto p-2.5">
         {slot.error && (
-          <div className="mb-3 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 p-3 text-xs text-[#fca5a5]">
+          <div className="mb-2.5 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 p-2.5 text-xs text-[#fca5a5]">
             {slot.error}
           </div>
         )}
 
         {slot.isLoading ? (
-          <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
+          <div className="flex h-[180px] items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
             Carregando cartas do combatente...
           </div>
         ) : slot.cards.length === 0 ? (
-          <div className="flex h-[260px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
-            <Plus className="text-[#555]" size={32} />
-            <p className="mt-3 text-sm font-medium text-[#aaa]">
+          <div className="flex h-[210px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
+            <Plus className="text-[#555]" size={28} />
+            <p className="mt-2 text-sm font-medium text-[#aaa]">
               {selectedCombatant ? 'Nenhuma carta no deck' : 'Nenhum combatente selecionado'}
             </p>
             <p className="mt-1 max-w-[240px] text-xs text-[#666]">
@@ -636,24 +682,24 @@ export function CombatantDeckColumn({
             </p>
           </div>
         ) : (
-          <section className="rounded-xl border border-[#282838] bg-[#101018] p-3">
-            <div className="mb-3 flex items-center justify-between gap-3">
+          <section className="rounded-xl border border-[#282838] bg-[#101018] p-2.5">
+            <div className="mb-2.5 flex items-center justify-between gap-3">
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wide text-white">
+                <h3 className="text-[11px] font-black uppercase tracking-wide text-white">
                   Cartas adicionadas
                 </h3>
 
-                <p className="mt-1 text-[11px] text-[#777]">
+                <p className="mt-0.5 text-[10px] text-[#777]">
                   {groupedCards.length} grupos no deck montado.
                 </p>
               </div>
 
-              <span className="rounded-lg bg-[#0f172a] px-3 py-1 text-xs font-black text-[#93c5fd]">
+              <span className="rounded-md bg-[#0f172a] px-2 py-1 text-[10px] font-black text-[#93c5fd]">
                 {slot.cards.length} cartas
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 2xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-2.5 2xl:grid-cols-3">
               {groupedCards.map(group => (
                 <CompactDeckCard
                   key={getCardGroupKey(group.item)}
@@ -661,9 +707,10 @@ export function CombatantDeckColumn({
                   count={group.count}
                   onDuplicate={() => onDuplicateCard(group.item.instanceId)}
                   onRemove={() => onRemoveCard(group.item.instanceId)}
+                  onOpenDetails={() => onOpenDeckCardVariants(group.item, 'description')}
                   onOpenVariants={
                     group.item.variants.length > 0 || canUseDeckBuilderEpiphanies(group.item.card)
-                      ? () => onOpenDeckCardVariants(group.item)
+                      ? () => onOpenDeckCardVariants(group.item, 'epiphany')
                       : undefined
                   }
                 />
