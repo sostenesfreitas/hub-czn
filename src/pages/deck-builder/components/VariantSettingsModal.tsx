@@ -30,7 +30,7 @@ const COMMON_EPIPHANIES = commonEpiphaniesData as DeckBuilderCommonEpiphany[]
 
 type EpiphanyItem = DeckBuilderDivineEpiphany | DeckBuilderCommonEpiphany
 export type VariantModalInitialSection = 'description' | 'epiphany'
-type ModalSection = VariantModalInitialSection
+type ModalSection = VariantModalInitialSection | 'engraving'
 
 function normalizeComparable(value: string | number | null | undefined) {
   return String(value ?? '')
@@ -94,6 +94,18 @@ function getVariantCardType(
 function getVariantTags(selectedVariant: DeckBuilderEpiphanyVariant | null) {
   return (
     (selectedVariant as { tags?: string[] | null } | null)?.tags ?? []
+  )
+}
+
+function isPersonaDeckBuilderCard(card: { name?: string | null; effect_types?: string[] | null }) {
+  const normalizedName = normalizeComparable(card.name)
+
+  if (normalizedName === 'persona') {
+    return true
+  }
+
+  return (card.effect_types ?? []).some(
+    type => normalizeComparable(type) === 'persona',
   )
 }
 
@@ -770,11 +782,21 @@ export function VariantSettingsModal({
     ? target.description
     : target.item.description
 
+  const isPersonaCard = isPersonaDeckBuilderCard(card)
   const canUseEpiphanies = canUseDeckBuilderEpiphanies(card)
-  const canShowEpiphanySection = variants.length > 0 || canUseEpiphanies
+  const canShowEpiphanySection = !isPersonaCard && (variants.length > 0 || canUseEpiphanies)
+  const canShowEngravingSection = isPersonaCard
+  const defaultInitialSection: ModalSection = target.type === 'deck'
+    ? 'description'
+    : canShowEngravingSection
+      ? 'engraving'
+      : 'epiphany'
+  const normalizedInitialSection: ModalSection = initialSection === 'epiphany' && canShowEngravingSection
+    ? 'engraving'
+    : initialSection ?? defaultInitialSection
 
   const [activeSection, setActiveSection] = useState<ModalSection>(
-    initialSection ?? (target.type === 'deck' ? 'description' : 'epiphany'),
+    normalizedInitialSection,
   )
 
   const [searchText, setSearchText] = useState('')
@@ -815,9 +837,14 @@ export function VariantSettingsModal({
 
   useEffect(() => {
     if (activeSection === 'epiphany' && !canShowEpiphanySection) {
-      setActiveSection('description')
+      setActiveSection(canShowEngravingSection ? 'engraving' : 'description')
+      return
     }
-  }, [activeSection, canShowEpiphanySection])
+
+    if (activeSection === 'engraving' && !canShowEngravingSection) {
+      setActiveSection(canShowEpiphanySection ? 'epiphany' : 'description')
+    }
+  }, [activeSection, canShowEngravingSection, canShowEpiphanySection])
 
   const divineEpiphanies = useMemo(
     () => {
@@ -944,7 +971,11 @@ export function VariantSettingsModal({
                 <Sparkles size={17} className="shrink-0 text-[#7dd3fc]" />
 
                 <h2 className="truncate text-base font-black text-white">
-                  {target.type === 'deck' ? displayTitle : t('deckBuilder.variantModal.epiphanySettings')}
+                  {target.type === 'deck'
+                    ? displayTitle
+                    : canShowEngravingSection
+                      ? 'Engraving'
+                      : t('deckBuilder.variantModal.epiphanySettings')}
                 </h2>
               </div>
 
@@ -963,18 +994,18 @@ export function VariantSettingsModal({
                     {t('deckBuilder.variantModal.descriptionTab')}
                   </button>
 
-                  {canShowEpiphanySection && (
+                  {(canShowEpiphanySection || canShowEngravingSection) && (
                     <button
                       type="button"
-                      onClick={() => setActiveSection('epiphany')}
+                      onClick={() => setActiveSection(canShowEngravingSection ? 'engraving' : 'epiphany')}
                       className={[
                         'rounded-full px-4 py-1.5 text-[11px] font-bold transition',
-                        activeSection === 'epiphany'
+                        activeSection === (canShowEngravingSection ? 'engraving' : 'epiphany')
                           ? 'bg-[#075985] text-white shadow'
                           : 'text-[#a1a1aa] hover:text-white',
                       ].join(' ')}
                     >
-                      {t('deckBuilder.variantModal.epiphanyTab')}
+                      {canShowEngravingSection ? 'Engraving' : t('deckBuilder.variantModal.epiphanyTab')}
                     </button>
                   )}
                 </div>
@@ -1191,6 +1222,44 @@ export function VariantSettingsModal({
                   </div>
                 </div>
               </section>
+            ) : activeSection === 'engraving' ? (
+              <section className="flex h-full min-h-0 min-w-0 flex-col gap-3 overflow-hidden">
+                <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
+                  <p className="text-[10px] uppercase tracking-wide text-[#777]">
+                    Engraving
+                  </p>
+
+                  <h3 className="mt-2 text-lg font-black text-white">
+                    Persona Card
+                  </h3>
+
+                  <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#a1a1aa]">
+                    Configure as Engravings da Persona Card. Esta seção substitui Epifania apenas para cartas Persona.
+                  </p>
+                </section>
+
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
+                    <p className="text-[10px] uppercase tracking-wide text-[#777]">
+                      Slot 1
+                    </p>
+
+                    <p className="mt-2 text-sm font-bold text-white">
+                      Nenhuma Engraving selecionada
+                    </p>
+                  </section>
+
+                  <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
+                    <p className="text-[10px] uppercase tracking-wide text-[#777]">
+                      Slot 2
+                    </p>
+
+                    <p className="mt-2 text-sm font-bold text-white">
+                      Nenhuma Engraving selecionada
+                    </p>
+                  </section>
+                </div>
+              </section>
             ) : (
               <section className="flex h-full min-h-0 min-w-0 flex-col gap-3 overflow-hidden">
                 {variants.length > 0 && (
@@ -1403,7 +1472,13 @@ export function VariantSettingsModal({
           ) : (
             <>
               <p className="text-[11px] text-[#777]">
-                {t('deckBuilder.variantModal.footerHintPrefix')}{' '}<span className="font-bold text-[#7dd3fc]">{t('deckBuilder.variantModal.epiphanyTab')}</span>{' '}{t('deckBuilder.variantModal.footerHintSuffix')}
+                {activeSection === 'engraving' || canShowEngravingSection ? (
+                  'Engraving'
+                ) : (
+                  <>
+                    {t('deckBuilder.variantModal.footerHintPrefix')}{' '}<span className="font-bold text-[#7dd3fc]">{t('deckBuilder.variantModal.epiphanyTab')}</span>{' '}{t('deckBuilder.variantModal.footerHintSuffix')}
+                  </>
+                )}
               </p>
 
               <button
