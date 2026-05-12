@@ -484,6 +484,52 @@ export function OptimizerPanel({
           </div>
         </div>
 
+        {/* Sprint 2f4: AvgDMG configuration */}
+        <div className="border-t border-[#282828] pt-3 space-y-2">
+          <p className="text-[10px] uppercase tracking-wider text-[#b3b3b3]">
+            AvgDMG (Sprint 2f4)
+          </p>
+
+          <div className="space-y-1">
+            <label htmlFor="optimizer-target-def" className="text-[9px] uppercase tracking-wider text-[#666666]">
+              Monster DEF
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="optimizer-target-def"
+                type="number"
+                min={0}
+                max={2000}
+                step={50}
+                value={config.target_def ?? 500}
+                onChange={(e) =>
+                  patch({
+                    target_def: Math.max(0, Math.min(2000, parseInt(e.target.value) || 500)),
+                  })
+                }
+                disabled={disabled}
+                className="w-20 bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <span className="text-[10px] text-[#666666] tabular-nums">
+                DR ≈ {((268.0 / ((config.target_def ?? 500) + 503.0)) * 100).toFixed(1)}%
+              </span>
+            </div>
+          </div>
+
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={config.treat_target_as_weak ?? false}
+              onChange={(e) => patch({ treat_target_as_weak: e.target.checked })}
+              disabled={disabled}
+              className="accent-[#c084fc]"
+            />
+            <span className="text-[10px] text-[#b3b3b3]">
+              Treat target as weak (apply EGO/weak multiplier)
+            </span>
+          </label>
+        </div>
+
         <div className="space-y-1">
           <label htmlFor="optimizer-max-results" className="text-[10px] uppercase tracking-wider text-[#b3b3b3] flex items-center gap-1">
             {t('optimizer.maxResults')}
