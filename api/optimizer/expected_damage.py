@@ -49,20 +49,17 @@ def expected_damage(
     dummy_def: int = DUMMY_DEF,
     weak_mult: float = 1.0,
     extra_dmg_pct: float = 0.0,
+    target_count: int = 1,
 ) -> float:
     """Expected per-hit damage against a default target.
 
-    Formula: atk * (eff_pct / 100) * (1 - DR) * cf_ev * weak_mult * (1 + extra_dmg_pct/100)
+    Formula: atk * (eff_pct/100) * (1-DR) * cf_ev * weak_mult * (1+extra_dmg_pct/100) * target_count
 
-    Sprint 2h2: added extra_dmg_pct parameter. Default 0.0 preserves
-    pre-2h2 behavior. Optimizer passes total_stats['Extra DMG%'] from
-    gear/sets/partner sources.
-
-    Note: DoT% is intentionally NOT included — DoT is a damage-over-time
-    mechanic that needs N-ticks assumption per char. Deferred to a future
-    sprint.
+    Sprint 2h3: added target_count parameter for AoE / multi-target modeling.
+    Default 1 preserves single-target behavior. User picks the average
+    number of enemies their team typically fights.
     """
     cf_ev = expected_crit_factor(cri, cri_dmg_rate)
     dr = default_damage_reduction(dummy_def)
     extra_mult = 1.0 + extra_dmg_pct / 100.0
-    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult * extra_mult
+    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult * extra_mult * target_count

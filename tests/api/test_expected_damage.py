@@ -110,3 +110,25 @@ def test_expected_damage_extra_dmg_composes_multiplicatively_with_weak():
     both = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0,
                            extra_dmg_pct=50.0, weak_mult=2.0)
     assert both == pytest.approx(base * 1.5 * 2.0)
+
+
+def test_expected_damage_target_count_default_is_1():
+    """Sprint 2h3: target_count parameter defaults to 1 — pre-2h3 behavior."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    with_one = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, target_count=1)
+    assert base == with_one
+
+
+def test_expected_damage_target_count_3_triples_result():
+    """Sprint 2h3: target_count=3 multiplies result by 3."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    triple = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, target_count=3)
+    assert triple == pytest.approx(3.0 * base)
+
+
+def test_expected_damage_target_count_composes_with_extra_dmg_and_weak():
+    """When target_count + extra_dmg_pct + weak_mult all set, all apply multiplicatively."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    all_three = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0,
+                                  target_count=2, extra_dmg_pct=50.0, weak_mult=1.5)
+    assert all_three == pytest.approx(base * 2.0 * 1.5 * 1.5)
