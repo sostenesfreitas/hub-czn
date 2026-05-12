@@ -76,17 +76,18 @@ def main() -> int:
 
     print("=" * 70)
     print("Per-capture path distribution:")
+    all_paths = (1, 2, 3, 4, 5, 6)
     for name, (total, paths, resolved) in per_capture.items():
         pct = resolved / total * 100 if total else 0
         print(f"  {name}: dispatched={total} resolved={resolved} ({pct:.1f}%)")
-        for p in (1, 2, 3, 4, 5):
+        for p in all_paths:
             print(f"    path {p}: {paths.get(p, 0)}")
     print()
     print("=" * 70)
     print(f"Overall path totals: {dict(overall_paths)}")
     total = sum(overall_paths.values())
     if total:
-        for p in (1, 2, 3, 4, 5):
+        for p in all_paths:
             n = overall_paths.get(p, 0)
             print(f"  path {p}: {n} ({n/total*100:.1f}%)")
     print()

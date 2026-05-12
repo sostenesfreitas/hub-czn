@@ -600,3 +600,106 @@ def test_resolve_caster_returns_path_num():
     )
     assert path == 5
     assert inferred is True
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g1 — path 6: cs_map_raw lookup for cs_* skill_eff_ids
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_cs_resolve(cs_map_raw):
+    """Build a BattleState with 2 player chars + 1 enemy and the given cs_map_raw."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    c1 = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                   cri=0.0, cri_dmg_rate=0, res_id="1057")
+    c2 = CharState(id="3", atk=500, def_=100, hp=1, hp_current=1,
+                   cri=0.0, cri_dmg_rate=0, res_id="1052")
+    mon = MonsterState(id="38", def_=0, hp=1, hp_current=1)
+    s = BattleState(turn=1, player_team=[c1, c2], enemies=[mon],
+                    hand=[], deck=[], discard=[], morale=0,
+                    ego_state={}, spark_state={}, cs_stacks={},
+                    rng=random.Random(0))
+    s.cs_map_raw = cs_map_raw
+    return s
+
+
+def test_resolve_caster_path6_cs_map_raw_unique_char_id():
+    """Path 6: cs_* skill_eff_id resolves via cs_map_raw when exactly one
+    char_id is found for the matching cs res_id."""
+    cs_map = {
+        "5": {"res_id": "cs01_0808", "char_id": 3, "caster_id": 21, "owner_id": 21},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert str(unit.id) == "3"
+    assert inferred is False
+    assert path == 6
+
+
+def test_resolve_caster_path6_falls_through_when_ambiguous():
+    """When multiple csMap entries with same res_id have different char_ids,
+    path 6 cannot disambiguate; falls through to path 5."""
+    cs_map = {
+        "66": {"res_id": "cs01_0833", "char_id": 1, "caster_id": 7, "owner_id": 7},
+        "95": {"res_id": "cs01_0833", "char_id": 3, "caster_id": 85, "owner_id": 85},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0833_01", segment_caster=None,
+    )
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path6_falls_through_when_no_cs_map_raw():
+    """When state.cs_map_raw is None, path 6 is skipped entirely."""
+    state = _make_state_for_cs_resolve(None)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert path == 5
+
+
+def test_resolve_caster_path6_resolves_monster_caster():
+    """Path 6 can resolve to a monster when char_id matches an enemy unit id."""
+    cs_map = {
+        "1": {"res_id": "cs19_0071", "char_id": 38, "caster_id": 38, "owner_id": 38},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs19_0071_01", segment_caster=None,
+    )
+    assert str(unit.id) == "38"
+    assert inferred is False
+    assert path == 6
+
+
+def test_resolve_caster_path6_only_runs_for_cs_prefix():
+    """Path 6 only applies to skill_eff_ids starting with 'cs'. Other
+    prefixes (eq_*, add_r_spark_*, monster res ids) fall through to path 5."""
+    cs_map = {
+        "1": {"res_id": "eq_pub_001", "char_id": 3, "caster_id": 3, "owner_id": 3},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="eq_pub_001_01", segment_caster=None,
+    )
+    assert path == 5  # path 6 should not resolve eq_* effects
+
+
+def test_resolve_caster_path6_preferred_over_path5_only():
+    """Verify paths 1-4 still win over path 6 when they match (path order
+    is preserved). Direct match (path 1) for caster_id='1' wins even when
+    cs_map_raw has a cs entry that would resolve to a different unit."""
+    cs_map = {
+        "5": {"res_id": "cs01_0808", "char_id": 3, "caster_id": 21, "owner_id": 21},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "1", state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert str(unit.id) == "1"
+    assert path == 1

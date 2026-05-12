@@ -22,6 +22,7 @@ from api.simulator.replay.state_accumulator import StateAccumulator
 
 _CHAR_PREFIX_RE = re.compile(r"^c_(\d+)_")
 _MONSTER_PREFIX_RE = re.compile(r"^(\d{5,})_")  # e.g., 1006005_*
+_CS_PREFIX_RE = re.compile(r"^(cs\d{2}_\d{4})")  # e.g., cs01_0808_01 -> cs01_0808
 
 
 def _replace_seq(event, new_seq: int):
@@ -250,10 +251,13 @@ class ReplayHarness:
         4. Segment caster: chain SkillEffs (cs-prefix etc) attribute to the
            actor of the most recent UsedCardEvent (Sprint 2d's
            StateAccumulator.caster_at). Authoritative — not inferred.
+        6. cs_map_raw lookup: for cs<NN>_<NNNN>_<NN> skill_eff_ids, scan
+           state.cs_map_raw entries for matching res_id. If exactly one
+           unique char_id is present, use it (Sprint 2g1). Authoritative.
         5. Fallback: player_team[0] with inferred=True.
 
         Returns (unit, inferred, path_num) where inferred=True if fallback was
-        used and path_num (1-5) records which branch succeeded (Sprint 2g1).
+        used and path_num (1-6) records which branch succeeded (Sprint 2g1).
         """
         # 1. Direct match
         if caster_id is not None:
@@ -296,6 +300,30 @@ class ReplayHarness:
             for unit in state.enemies:
                 if str(unit.id) == str(segment_caster):
                     return unit, False, 4
+        # 6. cs_map_raw lookup for cs_* skill_eff_ids (Sprint 2g1).
+        # Strip the trailing _NN suffix to get the cs res_id base, then look
+        # for unique char_id across cs_map_raw entries with that res_id.
+        if skill_eff_id:
+            cs_match = _CS_PREFIX_RE.match(skill_eff_id)
+            cs_map = getattr(state, "cs_map_raw", None)
+            if cs_match and cs_map:
+                cs_res_id = cs_match.group(1)
+                char_ids: set = set()
+                for entry in cs_map.values():
+                    if not isinstance(entry, dict):
+                        continue
+                    if str(entry.get("res_id", "")) == cs_res_id:
+                        cid = entry.get("char_id")
+                        if cid is not None:
+                            char_ids.add(str(cid))
+                if len(char_ids) == 1:
+                    only = next(iter(char_ids))
+                    for unit in state.player_team:
+                        if str(unit.id) == only:
+                            return unit, False, 6
+                    for unit in state.enemies:
+                        if str(unit.id) == only:
+                            return unit, False, 6
         # 5. Fallback
         if state.player_team:
             return state.player_team[0], True, 5

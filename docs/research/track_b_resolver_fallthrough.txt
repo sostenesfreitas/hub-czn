@@ -1,74 +1,79 @@
 ======================================================================
 Per-capture path distribution:
-  websocket_debug_20260511_100845.jsonl: dispatched=652 resolved=187 (28.7%)
+  websocket_debug_20260511_100845.jsonl: dispatched=652 resolved=341 (52.3%)
     path 1: 13
     path 2: 0
     path 3: 174
     path 4: 0
-    path 5: 465
-  websocket_debug_20260510_154057.jsonl: dispatched=6874 resolved=2387 (34.7%)
+    path 5: 311
+    path 6: 154
+  websocket_debug_20260510_154057.jsonl: dispatched=6874 resolved=3946 (57.4%)
     path 1: 643
     path 2: 0
     path 3: 1742
     path 4: 2
-    path 5: 4487
-  websocket_debug_20260509_111039.jsonl: dispatched=10215 resolved=5159 (50.5%)
+    path 5: 2928
+    path 6: 1559
+  websocket_debug_20260509_111039.jsonl: dispatched=10215 resolved=6436 (63.0%)
     path 1: 2355
     path 2: 0
     path 3: 2797
     path 4: 7
-    path 5: 5056
-  websocket_debug_20260505_104037.jsonl: dispatched=4318 resolved=1975 (45.7%)
+    path 5: 3779
+    path 6: 1277
+  websocket_debug_20260505_104037.jsonl: dispatched=4318 resolved=2923 (67.7%)
     path 1: 930
     path 2: 0
     path 3: 1045
     path 4: 0
-    path 5: 2343
+    path 5: 1395
+    path 6: 948
 
 ======================================================================
-Overall path totals: {5: 12351, 3: 5758, 1: 3941, 4: 9}
+Overall path totals: {5: 8413, 6: 3938, 3: 5758, 1: 3941, 4: 9}
   path 1: 3941 (17.9%)
   path 2: 0 (0.0%)
   path 3: 5758 (26.1%)
   path 4: 9 (0.0%)
-  path 5: 12351 (56.0%)
+  path 5: 8413 (38.1%)
+  path 6: 3938 (17.9%)
 
 ======================================================================
 Top path-5 (fallback) skill_eff_id patterns:
-   1064  cs-prefix (cs01_0808*)
     770  other
     755  eq-prefix (eq_pub*)
     569  monster_prefix (30094*)
-    427  cs-prefix (cs01_1084*)
     306  monster_prefix (30076*)
-    302  cs-prefix (cs01_0473*)
+    297  cs-prefix (cs01_0473*)
     296  cs-prefix (cs01_1072*)
-    292  cs-prefix (cs06_0102*)
-    290  cs-prefix (cs06_0133*)
-    270  cs-prefix (cs01_0833*)
+    257  cs-prefix (cs01_0833*)
     248  add_r_spark_*
-    220  cs-prefix (cs00_0004*)
-    218  cs-prefix (cs06_0124*)
-    211  cs-prefix (cs06_0115*)
-    209  cs-prefix (cs00_0010*)
+    210  cs-prefix (cs00_0004*)
     198  cs-prefix (cs00_0288*)
     176  monster_prefix (20033*)
-    166  cs-prefix (cs06_0131*)
+    156  cs-prefix (cs00_0010*)
     149  monster_prefix (30044*)
+    146  eq-prefix (eq_g*)
+    146  cs-prefix (cs01_0421*)
+    143  cs-prefix (cs01_0806*)
+    131  eq-prefix (eq_ds*)
+    126  p_* (partner?)
+    113  eq-prefix (eq_p*)
+    113  cs-prefix (cs01_0416*)
 
 Top path-5 eff_types:
-   5701  SKILL_EFF_CS_SET_ADD_IGNORE_COND
-   3732  SKILL_EFF_CS_SET_ADD
-    867  SKILL_EFF_DMG_IGNORE_COND
-    479  SKILL_EFF_SHIELD_IGNORE_COND
-    331  SKILL_EFF_CARD_DRAW
-    316  SKILL_EFF_DMG_COOP
-    203  SKILL_EFF_CARD_GET
-    183  SKILL_EFF_SHIELD
+   3460  SKILL_EFF_CS_SET_ADD_IGNORE_COND
+   2383  SKILL_EFF_CS_SET_ADD
+    751  SKILL_EFF_DMG_IGNORE_COND
+    414  SKILL_EFF_SHIELD_IGNORE_COND
+    325  SKILL_EFF_CARD_DRAW
+    301  SKILL_EFF_DMG_COOP
     162  SKILL_EFF_DMG
-    151  SKILL_EFF_HEAL
-     57  SKILL_EFF_STRESS_ADD_NONE_COLLAPSE
+    150  SKILL_EFF_HEAL
+    131  SKILL_EFF_CARD_GET
+    126  SKILL_EFF_SHIELD
      48  SKILL_EFF_CS_SET_ADD_RANDOM
+     44  SKILL_EFF_STRESS_ADD_NONE_COLLAPSE
      33  SKILL_EFF_CS_ADD_COND_AUTO
      32  SKILL_EFF_STRESS_ADD
      26  SKILL_EFF_ENERGY_CHANGE
