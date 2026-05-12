@@ -132,3 +132,43 @@ def test_expected_damage_target_count_composes_with_extra_dmg_and_weak():
     all_three = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0,
                                   target_count=2, extra_dmg_pct=50.0, weak_mult=1.5)
     assert all_three == pytest.approx(base * 2.0 * 1.5 * 1.5)
+
+
+def test_expected_dot_damage_default_ticks_3():
+    """Sprint 2h5: expected_dot_damage(atk, dot_pct) computes per-hit DoT.
+    Default ticks=3 (game-typical)."""
+    from api.optimizer.expected_damage import expected_dot_damage
+    # 1000 ATK x 50% DoT x 3 ticks = 1500
+    result = expected_dot_damage(atk=1000.0, dot_pct=50.0)
+    assert result == pytest.approx(1500.0)
+
+
+def test_expected_dot_damage_zero_dot_pct_returns_zero():
+    """Chars without DoT% sources return 0 - no contribution to AvgDMG."""
+    from api.optimizer.expected_damage import expected_dot_damage
+    result = expected_dot_damage(atk=1000.0, dot_pct=0.0)
+    assert result == 0.0
+
+
+def test_expected_dot_damage_scales_with_target_count():
+    """DoT applies to all targets (AoE DoT cards)."""
+    from api.optimizer.expected_damage import expected_dot_damage
+    single = expected_dot_damage(atk=1000.0, dot_pct=50.0, target_count=1)
+    triple = expected_dot_damage(atk=1000.0, dot_pct=50.0, target_count=3)
+    assert triple == pytest.approx(3.0 * single)
+
+
+def test_expected_dot_damage_scales_with_extra_dmg():
+    """Extra DMG% modifier applies to DoT too."""
+    from api.optimizer.expected_damage import expected_dot_damage
+    base = expected_dot_damage(atk=1000.0, dot_pct=50.0)
+    with_extra = expected_dot_damage(atk=1000.0, dot_pct=50.0, extra_dmg_pct=100.0)
+    assert with_extra == pytest.approx(2.0 * base)
+
+
+def test_expected_dot_damage_custom_ticks():
+    """User-tunable ticks parameter (default 3) overrides."""
+    from api.optimizer.expected_damage import expected_dot_damage
+    three_ticks = expected_dot_damage(atk=1000.0, dot_pct=50.0, ticks=3)
+    five_ticks = expected_dot_damage(atk=1000.0, dot_pct=50.0, ticks=5)
+    assert five_ticks == pytest.approx(5.0 / 3.0 * three_ticks)

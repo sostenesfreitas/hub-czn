@@ -63,3 +63,28 @@ def expected_damage(
     dr = default_damage_reduction(dummy_def)
     extra_mult = 1.0 + extra_dmg_pct / 100.0
     return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult * extra_mult * target_count
+
+
+def expected_dot_damage(
+    atk: float,
+    dot_pct: float,
+    ticks: int = 3,
+    target_count: int = 1,
+    extra_dmg_pct: float = 0.0,
+) -> float:
+    """Expected DoT damage contribution to AvgDMG.
+
+    Sprint 2h5: DoT (damage over time) is a separate damage source from
+    the per-hit `expected_damage`. AvgDMG = expected_damage + expected_dot_damage.
+
+    Formula: ATK * (dot_pct/100) * ticks * target_count * (1 + extra_dmg_pct/100)
+
+    Skips cf_ev (DoT doesn't crit), weak_mult (game convention), and
+    dummy_def (DoT typically bypasses DEF). Default ticks=3 (game-typical).
+
+    Returns 0.0 when dot_pct is 0.
+    """
+    if dot_pct <= 0.0:
+        return 0.0
+    extra_mult = 1.0 + extra_dmg_pct / 100.0
+    return atk * (dot_pct / 100.0) * ticks * target_count * extra_mult
