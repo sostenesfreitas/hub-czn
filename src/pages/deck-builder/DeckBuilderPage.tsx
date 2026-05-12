@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { CardCharacter } from '@/lib/types'
 import { CombatantDeckColumn } from './components/CombatantDeckColumn'
 import { DeckBuilderHeader } from './components/DeckBuilderHeader'
@@ -14,6 +15,7 @@ type DeckBuilderCardCharacter = CardCharacter & {
 }
 
 export function DeckBuilderPage() {
+  const { t } = useTranslation()
   const deckBuilder = useDeckBuilder()
   const variantModalTarget = deckBuilder.variantModalTarget
   const [variantModalInitialSection, setVariantModalInitialSection] =
@@ -45,7 +47,7 @@ export function DeckBuilderPage() {
 
       {deckBuilder.isLoading ? (
         <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-[#888]">
-          Carregando combatentes...
+          {t('deckBuilder.loadingCombatants')}
         </div>
       ) : (
         <main className="grid min-h-0 flex-1 grid-cols-1 items-stretch gap-4 overflow-hidden p-4 xl:grid-cols-3">

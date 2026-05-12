@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { DeckBuilderCardWithVariants } from '../deck-builder.types'
 import { CardImage } from './CardImage'
 import { TypeBadge } from './TypeBadge'
@@ -7,6 +8,7 @@ export function EgoSkillCard({
 }: {
   egoSkill: DeckBuilderCardWithVariants
 }) {
+  const { t } = useTranslation()
   const displayDescription = egoSkill.description
 
   return (
@@ -38,7 +40,7 @@ export function EgoSkillCard({
               ))
             ) : (
               <span className="text-[10px] text-[#777]">
-                suporte
+                {t('deckBuilder.support')}
               </span>
             )}
           </div>

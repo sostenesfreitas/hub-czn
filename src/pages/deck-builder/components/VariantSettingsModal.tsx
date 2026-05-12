@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Check, Search, Sparkles, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getDivineGodIconUrl } from '@/lib/deck-builder-assets'
 import type {
   DeckBuilderCommonEpiphany,
@@ -757,6 +758,8 @@ export function VariantSettingsModal({
   onApplySettings: (settings: DeckCardEpiphanySettings) => void
   onClearSettings?: () => void
 }) {
+  const { t } = useTranslation()
+
   const card = target.type === 'deck'
     ? target.card
     : target.item.card
@@ -926,8 +929,8 @@ export function VariantSettingsModal({
   }
 
   const displayTitle = selectedVariant?.name ?? card.name
-  const footerGodText = selectedDivineGod?.displayName ?? 'Nenhum'
-  const footerSparkText = selectedCommonEpiphany?.description ?? 'Nenhuma'
+  const footerGodText = selectedDivineGod?.displayName ?? t('deckBuilder.variantModal.noneGod')
+  const footerSparkText = selectedCommonEpiphany?.description ?? t('deckBuilder.variantModal.noneSpark')
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
@@ -939,7 +942,7 @@ export function VariantSettingsModal({
                 <Sparkles size={17} className="shrink-0 text-[#7dd3fc]" />
 
                 <h2 className="truncate text-base font-black text-white">
-                  {target.type === 'deck' ? displayTitle : 'Epiphany Settings'}
+                  {target.type === 'deck' ? displayTitle : t('deckBuilder.variantModal.epiphanySettings')}
                 </h2>
               </div>
 
@@ -955,7 +958,7 @@ export function VariantSettingsModal({
                         : 'text-[#a1a1aa] hover:text-white',
                     ].join(' ')}
                   >
-                    Descrição
+                    {t('deckBuilder.variantModal.descriptionTab')}
                   </button>
 
                   {canShowEpiphanySection && (
@@ -969,7 +972,7 @@ export function VariantSettingsModal({
                           : 'text-[#a1a1aa] hover:text-white',
                       ].join(' ')}
                     >
-                      Epifania
+                      {t('deckBuilder.variantModal.epiphanyTab')}
                     </button>
                   )}
                 </div>
@@ -978,10 +981,10 @@ export function VariantSettingsModal({
 
             <p className="mt-1 text-xs text-[#a1a1aa]">
               {target.type === 'deck'
-                ? 'Visualize a descrição completa ou configure Epiphany sem sair do modal da carta.'
+                ? t('deckBuilder.variantModal.headerDescription')
                 : (
                   <>
-                    Configure variantes, Divine Epiphany e Spark Epiphany para{' '}
+                    {t('deckBuilder.variantModal.configurePrefix')}{' '}
                     <span className="font-bold text-white">{card.name}</span>.
                   </>
                 )}
@@ -1001,7 +1004,7 @@ export function VariantSettingsModal({
           <aside className="min-h-0 space-y-3 overflow-y-auto pr-1">
             <section className="rounded-xl border border-[#303044] bg-[#171722] p-3">
               <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                Carta atual
+                {t('deckBuilder.variantModal.currentCard')}
               </p>
 
               <div className="mt-3 rounded-xl border border-[#333348] bg-[#101018] p-3">
@@ -1057,7 +1060,7 @@ export function VariantSettingsModal({
               <section className="rounded-xl border border-[#303044] bg-[#171722] p-3">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                    Divine God
+                    {t('deckBuilder.variantModal.divineGod')}
                   </p>
 
                   {selectedDivineGod && (
@@ -1069,7 +1072,7 @@ export function VariantSettingsModal({
                       }}
                       className="text-[10px] font-black uppercase text-[#fca5a5] hover:text-[#fecaca]"
                     >
-                      Limpar
+                      {t('deckBuilder.clear')}
                     </button>
                   )}
                 </div>
@@ -1093,18 +1096,18 @@ export function VariantSettingsModal({
                     className="h-4 w-4 accent-[#f97316]"
                   />
 
-                  Match Selected God
+                  {t('deckBuilder.variantModal.matchSelectedGod')}
                 </label>
 
                 <p className="mt-2 line-clamp-2 text-[11px] text-[#888]">
                   {selectedDivineGod
-                    ? `Filtrando por ${selectedDivineGod.displayName}.`
-                    : 'Nenhum Divine God selecionado. Mostrando todos.'}
+                    ? t('deckBuilder.variantModal.filteringByGod', { god: selectedDivineGod.displayName })
+                    : t('deckBuilder.variantModal.noDivineGodSelected')}
                 </p>
 
                 {combatantClass && (
                   <p className="mt-1 text-[11px] text-[#7dd3fc]">
-                    Classe do combatente:{' '}
+                    {t('deckBuilder.variantModal.combatantClassLabel')}{' '}
                     <span className="font-bold">{combatantClass}</span>
                   </p>
                 )}
@@ -1119,7 +1122,7 @@ export function VariantSettingsModal({
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                        Carta
+                        {t('deckBuilder.variantModal.card')}
                       </p>
 
                       <h3 className="mt-2 text-xl font-black leading-tight text-white">
@@ -1143,7 +1146,7 @@ export function VariantSettingsModal({
 
                 <div className="rounded-xl border border-[#303044] bg-[#101018] p-4">
                   <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                    Descrição completa
+                    {t('deckBuilder.variantModal.fullDescription')}
                   </p>
 
                   {currentDescription ? (
@@ -1162,7 +1165,7 @@ export function VariantSettingsModal({
                     </div>
                   ) : (
                     <p className="mt-4 text-sm text-[#888]">
-                      Esta carta não possui descrição cadastrada.
+                      {t('deckBuilder.variantModal.noDescription')}
                     </p>
                   )}
                 </div>
@@ -1170,7 +1173,7 @@ export function VariantSettingsModal({
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                   <div className="rounded-xl border border-[#303044] bg-[#101018] p-4">
                     <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                      Dano
+                      {t('deckBuilder.variantModal.damageStat')}
                     </p>
                     <p className="mt-2 text-lg font-black text-[#93c5fd]">
                       {card.eff_value > 0 ? `${card.eff_value}%` : '-'}
@@ -1179,7 +1182,7 @@ export function VariantSettingsModal({
 
                   <div className="rounded-xl border border-[#303044] bg-[#101018] p-4">
                     <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                      Hits
+                      {t('deckBuilder.variantModal.hitsStat')}
                     </p>
                     <p className="mt-2 text-lg font-black text-white">
                       {card.hits > 0 ? card.hits : '-'}
@@ -1188,7 +1191,7 @@ export function VariantSettingsModal({
 
                   <div className="rounded-xl border border-[#303044] bg-[#101018] p-4">
                     <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                      Spark
+                      {t('deckBuilder.variantModal.sparkStat')}
                     </p>
                     <p className="mt-2 text-lg font-black text-[#facc15]">
                       +{card.spark_count}
@@ -1203,11 +1206,11 @@ export function VariantSettingsModal({
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                          Variantes
+                          {t('deckBuilder.variantModal.variants')}
                         </p>
 
                         <p className="mt-1 text-[11px] text-[#888]">
-                          {variants.length} variante(s) encontradas
+                          {t('deckBuilder.variantModal.variantsFound', { count: variants.length })}
                         </p>
                       </div>
 
@@ -1217,7 +1220,7 @@ export function VariantSettingsModal({
                           onClick={() => setSelectedVariant(null)}
                           className="rounded-lg border border-[#333348] px-3 py-1.5 text-[11px] font-black text-[#d1d5db] hover:border-[#60a5fa] hover:text-[#93c5fd]"
                         >
-                          Base
+                          {t('deckBuilder.variantModal.baseVariant')}
                         </button>
                       )}
                     </div>
@@ -1247,7 +1250,7 @@ export function VariantSettingsModal({
                         type="text"
                         value={searchText}
                         onChange={event => setSearchText(event.target.value)}
-                        placeholder="Search epiphany text"
+                        placeholder={t('deckBuilder.variantModal.searchEpiphanyText')}
                         className="h-9 w-full rounded-lg border border-[#303044] bg-[#101018] pl-9 pr-3 text-xs font-semibold text-white outline-none placeholder:text-[#777] focus:border-[#60a5fa]"
                       />
                     </div>
@@ -1255,7 +1258,7 @@ export function VariantSettingsModal({
                     <div className="flex flex-wrap items-center gap-3">
                       <FilterCheckbox
                         checked={matchCurrentCard}
-                        label="Match Current Card"
+                        label={t('deckBuilder.variantModal.matchCurrentCard')}
                         onChange={setMatchCurrentCard}
                       />
                     </div>
@@ -1266,11 +1269,11 @@ export function VariantSettingsModal({
                   <section className="flex min-h-[260px] flex-1 items-center justify-center rounded-xl border border-dashed border-[#333348] bg-[#101018] p-6 text-center">
                     <div>
                       <p className="text-sm font-bold text-[#d1d5db]">
-                        Esta carta não possui Spark.
+                        {t('deckBuilder.variantModal.noSparkCard')}
                       </p>
 
                       <p className="mt-1 text-xs text-[#888]">
-                        Divine/Common Epiphany fica disponível apenas em cartas com Spark.
+                        {t('deckBuilder.variantModal.noSparkCardHint')}
                       </p>
                     </div>
                   </section>
@@ -1280,11 +1283,11 @@ export function VariantSettingsModal({
                       <div className="flex shrink-0 items-center justify-between gap-3">
                         <div>
                           <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                            Divine Epiphany
+                            {t('deckBuilder.variantModal.divineEpiphany')}
                           </p>
 
                           <p className="mt-1 text-[11px] text-[#888]">
-                            {divineEpiphanies.length} opção(ões) compatíveis
+                            {t('deckBuilder.variantModal.compatibleOptions', { count: divineEpiphanies.length })}
                           </p>
                         </div>
 
@@ -1294,7 +1297,7 @@ export function VariantSettingsModal({
                             onClick={() => setSelectedDivineEpiphany(null)}
                             className="text-[10px] font-black uppercase text-[#fca5a5] hover:text-[#fecaca]"
                           >
-                            Limpar
+                            {t('deckBuilder.clear')}
                           </button>
                         )}
                       </div>
@@ -1320,11 +1323,11 @@ export function VariantSettingsModal({
                       <div className="flex shrink-0 items-center justify-between gap-3">
                         <div>
                           <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                            Spark Epiphany
+                            {t('deckBuilder.variantModal.sparkEpiphany')}
                           </p>
 
                           <p className="mt-1 text-[11px] text-[#888]">
-                            {commonEpiphanies.length} opção(ões) compatíveis
+                            {t('deckBuilder.variantModal.compatibleOptions', { count: commonEpiphanies.length })}
                           </p>
                         </div>
 
@@ -1334,7 +1337,7 @@ export function VariantSettingsModal({
                             onClick={() => setSelectedCommonEpiphany(null)}
                             className="text-[10px] font-black uppercase text-[#fca5a5] hover:text-[#fecaca]"
                           >
-                            Limpar
+                            {t('deckBuilder.clear')}
                           </button>
                         )}
                       </div>
@@ -1366,14 +1369,14 @@ export function VariantSettingsModal({
           {activeSection === 'epiphany' ? (
             <>
               <p className="min-w-0 truncate text-[11px] text-[#888]">
-                God:{' '}
+                {t('deckBuilder.variantModal.footerGod')}:{' '}
                 <span className="font-bold text-[#dbeafe]">
                   {footerGodText}
                 </span>
 
                 <span className="mx-2 text-[#444]">|</span>
 
-                Spark:{' '}
+                {t('deckBuilder.variantModal.footerSpark')}:{' '}
                 <span className="font-bold text-[#dbeafe]">
                   {footerSparkText}
                 </span>
@@ -1385,7 +1388,7 @@ export function VariantSettingsModal({
                   onClick={handleClearLocalSettings}
                   className="rounded-lg border border-[#7f1d1d] px-4 py-2 text-sm font-black text-[#fca5a5] hover:bg-[#7f1d1d]/20"
                 >
-                  Limpar
+                  {t('deckBuilder.clear')}
                 </button>
 
                 <button
@@ -1393,7 +1396,7 @@ export function VariantSettingsModal({
                   onClick={onClose}
                   className="rounded-lg border border-[#333348] px-4 py-2 text-sm font-bold text-[#d1d5db] hover:bg-[#242435]"
                 >
-                  Cancelar
+                  {t('deckBuilder.cancel')}
                 </button>
 
                 <button
@@ -1401,14 +1404,14 @@ export function VariantSettingsModal({
                   onClick={handleApply}
                   className="rounded-lg bg-[#2563eb] px-5 py-2 text-sm font-black text-white hover:bg-[#1d4ed8]"
                 >
-                  Aplicar
+                  {t('deckBuilder.apply')}
                 </button>
               </div>
             </>
           ) : (
             <>
               <p className="text-[11px] text-[#777]">
-                Clique em <span className="font-bold text-[#7dd3fc]">Epifania</span> no topo para configurar variantes e Spark.
+                {t('deckBuilder.variantModal.footerHintPrefix')}{' '}<span className="font-bold text-[#7dd3fc]">{t('deckBuilder.variantModal.epiphanyTab')}</span>{' '}{t('deckBuilder.variantModal.footerHintSuffix')}
               </p>
 
               <button
@@ -1416,7 +1419,7 @@ export function VariantSettingsModal({
                 onClick={onClose}
                 className="rounded-lg border border-[#333348] px-4 py-2 text-sm font-bold text-[#d1d5db] hover:bg-[#242435]"
               >
-                Fechar
+                {t('deckBuilder.close')}
               </button>
             </>
           )}

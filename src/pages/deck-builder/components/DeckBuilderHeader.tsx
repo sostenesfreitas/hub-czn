@@ -26,6 +26,7 @@ function SaveDeckModal({
   onClose: () => void
   onSave: (name: string) => void
 }) {
+  const { t } = useTranslation()
   const [name, setName] = useState(initialName)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -49,17 +50,18 @@ function SaveDeckModal({
         <header className="flex items-center justify-between border-b border-[#282838] px-4 py-3">
           <div>
             <h2 className="text-sm font-black text-white">
-              {mode === 'save' ? 'Salvar deck' : 'Salvar como novo'}
+              {mode === 'save' ? t('deckBuilder.saveDeck') : t('deckBuilder.saveAs')}
             </h2>
 
             <p className="mt-1 text-xs text-[#888]">
-              Informe um nome para encontrar esse deck depois.
+              {t('deckBuilder.saveDeckHint')}
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
+            aria-label={t('deckBuilder.close')}
             className="grid h-8 w-8 place-items-center rounded-lg border border-[#333348] text-[#aaa] hover:border-[#7f1d1d] hover:text-[#fca5a5]"
           >
             <X size={16} />
@@ -68,19 +70,19 @@ function SaveDeckModal({
 
         <div className="p-4">
           <label className="text-[10px] font-black uppercase tracking-wide text-[#777]">
-            Nome do deck
+            {t('deckBuilder.saveDeckName')}
           </label>
 
           <input
             value={name}
             onChange={event => setName(event.target.value)}
             autoFocus
-            placeholder="Ex: Heidemarie Burn"
+            placeholder={t('deckBuilder.saveDeckNamePlaceholder')}
             className="mt-2 w-full rounded-lg border border-[#333348] bg-[#0f0f14] px-3 py-2 text-sm text-white outline-none placeholder:text-[#666] focus:border-[#60a5fa]"
           />
 
           <p className="mt-2 text-xs text-[#777]">
-            O deck será salvo localmente neste dispositivo. Use exportar para compartilhar com outra pessoa.
+            {t('deckBuilder.saveDeckLocalHint')}
           </p>
         </div>
 
@@ -91,7 +93,7 @@ function SaveDeckModal({
             disabled={isSaving}
             className="rounded-lg border border-[#333348] px-3 py-2 text-xs font-bold text-[#ddd] hover:bg-[#1b1b29] disabled:opacity-60"
           >
-            Cancelar
+            {t('deckBuilder.cancel')}
           </button>
 
           <button
@@ -100,7 +102,7 @@ function SaveDeckModal({
             className="inline-flex items-center gap-2 rounded-lg border border-[#15803d] bg-[#15803d]/10 px-3 py-2 text-xs font-black text-[#bbf7d0] hover:bg-[#15803d]/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Save size={14} />
-            {isSaving ? 'Salvando...' : 'Salvar'}
+            {isSaving ? t('deckBuilder.saving') : t('deckBuilder.save')}
           </button>
         </footer>
       </form>
@@ -150,12 +152,8 @@ export function DeckBuilderHeader({
       setIsImporting(true)
       await onImportDeck(file)
     } catch (error) {
-      console.error('[Deck Builder] Erro ao importar deck:', error)
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'Erro ao importar deck.',
-      )
+      console.error('[Deck Builder] Error importing deck:', error)
+      alert(t('deckBuilder.alerts.importError'))
     } finally {
       setIsImporting(false)
       event.target.value = ''
@@ -167,12 +165,8 @@ export function DeckBuilderHeader({
       setIsExporting(true)
       await onExportDeck()
     } catch (error) {
-      console.error('[Deck Builder] Erro ao exportar deck:', error)
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'Erro ao exportar deck.',
-      )
+      console.error('[Deck Builder] Error exporting deck:', error)
+      alert(t('deckBuilder.alerts.exportError'))
     } finally {
       setIsExporting(false)
     }
@@ -187,12 +181,8 @@ export function DeckBuilderHeader({
       setIsLoadingSavedDeck(true)
       await onLoadSavedDeck(deckId)
     } catch (error) {
-      console.error('[Deck Builder] Erro ao carregar deck salvo:', error)
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'Erro ao carregar deck salvo.',
-      )
+      console.error('[Deck Builder] Error loading saved deck:', error)
+      alert(t('deckBuilder.alerts.loadSavedDeckError'))
     } finally {
       setIsLoadingSavedDeck(false)
     }
@@ -208,12 +198,8 @@ export function DeckBuilderHeader({
       setIsSavingDeck(true)
       await onSaveCurrentDeck()
     } catch (error) {
-      console.error('[Deck Builder] Erro ao salvar deck:', error)
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'Erro ao salvar deck.',
-      )
+      console.error('[Deck Builder] Error saving deck:', error)
+      alert(t('deckBuilder.alerts.saveError'))
     } finally {
       setIsSavingDeck(false)
     }
@@ -225,12 +211,8 @@ export function DeckBuilderHeader({
       await onSaveCurrentDeckAs(name)
       setSaveDeckModalMode(null)
     } catch (error) {
-      console.error('[Deck Builder] Erro ao salvar deck:', error)
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'Erro ao salvar deck.',
-      )
+      console.error('[Deck Builder] Error saving deck:', error)
+      alert(t('deckBuilder.alerts.saveAsError'))
     } finally {
       setIsSavingDeck(false)
     }
@@ -242,7 +224,7 @@ export function DeckBuilderHeader({
     }
 
     const confirmed = window.confirm(
-      `Excluir o deck "${selectedSavedDeck.name}" dos decks salvos?`,
+      t('deckBuilder.deleteSavedDeckConfirm', { name: selectedSavedDeck.name }),
     )
 
     if (!confirmed) {
@@ -259,7 +241,7 @@ export function DeckBuilderHeader({
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center rounded-full border border-[#3a3a4f] px-2.5 py-0.5 text-[11px] font-medium text-[#c084fc]">
-                beta
+                {t('deckBuilder.beta')}
               </span>
 
               <h1 className="text-xl font-bold tracking-tight">
@@ -268,18 +250,18 @@ export function DeckBuilderHeader({
             </div>
 
             <p className="mt-0.5 text-xs text-[#b3b3b3]">
-              Monte uma squad com 3 combatentes e ajuste as cartas de cada deck.
+              {t('deckBuilder.subtitle')}
             </p>
           </div>
 
           <div className="w-full rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2 xl:w-[455px]">
             <div className="mb-1.5 flex items-center justify-between gap-2">
               <p className="text-[9px] font-black uppercase tracking-wide text-[#777]">
-                Meus decks
+                {t('deckBuilder.localSavedDecks')}
               </p>
 
               <span className="text-[9px] text-[#666]">
-                {savedDecks.length} salvo(s) localmente
+                {t('deckBuilder.localSavedCount', { count: savedDecks.length })}
               </span>
             </div>
 
@@ -291,7 +273,9 @@ export function DeckBuilderHeader({
                 className="min-w-0 flex-1 rounded-lg border border-[#333348] bg-[#101018] px-3 py-2 text-xs text-white outline-none focus:border-[#60a5fa] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <option value="">
-                  {isLoadingSavedDeck ? 'Carregando...' : 'Meus decks salvos...'}
+                  {isLoadingSavedDeck
+                    ? t('deckBuilder.savedDecksLoading')
+                    : t('deckBuilder.savedDecksPlaceholder')}
                 </option>
 
                 {savedDecks.map(deck => (
@@ -308,7 +292,7 @@ export function DeckBuilderHeader({
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-[#15803d] px-3 text-xs font-semibold text-[#bbf7d0] hover:bg-[#15803d]/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Save size={14} />
-                {isSavingDeck ? 'Salvando...' : 'Salvar'}
+                {isSavingDeck ? t('deckBuilder.saving') : t('deckBuilder.save')}
               </button>
 
               <button
@@ -318,7 +302,7 @@ export function DeckBuilderHeader({
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-[#34344a] px-3 text-xs font-semibold text-[#d4d4d8] hover:bg-[#1b1b29] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Plus size={14} />
-                Novo
+                {t('deckBuilder.new')}
               </button>
 
               <button
@@ -328,7 +312,7 @@ export function DeckBuilderHeader({
                 className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-[#7f1d1d] px-3 text-xs font-semibold text-[#f87171] hover:bg-[#7f1d1d]/20 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Trash2 size={14} />
-                Excluir
+                {t('deckBuilder.delete')}
               </button>
             </div>
           </div>
@@ -340,7 +324,7 @@ export function DeckBuilderHeader({
               className="inline-flex h-9 items-center gap-2 rounded-lg border border-[#7f1d1d] px-3 text-xs font-semibold text-[#f87171] hover:bg-[#7f1d1d]/20"
             >
               <Trash2 size={14} />
-              Resetar
+              {t('deckBuilder.reset')}
             </button>
 
             <input
@@ -358,7 +342,7 @@ export function DeckBuilderHeader({
               className="inline-flex h-9 items-center gap-2 rounded-lg border border-[#34344a] px-3 text-xs font-semibold text-[#d4d4d8] hover:bg-[#1b1b29] disabled:cursor-not-allowed disabled:opacity-60"
             >
               <FileUp size={14} />
-              {isImporting ? 'Importando...' : 'Importar Deck'}
+              {isImporting ? t('deckBuilder.importing') : t('deckBuilder.importDeck')}
             </button>
 
             <button
@@ -368,7 +352,7 @@ export function DeckBuilderHeader({
               className="inline-flex h-9 items-center gap-2 rounded-lg border border-[#15803d] px-3 text-xs font-semibold text-[#bbf7d0] hover:bg-[#15803d]/20 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Download size={14} />
-              {isExporting ? 'Exportando...' : 'Exportar Deck'}
+              {isExporting ? t('deckBuilder.exporting') : t('deckBuilder.exportDeck')}
             </button>
           </div>
         </div>

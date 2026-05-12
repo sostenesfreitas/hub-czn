@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Sparkles } from 'lucide-react'
 import type { DeckBuilderCardWithVariants } from '../deck-builder.types'
 import { getVariants } from '../deck-builder.utils'
@@ -13,6 +14,7 @@ export function AvailableDeckBuilderCardButton({
   onAdd: () => void
   onOpenVariants?: () => void
 }) {
+  const { t } = useTranslation()
   const card = item.card
   const variants = getVariants(item)
   const hasVariants = variants.length > 0 || card.spark_count > 0
@@ -33,7 +35,7 @@ export function AvailableDeckBuilderCardButton({
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <p className="line-clamp-2 text-xs font-bold text-white">
-              {card.name || 'Unnamed card'}
+              {card.name || t('deckBuilder.card.unnamed')}
             </p>
 
             <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-[#0f172a] text-xs font-bold text-[#93c5fd]">
@@ -48,7 +50,7 @@ export function AvailableDeckBuilderCardButton({
               ))
             ) : (
               <span className="text-[10px] text-[#777]">
-                suporte
+                {t('deckBuilder.support')}
               </span>
             )}
           </div>
@@ -62,14 +64,14 @@ export function AvailableDeckBuilderCardButton({
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
             {hasDamage ? (
               <span className="text-[#888]">
-                {card.eff_value}% dano
+                {card.eff_value}% {t('deckBuilder.damage').toLowerCase()}
               </span>
             ) : (
               <span />
             )}
 
             <span className="font-semibold text-[#c084fc]">
-              + adicionar
+              + {t('deckBuilder.add')}
             </span>
           </div>
         </div>
@@ -84,8 +86,8 @@ export function AvailableDeckBuilderCardButton({
           >
             <Sparkles size={12} />
             {variants.length > 0
-              ? `${variants.length} variantes`
-              : `${card.spark_count} variantes`}
+              ? `${variants.length} ${t('deckBuilder.variants')}`
+              : `${card.spark_count} ${t('deckBuilder.variants')}`}
           </button>
         </div>
       )}

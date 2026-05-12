@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Gem,
   Shield,
@@ -9,7 +10,6 @@ import type {
   DeckBuilderItemSlot,
 } from '../deck-builder.types'
 import {
-  DECK_BUILDER_ITEM_SLOT_TITLE,
   getDeckBuilderItemImageUrl,
   getItemRarityClassName,
 } from '../deck-builder-items.utils'
@@ -31,8 +31,9 @@ export function EquipmentSlot({
   onOpen: () => void
   onClear: () => void
 }) {
+  const { t } = useTranslation()
   const Icon = SLOT_ICON[slot]
-  const title = DECK_BUILDER_ITEM_SLOT_TITLE[slot]
+  const title = t(`deckBuilder.equipment.${slot}`)
   const imageUrl = item ? getDeckBuilderItemImageUrl(item) : null
 
   return (
@@ -40,7 +41,7 @@ export function EquipmentSlot({
       <button
         type="button"
         onClick={onOpen}
-        title={item ? `${title}: ${item.name}` : `Selecionar ${title}`}
+        title={item ? `${title}: ${item.name}` : t('deckBuilder.equipment.select', { slot: title })}
         className={[
           'relative flex h-[44px] w-full overflow-hidden rounded-lg border bg-[#101018] text-left transition',
           item
@@ -83,7 +84,7 @@ export function EquipmentSlot({
             event.stopPropagation()
             onClear()
           }}
-          title={`Remover ${title}`}
+          title={t('deckBuilder.equipment.remove', { slot: title })}
           className="absolute right-1 top-1 grid h-[15px] w-[15px] place-items-center rounded border border-[#333348] bg-black/80 text-[#fca5a5] opacity-0 transition hover:bg-[#7f1d1d] group-hover:opacity-100"
         >
           <X size={9} />

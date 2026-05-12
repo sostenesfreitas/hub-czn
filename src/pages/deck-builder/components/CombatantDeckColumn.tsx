@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ChevronRight,
   Copy,
@@ -38,42 +39,42 @@ type VariantModalInitialSection = 'description' | 'epiphany'
 
 const CARD_SELECTION_PAGE_SIZE = 12
 
-function getCardSelectionTitle(kind: CardSelectionKind) {
+function getCardSelectionTitleKey(kind: CardSelectionKind) {
   switch (kind) {
     case 'starting':
-      return 'Starting Cards'
+      return 'deckBuilder.cardSelection.startingTitle'
     case 'epiphany':
-      return 'Epiphany Cards'
+      return 'deckBuilder.cardSelection.epiphanyTitle'
     case 'shared':
-      return 'Neutral & Monster Cards'
+      return 'deckBuilder.cardSelection.sharedTitle'
     default:
-      return 'Cards'
+      return 'deckBuilder.cardSelection.defaultTitle'
   }
 }
 
-function getCardSelectionDescription(kind: CardSelectionKind) {
+function getCardSelectionDescriptionKey(kind: CardSelectionKind) {
   switch (kind) {
     case 'starting':
-      return 'Busque cartas iniciais do combatente selecionado.'
+      return 'deckBuilder.cardSelection.startingDescription'
     case 'epiphany':
-      return 'Busque cartas Epiphany e selecione variações.'
+      return 'deckBuilder.cardSelection.epiphanyDescription'
     case 'shared':
-      return 'Busque cartas neutras e de monstro.'
+      return 'deckBuilder.cardSelection.sharedDescription'
     default:
-      return 'Busque cartas disponíveis.'
+      return 'deckBuilder.cardSelection.defaultDescription'
   }
 }
 
-function getCardSectionDescription(kind: CardSelectionKind) {
+function getCardSectionDescriptionKey(kind: CardSelectionKind) {
   switch (kind) {
     case 'starting':
-      return 'Clique para buscar e adicionar cartas iniciais.'
+      return 'deckBuilder.cardSelection.startingSectionDescription'
     case 'epiphany':
-      return 'Clique para buscar variantes e cartas Epiphany.'
+      return 'deckBuilder.cardSelection.epiphanySectionDescription'
     case 'shared':
-      return 'Clique para buscar cartas neutras e de monstro.'
+      return 'deckBuilder.cardSelection.sharedSectionDescription'
     default:
-      return 'Clique para buscar cartas.'
+      return 'deckBuilder.cardSelection.defaultSectionDescription'
   }
 }
 
@@ -157,7 +158,8 @@ function CompactDeckCard({
   onOpenDetails: () => void
   onOpenVariants?: () => void
 }) {
-  const displayName = item.selectedVariant?.name ?? item.card.name ?? 'Unnamed card'
+  const { t } = useTranslation()
+  const displayName = item.selectedVariant?.name ?? item.card.name ?? t('deckBuilder.card.unnamed')
   const displayCost = getInstanceCost(item)
   const displayDescription = item.selectedVariant?.description ?? item.description
   const displayTypes = getDisplayTypes(item.card, item.selectedVariant)
@@ -252,19 +254,19 @@ function CompactDeckCard({
           <div className="mt-1.5 flex min-h-[14px] flex-wrap items-center gap-x-2 gap-y-0.5 text-[9.5px] font-bold">
             {item.card.eff_value > 0 && (
               <span>
-                Dano <span className="text-[#93c5fd]">{item.card.eff_value}%</span>
+                {t('deckBuilder.damage')} <span className="text-[#93c5fd]">{item.card.eff_value}%</span>
               </span>
             )}
 
             {item.card.hits > 0 && (
               <span>
-                Hits <span className="text-white">{item.card.hits}</span>
+                {t('deckBuilder.hits')} <span className="text-white">{item.card.hits}</span>
               </span>
             )}
 
             {item.card.spark_count > 0 && (
               <span>
-                Spark <span className="text-[#facc15]">+{item.card.spark_count}</span>
+                {t('deckBuilder.spark')} <span className="text-[#facc15]">+{item.card.spark_count}</span>
               </span>
             )}
           </div>
@@ -279,11 +281,11 @@ function CompactDeckCard({
               event.stopPropagation()
               onOpenVariants()
             }}
-            title="Configurar epifanias"
+            title={t('deckBuilder.card.configureEpiphanies')}
             className="inline-flex h-6 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/90 px-2 text-[9px] font-black text-[#7dd3fc] hover:bg-[#0c4a6e]"
           >
             <Sparkles size={11} />
-            Epi.
+            {t('deckBuilder.card.epiphanyShort')}
           </button>
         )}
 
@@ -293,7 +295,7 @@ function CompactDeckCard({
             event.stopPropagation()
             onDuplicate()
           }}
-          title="Duplicar carta"
+          title={t('deckBuilder.card.duplicate')}
           className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
         >
           <Copy size={12} />
@@ -305,7 +307,7 @@ function CompactDeckCard({
             event.stopPropagation()
             onRemove()
           }}
-          title="Remover carta"
+          title={t('deckBuilder.card.remove')}
           className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
         >
           <X size={12} />
@@ -324,6 +326,8 @@ function CardSectionButton({
   count: number
   onClick: () => void
 }) {
+  const { t } = useTranslation()
+
   return (
     <button
       type="button"
@@ -335,17 +339,17 @@ function CardSectionButton({
           <ChevronRight size={13} className="text-[#c084fc]" />
 
           <h3 className="text-[11px] font-black uppercase tracking-wide text-white">
-            {getCardSelectionTitle(kind)}
+            {t(getCardSelectionTitleKey(kind))}
           </h3>
         </div>
 
         <p className="mt-0.5 text-[10px] text-[#777]">
-          {getCardSectionDescription(kind)}
+          {t(getCardSectionDescriptionKey(kind))}
         </p>
       </div>
 
       <span className="shrink-0 rounded-md bg-[#0f172a] px-2 py-1 text-[10px] font-black text-[#93c5fd]">
-        {count} disponíveis
+        {count} {t('deckBuilder.available')}
       </span>
     </button>
   )
@@ -364,6 +368,7 @@ function CardSelectionModal({
   onAdd: (item: DeckBuilderCardWithVariants) => void
   onOpenVariants: (item: DeckBuilderCardWithVariants) => void
 }) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
@@ -411,17 +416,18 @@ function CardSelectionModal({
         <header className="flex items-center justify-between border-b border-[#282838] px-4 py-3">
           <div>
             <h2 className="text-sm font-black text-white">
-              {getCardSelectionTitle(kind)}
+              {t(getCardSelectionTitleKey(kind))}
             </h2>
 
             <p className="mt-1 text-xs text-[#888]">
-              {getCardSelectionDescription(kind)}
+              {t(getCardSelectionDescriptionKey(kind))}
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
+            aria-label={t('deckBuilder.close')}
             className="grid h-8 w-8 place-items-center rounded-lg border border-[#333348] text-[#aaa] hover:border-[#7f1d1d] hover:text-[#fca5a5]"
           >
             <X size={16} />
@@ -438,7 +444,7 @@ function CardSelectionModal({
             <input
               value={search}
               onChange={event => handleSearch(event.target.value)}
-              placeholder="Buscar por nome, descrição, efeito ou variante..."
+              placeholder={t('deckBuilder.cardSelection.searchPlaceholder')}
               className="w-full rounded-lg border border-[#333348] bg-[#0f0f14] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#666] focus:border-[#60a5fa]"
             />
           </div>
@@ -447,7 +453,7 @@ function CardSelectionModal({
         <div className="min-h-0 flex-1 overflow-y-auto p-4">
           {pagedItems.length === 0 ? (
             <div className="flex h-60 items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
-              Nenhuma carta encontrada.
+              {t('deckBuilder.noCardsFound')}
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -469,7 +475,7 @@ function CardSelectionModal({
 
         <footer className="flex items-center justify-between border-t border-[#282838] px-4 py-3">
           <p className="text-xs text-[#777]">
-            {filteredItems.length} carta(s) encontrada(s)
+            {t('deckBuilder.cardsFound', { count: filteredItems.length })}
           </p>
 
           <div className="flex items-center gap-2">
@@ -479,7 +485,7 @@ function CardSelectionModal({
               onClick={() => setPage(value => Math.max(1, value - 1))}
               className="rounded-lg border border-[#333348] px-3 py-2 text-xs font-bold text-[#ddd] disabled:opacity-40"
             >
-              Anterior
+              {t('deckBuilder.previous')}
             </button>
 
             <span className="text-xs text-[#888]">
@@ -492,7 +498,7 @@ function CardSelectionModal({
               onClick={() => setPage(value => Math.min(totalPages, value + 1))}
               className="rounded-lg border border-[#333348] px-3 py-2 text-xs font-bold text-[#ddd] disabled:opacity-40"
             >
-              Próxima
+              {t('deckBuilder.next')}
             </button>
           </div>
         </footer>
@@ -533,6 +539,7 @@ export function CombatantDeckColumn({
   onClearEquipment: (equipmentSlot: DeckBuilderItemSlot) => void
   onClearDeck: () => void
 }) {
+  const { t } = useTranslation()
   const [cardSelectionKind, setCardSelectionKind] = useState<CardSelectionKind | null>(null)
   const [equipmentModalSlot, setEquipmentModalSlot] = useState<DeckBuilderItemSlot | null>(null)
 
@@ -567,7 +574,7 @@ export function CombatantDeckColumn({
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <p className="text-[9px] uppercase tracking-wide text-[#777]">
-              Combatente {slotIndex + 1}
+              {t('deckBuilder.slot.combatant', { number: slotIndex + 1 })}
             </p>
 
             <div className="mt-1.5 flex items-center gap-2">
@@ -578,7 +585,7 @@ export function CombatantDeckColumn({
                 onChange={e => onSelectCombatant(e.target.value ? Number(e.target.value) : null)}
                 className="w-full rounded-lg border border-[#333348] bg-[#101018] px-3 py-1.5 text-xs text-white outline-none focus:border-[#60a5fa]"
               >
-                <option value="">Selecionar combatente...</option>
+                <option value="">{t('deckBuilder.slot.selectCombatant')}</option>
                 {characters.map(character => (
                   <option key={character.char_res_id} value={character.char_res_id}>
                     {character.name || `#${character.char_res_id}`}
@@ -592,7 +599,7 @@ export function CombatantDeckColumn({
             type="button"
             onClick={onClearDeck}
             disabled={slot.cards.length === 0 && !hasEquipment}
-            title="Limpar deck"
+            title={t('deckBuilder.slot.clearDeck')}
             className="mt-5 grid h-8 w-8 place-items-center rounded-lg border border-[#333348] text-[#888] hover:border-[#7f1d1d] hover:text-[#fca5a5] disabled:opacity-40 disabled:hover:border-[#333348] disabled:hover:text-[#888]"
           >
             <Trash2 size={14} />
@@ -603,11 +610,11 @@ export function CombatantDeckColumn({
           <div className="mt-2 rounded-lg border border-[#282838] bg-[#101018] p-1.5">
             <div className="mb-1 flex items-center justify-between">
               <p className="text-[9px] font-bold uppercase tracking-wide text-[#777]">
-                Equipamentos
+                {t('deckBuilder.slot.equipment')}
               </p>
 
               <span className="text-[9px] text-[#666]">
-                Weapon / Armor / Accessory
+                {t('deckBuilder.slot.equipmentSummary')}
               </span>
             </div>
 
@@ -638,12 +645,12 @@ export function CombatantDeckColumn({
 
         <div className="mt-3 grid grid-cols-3 gap-1.5">
           <div className="rounded-lg bg-[#101018] px-2 py-1.5">
-            <p className="text-[8.5px] uppercase text-[#666]">Cartas</p>
+            <p className="text-[8.5px] uppercase text-[#666]">{t('deckBuilder.slot.cards')}</p>
             <p className="text-xs font-bold text-white">{slot.cards.length}</p>
           </div>
 
           <div className="rounded-lg bg-[#101018] px-2 py-1.5">
-            <p className="text-[8.5px] uppercase text-[#666]">Custo</p>
+            <p className="text-[8.5px] uppercase text-[#666]">{t('deckBuilder.slot.cost')}</p>
             <p
               className={[
                 'text-xs font-bold',
@@ -659,14 +666,14 @@ export function CombatantDeckColumn({
           </div>
 
           <div className="rounded-lg bg-[#101018] px-2 py-1.5">
-            <p className="text-[8.5px] uppercase text-[#666]">Epiphany</p>
+            <p className="text-[8.5px] uppercase text-[#666]">{t('deckBuilder.slot.epiphany')}</p>
             <p className="text-xs font-bold text-[#93c5fd]">{epiphanyCards.length}</p>
           </div>
         </div>
 
         {slotBuildCost.isOverLimit && (
           <div className="mt-2 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 px-2.5 py-2 text-[11px] font-semibold text-[#fca5a5]">
-            Custo acima do limite permitido para este combatente.
+            {t('deckBuilder.slot.overLimitMessage')}
           </div>
         )}
       </header>
@@ -680,18 +687,18 @@ export function CombatantDeckColumn({
 
         {slot.isLoading ? (
           <div className="flex min-h-[280px] flex-1 items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
-            Carregando cartas do combatente...
+            {t('deckBuilder.slot.loadingCards')}
           </div>
         ) : slot.cards.length === 0 ? (
           <div className="flex min-h-[280px] flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
             <Plus className="text-[#555]" size={28} />
             <p className="mt-2 text-sm font-medium text-[#aaa]">
-              {selectedCombatant ? 'Nenhuma carta no deck' : 'Nenhum combatente selecionado'}
+              {selectedCombatant ? t('deckBuilder.slot.noCards') : t('deckBuilder.slot.noCombatant')}
             </p>
             <p className="mt-1 max-w-[240px] text-xs text-[#666]">
               {selectedCombatant
-                ? 'Use as seções abaixo para adicionar cartas ao deck.'
-                : 'Selecione um combatente para carregar as cartas base dele.'}
+                ? t('deckBuilder.slot.noCardsHint')
+                : t('deckBuilder.slot.noCombatantHint')}
             </p>
           </div>
         ) : (
@@ -699,16 +706,16 @@ export function CombatantDeckColumn({
             <div className="mb-2.5 flex items-center justify-between gap-3">
               <div>
                 <h3 className="text-[11px] font-black uppercase tracking-wide text-white">
-                  Cartas adicionadas
+                  {t('deckBuilder.slot.addedCards')}
                 </h3>
 
                 <p className="mt-0.5 text-[10px] text-[#777]">
-                  {groupedCards.length} grupos no deck montado.
+                  {t('deckBuilder.slot.groupsInDeck', { count: groupedCards.length })}
                 </p>
               </div>
 
               <span className="rounded-md bg-[#0f172a] px-2 py-1 text-[10px] font-black text-[#93c5fd]">
-                {slot.cards.length} cartas
+                {t('deckBuilder.slot.cardCount', { count: slot.cards.length })}
               </span>
             </div>
 
