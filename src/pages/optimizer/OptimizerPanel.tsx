@@ -605,6 +605,33 @@ export function OptimizerPanel({
               </span>
             </div>
           </div>
+
+          {/* Sprint 2h6: DoT ticks knob */}
+          <div className="space-y-1">
+            <label htmlFor="optimizer-dot-ticks" className="text-[9px] uppercase tracking-wider text-[#666666]">
+              DoT ticks
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="optimizer-dot-ticks"
+                type="number"
+                min={1}
+                max={10}
+                step={1}
+                value={config.dot_ticks ?? 3}
+                onChange={(e) =>
+                  patch({
+                    dot_ticks: Math.max(1, Math.min(10, parseInt(e.target.value) || 3)),
+                  })
+                }
+                disabled={disabled}
+                className="w-20 bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <span className="text-[10px] text-[#666666]">
+                (default 3; bosses 5+, mobs 1-2)
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-1">
