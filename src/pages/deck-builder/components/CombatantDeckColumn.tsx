@@ -560,8 +560,8 @@ export function CombatantDeckColumn({
     Boolean(slot.equipment.accessory)
 
   return (
-    <section className="min-w-0 overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
-      <header className="border-b border-[#282838] p-3">
+    <section className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-[#282838] bg-[#15151f]">
+      <header className="shrink-0 border-b border-[#282838] p-3">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <p className="text-[9px] uppercase tracking-wide text-[#777]">
@@ -658,7 +658,7 @@ export function CombatantDeckColumn({
         )}
       </header>
 
-      <div className="h-[calc(100vh-345px)] min-h-[360px] overflow-y-auto p-2.5">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-2.5">
         {slot.error && (
           <div className="mb-2.5 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 p-2.5 text-xs text-[#fca5a5]">
             {slot.error}
@@ -666,11 +666,11 @@ export function CombatantDeckColumn({
         )}
 
         {slot.isLoading ? (
-          <div className="flex h-[180px] items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
+          <div className="flex min-h-[280px] flex-1 items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
             Carregando cartas do combatente...
           </div>
         ) : slot.cards.length === 0 ? (
-          <div className="flex h-[210px] flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
+          <div className="flex min-h-[280px] flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-[#333348] text-center">
             <Plus className="text-[#555]" size={28} />
             <p className="mt-2 text-sm font-medium text-[#aaa]">
               {selectedCombatant ? 'Nenhuma carta no deck' : 'Nenhum combatente selecionado'}

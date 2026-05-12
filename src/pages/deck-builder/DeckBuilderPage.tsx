@@ -30,7 +30,7 @@ export function DeckBuilderPage() {
     : null
 
   return (
-    <div className="min-h-full bg-[#0f0f14] text-white">
+    <div className="flex min-h-screen flex-col bg-[#0f0f14] text-white">
       <DeckBuilderHeader
         selectedCombatants={deckBuilder.selectedCombatants}
         totalCards={deckBuilder.totalCards}
@@ -47,11 +47,11 @@ export function DeckBuilderPage() {
       />
 
       {deckBuilder.isLoading ? (
-        <div className="flex h-[calc(100vh-180px)] items-center justify-center text-sm text-[#888]">
+        <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-[#888]">
           Carregando combatentes...
         </div>
       ) : (
-        <main className="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3">
+        <main className="grid min-h-0 flex-1 grid-cols-1 items-stretch gap-4 overflow-hidden p-4 xl:grid-cols-3">
           {deckBuilder.squad.map((slot, index) => (
             <CombatantDeckColumn
               key={index}
