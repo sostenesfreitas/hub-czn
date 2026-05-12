@@ -19,6 +19,10 @@ import type {
 } from '../deck-builder.types'
 import type { DeckBuilderSlotCostBreakdown } from '../deck-builder-cost.utils'
 import {
+  formatCardDisplayDescription,
+  mergeCardDisplayTags,
+} from '../deck-builder-card-display.utils'
+import {
   canUseDeckBuilderEpiphanies,
   getDeckCardEpiphanySummary,
   getDeckCardIdentityKey,
@@ -134,11 +138,19 @@ function CompactTypeBadge({ type }: { type: string }) {
     <span
       title={type}
       className={[
-        'max-w-[58px] truncate rounded border px-1.5 py-[1px] text-[8px] font-black uppercase leading-none tracking-wide shadow',
+        'max-w-[52px] truncate rounded border px-1 py-[1px] text-[7px] font-black uppercase leading-none tracking-wide shadow',
         getCompactTypeClassName(type),
       ].join(' ')}
     >
       {type}
+    </span>
+  )
+}
+
+function CompactHiddenTypeBadge({ count }: { count: number }) {
+  return (
+    <span className="rounded border border-[#a78bfa]/25 bg-[#1f1b2e]/95 px-1 py-[1px] text-[7px] font-black uppercase leading-none text-[#c4b5fd] shadow">
+      +{count}
     </span>
   )
 }
@@ -161,8 +173,16 @@ function CompactDeckCard({
   const { t } = useTranslation()
   const displayName = item.selectedVariant?.name ?? item.card.name ?? t('deckBuilder.card.unnamed')
   const displayCost = getInstanceCost(item)
-  const displayDescription = item.selectedVariant?.description ?? item.description
-  const displayTypes = getDisplayTypes(item.card, item.selectedVariant)
+  const formattedDescription = formatCardDisplayDescription(
+    item.selectedVariant?.description ?? item.description,
+  )
+  const displayDescription = formattedDescription.text
+  const displayTypes = mergeCardDisplayTags(
+    getDisplayTypes(item.card, item.selectedVariant),
+    formattedDescription.tags,
+  )
+  const visibleTypes = displayTypes.slice(0, 4)
+  const hiddenTypesCount = Math.max(0, displayTypes.length - visibleTypes.length)
   const hasEpiphanySettings = item.variants.length > 0 || canUseDeckBuilderEpiphanies(item.card)
   const epiphanySummary = getDeckCardEpiphanySummary(item)
 
@@ -210,11 +230,15 @@ function CompactDeckCard({
       </div>
 
       <div className="relative z-10 mt-auto flex min-h-[112px] flex-col justify-end px-3 pb-2.5 pt-9">
-        {displayTypes.length > 0 && (
+        {visibleTypes.length > 0 && (
           <div className="mb-1 flex min-h-[13px] flex-wrap gap-1">
-            {displayTypes.slice(0, 2).map(type => (
+            {visibleTypes.map(type => (
               <CompactTypeBadge key={type} type={type} />
             ))}
+
+            {hiddenTypesCount > 0 && (
+              <CompactHiddenTypeBadge count={hiddenTypesCount} />
+            )}
           </div>
         )}
 
@@ -380,20 +404,38 @@ function CardSelectionModal({
     }
 
     return items.filter(item => {
-      const name = item.card.name?.toLowerCase() ?? ''
-      const description = item.description?.toLowerCase() ?? ''
-      const types = item.card.effect_types.join(' ').toLowerCase()
+      const formattedDescription = formatCardDisplayDescription(item.description)
+      const displayTags = mergeCardDisplayTags(
+        item.card.effect_types,
+        formattedDescription.tags,
+      )
       const variants = (item.variants ?? [])
-        .map(variant => `${variant.name} ${variant.description} ${variant.tags.join(' ')}`)
+        .map(variant => {
+          const formattedVariantDescription = formatCardDisplayDescription(
+            variant.description,
+          )
+
+          return [
+            variant.name,
+            variant.description,
+            formattedVariantDescription.text,
+            ...formattedVariantDescription.tags,
+            ...variant.tags,
+          ].join(' ')
+        })
+        .join(' ')
+
+      const searchableText = [
+        item.card.name,
+        item.description,
+        formattedDescription.text,
+        ...displayTags,
+        variants,
+      ]
         .join(' ')
         .toLowerCase()
 
-      return (
-        name.includes(normalizedSearch) ||
-        description.includes(normalizedSearch) ||
-        types.includes(normalizedSearch) ||
-        variants.includes(normalizedSearch)
-      )
+      return searchableText.includes(normalizedSearch)
     })
   }, [items, search])
 

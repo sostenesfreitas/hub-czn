@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Check, Search, Sparkles, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getDivineGodIconUrl } from '@/lib/deck-builder-assets'
+import {
+  formatCardDisplayDescription,
+  mergeCardDisplayTags,
+} from '../deck-builder-card-display.utils'
 import type {
   DeckBuilderCommonEpiphany,
   DeckBuilderDivineEpiphany,
@@ -46,33 +50,6 @@ function normalizeLevel(value: string | number | null | undefined) {
     .trim()
     .toLowerCase()
     .replace(/\s+/g, '')
-}
-
-function formatCardDescription(value: string | null | undefined) {
-  const normalizedDescription = String(value ?? '')
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map(part => part.trim())
-    .filter(Boolean)
-    .join(' ')
-    .replace(/\s+([,.!?;:])/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim()
-
-  const tags = (normalizedDescription.match(/\[[^\]]+\]/g) ?? [])
-    .map(tag => tag.replace(/^\[/, '').replace(/\]$/, '').trim())
-    .filter(Boolean)
-
-  const text = normalizedDescription
-    .replace(/\[[^\]]+\]\s*/g, '')
-    .replace(/\s+([,.!?;:])/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim()
-
-  return {
-    tags,
-    text: text || normalizedDescription,
-  }
 }
 
 function getCardLevel(cost: number) {
@@ -589,6 +566,13 @@ function VariantButton({
   isSelected: boolean
   onClick: () => void
 }) {
+  const formattedDescription = formatCardDisplayDescription(variant.description)
+  const visibleTags = formattedDescription.tags.slice(0, 4)
+  const hiddenTagsCount = Math.max(
+    0,
+    formattedDescription.tags.length - visibleTags.length,
+  )
+
   return (
     <button
       key={variant.variant_id}
@@ -612,8 +596,22 @@ function VariantButton({
         </span>
       </div>
 
+      {visibleTags.length > 0 && (
+        <div className="mt-1.5 flex flex-wrap gap-1">
+          {visibleTags.map(tag => (
+            <TypeBadge key={tag} type={tag} />
+          ))}
+
+          {hiddenTagsCount > 0 && (
+            <span className="rounded bg-[#1f1b2e] px-1.5 py-0.5 text-[8px] font-black text-[#c4b5fd]">
+              +{hiddenTagsCount}
+            </span>
+          )}
+        </div>
+      )}
+
       <p className="mt-1.5 line-clamp-2 text-[10px] font-semibold leading-snug text-[#dbeafe]">
-        {variant.description}
+        {formattedDescription.text}
       </p>
     </button>
   )
@@ -804,12 +802,16 @@ export function VariantSettingsModal({
   const currentCost = selectedVariant?.cost ?? card.cost
   const currentDescription = selectedVariant?.description ?? baseDescription
   const formattedCurrentDescription = useMemo(
-    () => formatCardDescription(currentDescription),
+    () => formatCardDisplayDescription(currentDescription),
     [currentDescription],
   )
   const currentTypes = selectedVariant
     ? getDisplayTypes(card, selectedVariant)
     : card.effect_types
+  const currentDisplayTags = mergeCardDisplayTags(
+    currentTypes,
+    formattedCurrentDescription.tags,
+  )
 
   useEffect(() => {
     if (activeSection === 'epiphany' && !canShowEpiphanySection) {
@@ -1034,9 +1036,9 @@ export function VariantSettingsModal({
 
                 {currentDescription && (
                   <div className="mt-3 rounded-lg border border-[#0ea5e9]/25 bg-[#082f49]/25 p-2.5">
-                    {currentTypes.length > 0 && (
+                    {currentDisplayTags.length > 0 && (
                       <div className="mb-1.5 flex flex-wrap gap-1">
-                        {currentTypes.slice(0, 3).map(type => (
+                        {currentDisplayTags.slice(0, 4).map(type => (
                           <TypeBadge key={type} type={type} />
                         ))}
                       </div>
@@ -1129,9 +1131,9 @@ export function VariantSettingsModal({
                         {displayTitle}
                       </h3>
 
-                      {currentTypes.length > 0 && (
+                      {currentDisplayTags.length > 0 && (
                         <div className="mt-3 flex flex-wrap gap-1.5">
-                          {currentTypes.map(type => (
+                          {currentDisplayTags.map(type => (
                             <TypeBadge key={type} type={type} />
                           ))}
                         </div>
@@ -1142,32 +1144,22 @@ export function VariantSettingsModal({
                       {currentCost}
                     </span>
                   </div>
-                </div>
 
-                <div className="rounded-xl border border-[#303044] bg-[#101018] p-4">
-                  <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                    {t('deckBuilder.variantModal.fullDescription')}
-                  </p>
+                  <div className="mt-4 border-t border-[#303044] pt-4">
+                    <p className="text-[10px] uppercase tracking-wide text-[#777]">
+                      {t('deckBuilder.variantModal.fullDescription')}
+                    </p>
 
-                  {currentDescription ? (
-                    <div className="mt-4 space-y-3">
-                      {formattedCurrentDescription.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {formattedCurrentDescription.tags.map(tag => (
-                            <TypeBadge key={tag} type={tag} />
-                          ))}
-                        </div>
-                      )}
-
-                      <p className="max-w-3xl text-sm font-semibold leading-7 text-[#e5e7eb]">
+                    {currentDescription ? (
+                      <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-[#e5e7eb]">
                         {formattedCurrentDescription.text}
                       </p>
-                    </div>
-                  ) : (
-                    <p className="mt-4 text-sm text-[#888]">
-                      {t('deckBuilder.variantModal.noDescription')}
-                    </p>
-                  )}
+                    ) : (
+                      <p className="mt-3 text-sm text-[#888]">
+                        {t('deckBuilder.variantModal.noDescription')}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">

@@ -1,6 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { Sparkles } from 'lucide-react'
 import type { DeckBuilderCardWithVariants } from '../deck-builder.types'
+import {
+  formatCardDisplayDescription,
+  mergeCardDisplayTags,
+} from '../deck-builder-card-display.utils'
 import { getVariants } from '../deck-builder.utils'
 import { CardImage } from './CardImage'
 import { TypeBadge } from './TypeBadge'
@@ -18,7 +22,11 @@ export function AvailableDeckBuilderCardButton({
   const card = item.card
   const variants = getVariants(item)
   const hasVariants = variants.length > 0 || card.spark_count > 0
-  const displayDescription = item.description
+  const formattedDescription = formatCardDisplayDescription(item.description)
+  const displayDescription = formattedDescription.text
+  const displayTypes = mergeCardDisplayTags(card.effect_types, formattedDescription.tags)
+  const visibleTypes = displayTypes.slice(0, 4)
+  const hiddenTypesCount = Math.max(0, displayTypes.length - visibleTypes.length)
   const hasDamage = card.eff_value > 0
 
   return (
@@ -44,10 +52,18 @@ export function AvailableDeckBuilderCardButton({
           </div>
 
           <div className="mt-2 flex flex-wrap gap-1">
-            {card.effect_types.length > 0 ? (
-              card.effect_types.slice(0, 2).map(type => (
-                <TypeBadge key={type} type={type} />
-              ))
+            {visibleTypes.length > 0 ? (
+              <>
+                {visibleTypes.map(type => (
+                  <TypeBadge key={type} type={type} />
+                ))}
+
+                {hiddenTypesCount > 0 && (
+                  <span className="rounded bg-[#1f1b2e] px-1.5 py-0.5 text-[9px] font-black text-[#c4b5fd]">
+                    +{hiddenTypesCount}
+                  </span>
+                )}
+              </>
             ) : (
               <span className="text-[10px] text-[#777]">
                 {t('deckBuilder.support')}
