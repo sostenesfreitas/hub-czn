@@ -45,6 +45,9 @@ class GearOptimizer:
         self.priorities: dict[str, int] = {name: 0 for name in ALL_STAT_NAMES}
         self.char_weights: dict[str, dict[str, int]] = {}
         self.raw_data = {}
+        # Sprint 2f4: AvgDMG configuration knobs
+        self._config_target_def: int = 500
+        self._config_treat_target_as_weak: bool = False
 
     def load_data(self, filepath: str):
         """
@@ -420,13 +423,25 @@ class GearOptimizer:
         total_cd = base_cd + crit_dmg
 
         ehp = total_hp * (total_def / 300 + 1)
-        # Sprint 2e2: expected damage from Track B's validated formula
+        # Sprint 2f4: expected damage with configurable target_def + optional weak_mult
         eff_pct = best_damage_eff_for(char_name) if char_name else 100.0
+        target_def = getattr(self, "_config_target_def", None) or 500
+        if getattr(self, "_config_treat_target_as_weak", False) and char_name:
+            try:
+                _char_data = get_character_by_name(char_name) or {}
+            except Exception:
+                _char_data = {}
+            weak_ego_dmg_rate = _char_data.get("base_weak_ego_dmg_rate", 100.0) or 100.0
+            weak_mult = float(weak_ego_dmg_rate) / 100.0
+        else:
+            weak_mult = 1.0
         avg_dmg = expected_damage(
             atk=total_atk,
             cri=total_cr,
             cri_dmg_rate=total_cd,
             eff_pct=eff_pct,
+            dummy_def=target_def,
+            weak_mult=weak_mult,
         )
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)
@@ -464,6 +479,10 @@ class GearOptimizer:
             List of tuples: (gear_list, total_score, final_stats)
             Sorted by score (highest first), limited to max_results
         """
+        # Sprint 2f4: thread AvgDMG config from settings → instance attributes
+        self._config_target_def = int(settings.get("target_def", 500) or 500)
+        self._config_treat_target_as_weak = bool(settings.get("treat_target_as_weak", False))
+
         stat_weights = settings.get("stat_weights")
 
         saved_scores = None

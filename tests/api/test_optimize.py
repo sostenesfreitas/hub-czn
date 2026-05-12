@@ -108,3 +108,60 @@ def test_calculate_build_stats_returns_avg_dmg_key():
     opt = GearOptimizer()
     stats = opt.calculate_build_stats([], char_name="Diana")
     assert "Avg DMG" in stats
+
+
+def test_calculate_build_stats_uses_target_def_from_config():
+    """Sprint 2f4: target_def from optimize() settings flows into AvgDMG.
+
+    Note: per Track B's empirical fit (DR = 268/(def+503)), higher target_def
+    yields LESS damage reduction — so higher DEF → higher AvgDMG. This test
+    asserts wiring (values differ), not the sign of the relationship.
+    """
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+
+    opt = GearOptimizer()
+    opt._config_target_def = 1000
+    opt._config_treat_target_as_weak = False
+    stats_high_def = opt.calculate_build_stats([], char_name="Diana")
+    opt._config_target_def = 500
+    stats_low_def = opt.calculate_build_stats([], char_name="Diana")
+    if stats_high_def.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    assert stats_high_def["Avg DMG"] != stats_low_def["Avg DMG"]
+
+
+def test_calculate_build_stats_uses_treat_target_as_weak():
+    """Sprint 2f4: treat_target_as_weak=True multiplies AvgDMG by weak_ego_dmg_rate."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    stats_off = opt.calculate_build_stats([], char_name="Diana")
+    opt._config_treat_target_as_weak = True
+    stats_on = opt.calculate_build_stats([], char_name="Diana")
+    if stats_off.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    assert stats_on["Avg DMG"] >= stats_off["Avg DMG"]
+
+
+def test_calculate_build_stats_defaults_preserve_pre_2f4_behavior():
+    """Default config values match pre-2f4 expected_damage."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+    from api.optimizer.expected_damage import expected_damage
+    from api.game_data.char_eff import best_damage_eff_for
+
+    opt = GearOptimizer()
+    stats = opt.calculate_build_stats([], char_name="Diana")
+    if stats.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    eff_pct = best_damage_eff_for("Diana")
+    want = expected_damage(
+        atk=stats["ATK"],
+        cri=stats["CRate"],
+        cri_dmg_rate=stats["CDmg"],
+        eff_pct=eff_pct,
+    )
+    assert stats["Avg DMG"] == pytest.approx(want, abs=1e-3)
