@@ -230,6 +230,14 @@ export interface EquipmentSet {
   icon_path?: string
 }
 
+// Sprint 2h1: monster catalog entry for the Optimizer Monster Picker.
+export interface Monster {
+  id: string
+  name: string
+  def: number
+  has_weak: boolean
+}
+
 export interface AboutInfo {
   version: string
   github_url: string
