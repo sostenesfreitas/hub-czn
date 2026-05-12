@@ -83,6 +83,7 @@ class BattleState:
     card_owner_lookup: dict[str, str] = field(default_factory=dict)
     skill_map_raw: dict | None = None
     cs_map_raw: dict | None = None
+    monster_history: "dict[str, MonsterState] | None" = None  # Sprint 2g2: res_id -> MonsterState accumulated across snapshots
 
     def add_cs(self, unit_id: str, cs_id: str, amount: int = 1) -> None:
         self.cs_stacks.setdefault(unit_id, {})

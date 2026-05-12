@@ -232,3 +232,24 @@ def test_state_reconstructor_handles_missing_skill_map_gracefully():
     state = StateReconstructor().reconstruct(battle_wt)
     assert state.skill_map_raw is None
     assert state.cs_map_raw is None
+
+
+def test_state_reconstructor_accumulates_monster_history_across_calls():
+    """Sprint 2g2 T2: when multiple snapshots are reconstructed in sequence,
+    the monster_history dict accumulates all monsters seen across them."""
+    from api.simulator.replay.reconstructor import StateReconstructor
+    bw1 = {
+        "turn": 1, "chars": [], "csMap": {}, "cardMap": {}, "skillMap": {},
+        "monsters": [{"id": "m1", "res_id": "1001012_01", "status": {"info": {"S_DEF": 100, "S_HP": 1000}}}],
+    }
+    bw2 = {
+        "turn": 2, "chars": [], "csMap": {}, "cardMap": {}, "skillMap": {},
+        "monsters": [{"id": "m2", "res_id": "3000489_01", "status": {"info": {"S_DEF": 200, "S_HP": 2000}}}],
+    }
+    rec = StateReconstructor()
+    s1 = rec.reconstruct(bw1)
+    s2 = rec.reconstruct(bw2)
+    # s2 should know BOTH monsters via history (m2 currently visible, m1 from history)
+    assert s2.monster_history is not None
+    assert "1001012_01" in s2.monster_history or "1001012" in {r[:7] for r in s2.monster_history}
+    assert "3000489_01" in s2.monster_history or "3000489" in {r[:7] for r in s2.monster_history}

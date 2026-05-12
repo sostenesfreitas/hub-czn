@@ -13,6 +13,12 @@ from api.simulator.state import BattleState, CharState, MonsterState, CardState,
 class StateReconstructor:
     """Convert a battle_wt snapshot dict into a BattleState."""
 
+    def __init__(self):
+        # Sprint 2g2: accumulate monsters across reconstruct() calls so the
+        # resolver can find monsters that fired skill_eff but aren't in the
+        # current snapshot frame (e.g., monsters from earlier/later waves).
+        self._monster_history: dict[str, MonsterState] = {}
+
     def reconstruct(self, battle_wt: dict, rng_seed: int = 0) -> BattleState:
         chars = self._build_chars(battle_wt.get("chars", []))
         monsters = self._build_monsters(battle_wt.get("monsters", []))
@@ -26,6 +32,10 @@ class StateReconstructor:
         skill_map_raw = battle_wt.get("skillMap") if isinstance(battle_wt.get("skillMap"), dict) else None
         cs_map_input = battle_wt.get("csMap")
         cs_map_raw = cs_map_input if (isinstance(cs_map_input, dict) and cs_map_input) else None
+        # Sprint 2g2: accumulate monsters into history keyed by res_id.
+        for m in monsters:
+            if m.res_id:
+                self._monster_history[m.res_id] = m
         return BattleState(
             turn=int(battle_wt.get("turn", 1) or 1),
             player_team=chars,
@@ -39,6 +49,7 @@ class StateReconstructor:
             card_owner_lookup=card_owner_lookup,
             skill_map_raw=skill_map_raw,
             cs_map_raw=cs_map_raw,
+            monster_history=dict(self._monster_history),
         )
 
     @staticmethod
