@@ -974,7 +974,7 @@ export function VariantSettingsModal({
                   {target.type === 'deck'
                     ? displayTitle
                     : canShowEngravingSection
-                      ? 'Engraving'
+                      ? t('deckBuilder.variantModal.engravingSettings')
                       : t('deckBuilder.variantModal.epiphanySettings')}
                 </h2>
               </div>
@@ -1005,7 +1005,7 @@ export function VariantSettingsModal({
                           : 'text-[#a1a1aa] hover:text-white',
                       ].join(' ')}
                     >
-                      {canShowEngravingSection ? 'Engraving' : t('deckBuilder.variantModal.epiphanyTab')}
+                      {canShowEngravingSection ? t('deckBuilder.variantModal.engravingTab') : t('deckBuilder.variantModal.epiphanyTab')}
                     </button>
                   )}
                 </div>
@@ -1014,7 +1014,9 @@ export function VariantSettingsModal({
 
             <p className="mt-1 text-xs text-[#a1a1aa]">
               {target.type === 'deck'
-                ? t('deckBuilder.variantModal.headerDescription')
+                ? canShowEngravingSection
+                  ? t('deckBuilder.variantModal.engravingHeaderDescription')
+                  : t('deckBuilder.variantModal.headerDescription')
                 : (
                   <>
                     {t('deckBuilder.variantModal.configurePrefix')}{' '}
@@ -1226,36 +1228,36 @@ export function VariantSettingsModal({
               <section className="flex h-full min-h-0 min-w-0 flex-col gap-3 overflow-hidden">
                 <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
                   <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                    Engraving
+                    {t('deckBuilder.variantModal.engravingSectionLabel')}
                   </p>
 
                   <h3 className="mt-2 text-lg font-black text-white">
-                    Persona Card
+                    {t('deckBuilder.variantModal.personaCard')}
                   </h3>
 
                   <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#a1a1aa]">
-                    Configure as Engravings da Persona Card. Esta seção substitui Epifania apenas para cartas Persona.
+                    {t('deckBuilder.variantModal.engravingDescription')}
                   </p>
                 </section>
 
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                   <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
                     <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                      Slot 1
+                      {t('deckBuilder.variantModal.engravingSlot1')}
                     </p>
 
                     <p className="mt-2 text-sm font-bold text-white">
-                      Nenhuma Engraving selecionada
+                      {t('deckBuilder.variantModal.noEngravingSelected')}
                     </p>
                   </section>
 
                   <section className="rounded-xl border border-[#303044] bg-[#171722] p-4">
                     <p className="text-[10px] uppercase tracking-wide text-[#777]">
-                      Slot 2
+                      {t('deckBuilder.variantModal.engravingSlot2')}
                     </p>
 
                     <p className="mt-2 text-sm font-bold text-white">
-                      Nenhuma Engraving selecionada
+                      {t('deckBuilder.variantModal.noEngravingSelected')}
                     </p>
                   </section>
                 </div>
@@ -1473,7 +1475,7 @@ export function VariantSettingsModal({
             <>
               <p className="text-[11px] text-[#777]">
                 {activeSection === 'engraving' || canShowEngravingSection ? (
-                  'Engraving'
+                  t('deckBuilder.variantModal.engravingTab')
                 ) : (
                   <>
                     {t('deckBuilder.variantModal.footerHintPrefix')}{' '}<span className="font-bold text-[#7dd3fc]">{t('deckBuilder.variantModal.epiphanyTab')}</span>{' '}{t('deckBuilder.variantModal.footerHintSuffix')}
