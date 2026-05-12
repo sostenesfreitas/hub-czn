@@ -73,6 +73,8 @@ export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants' | 
   variants?: DeckBuilderEpiphanyVariant[]
   rarity?: string | null
   tags?: string[]
+  restrictions?: string | null
+  allowed_classes?: string[]
 }
 
 export type DeckCardInstance = {

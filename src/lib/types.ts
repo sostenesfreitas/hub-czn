@@ -8,13 +8,13 @@ export interface Stat {
 
 export interface MemoryFragment {
   id: number
-  slot_num: number       // 1-6
-  slot_name: string      // e.g. "Head"
+  slot_num: number
+  slot_name: string
   set_id: number
   set_name: string
-  rarity_num: number     // 1=Common 2=Uncommon 3=Rare 4=Legendary
-  rarity: string         // e.g. "Rare"
-  level: number          // 0-15
+  rarity_num: number
+  rarity: string
+  level: number
   locked: boolean
   equipped_to: string | null
   gear_score: number
@@ -22,7 +22,7 @@ export interface MemoryFragment {
   potential_low: number
   potential_high: number
   main_stat: Stat | null
-  substats: Stat[]       // up to 4
+  substats: Stat[]
 }
 
 export interface ApiStatus {
@@ -50,7 +50,7 @@ export interface SetInfo {
 }
 
 export interface GameData {
-  sets: Record<string, SetInfo>
+  sets: Record<string, unknown>
   stats: Record<string, unknown>
   characters: Record<string, unknown>
 }
@@ -247,6 +247,7 @@ export interface CharPreset {
 export interface CardCharacter {
   char_res_id: number
   name: string
+  class?: string | null
 }
 
 export interface CardEntry {

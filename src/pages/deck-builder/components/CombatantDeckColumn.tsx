@@ -30,7 +30,7 @@ import {
   getInstanceCost,
   getVariants,
 } from '../deck-builder.utils'
-import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
+import { getSharedDeckBuilderCardsForClass } from '../deck-builder-card-pool.utils'
 import { AvailableDeckBuilderCardButton } from './AvailableDeckBuilderCardButton'
 import { CardImage } from './CardImage'
 import { CharacterAvatar } from './CharacterAvatar'
@@ -587,9 +587,12 @@ export function CombatantDeckColumn({
 
   const startingCards = slot.startingCards
   const epiphanyCards = slot.epiphanyCards
-  const sharedCards = SHARED_DECK_BUILDER_CARDS
   const egoSkill = slot.egoSkill
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
+  const sharedCards = useMemo(
+    () => getSharedDeckBuilderCardsForClass(selectedCombatant?.class),
+    [selectedCombatant?.class],
+  )
   const groupedCards = groupDeckCards(slot.cards)
 
   const selectedModalItems = useMemo(() => {
@@ -813,12 +816,10 @@ export function CombatantDeckColumn({
           kind={cardSelectionKind}
           items={selectedModalItems}
           onClose={() => setCardSelectionKind(null)}
-          onAdd={item => {
-            onAddDeckBuilderCard(item)
-          }}
+          onAdd={item => onAddDeckBuilderCard(item)}
           onOpenVariants={item => {
-            onOpenAvailableCardVariants(item)
             setCardSelectionKind(null)
+            onOpenAvailableCardVariants(item)
           }}
         />
       )}
