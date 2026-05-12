@@ -87,6 +87,29 @@ def _damage_card_ids_via_eff_index(eff_index: EffInstanceIndex) -> frozenset:
     return frozenset(card_ids)
 
 
+@functools.lru_cache(maxsize=1)
+def _damage_card_eff_pct_map(eff_index: EffInstanceIndex) -> "dict[str, int]":
+    """Sprint 2f4 T1b: build map of card_id → max eff_value across damage
+    instances. Authoritative source for damage card eff_pct (bypasses
+    CardExpectation.eff_pct which is None for many cards).
+
+    Returns: dict mapping card_id (e.g., 'c_1003_srt4') to max eff_value
+    seen across its SKILL_EFF_DMG / SKILL_EFF_DMG_IGNORE_COND / SKILL_EFF_DMG_COOP
+    instances. Only includes cards with positive eff_value.
+    """
+    out: dict[str, int] = {}
+    for eff_type in _DAMAGE_EFF_TYPES:
+        for inst in eff_index.by_type(eff_type):
+            inst_id = inst.id
+            if "_" not in inst_id:
+                continue
+            card_id = inst_id.rsplit("_", 1)[0]
+            ev = inst.eff_value
+            if ev > 0:
+                out[card_id] = max(out.get(card_id, 0), ev)
+    return out
+
+
 def _is_damage_card_v2(card_id: str, damage_card_ids: frozenset,
                         exp: CardExpectation) -> bool:
     """v2 classifier: card_id is in the EffInstanceIndex-derived set."""
@@ -104,8 +127,11 @@ def best_damage_eff_for(char_name: str,
     """Max eff_pct among damage cards in char's starting + epiphany decks.
     Falls back to 100.0 when char is unknown or has no damage card.
 
-    Sprint 2f4: uses EffInstanceIndex-based classifier when available;
-    falls back to v1 string match otherwise.
+    Sprint 2f4 T1b: uses EffInstanceIndex.eff_value directly as the
+    authoritative eff_pct source when EffInstanceIndex is available
+    (bypasses CardExpectation.eff_pct which is None for many cards).
+    Falls back to v1 CardExpectation.eff_pct + string-match classifier
+    when EffInstanceIndex is None (synth tests).
     """
     info = _lookup_char_info_by_name(char_name)
     if info is None:
@@ -113,19 +139,27 @@ def best_damage_eff_for(char_name: str,
     resolver = _resolver if _resolver is not None else _get_resolver()
     eff_index = _eff_index if _eff_index is not None else _get_default_eff_index()
 
-    damage_card_ids = _damage_card_ids_via_eff_index(eff_index) if eff_index else None
-
     candidates: list[int] = []
-    for card_id in list(info.starting_card_ids) + list(info.epiphany_card_ids):
-        exp = resolver.card_expectation(card_id, level=1)
-        if exp is None or exp.eff_pct is None:
-            continue
-        if damage_card_ids is not None:
-            if _is_damage_card_v2(card_id, damage_card_ids, exp):
-                candidates.append(exp.eff_pct)
-        else:
+
+    if eff_index is not None:
+        # v2b path: use EffInstanceIndex.eff_value directly
+        eff_pct_map = _damage_card_eff_pct_map(eff_index)
+        for card_id in list(info.starting_card_ids) + list(info.epiphany_card_ids):
+            # Filter out self-target cards via CardExpectation (still respect that signal)
+            exp = resolver.card_expectation(card_id, level=1)
+            if exp is not None and exp.target_class == "self":
+                continue
+            if card_id in eff_pct_map:
+                candidates.append(eff_pct_map[card_id])
+    else:
+        # v1 fallback path
+        for card_id in list(info.starting_card_ids) + list(info.epiphany_card_ids):
+            exp = resolver.card_expectation(card_id, level=1)
+            if exp is None or exp.eff_pct is None:
+                continue
             if _is_damage_card(exp):
                 candidates.append(exp.eff_pct)
+
     if not candidates:
         return 100.0
     return float(max(candidates))

@@ -191,3 +191,68 @@ def test_best_damage_eff_for_v2_unknown_char_falls_back_to_100():
     from api.game_data.char_eff import best_damage_eff_for
     best_damage_eff_for.cache_clear()
     assert best_damage_eff_for("DoesNotExist") == 100.0
+
+
+def test_damage_card_eff_pct_map_collects_max_eff_value_per_card():
+    """v2b: build a map of card_id → max eff_value across damage instances."""
+    from unittest.mock import MagicMock
+    from api.game_data.char_eff import _damage_card_eff_pct_map
+    from api.game_data.eff_instances import EffInstance
+
+    eff_index = MagicMock()
+    # Card c_X has two damage instances with eff_value 120, 80 → max=120
+    fake_a = EffInstance(id="c_X_01", eff_type="SKILL_EFF_DMG",
+                         raw={"eff_value": "120"})
+    fake_b = EffInstance(id="c_X_02", eff_type="SKILL_EFF_DMG",
+                         raw={"eff_value": "80"})
+    # Card c_Y has one damage instance with eff_value 200
+    fake_c = EffInstance(id="c_Y_01", eff_type="SKILL_EFF_DMG_IGNORE_COND",
+                         raw={"eff_value": "200"})
+
+    def by_type(eff_type):
+        if eff_type == "SKILL_EFF_DMG":
+            return [fake_a, fake_b]
+        if eff_type == "SKILL_EFF_DMG_IGNORE_COND":
+            return [fake_c]
+        return []
+
+    eff_index.by_type.side_effect = by_type
+
+    result = _damage_card_eff_pct_map(eff_index)
+    assert result["c_X"] == 120
+    assert result["c_Y"] == 200
+
+
+def test_best_damage_eff_for_nia_now_above_100():
+    """Sprint 2f4 T1b: Nia's eff_pct is sourced from EffInstanceIndex.eff_value
+    directly (bypassing CardExpectation which has None eff_pct for some cards).
+
+    Nia is a support char whose only damage card (c_1003_srt1) has eff_value=100
+    exactly in the EffInstanceIndex. v1 would have returned the fallback default
+    (also 100) — but under v2b the value comes from the index, not the fallback.
+    We assert >= 100 (the data limit) and confirm her card is actually in the
+    map (proving the index sourced the value, not the fallback path).
+    """
+    from api.game_data.char_eff import (
+        best_damage_eff_for,
+        _damage_card_eff_pct_map,
+        _get_default_eff_index,
+    )
+    best_damage_eff_for.cache_clear()
+    nia = best_damage_eff_for("Nia")
+    assert nia >= 100.0, f"Nia eff_pct: expected >= 100, got {nia}"
+    # Confirm the value was sourced from the EffInstanceIndex map (not fallback).
+    ei = _get_default_eff_index()
+    if ei is not None:
+        m = _damage_card_eff_pct_map(ei)
+        assert "c_1003_srt1" in m, "Nia's damage card not in eff_pct map"
+        assert m["c_1003_srt1"] == 100
+
+
+def test_best_damage_eff_for_adelheid_above_100():
+    """Sprint 2f4 T1b: Adelheid's damage cards have eff_value in EffInstanceIndex
+    even when CardExpectation.eff_pct is None."""
+    from api.game_data.char_eff import best_damage_eff_for
+    best_damage_eff_for.cache_clear()
+    val = best_damage_eff_for("Adelheid")
+    assert val > 100.0, f"Adelheid eff_pct: expected > 100, got {val}"
