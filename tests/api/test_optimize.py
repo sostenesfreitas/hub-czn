@@ -372,6 +372,23 @@ def test_calculate_build_stats_includes_extra_dmg_in_avgdmg():
     )
 
 
+def test_calculate_build_stats_uses_target_count_from_config():
+    """Sprint 2h3: _config_target_count flows into AvgDMG via expected_damage."""
+    import pytest
+    from api.optimizer.optimizer import GearOptimizer
+
+    opt = GearOptimizer()
+    opt._config_target_def = 500
+    opt._config_treat_target_as_weak = False
+    opt._config_target_count = 1
+    stats_single = opt.calculate_build_stats([], char_name="Diana")
+    if stats_single.get("ATK", 0) <= 0:
+        pytest.skip("Diana base stats not loaded")
+    opt._config_target_count = 3
+    stats_triple = opt.calculate_build_stats([], char_name="Diana")
+    assert stats_triple["Avg DMG"] == pytest.approx(3.0 * stats_single["Avg DMG"], abs=1.0)
+
+
 def test_calculate_build_stats_weak_ego_dmg_rate_is_populated_from_char_data():
     """Sprint 2f5 Feature 3: base_weak_ego_dmg_rate must be sourced from real
     char data (125 for every live combatant), not silently defaulted to 100.

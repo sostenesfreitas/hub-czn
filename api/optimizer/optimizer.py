@@ -48,6 +48,8 @@ class GearOptimizer:
         # Sprint 2f4: AvgDMG configuration knobs
         self._config_target_def: int = 500
         self._config_treat_target_as_weak: bool = False
+        # Sprint 2h3: AoE / multi-target modeling
+        self._config_target_count: int = 1
 
     def load_data(self, filepath: str):
         """
@@ -442,6 +444,7 @@ class GearOptimizer:
             weak_mult = float(base_weak_ego_dmg_rate or 100.0) / 100.0
         else:
             weak_mult = 1.0
+        target_count = getattr(self, "_config_target_count", None) or 1
         avg_dmg = expected_damage(
             atk=total_atk,
             cri=total_cr,
@@ -450,6 +453,7 @@ class GearOptimizer:
             dummy_def=target_def,
             weak_mult=weak_mult,
             extra_dmg_pct=extra_dmg,  # Sprint 2h2: include Extra DMG%
+            target_count=target_count,  # NEW Sprint 2h3
         )
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)
@@ -490,6 +494,8 @@ class GearOptimizer:
         # Sprint 2f4: thread AvgDMG config from settings → instance attributes
         self._config_target_def = int(settings.get("target_def", 500) or 500)
         self._config_treat_target_as_weak = bool(settings.get("treat_target_as_weak", False))
+        # Sprint 2h3: thread target_count from settings
+        self._config_target_count = int(settings.get("target_count", 1) or 1)
 
         stat_weights = settings.get("stat_weights")
 
