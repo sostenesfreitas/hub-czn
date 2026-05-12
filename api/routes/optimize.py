@@ -4,6 +4,8 @@ from api.frozen_path import add_vribbels_to_path
 add_vribbels_to_path()
 
 import asyncio
+import json
+from pathlib import Path
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
@@ -103,6 +105,22 @@ def optimize_sets():
         [{"id": sid, "name": s["name"], "pieces": s["pieces"], "icon_path": s.get("icon_path")} for sid, s in SETS.items()],
         key=lambda x: x["name"],
     )
+
+
+@router.get("/optimize/monster-catalog")
+def optimize_monster_catalog():
+    """Sprint 2h1: returns the static monster catalog for the Optimizer
+    Monster Picker UI.
+
+    Catalog is built offline by scripts/build_monster_catalog.py from
+    client_db monster definitions. Returns a list of
+    {id, name, def, has_weak} dicts (sorted by DEF then name).
+    Returns an empty list when the catalog file is missing.
+    """
+    path = Path(__file__).resolve().parents[1] / "data" / "monster_catalog.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 @router.post("/optimize/start")

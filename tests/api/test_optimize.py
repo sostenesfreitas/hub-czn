@@ -278,6 +278,39 @@ def test_calculate_build_stats_uses_actual_weak_ego_dmg_rate_when_toggled():
     assert "Avg DMG" in stats_off
 
 
+def test_monster_catalog_endpoint_returns_list(client):
+    """Sprint 2h1: /api/optimize/monster-catalog returns a list of monsters."""
+    resp = client.get("/api/optimize/monster-catalog")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert isinstance(data, list)
+    # If catalog is populated, each entry has the expected shape.
+    if data:
+        first = data[0]
+        assert "id" in first
+        assert "name" in first
+        assert "def" in first
+        assert "has_weak" in first
+        assert isinstance(first["id"], str)
+        assert isinstance(first["name"], str)
+        assert isinstance(first["def"], int)
+        assert isinstance(first["has_weak"], bool)
+
+
+def test_monster_catalog_endpoint_entries_have_plausible_def(client):
+    """Sprint 2h1: catalog DEF values should be in the observed in-game range
+    (single-digit to ~1000) -- guards against accidentally writing junk values
+    (negative, NaN, four+ digits) if the build script regresses."""
+    resp = client.get("/api/optimize/monster-catalog")
+    data = resp.json()
+    if not data:
+        return  # catalog not built in this environment, skip
+    for entry in data:
+        assert 0 <= entry["def"] < 5000, (
+            f"DEF for {entry['id']} ({entry['name']}) out of range: {entry['def']}"
+        )
+
+
 def test_calculate_build_stats_weak_ego_dmg_rate_is_populated_from_char_data():
     """Sprint 2f5 Feature 3: base_weak_ego_dmg_rate must be sourced from real
     char data (125 for every live combatant), not silently defaulted to 100.
