@@ -579,7 +579,8 @@ export function OptimizerPanel({
             </span>
           </label>
 
-          {/* Sprint 2h3: AoE / multi-target modeling */}
+          {/* Sprint 2h3: AoE / multi-target modeling
+              Sprint 2h9: 0 = auto-detect from char's best damage card's target_class */}
           <div className="space-y-1">
             <label htmlFor="optimizer-target-count" className="text-[9px] uppercase tracking-wider text-[#666666]">
               Target count
@@ -588,20 +589,22 @@ export function OptimizerPanel({
               <input
                 id="optimizer-target-count"
                 type="number"
-                min={1}
+                min={0}
                 max={5}
                 step={1}
                 value={config.target_count ?? 1}
-                onChange={(e) =>
-                  patch({
-                    target_count: Math.max(1, Math.min(5, parseInt(e.target.value) || 1)),
-                  })
-                }
+                onChange={(e) => {
+                  const raw = e.target.value
+                  const parsed = parseInt(raw)
+                  // Accept 0 as auto sentinel; clamp NaN/negative to 0
+                  const next = Number.isNaN(parsed) ? 0 : Math.max(0, Math.min(5, parsed))
+                  patch({ target_count: next })
+                }}
                 disabled={disabled}
                 className="w-20 bg-[#282828] border border-[#333333] rounded px-2 py-1 text-xs text-[#ffffff] outline-none focus:border-[#c084fc] disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <span className="text-[10px] text-[#666666]">
-                (1=single boss, 3-5=mob wave)
+                (0=auto, 1=single boss, 3-5=mob wave)
               </span>
             </div>
           </div>
