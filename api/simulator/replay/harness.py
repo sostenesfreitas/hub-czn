@@ -113,6 +113,7 @@ class ReplayHarness:
             if event.skill_eff_fires and state is not None:
                 for fire in event.skill_eff_fires:
                     fire_seq = skill_eff_global_seq.get((ce_idx, fire.skill_eff_id))
+                    seg_caster = None
                     if fire_seq is not None:
                         # Collect candidate unit_ids from state AND from the
                         # accumulator's own snapshot (covers targets not yet
@@ -133,10 +134,11 @@ class ReplayHarness:
                                 dva[uid] = stacks
                         state.dva_stacks = dva
                         state.cs_multiplier_index = self._get_cs_index()
+                        seg_caster = accumulator.caster_at(fire_seq)
                     else:
                         state.dva_stacks = {}
                         state.cs_multiplier_index = self._get_cs_index()
-                    row = self._dispatch_one(event, fire, state)
+                    row = self._dispatch_one(event, fire, state, segment_caster=seg_caster)
                     reports.append(row)
                     summary.record(row.eff_type or "?", row.status, None)
                     if row.status == "dispatched":
@@ -188,7 +190,7 @@ class ReplayHarness:
             return int(lde.get("damage", 0) or 0)
         return None
 
-    def _dispatch_one(self, event, fire, state) -> EventReport:
+    def _dispatch_one(self, event, fire, state, segment_caster: "str | None" = None) -> EventReport:
         row = EventReport(seq=event.seq, skill_eff_id=fire.skill_eff_id)
         try:
             inst = self._runtime._instances.get(fire.skill_eff_id)
@@ -197,7 +199,12 @@ class ReplayHarness:
             row.error = str(e)
             return row
         row.eff_type = inst.eff_type
-        caster, inferred = self._resolve_caster(fire.caster_id, state, skill_eff_id=fire.skill_eff_id)
+        caster, inferred = self._resolve_caster(
+            fire.caster_id,
+            state,
+            skill_eff_id=fire.skill_eff_id,
+            segment_caster=segment_caster,
+        )
         row.inferred_caster = inferred
         if caster is None:
             row.status = "no_target"
@@ -226,14 +233,22 @@ class ReplayHarness:
         return row
 
     @staticmethod
-    def _resolve_caster(caster_id: "str | None", state, skill_eff_id: "str | None" = None) -> tuple:
+    def _resolve_caster(
+        caster_id: "str | None",
+        state,
+        skill_eff_id: "str | None" = None,
+        segment_caster: "str | None" = None,
+    ) -> tuple:
         """Resolve a caster unit.
 
         Resolution order:
         1. Direct match: caster_id == unit.id (player_team or enemies).
         2. Indirect via card_owner_lookup: caster_id is a card-instance-id.
         3. Skill-eff-id prefix: extract char_res_id from skill_eff_id (c_<N>_ or <N>_).
-        4. Fallback: player_team[0] with inferred=True.
+        4. Segment caster: chain SkillEffs (cs-prefix etc) attribute to the
+           actor of the most recent UsedCardEvent (Sprint 2d's
+           StateAccumulator.caster_at). Authoritative — not inferred.
+        5. Fallback: player_team[0] with inferred=True.
 
         Returns (unit, inferred) where inferred=True if fallback was used.
         """
@@ -270,7 +285,15 @@ class ReplayHarness:
                         # monster res_id is often like "1006005_01" — match starting prefix
                         if unit.res_id.startswith(mon_prefix):
                             return unit, False
-        # 4. Fallback
+        # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
+        if segment_caster is not None:
+            for unit in state.player_team:
+                if str(unit.id) == str(segment_caster):
+                    return unit, False
+            for unit in state.enemies:
+                if str(unit.id) == str(segment_caster):
+                    return unit, False
+        # 5. Fallback
         if state.player_team:
             return state.player_team[0], True
         return None, True

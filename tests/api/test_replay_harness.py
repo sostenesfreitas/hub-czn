@@ -494,3 +494,71 @@ def test_harness_sets_cs_multiplier_index_on_state():
     # Harness should have set state.cs_multiplier_index before fake_apply was called
     assert len(captured_state_attrs) == 1
     assert captured_state_attrs[0] is not None
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2f5 — chain caster resolution via accumulator.caster_at (path 4)
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_resolve():
+    """Build a minimal BattleState with two player chars and one enemy
+    suitable for _resolve_caster() direct tests."""
+    bw = _minimal_bw()
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    return StateReconstructor().reconstruct(bw)
+
+
+def test_resolve_caster_uses_segment_caster_when_paths_1_to_3_fail():
+    """When direct match (1), card_owner_lookup (2), and prefix (3) all
+    miss, the segment_caster (path 4) must be consulted before the
+    player_team[0] fallback. A chain SkillEff like 'cs01_0473_01' has
+    no player-prefix and no caster_id; without path 4 it falls back to
+    player_team[0] with inferred=True."""
+    state = _make_state_for_resolve()
+    # caster_id=None (no direct/lookup), skill_eff_id is a chain effect
+    # whose prefix doesn't match any char res_id => paths 1-3 all miss.
+    unit, inferred = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster="2",
+    )
+    assert unit is not None
+    assert str(unit.id) == "2"
+    assert inferred is False, "segment_caster is authoritative, not inferred"
+
+
+def test_resolve_caster_prefix_match_preferred_over_segment_caster():
+    """Path 3 (skill_eff_id prefix) must run BEFORE path 4 (segment_caster):
+    if the skill encodes a real char res_id, trust that — segment_caster
+    may belong to a different actor."""
+    state = _make_state_for_resolve()
+    # state.chars: id=1 res_id=1057, id=2 res_id=1062
+    # skill_eff_id encodes char 1057 (player_team[0]), segment_caster says "2"
+    unit, inferred = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="c_1057_srt1_01", segment_caster="2",
+    )
+    assert str(unit.id) == "1"
+    assert inferred is False
+
+
+def test_resolve_caster_falls_back_when_segment_caster_does_not_match():
+    """If segment_caster is set but doesn't match any unit in
+    player_team or enemies, path 4 falls through to path 5 (player_team[0]
+    with inferred=True). This guards against stale segment_caster values."""
+    state = _make_state_for_resolve()
+    unit, inferred = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster="999",
+    )
+    assert str(unit.id) == "1"  # player_team[0]
+    assert inferred is True
+
+
+def test_resolve_caster_segment_caster_none_falls_through():
+    """When segment_caster is None (no active UsedCardEvent), path 4
+    is a no-op and we fall through to player_team[0] fallback."""
+    state = _make_state_for_resolve()
+    unit, inferred = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster=None,
+    )
+    assert str(unit.id) == "1"
+    assert inferred is True
