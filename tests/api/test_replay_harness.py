@@ -923,3 +923,88 @@ def test_resolve_caster_path_6_falls_through_when_no_cs_map_entry():
     )
     assert path == 5
     assert inferred is True
+
+
+def test_resolve_caster_path_6_disambiguates_multi_owner_via_segment_caster():
+    """Sprint 2g5: when multiple cs_map_raw entries have the same res_id with
+    different char_ids, use segment_caster as tiebreaker."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    nia = CharState(id="2", atk=300, def_=80, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    haru = CharState(id="3", atk=600, def_=90, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1062")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana, nia, haru], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # Three entries for cs01_0473, owned by 3 different chars
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+        "56": {"res_id": "cs01_0473", "char_id": 2, "owner_id": 2, "skillEffs": [11]},
+        "57": {"res_id": "cs01_0473", "char_id": 3, "owner_id": 3, "skillEffs": [12]},
+    }
+    # segment_caster="2" (Nia) — should disambiguate to her
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="2"
+    )
+    assert path == 6
+    assert unit is nia
+    assert inferred is False
+
+
+def test_resolve_caster_path_6_falls_through_when_segment_caster_not_in_candidates():
+    """When segment_caster doesn't match any candidate char_id, fall through."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    nia = CharState(id="2", atk=300, def_=80, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana, nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+        "56": {"res_id": "cs01_0473", "char_id": 2, "owner_id": 2, "skillEffs": [11]},
+    }
+    # segment_caster="99" (not Diana, not Nia)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="99"
+    )
+    # Should fall through to path 5 (still ambiguous)
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path_6_single_owner_unaffected_by_tiebreaker():
+    """When path 6 already resolves cleanly (1 char_id), tiebreaker doesn't matter."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+    }
+    # Even with segment_caster="999" (irrelevant), single char_id resolves
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="999"
+    )
+    assert path == 6
+    assert unit is diana

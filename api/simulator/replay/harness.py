@@ -264,12 +264,14 @@ class ReplayHarness:
         1. Direct match: caster_id == unit.id (player_team or enemies).
         2. Indirect via card_owner_lookup: caster_id is a card-instance-id.
         3. Skill-eff-id prefix: extract char_res_id from skill_eff_id (c_<N>_ or <N>_).
-        4. Segment caster: chain SkillEffs (cs-prefix etc) attribute to the
-           actor of the most recent UsedCardEvent (Sprint 2d's
-           StateAccumulator.caster_at). Authoritative — not inferred.
         6. cs_map_raw lookup: for cs<NN>_<NNNN>_<NN> skill_eff_ids, scan
            state.cs_map_raw entries for matching res_id. If exactly one
-           unique char_id is present, use it (Sprint 2g1). Authoritative.
+           unique char_id (or owner_id) is present, use it (Sprint 2g1/2g4).
+           For multi-owner entries, use segment_caster as tiebreaker
+           (Sprint 2g5). Authoritative.
+        4. Segment caster: chain SkillEffs with no cs_map_raw match attribute
+           to the actor of the most recent UsedCardEvent (Sprint 2d's
+           StateAccumulator.caster_at). Authoritative — not inferred.
         5. Fallback: player_team[0] with inferred=True.
 
         Returns (unit, inferred, path_num) where inferred=True if fallback was
@@ -315,19 +317,17 @@ class ReplayHarness:
                         for hist_res_id, hist_unit in history.items():
                             if hist_res_id.startswith(mon_prefix):
                                 return hist_unit, False, 3
-        # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
-        if segment_caster is not None:
-            for unit in state.player_team:
-                if str(unit.id) == str(segment_caster):
-                    return unit, False, 4
-            for unit in state.enemies:
-                if str(unit.id) == str(segment_caster):
-                    return unit, False, 4
         # 6. cs_map_raw lookup for cs_* or eq_* skill_eff_ids (Sprint 2g1/2g2).
         # For cs_* ids: strip trailing _NN suffix to get the cs res_id base.
         # For eq_* ids: try the full skill_eff_id as res_id (eq_* entries in
         # cs_map_raw store res_id WITH the _NN suffix, e.g. eq_p_sec_003_01).
         # Match against cs_map_raw entries; if exactly one char_id, use it.
+        #
+        # Sprint 2g5: path 6 runs BEFORE path 4 because cs_map_raw is a
+        # stronger signal than segment_caster (it pins ownership to a
+        # specific game-state entry rather than the most recent UsedCard
+        # actor). For multi-owner cs entries (same res_id carried by N
+        # chars), segment_caster acts as tiebreaker inside the loop.
         if skill_eff_id:
             cs_map = getattr(state, "cs_map_raw", None)
             candidate_res_ids: list[str] = []
@@ -377,6 +377,19 @@ class ReplayHarness:
                         for unit in state.player_team:
                             if str(unit.id) == only_owner:
                                 return unit, False, 6
+                    # Sprint 2g5: multi-owner tiebreaker via segment_caster.
+                    # When N>1 char_ids carry the same cs res_id (e.g.,
+                    # cs01_0473 on multiple player chars), prefer the
+                    # actor of the most recent UsedCardEvent.
+                    if len(char_ids) > 1 and segment_caster is not None:
+                        seg_id = str(segment_caster)
+                        if seg_id in char_ids:
+                            for unit in state.player_team:
+                                if str(unit.id) == seg_id:
+                                    return unit, False, 6
+                            for unit in state.enemies:
+                                if str(unit.id) == seg_id:
+                                    return unit, False, 6
                     # Otherwise fall back to char_id resolution
                     if len(char_ids) == 1:
                         only = next(iter(char_ids))
@@ -386,6 +399,14 @@ class ReplayHarness:
                         for unit in state.enemies:
                             if str(unit.id) == only:
                                 return unit, False, 6
+        # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
+        if segment_caster is not None:
+            for unit in state.player_team:
+                if str(unit.id) == str(segment_caster):
+                    return unit, False, 4
+            for unit in state.enemies:
+                if str(unit.id) == str(segment_caster):
+                    return unit, False, 4
         # 5. Fallback
         if state.player_team:
             return state.player_team[0], True, 5
