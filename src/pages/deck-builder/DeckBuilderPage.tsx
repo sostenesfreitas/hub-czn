@@ -32,9 +32,6 @@ export function DeckBuilderPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#0f0f14] text-white">
       <DeckBuilderHeader
-        selectedCombatants={deckBuilder.selectedCombatants}
-        totalCards={deckBuilder.totalCards}
-        totalCost={deckBuilder.totalCost}
         savedDecks={deckBuilder.savedDecks}
         selectedSavedDeckId={deckBuilder.selectedSavedDeckId}
         onReset={deckBuilder.resetBuilder}
@@ -57,6 +54,7 @@ export function DeckBuilderPage() {
               key={index}
               slotIndex={index}
               slot={slot}
+              slotBuildCost={deckBuilder.slotBuildCosts[index]}
               characters={deckBuilder.characters}
               onSelectCombatant={combatantId =>
                 deckBuilder.selectCombatant(index, combatantId)

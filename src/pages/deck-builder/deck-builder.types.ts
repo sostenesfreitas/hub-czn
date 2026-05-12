@@ -71,6 +71,8 @@ export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants' | 
   group: DeckBuilderCardGroup
   description?: string | null
   variants?: DeckBuilderEpiphanyVariant[]
+  rarity?: string | null
+  tags?: string[]
 }
 
 export type DeckCardInstance = {
@@ -82,6 +84,9 @@ export type DeckCardInstance = {
   selectedDivineGod: DeckBuilderDivineGod | null
   selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
   selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
+  group: DeckBuilderCardGroup
+  rarity: string | null
+  tags: string[]
 }
 
 export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'

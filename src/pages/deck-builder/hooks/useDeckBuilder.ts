@@ -19,6 +19,7 @@ import type {
   VariantModalTarget,
 } from '../deck-builder.types'
 import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
+import { calculateDeckBuilderSlotCost } from '../deck-builder-cost.utils'
 import { findDeckBuilderItemById } from '../deck-builder-items.utils'
 import {
   createSavedDeck,
@@ -35,7 +36,6 @@ import {
   findCommonEpiphanyById,
   findDivineEpiphanyById,
   findDivineGodById,
-  getInstanceCost,
 } from '../deck-builder.utils'
 
 const DECK_BUILDER_EXPORT_VERSION = 3
@@ -76,6 +76,8 @@ function normalizeDeckBuilderCard(
     variants: (item.variants ?? []).map(variant =>
       normalizeVariant(variant as DeckBuilderEpiphanyVariant),
     ),
+    rarity: item.rarity ?? null,
+    tags: item.tags ?? [],
   }
 }
 
@@ -257,12 +259,11 @@ export function useDeckBuilder() {
     staleTime: Infinity,
   })
 
+  const slotBuildCosts = squad.map(calculateDeckBuilderSlotCost)
+
   const totalCards = squad.reduce((sum, slot) => sum + slot.cards.length, 0)
 
-  const totalCost = squad.reduce(
-    (sum, slot) => sum + slot.cards.reduce((slotSum, item) => slotSum + getInstanceCost(item), 0),
-    0,
-  )
+  const totalCost = slotBuildCosts.reduce((sum, item) => sum + item.total, 0)
 
   const selectedCombatants = squad.filter(slot => slot.combatantId != null).length
 
@@ -819,6 +820,7 @@ export function useDeckBuilder() {
     totalCards,
     totalCost,
     selectedCombatants,
+    slotBuildCosts,
     variantModalTarget,
     savedDecks,
     selectedSavedDeckId,

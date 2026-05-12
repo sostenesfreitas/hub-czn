@@ -16,6 +16,7 @@ import type {
   DeckCardInstance,
   SquadSlot,
 } from '../deck-builder.types'
+import type { DeckBuilderSlotCostBreakdown } from '../deck-builder-cost.utils'
 import {
   canUseDeckBuilderEpiphanies,
   getDeckCardEpiphanySummary,
@@ -503,6 +504,7 @@ function CardSelectionModal({
 export function CombatantDeckColumn({
   slotIndex,
   slot,
+  slotBuildCost,
   characters,
   onSelectCombatant,
   onDuplicateCard,
@@ -516,6 +518,7 @@ export function CombatantDeckColumn({
 }: {
   slotIndex: number
   slot: SquadSlot
+  slotBuildCost: DeckBuilderSlotCostBreakdown
   characters: CardCharacter[]
   onSelectCombatant: (combatantId: number | null) => void
   onDuplicateCard: (instanceId: string) => void
@@ -538,7 +541,6 @@ export function CombatantDeckColumn({
   const sharedCards = SHARED_DECK_BUILDER_CARDS
   const egoSkill = slot.egoSkill
   const selectedCombatant = characters.find(c => c.char_res_id === slot.combatantId)
-  const totalCost = slot.cards.reduce((sum, item) => sum + getInstanceCost(item), 0)
   const groupedCards = groupDeckCards(slot.cards)
 
   const selectedModalItems = useMemo(() => {
@@ -642,7 +644,18 @@ export function CombatantDeckColumn({
 
           <div className="rounded-lg bg-[#101018] px-2 py-1.5">
             <p className="text-[8.5px] uppercase text-[#666]">Custo</p>
-            <p className="text-xs font-bold text-[#fb923c]">{totalCost}</p>
+            <p
+              className={[
+                'text-xs font-bold',
+                slotBuildCost.isOverLimit
+                  ? 'text-[#f87171]'
+                  : slotBuildCost.total >= slotBuildCost.limit * 0.8
+                    ? 'text-[#fb923c]'
+                    : 'text-[#93c5fd]',
+              ].join(' ')}
+            >
+              {slotBuildCost.total}/{slotBuildCost.limit}
+            </p>
           </div>
 
           <div className="rounded-lg bg-[#101018] px-2 py-1.5">
@@ -651,10 +664,10 @@ export function CombatantDeckColumn({
           </div>
         </div>
 
-        {selectedCombatant && (
-          <p className="mt-2 truncate text-[11px] text-[#b3b3b3]">
-            Deck de <span className="font-semibold text-white">{selectedCombatant.name}</span>
-          </p>
+        {slotBuildCost.isOverLimit && (
+          <div className="mt-2 rounded-lg border border-[#7f1d1d] bg-[#7f1d1d]/10 px-2.5 py-2 text-[11px] font-semibold text-[#fca5a5]">
+            Custo acima do limite permitido para este combatente.
+          </div>
         )}
       </header>
 

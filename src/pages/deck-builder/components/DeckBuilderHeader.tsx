@@ -109,9 +109,6 @@ function SaveDeckModal({
 }
 
 export function DeckBuilderHeader({
-  selectedCombatants,
-  totalCards,
-  totalCost,
   savedDecks,
   selectedSavedDeckId,
   onReset,
@@ -122,9 +119,6 @@ export function DeckBuilderHeader({
   onSaveCurrentDeckAs,
   onDeleteSavedDeck,
 }: {
-  selectedCombatants: number
-  totalCards: number
-  totalCost: number
   savedDecks: SavedDeck[]
   selectedSavedDeckId: string | null
   onReset: () => void
@@ -261,7 +255,7 @@ export function DeckBuilderHeader({
   return (
     <>
       <header className="sticky top-0 z-20 border-b border-[#282838] bg-[#101018]/95 backdrop-blur">
-        <div className="flex flex-col gap-3 px-5 py-3 2xl:flex-row 2xl:items-center 2xl:justify-between">
+        <div className="flex flex-col gap-3 px-5 py-3 xl:flex-row xl:items-center xl:justify-between">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center rounded-full border border-[#3a3a4f] px-2.5 py-0.5 text-[11px] font-medium text-[#c084fc]">
@@ -278,30 +272,7 @@ export function DeckBuilderHeader({
             </p>
           </div>
 
-          <div className="grid w-full grid-cols-3 gap-2 sm:w-[360px] xl:w-[380px]">
-            <div className="rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2">
-              <p className="text-[9px] uppercase tracking-wide text-[#777]">Squad</p>
-              <p className="text-lg font-bold leading-tight text-white">
-                {selectedCombatants}/3
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2">
-              <p className="text-[9px] uppercase tracking-wide text-[#777]">Cartas</p>
-              <p className="text-lg font-bold leading-tight text-white">
-                {totalCards}
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2">
-              <p className="text-[9px] uppercase tracking-wide text-[#777]">Custo</p>
-              <p className="text-lg font-bold leading-tight text-[#fb923c]">
-                {totalCost}
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2 2xl:w-[455px]">
+          <div className="w-full rounded-lg border border-[#282838] bg-[#15151f] px-3 py-2 xl:w-[455px]">
             <div className="mb-1.5 flex items-center justify-between gap-2">
               <p className="text-[9px] font-black uppercase tracking-wide text-[#777]">
                 Meus decks
@@ -362,7 +333,7 @@ export function DeckBuilderHeader({
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-wrap items-center gap-2 2xl:justify-end">
+          <div className="flex shrink-0 flex-wrap items-center gap-2 xl:justify-end">
             <button
               type="button"
               onClick={onReset}

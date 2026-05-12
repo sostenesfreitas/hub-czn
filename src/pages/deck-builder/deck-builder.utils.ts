@@ -2,6 +2,7 @@ import type { CardEntry } from '@/lib/types'
 import commonEpiphaniesData from './data/deck-builder-common-epiphanies.json'
 import divineEpiphaniesData from './data/deck-builder-divine-epiphanies.json'
 import type {
+  DeckBuilderCardGroup,
   DeckBuilderCardWithVariants,
   DeckBuilderCommonEpiphany,
   DeckBuilderDivineEpiphany,
@@ -103,6 +104,9 @@ export function createCardInstance(
   selectedDivineGod: DeckBuilderDivineGod | null = null,
   selectedDivineEpiphany: DeckBuilderDivineEpiphany | null = null,
   selectedCommonEpiphany: DeckBuilderCommonEpiphany | null = null,
+  group: DeckBuilderCardGroup = 'starting',
+  rarity: string | null = null,
+  tags: string[] = [],
 ): DeckCardInstance {
   return {
     instanceId: `${card.card_id}-${Date.now()}-${Math.random()}`,
@@ -113,6 +117,9 @@ export function createCardInstance(
     selectedDivineGod,
     selectedDivineEpiphany,
     selectedCommonEpiphany,
+    group,
+    rarity,
+    tags,
   }
 }
 
@@ -128,6 +135,9 @@ export function createCardInstanceFromDeckBuilderCard(
     settings.selectedDivineGod ?? null,
     settings.selectedDivineEpiphany ?? null,
     settings.selectedCommonEpiphany ?? null,
+    item.group,
+    item.rarity ?? null,
+    item.tags ?? [],
   )
 }
 
@@ -140,6 +150,9 @@ export function cloneCardInstance(item: DeckCardInstance): DeckCardInstance {
     item.selectedDivineGod,
     item.selectedDivineEpiphany,
     item.selectedCommonEpiphany,
+    item.group,
+    item.rarity,
+    item.tags,
   )
 }
 

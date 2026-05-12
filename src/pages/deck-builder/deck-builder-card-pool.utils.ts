@@ -4,9 +4,11 @@ import type { DeckBuilderCardWithVariants } from './deck-builder.types'
 type GeneratedDeckBuilderCard = {
   id: string
   name: string
-  cost: number
+  cost: number | null
   card_type: string
   category: 'neutral' | 'monster' | string
+  rarity?: string | null
+  tags?: string[]
   effect_tags?: string[]
   description?: string | null
 }
@@ -24,7 +26,7 @@ function normalizeGeneratedCard(item: GeneratedDeckBuilderCard): DeckBuilderCard
       card_id: item.id,
       char_res_id: null,
       name: item.name,
-      cost: item.cost,
+      cost: typeof item.cost === 'number' ? item.cost : 0,
       eff_value: 0,
       hits: 0,
       spark_count: 0,
@@ -34,6 +36,8 @@ function normalizeGeneratedCard(item: GeneratedDeckBuilderCard): DeckBuilderCard
     group: item.category === 'monster' ? 'monster' : 'neutral',
     description: item.description ?? null,
     variants: [],
+    rarity: item.rarity ?? null,
+    tags: item.tags ?? [],
   }
 }
 
