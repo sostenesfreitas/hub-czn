@@ -47,17 +47,16 @@ def expected_damage(
     cri_dmg_rate: float,
     eff_pct: float = 100.0,
     dummy_def: int = DUMMY_DEF,
+    weak_mult: float = 1.0,
 ) -> float:
     """Expected per-hit damage against a default target.
 
-    Formula: atk * (eff_pct / 100) * (1 - DR) * cf_ev
+    Formula: atk * (eff_pct / 100) * (1 - DR) * cf_ev * weak_mult
 
-    atk: total attack
-    cri: crit rate as a percentage
-    cri_dmg_rate: crit damage as a percentage
-    eff_pct: card scaling percentage (default 100.0 for a baseline card)
-    dummy_def: target DEF used to compute DR (default DUMMY_DEF=500)
+    Sprint 2f4: added weak_mult parameter. Default 1.0 preserves pre-2f4
+    behavior. Optimizer passes caster.weak_ego_dmg_rate / 100 when user
+    toggles 'treat target as weak'.
     """
     cf_ev = expected_crit_factor(cri, cri_dmg_rate)
     dr = default_damage_reduction(dummy_def)
-    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev
+    return atk * (eff_pct / 100.0) * (1.0 - dr) * cf_ev * weak_mult

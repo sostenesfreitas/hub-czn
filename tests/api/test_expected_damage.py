@@ -59,3 +59,25 @@ def test_expected_damage_atk_scales_linearly():
 
 def test_expected_damage_non_negative_at_zero_atk():
     assert expected_damage(atk=0.0, cri=0.0, cri_dmg_rate=125.0) == pytest.approx(0.0)
+
+
+def test_expected_damage_weak_mult_default_is_identity():
+    """Sprint 2f4: weak_mult parameter defaults to 1.0 — pre-2f4 behavior."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    with_wm = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, weak_mult=1.0)
+    assert base == with_wm
+
+
+def test_expected_damage_weak_mult_2_doubles_result():
+    """Sprint 2f4: weak_mult=2.0 doubles the result."""
+    base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+    doubled = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, weak_mult=2.0)
+    assert doubled == pytest.approx(2.0 * base)
+
+
+def test_expected_damage_weak_mult_scales_linearly():
+    """Sprint 2f4: weak_mult is the last multiplicative factor."""
+    for wm in (0.5, 1.0, 1.5, 2.0):
+        base = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0)
+        scaled = expected_damage(atk=1000.0, cri=50.0, cri_dmg_rate=200.0, weak_mult=wm)
+        assert scaled == pytest.approx(base * wm)
