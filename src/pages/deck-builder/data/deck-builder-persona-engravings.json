@@ -1,0 +1,460 @@
+[
+  {
+    "id": "n_0081",
+    "image_id": "n_0081",
+    "name": "Persona",
+    "category": "persona",
+    "image_type": "persona",
+    "image_path": "persona/lux.webp",
+    "persona_image_paths": {
+      "lux": "persona/lux.webp",
+      "umbra": "persona/umbra.webp",
+      "half_lux": "persona/half_lux.webp",
+      "half_umbra": "persona/half_umbra.webp",
+      "all_lux": "persona/all_lux.webp",
+      "lux_and_umbra": "persona/lux_and_umbra.webp",
+      "all_umbra": "persona/all_umbra.webp"
+    },
+    "engravings": [
+      {
+        "engraving_id": "pe_0001",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [
+          "Cost +1",
+          "Haste"
+        ],
+        "allowed_classes": [
+          "Striker",
+          "Vanguard",
+          "Hunter",
+          "Ranger",
+          "Psionic"
+        ],
+        "tags": [],
+        "description": "When a target with an Action Count of 1 is present, decrease Cost of this card by 2"
+      },
+      {
+        "engraving_id": "pe_0002",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "Attunement: Decrease Cost by 1 until used"
+      },
+      {
+        "engraving_id": "pe_0003",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "On Ravage with this card, decrease Cost by 1"
+      },
+      {
+        "engraving_id": "pe_0004",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "+30% Damage Amount for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0005",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [
+          "Haste"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "Attunement: Change Cost from between 0-2"
+      },
+      {
+        "engraving_id": "pe_0006",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Psionic"
+        ],
+        "tags": [],
+        "description": "If a card was Exhausted this turn, 1 Agony equal to of each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0007",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "When Cost of this card is 0, increase Damage Amount by 200%"
+      },
+      {
+        "engraving_id": "pe_0008",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "When a card is Discarded this turn, +50% Damage Amount for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0009",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "+30% Damage Amount for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0010",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [
+          "Cost +2",
+          "Retain"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "5 Umbra Engraving: Discard all Attack Cards, then add Hit(s)"
+      },
+      {
+        "engraving_id": "pe_0011",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [
+          "Exhaust 2"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "5 Umbra Engraving: Add 2 Hit(s)"
+      },
+      {
+        "engraving_id": "pe_0012",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [
+          "Retain"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "Select 1 Attack Card(s) of this unit from Discard Pile, then move those cards to hand"
+      },
+      {
+        "engraving_id": "pe_0013",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [
+          "Haste"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "When this card is Discarded, decrease Cost of this card by 1 until used"
+      },
+      {
+        "engraving_id": "pe_0014",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "When the target is in a Resonance state, add 2 Hit(s)"
+      },
+      {
+        "engraving_id": "pe_0015",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Psionic"
+        ],
+        "tags": [],
+        "description": "Create Overload for each Umbra Engraving in Discard Pile, then +50% Damage Amount for each created"
+      },
+      {
+        "engraving_id": "pe_0016",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "1 Counterattack for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0017",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "1 Agony on all enemies for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0018",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "4 Umbra Engraving: +40% Damage Amount to Quietus cards of this unit for 1 turn"
+      },
+      {
+        "engraving_id": "pe_0019",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "Increase Damage Amount of Attack Cards of this unit by 30% for 1 turn"
+      },
+      {
+        "engraving_id": "pe_0020",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [
+          "Cost +1"
+        ],
+        "allowed_classes": [],
+        "tags": [],
+        "description": "When this card is Discarded, activate this card"
+      },
+      {
+        "engraving_id": "pe_0021",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Psionic"
+        ],
+        "tags": [],
+        "description": "1 Agony on all enemies for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0022",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [
+          "Cost +1",
+          "Exhaust 2"
+        ],
+        "allowed_classes": [
+          "Striker",
+          "Vanguard"
+        ],
+        "tags": [],
+        "description": "1 Lux Blessing"
+      },
+      {
+        "engraving_id": "pe_0023",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Vanguard"
+        ],
+        "tags": [],
+        "description": "2 Counter Surge, and gain additional Counter Surge for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0024",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Striker",
+          "Vanguard"
+        ],
+        "tags": [],
+        "description": "Increase Shield Gain Amount by 20% for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0025",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Hunter",
+          "Ranger"
+        ],
+        "tags": [],
+        "description": "1 Mark on random enemies for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0026",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [
+          "Exhaust"
+        ],
+        "allowed_classes": [
+          "Ranger",
+          "Hunter",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "Decrease Morale by 1 for each Action Count for 1 turn (max. 5)"
+      },
+      {
+        "engraving_id": "pe_0027",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Ranger",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "4 Lux Engraving: +40% Damage Amount to Exhaust cards of this unit for 1 turn"
+      },
+      {
+        "engraving_id": "pe_0028",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Striker",
+          "Hunter",
+          "Ranger"
+        ],
+        "tags": [],
+        "description": "When 7 or more cards are in Graveyard, Increase Damage Amount by 100%"
+      },
+      {
+        "engraving_id": "pe_0029",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [
+          "Cost +1",
+          "Exhaust"
+        ],
+        "allowed_classes": [
+          "Ranger",
+          "Hunter",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "5 Lux Engraving: 3 Vulnerable to this unit, then Draw 3"
+      },
+      {
+        "engraving_id": "pe_0030",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [
+          "Cost +1"
+        ],
+        "allowed_classes": [
+          "Hunter",
+          "Ranger"
+        ],
+        "tags": [],
+        "description": "Draw 2 Haste card(s)"
+      },
+      {
+        "engraving_id": "pe_0031",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [
+          "Retain"
+        ],
+        "allowed_classes": [
+          "Ranger",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "Gain 1 Blessing of Light for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0032",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Ranger"
+        ],
+        "tags": [],
+        "description": "When an Attack Card is Drawn, 1 Resonance to all enemies for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0033",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Ranger",
+          "Hunter",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "Discard a random Quietus card for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0034",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [
+          "Exhaust 2"
+        ],
+        "allowed_classes": [
+          "Ranger",
+          "Hunter",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "5 Umbra Engraving: Move all Persona Cards to hand"
+      },
+      {
+        "engraving_id": "pe_0035",
+        "eidolon": "Lux",
+        "card_type": "Attack",
+        "modifiers": [
+          "Haste"
+        ],
+        "allowed_classes": [
+          "Controller"
+        ],
+        "tags": [],
+        "description": "+15% Damage Amount to Attack Cards for 1 turn for each Lux Engraving"
+      },
+      {
+        "engraving_id": "pe_0036",
+        "eidolon": "Umbra",
+        "card_type": "Attack",
+        "modifiers": [],
+        "allowed_classes": [
+          "Hunter",
+          "Controller"
+        ],
+        "tags": [],
+        "description": "1 Resonance for each Umbra Engraving"
+      },
+      {
+        "engraving_id": "pe_0037",
+        "eidolon": "Lux",
+        "card_type": "Skill",
+        "modifiers": [],
+        "allowed_classes": [
+          "Controller"
+        ],
+        "tags": [],
+        "description": "3 Lux Engraving: Increase Action Count of all enemies by 3"
+      },
+      {
+        "engraving_id": "pe_0038",
+        "eidolon": "Umbra",
+        "card_type": "Skill",
+        "modifiers": [
+          "Exhaust"
+        ],
+        "allowed_classes": [
+          "Hunter"
+        ],
+        "tags": [],
+        "description": "3 Umbra Engraving: Select and activate 1 card(s) in hand"
+      }
+    ]
+  }
+]
