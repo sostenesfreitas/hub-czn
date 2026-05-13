@@ -55,11 +55,51 @@ export type DeckBuilderCommonEpiphany = {
   raw_text: string
 }
 
+export type DeckBuilderPersonaEidolon = 'Lux' | 'Umbra'
+
+export type DeckBuilderPersonaCardType = 'Attack' | 'Skill'
+
+export type DeckBuilderPersonaImageKey =
+  | 'lux'
+  | 'umbra'
+  | 'half_lux'
+  | 'half_umbra'
+  | 'all_lux'
+  | 'lux_and_umbra'
+  | 'all_umbra'
+
+export type DeckBuilderPersonaEngraving = {
+  engraving_id: string
+  eidolon: DeckBuilderPersonaEidolon | string
+  card_type: DeckBuilderPersonaCardType | string
+  modifiers: string[]
+  allowed_classes: string[]
+  tags: string[]
+  description: string
+}
+
+export type DeckBuilderPersonaEngravingCard = {
+  id: string
+  image_id: string
+  name: string
+  category?: string
+  image_type?: string
+  image_path?: string
+  persona_image_paths: Partial<Record<DeckBuilderPersonaImageKey, string>>
+  engravings: DeckBuilderPersonaEngraving[]
+}
+
+export type DeckBuilderPersonaEngravingSelection = {
+  slot1: DeckBuilderPersonaEngraving | null
+  slot2: DeckBuilderPersonaEngraving | null
+}
+
 export type DeckCardEpiphanySettings = {
   selectedVariant: DeckBuilderEpiphanyVariant | null
   selectedDivineGod: DeckBuilderDivineGod | null
   selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
   selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
+  selectedPersonaEngravings: DeckBuilderPersonaEngravingSelection
 }
 
 export type DeckBuilderCardGroup =
@@ -71,6 +111,10 @@ export type DeckBuilderCardWithVariants = Omit<ApiDeckBuilderCard, 'variants' | 
   group: DeckBuilderCardGroup
   description?: string | null
   variants?: DeckBuilderEpiphanyVariant[]
+  rarity?: string | null
+  tags?: string[]
+  restrictions?: string | null
+  allowed_classes?: string[]
 }
 
 export type DeckCardInstance = {
@@ -82,6 +126,10 @@ export type DeckCardInstance = {
   selectedDivineGod: DeckBuilderDivineGod | null
   selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
   selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
+  selectedPersonaEngravings: DeckBuilderPersonaEngravingSelection
+  group: DeckBuilderCardGroup
+  rarity: string | null
+  tags: string[]
 }
 
 export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'
@@ -131,6 +179,7 @@ export type VariantModalTarget =
       selectedDivineGod: DeckBuilderDivineGod | null
       selectedDivineEpiphany: DeckBuilderDivineEpiphany | null
       selectedCommonEpiphany: DeckBuilderCommonEpiphany | null
+      selectedPersonaEngravings: DeckBuilderPersonaEngravingSelection
     }
   | {
       type: 'available'
@@ -138,12 +187,15 @@ export type VariantModalTarget =
       item: DeckBuilderCardWithVariants
     }
 
+export type DeckBuilderImportedPersonaEngravingIds = [string | null, string | null]
+
 export type DeckBuilderImportedCard = {
   card_id: string
   selected_variant_id: string | null
   selected_divine_god: string | null
   selected_divine_epiphany_id: string | null
   selected_common_epiphany_id: string | null
+  selected_persona_engraving_ids: DeckBuilderImportedPersonaEngravingIds
 }
 
 export type DeckBuilderExportSlot = {

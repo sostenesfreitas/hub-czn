@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Filter,
   Search,
@@ -9,7 +10,6 @@ import type {
   DeckBuilderItemSlot,
 } from '../deck-builder.types'
 import {
-  DECK_BUILDER_ITEM_SLOT_TITLE,
   getDeckBuilderItemImageUrl,
   getDeckBuilderItemsBySlot,
   getItemRarityClassName,
@@ -19,7 +19,7 @@ const RARITIES = ['All', 'Rare', 'Legendary', 'Unique'] as const
 const PAGE_SIZE = 12
 
 function getStatText(item: DeckBuilderItem) {
-  if (!item.stat_type || item.stat_values.length === 0) {
+  if (!item.stat_type || !item.stat_values || item.stat_values.length === 0) {
     return null
   }
 
@@ -35,6 +35,7 @@ function EquipmentCard({
   selected: boolean
   onSelect: () => void
 }) {
+  const { t } = useTranslation()
   const imageUrl = getDeckBuilderItemImageUrl(item)
   const statText = getStatText(item)
 
@@ -74,7 +75,7 @@ function EquipmentCard({
 
           {selected && (
             <span className="rounded-md bg-[#f97316]/20 px-1.5 py-0.5 text-[9px] font-bold uppercase text-[#fdba74]">
-              Selected
+              {t('deckBuilder.selected')}
             </span>
           )}
         </div>
@@ -91,7 +92,7 @@ function EquipmentCard({
           )}
 
           <span className="text-[#888]">
-            Source: <span className="text-[#ddd]">{item.source}</span>
+            {t('deckBuilder.source')}: <span className="text-[#ddd]">{item.source}</span>
           </span>
         </div>
       </div>
@@ -110,12 +111,13 @@ export function EquipmentSelectionModal({
   onClose: () => void
   onSelect: (item: DeckBuilderItem) => void
 }) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [rarity, setRarity] = useState<(typeof RARITIES)[number]>('All')
   const [source, setSource] = useState('All')
   const [page, setPage] = useState(1)
 
-  const slotTitle = DECK_BUILDER_ITEM_SLOT_TITLE[slot]
+  const slotTitle = t(`deckBuilder.equipment.${slot}`)
   const items = getDeckBuilderItemsBySlot(slot)
 
   const sources = useMemo(() => {
@@ -139,7 +141,7 @@ export function EquipmentSelectionModal({
       const matchesSource =
         source === 'All' ||
         item.source === source ||
-        item.sources.includes(source)
+        (item.sources ?? []).includes(source)
 
       return matchesSearch && matchesRarity && matchesSource
     })
@@ -164,17 +166,21 @@ export function EquipmentSelectionModal({
         <header className="flex items-center justify-between border-b border-[#282838] px-4 py-3">
           <div>
             <h2 className="text-sm font-black text-white">
-              Select {slotTitle}
+              {t('deckBuilder.equipment.modalTitle', { slot: slotTitle })}
             </h2>
 
             <p className="mt-1 text-xs text-[#888]">
-              {filteredItems.length} de {items.length} itens disponíveis
+              {t('deckBuilder.equipment.availableCount', {
+                filtered: filteredItems.length,
+                total: items.length,
+              })}
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
+            aria-label={t('deckBuilder.close')}
             className="grid h-8 w-8 place-items-center rounded-lg border border-[#333348] text-[#aaa] hover:border-[#7f1d1d] hover:text-[#fca5a5]"
           >
             <X size={16} />
@@ -191,7 +197,7 @@ export function EquipmentSelectionModal({
             <input
               value={search}
               onChange={event => handleSearch(event.target.value)}
-              placeholder="Buscar por nome, efeito ou fonte..."
+              placeholder={t('deckBuilder.equipment.searchPlaceholder')}
               className="w-full rounded-lg border border-[#333348] bg-[#0f0f14] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#666] focus:border-[#c084fc]"
             />
           </div>
@@ -199,7 +205,7 @@ export function EquipmentSelectionModal({
           <div className="mt-3 flex flex-wrap gap-2">
             <div className="inline-flex items-center gap-2 rounded-lg border border-[#333348] bg-[#0f0f14] px-3 py-2 text-xs text-[#aaa]">
               <Filter size={14} />
-              Filtro
+              {t('deckBuilder.filter')}
             </div>
 
             <select
@@ -212,7 +218,7 @@ export function EquipmentSelectionModal({
             >
               {RARITIES.map(item => (
                 <option key={item} value={item}>
-                  {item === 'All' ? 'Todas raridades' : item}
+                  {item === 'All' ? t('deckBuilder.allRarities') : item}
                 </option>
               ))}
             </select>
@@ -227,7 +233,7 @@ export function EquipmentSelectionModal({
             >
               {sources.map(item => (
                 <option key={item} value={item}>
-                  {item === 'All' ? 'Todas fontes' : item}
+                  {item === 'All' ? t('deckBuilder.allSources') : item}
                 </option>
               ))}
             </select>
@@ -237,7 +243,7 @@ export function EquipmentSelectionModal({
         <div className="min-h-0 flex-1 overflow-y-auto p-4">
           {pagedItems.length === 0 ? (
             <div className="flex h-60 items-center justify-center rounded-xl border border-dashed border-[#333348] text-sm text-[#888]">
-              Nenhum item encontrado.
+              {t('deckBuilder.noItemsFound')}
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -255,7 +261,7 @@ export function EquipmentSelectionModal({
 
         <footer className="flex items-center justify-between border-t border-[#282838] px-4 py-3">
           <p className="text-xs text-[#777]">
-            {filteredItems.length} item(ns) encontrado(s)
+            {t('deckBuilder.itemsFound', { count: filteredItems.length })}
           </p>
 
           <div className="flex items-center gap-2">
@@ -265,7 +271,7 @@ export function EquipmentSelectionModal({
               onClick={() => setPage(value => Math.max(1, value - 1))}
               className="rounded-lg border border-[#333348] px-3 py-2 text-xs font-bold text-[#ddd] disabled:opacity-40"
             >
-              Anterior
+              {t('deckBuilder.previous')}
             </button>
 
             <span className="text-xs text-[#888]">
@@ -278,7 +284,7 @@ export function EquipmentSelectionModal({
               onClick={() => setPage(value => Math.min(totalPages, value + 1))}
               className="rounded-lg border border-[#333348] px-3 py-2 text-xs font-bold text-[#ddd] disabled:opacity-40"
             >
-              Próxima
+              {t('deckBuilder.next')}
             </button>
           </div>
         </footer>

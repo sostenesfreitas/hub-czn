@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Gem,
   Shield,
@@ -9,7 +10,6 @@ import type {
   DeckBuilderItemSlot,
 } from '../deck-builder.types'
 import {
-  DECK_BUILDER_ITEM_SLOT_TITLE,
   getDeckBuilderItemImageUrl,
   getItemRarityClassName,
 } from '../deck-builder-items.utils'
@@ -31,8 +31,9 @@ export function EquipmentSlot({
   onOpen: () => void
   onClear: () => void
 }) {
+  const { t } = useTranslation()
   const Icon = SLOT_ICON[slot]
-  const title = DECK_BUILDER_ITEM_SLOT_TITLE[slot]
+  const title = t(`deckBuilder.equipment.${slot}`)
   const imageUrl = item ? getDeckBuilderItemImageUrl(item) : null
 
   return (
@@ -40,9 +41,9 @@ export function EquipmentSlot({
       <button
         type="button"
         onClick={onOpen}
-        title={item ? `${title}: ${item.name}` : `Selecionar ${title}`}
+        title={item ? `${title}: ${item.name}` : t('deckBuilder.equipment.select', { slot: title })}
         className={[
-          'relative flex h-[54px] w-full overflow-hidden rounded-lg border bg-[#101018] text-left transition',
+          'relative flex h-[44px] w-full overflow-hidden rounded-lg border bg-[#101018] text-left transition',
           item
             ? getItemRarityClassName(item.rarity)
             : 'border-dashed border-[#333348] text-[#777] hover:border-[#c084fc] hover:text-[#e9d5ff]',
@@ -53,23 +54,23 @@ export function EquipmentSlot({
             <img
               src={imageUrl}
               alt={item.name}
-              className="h-full w-[48px] shrink-0 object-cover"
+              className="h-full w-[38px] shrink-0 object-cover"
             />
 
-            <div className="min-w-0 flex-1 px-2 py-1.5">
-              <p className="truncate text-[9px] font-black uppercase leading-none tracking-wide">
+            <div className="min-w-0 flex-1 px-1.5 py-1">
+              <p className="truncate text-[8px] font-black uppercase leading-none tracking-wide">
                 {title}
               </p>
 
-              <p className="mt-1 line-clamp-2 text-[11px] font-bold leading-tight text-white">
+              <p className="mt-0.5 line-clamp-2 text-[10px] font-bold leading-tight text-white">
                 {item.name}
               </p>
             </div>
           </>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-0.5">
-            <Icon size={15} />
-            <span className="text-[9px] font-bold uppercase tracking-wide">
+            <Icon size={14} />
+            <span className="text-[8.5px] font-bold uppercase tracking-wide">
               {title}
             </span>
           </div>
@@ -83,10 +84,10 @@ export function EquipmentSlot({
             event.stopPropagation()
             onClear()
           }}
-          title={`Remover ${title}`}
-          className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded border border-[#333348] bg-black/80 text-[#fca5a5] opacity-0 transition hover:bg-[#7f1d1d] group-hover:opacity-100"
+          title={t('deckBuilder.equipment.remove', { slot: title })}
+          className="absolute right-1 top-1 grid h-[15px] w-[15px] place-items-center rounded border border-[#333348] bg-black/80 text-[#fca5a5] opacity-0 transition hover:bg-[#7f1d1d] group-hover:opacity-100"
         >
-          <X size={10} />
+          <X size={9} />
         </button>
       )}
     </div>

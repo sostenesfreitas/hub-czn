@@ -1,7 +1,12 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { CardCharacter } from '@/lib/types'
 import { CombatantDeckColumn } from './components/CombatantDeckColumn'
 import { DeckBuilderHeader } from './components/DeckBuilderHeader'
-import { VariantSettingsModal } from './components/VariantSettingsModal'
+import {
+  VariantSettingsModal,
+  type VariantModalInitialSection,
+} from './components/VariantSettingsModal'
 import { useDeckBuilder } from './hooks/useDeckBuilder'
 
 type DeckBuilderCardCharacter = CardCharacter & {
@@ -10,8 +15,11 @@ type DeckBuilderCardCharacter = CardCharacter & {
 }
 
 export function DeckBuilderPage() {
+  const { t } = useTranslation()
   const deckBuilder = useDeckBuilder()
   const variantModalTarget = deckBuilder.variantModalTarget
+  const [variantModalInitialSection, setVariantModalInitialSection] =
+    useState<VariantModalInitialSection>('epiphany')
 
   const variantModalCombatantClass = variantModalTarget
     ? (
@@ -24,27 +32,31 @@ export function DeckBuilderPage() {
     : null
 
   return (
-    <div className="min-h-full bg-[#0f0f14] text-white">
+    <div className="flex min-h-screen flex-col bg-[#0f0f14] text-white">
       <DeckBuilderHeader
-        selectedCombatants={deckBuilder.selectedCombatants}
-        totalCards={deckBuilder.totalCards}
-        totalCost={deckBuilder.totalCost}
+        savedDecks={deckBuilder.savedDecks}
+        selectedSavedDeckId={deckBuilder.selectedSavedDeckId}
         onReset={deckBuilder.resetBuilder}
         onImportDeck={deckBuilder.importDeck}
         onExportDeck={deckBuilder.exportDeck}
+        onLoadSavedDeck={deckBuilder.loadSavedDeck}
+        onSaveCurrentDeck={deckBuilder.saveCurrentDeck}
+        onSaveCurrentDeckAs={deckBuilder.saveCurrentDeckAs}
+        onDeleteSavedDeck={deckBuilder.deleteSavedDeck}
       />
 
       {deckBuilder.isLoading ? (
-        <div className="flex h-[calc(100vh-180px)] items-center justify-center text-sm text-[#888]">
-          Carregando combatentes...
+        <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-[#888]">
+          {t('deckBuilder.loadingCombatants')}
         </div>
       ) : (
-        <main className="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3">
+        <main className="grid min-h-0 flex-1 grid-cols-1 items-stretch gap-4 overflow-hidden p-4 xl:grid-cols-3">
           {deckBuilder.squad.map((slot, index) => (
             <CombatantDeckColumn
               key={index}
               slotIndex={index}
               slot={slot}
+              slotBuildCost={deckBuilder.slotBuildCosts[index]}
               characters={deckBuilder.characters}
               onSelectCombatant={combatantId =>
                 deckBuilder.selectCombatant(index, combatantId)
@@ -58,12 +70,14 @@ export function DeckBuilderPage() {
               onAddDeckBuilderCard={item =>
                 deckBuilder.addDeckBuilderCard(index, item)
               }
-              onOpenDeckCardVariants={item =>
+              onOpenDeckCardVariants={(item, initialSection = 'epiphany') => {
+                setVariantModalInitialSection(initialSection)
                 deckBuilder.openDeckCardVariants(index, item)
-              }
-              onOpenAvailableCardVariants={item =>
+              }}
+              onOpenAvailableCardVariants={item => {
+                setVariantModalInitialSection('epiphany')
                 deckBuilder.openAvailableCardVariants(index, item)
-              }
+              }}
               onSelectEquipment={(equipmentSlot, item) =>
                 deckBuilder.selectEquipment(index, equipmentSlot, item)
               }
@@ -80,6 +94,7 @@ export function DeckBuilderPage() {
         <VariantSettingsModal
           target={variantModalTarget}
           combatantClass={variantModalCombatantClass}
+          initialSection={variantModalInitialSection}
           onClose={deckBuilder.closeVariantModal}
           onApplySettings={deckBuilder.applyEpiphanySettings}
           onClearSettings={

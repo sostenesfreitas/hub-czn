@@ -11,6 +11,7 @@ import type {
   DeckBuilderExportSlot,
   DeckBuilderImportedCard,
   DeckBuilderImportedEquipment,
+  DeckBuilderImportedPersonaEngravingIds,
   DeckBuilderItem,
   DeckBuilderItemSlot,
   DeckCardEpiphanySettings,
@@ -19,8 +20,20 @@ import type {
   VariantModalTarget,
 } from '../deck-builder.types'
 import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
+import { calculateDeckBuilderSlotCost } from '../deck-builder-cost.utils'
 import { findDeckBuilderItemById } from '../deck-builder-items.utils'
 import {
+  createPersonaEngravingSelectionFromIds,
+  getPersonaEngravingIds,
+} from '../deck-builder-persona-engraving.utils'
+import {
+  createSavedDeck,
+  loadSavedDecks,
+  persistSavedDecks,
+  type SavedDeck,
+} from '../deck-builder-saved-decks.utils'
+import {
+  applyPersonaEngravingImageOverride,
   cloneCardInstance,
   createCardInstanceFromDeckBuilderCard,
   createEmptyEquipment,
@@ -29,10 +42,10 @@ import {
   findCommonEpiphanyById,
   findDivineEpiphanyById,
   findDivineGodById,
-  getInstanceCost,
+  getDeckCardIdentityKey,
 } from '../deck-builder.utils'
 
-const DECK_BUILDER_EXPORT_VERSION = 3
+const DECK_BUILDER_EXPORT_VERSION = 4
 const DECK_BUILDER_MAX_SLOTS = 3
 
 function getDeckBuilderExportFileName() {
@@ -70,6 +83,8 @@ function normalizeDeckBuilderCard(
     variants: (item.variants ?? []).map(variant =>
       normalizeVariant(variant as DeckBuilderEpiphanyVariant),
     ),
+    rarity: item.rarity ?? null,
+    tags: item.tags ?? [],
   }
 }
 
@@ -113,10 +128,79 @@ function findVariantById(
   return variants.find(variant => variant.variant_id === variantId) ?? null
 }
 
+function getLastDeckCardGroupIndex(
+  cards: DeckCardInstance[],
+  item: DeckCardInstance,
+) {
+  const itemKey = getDeckCardIdentityKey(item)
+
+  for (let index = cards.length - 1; index >= 0; index -= 1) {
+    const card = cards[index]
+
+    if (card && getDeckCardIdentityKey(card) === itemKey) {
+      return index
+    }
+  }
+
+  return -1
+}
+
+function insertDeckCardNearGroup(
+  cards: DeckCardInstance[],
+  item: DeckCardInstance,
+) {
+  const lastSameGroupIndex = getLastDeckCardGroupIndex(cards, item)
+
+  if (lastSameGroupIndex < 0) {
+    return [...cards, item]
+  }
+
+  const nextCards = [...cards]
+  nextCards.splice(lastSameGroupIndex + 1, 0, item)
+
+  return nextCards
+}
+
+function getLastDeckCardGroupInstanceId(
+  cards: DeckCardInstance[],
+  instanceId: string,
+) {
+  const target = cards.find(card => card.instanceId === instanceId)
+
+  if (!target) {
+    return instanceId
+  }
+
+  const targetKey = getDeckCardIdentityKey(target)
+
+  for (let index = cards.length - 1; index >= 0; index -= 1) {
+    const card = cards[index]
+
+    if (card && getDeckCardIdentityKey(card) === targetKey) {
+      return card.instanceId
+    }
+  }
+
+  return instanceId
+}
+
 function normalizeOptionalString(value: unknown) {
   return typeof value === 'string' && value.trim()
     ? value
     : null
+}
+
+function normalizeImportedPersonaEngravingIds(
+  value: unknown,
+): DeckBuilderImportedPersonaEngravingIds {
+  if (!Array.isArray(value)) {
+    return [null, null]
+  }
+
+  return [
+    normalizeOptionalString(value[0]),
+    normalizeOptionalString(value[1]),
+  ]
 }
 
 function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
@@ -136,6 +220,9 @@ function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
     selected_divine_god: normalizeOptionalString(value.selected_divine_god),
     selected_divine_epiphany_id: normalizeOptionalString(value.selected_divine_epiphany_id),
     selected_common_epiphany_id: normalizeOptionalString(value.selected_common_epiphany_id),
+    selected_persona_engraving_ids: normalizeImportedPersonaEngravingIds(
+      value.selected_persona_engraving_ids,
+    ),
   }
 }
 
@@ -231,17 +318,24 @@ function resolveImportedCardSettings(
     importedCard.selected_common_epiphany_id,
   )
 
+  const selectedPersonaEngravings = createPersonaEngravingSelectionFromIds(
+    importedCard.selected_persona_engraving_ids,
+  )
+
   return {
     selectedVariant,
     selectedDivineGod,
     selectedDivineEpiphany,
     selectedCommonEpiphany,
+    selectedPersonaEngravings,
   }
 }
 
 export function useDeckBuilder() {
   const [squad, setSquad] = useState<SquadSlot[]>(createInitialSquad)
   const [variantModalTarget, setVariantModalTarget] = useState<VariantModalTarget | null>(null)
+  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>(() => loadSavedDecks())
+  const [selectedSavedDeckId, setSelectedSavedDeckId] = useState<string | null>(null)
 
   const { data: characters = [], isLoading: loadingCharacters } = useQuery<CardCharacter[]>({
     queryKey: ['deck-builder-card-characters'],
@@ -249,17 +343,132 @@ export function useDeckBuilder() {
     staleTime: Infinity,
   })
 
+  const slotBuildCosts = squad.map(calculateDeckBuilderSlotCost)
+
   const totalCards = squad.reduce((sum, slot) => sum + slot.cards.length, 0)
 
-  const totalCost = squad.reduce(
-    (sum, slot) => sum + slot.cards.reduce((slotSum, item) => slotSum + getInstanceCost(item), 0),
-    0,
-  )
+  const totalCost = slotBuildCosts.reduce((sum, item) => sum + item.total, 0)
 
   const selectedCombatants = squad.filter(slot => slot.combatantId != null).length
 
+  function persistNextSavedDecks(nextSavedDecks: SavedDeck[]) {
+    const sortedDecks = [...nextSavedDecks].sort((left, right) =>
+      right.updated_at.localeCompare(left.updated_at),
+    )
+
+    persistSavedDecks(sortedDecks)
+    setSavedDecks(sortedDecks)
+  }
+
+  function createDeckBuilderExportPayload(): DeckBuilderExportPayload {
+    return {
+      version: DECK_BUILDER_EXPORT_VERSION,
+      exported_at: new Date().toISOString(),
+      slots: squad.map(slot => ({
+        combatant_id: slot.combatantId,
+        equipment: {
+          weapon_id: slot.equipment.weapon?.id ?? null,
+          armor_id: slot.equipment.armor?.id ?? null,
+          accessory_id: slot.equipment.accessory?.id ?? null,
+        },
+        cards: slot.cards.map(item => ({
+          card_id: item.card.card_id,
+          selected_variant_id: item.selectedVariant?.variant_id ?? null,
+          selected_divine_god: item.selectedDivineGod?.id ?? null,
+          selected_divine_epiphany_id: item.selectedDivineEpiphany?.id ?? null,
+          selected_common_epiphany_id: item.selectedCommonEpiphany?.id ?? null,
+          selected_persona_engraving_ids: getPersonaEngravingIds(
+            item.selectedPersonaEngravings,
+          ),
+        })),
+      })),
+    }
+  }
+
+  async function loadDeckFromPayload(value: unknown) {
+    const payload = normalizeImportedPayload(value)
+
+    setVariantModalTarget(null)
+
+    const importedSlots = payload.slots.slice(0, DECK_BUILDER_MAX_SLOTS)
+
+    const nextSquad = await Promise.all(
+      Array.from({ length: DECK_BUILDER_MAX_SLOTS }, async (_, slotIndex): Promise<SquadSlot> => {
+        const importedSlot = importedSlots[slotIndex]
+
+        if (!importedSlot?.combatant_id) {
+          return createEmptySlot()
+        }
+
+        const importedEquipment = resolveImportedEquipment(importedSlot.equipment)
+
+        try {
+          const deckBuilderData = await api.deckBuilderCombatant(importedSlot.combatant_id)
+
+          const startingCards = (deckBuilderData.starting_cards ?? [])
+            .map(item => normalizeDeckBuilderCard(item as DeckBuilderCardWithVariants))
+
+          const epiphanyCards = (deckBuilderData.epiphany_cards ?? [])
+            .map(item => normalizeDeckBuilderCard(item as DeckBuilderCardWithVariants))
+
+          const egoSkill = deckBuilderData.ego_skill
+            ? normalizeDeckBuilderCard(deckBuilderData.ego_skill as DeckBuilderCardWithVariants)
+            : null
+
+          const availableCards = getAllDeckBuilderCards(
+            startingCards,
+            epiphanyCards,
+            egoSkill,
+          )
+
+          const cards = importedSlot.cards
+            .map(importedCard => {
+              const source = findDeckBuilderCardById(
+                availableCards,
+                importedCard.card_id,
+              )
+
+              if (!source) {
+                return null
+              }
+
+              return createCardInstanceFromDeckBuilderCard(
+                source,
+                resolveImportedCardSettings(source, importedCard),
+              )
+            })
+            .filter((card): card is DeckCardInstance => card !== null)
+
+          return {
+            combatantId: importedSlot.combatant_id,
+            cards,
+            equipment: importedEquipment,
+            startingCards,
+            epiphanyCards,
+            egoSkill,
+            isLoading: false,
+            error: null,
+          }
+        } catch (error) {
+          return {
+            ...createEmptySlot(),
+            combatantId: importedSlot.combatant_id,
+            equipment: importedEquipment,
+            isLoading: false,
+            error: error instanceof Error
+              ? error.message
+              : 'Erro ao importar deck do combatente.',
+          }
+        }
+      }),
+    )
+
+    setSquad(nextSquad)
+  }
+
   async function selectCombatant(slotIndex: number, combatantId: number | null) {
     setVariantModalTarget(null)
+    setSelectedSavedDeckId(null)
 
     if (combatantId == null) {
       setSquad(current =>
@@ -349,6 +558,8 @@ export function useDeckBuilder() {
   }
 
   function duplicateCard(slotIndex: number, instanceId: string) {
+    setSelectedSavedDeckId(null)
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -358,15 +569,22 @@ export function useDeckBuilder() {
 
         return {
           ...slot,
-          cards: [...slot.cards, cloneCardInstance(item)],
+          cards: insertDeckCardNearGroup(slot.cards, cloneCardInstance(item)),
         }
       }),
     )
   }
 
   function removeCard(slotIndex: number, instanceId: string) {
+    setSelectedSavedDeckId(null)
+
+    const removeInstanceId = getLastDeckCardGroupInstanceId(
+      squad[slotIndex]?.cards ?? [],
+      instanceId,
+    )
+
     setVariantModalTarget(current => {
-      if (current?.type === 'deck' && current.instanceId === instanceId) {
+      if (current?.type === 'deck' && current.instanceId === removeInstanceId) {
         return null
       }
 
@@ -379,7 +597,7 @@ export function useDeckBuilder() {
 
         return {
           ...slot,
-          cards: slot.cards.filter(card => card.instanceId !== instanceId),
+          cards: slot.cards.filter(card => card.instanceId !== removeInstanceId),
         }
       }),
     )
@@ -390,16 +608,17 @@ export function useDeckBuilder() {
     item: DeckBuilderCardWithVariants,
     settings: Partial<DeckCardEpiphanySettings> = {},
   ) {
+    setSelectedSavedDeckId(null)
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
 
+        const nextCard = createCardInstanceFromDeckBuilderCard(item, settings)
+
         return {
           ...slot,
-          cards: [
-            ...slot.cards,
-            createCardInstanceFromDeckBuilderCard(item, settings),
-          ],
+          cards: insertDeckCardNearGroup(slot.cards, nextCard),
         }
       }),
     )
@@ -410,6 +629,8 @@ export function useDeckBuilder() {
     equipmentSlot: DeckBuilderItemSlot,
     item: DeckBuilderItem,
   ) {
+    setSelectedSavedDeckId(null)
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -429,6 +650,8 @@ export function useDeckBuilder() {
     slotIndex: number,
     equipmentSlot: DeckBuilderItemSlot,
   ) {
+    setSelectedSavedDeckId(null)
+
     setSquad(current =>
       current.map((slot, index) => {
         if (index !== slotIndex) return slot
@@ -445,6 +668,8 @@ export function useDeckBuilder() {
   }
 
   function clearDeck(slotIndex: number) {
+    setSelectedSavedDeckId(null)
+
     setVariantModalTarget(current => {
       if (current?.slotIndex === slotIndex) {
         return null
@@ -468,6 +693,7 @@ export function useDeckBuilder() {
 
   function resetBuilder() {
     setVariantModalTarget(null)
+    setSelectedSavedDeckId(null)
     setSquad(createInitialSquad())
   }
 
@@ -483,6 +709,7 @@ export function useDeckBuilder() {
       selectedDivineGod: item.selectedDivineGod,
       selectedDivineEpiphany: item.selectedDivineEpiphany,
       selectedCommonEpiphany: item.selectedCommonEpiphany,
+      selectedPersonaEngravings: item.selectedPersonaEngravings,
     })
   }
 
@@ -495,6 +722,8 @@ export function useDeckBuilder() {
   }
 
   function applyEpiphanySettings(settings: DeckCardEpiphanySettings) {
+    setSelectedSavedDeckId(null)
+
     if (!variantModalTarget) return
 
     if (variantModalTarget.type === 'available') {
@@ -516,10 +745,12 @@ export function useDeckBuilder() {
 
             return {
               ...item,
+              card: applyPersonaEngravingImageOverride(item.card, settings.selectedPersonaEngravings),
               selectedVariant: settings.selectedVariant,
               selectedDivineGod: settings.selectedDivineGod,
               selectedDivineEpiphany: settings.selectedDivineEpiphany,
               selectedCommonEpiphany: settings.selectedCommonEpiphany,
+              selectedPersonaEngravings: settings.selectedPersonaEngravings,
             }
           }),
         }
@@ -531,15 +762,19 @@ export function useDeckBuilder() {
 
       return {
         ...current,
+        card: applyPersonaEngravingImageOverride(current.card, settings.selectedPersonaEngravings),
         selectedVariant: settings.selectedVariant,
         selectedDivineGod: settings.selectedDivineGod,
         selectedDivineEpiphany: settings.selectedDivineEpiphany,
         selectedCommonEpiphany: settings.selectedCommonEpiphany,
+        selectedPersonaEngravings: settings.selectedPersonaEngravings,
       }
     })
   }
 
   function clearEpiphanySettings() {
+    setSelectedSavedDeckId(null)
+
     if (!variantModalTarget || variantModalTarget.type !== 'deck') return
 
     const { slotIndex, instanceId } = variantModalTarget
@@ -555,10 +790,15 @@ export function useDeckBuilder() {
 
             return {
               ...item,
+              card: applyPersonaEngravingImageOverride(
+                item.card,
+                createPersonaEngravingSelectionFromIds([null, null]),
+              ),
               selectedVariant: null,
               selectedDivineGod: null,
               selectedDivineEpiphany: null,
               selectedCommonEpiphany: null,
+              selectedPersonaEngravings: createPersonaEngravingSelectionFromIds([null, null]),
             }
           }),
         }
@@ -568,12 +808,16 @@ export function useDeckBuilder() {
     setVariantModalTarget(current => {
       if (!current || current.type !== 'deck') return current
 
+      const emptyPersonaEngravingSelection = createPersonaEngravingSelectionFromIds([null, null])
+
       return {
         ...current,
+        card: applyPersonaEngravingImageOverride(current.card, emptyPersonaEngravingSelection),
         selectedVariant: null,
         selectedDivineGod: null,
         selectedDivineEpiphany: null,
         selectedCommonEpiphany: null,
+        selectedPersonaEngravings: emptyPersonaEngravingSelection,
       }
     })
   }
@@ -583,25 +827,7 @@ export function useDeckBuilder() {
   }
 
   async function exportDeck() {
-    const payload: DeckBuilderExportPayload = {
-      version: DECK_BUILDER_EXPORT_VERSION,
-      exported_at: new Date().toISOString(),
-      slots: squad.map(slot => ({
-        combatant_id: slot.combatantId,
-        equipment: {
-          weapon_id: slot.equipment.weapon?.id ?? null,
-          armor_id: slot.equipment.armor?.id ?? null,
-          accessory_id: slot.equipment.accessory?.id ?? null,
-        },
-        cards: slot.cards.map(item => ({
-          card_id: item.card.card_id,
-          selected_variant_id: item.selectedVariant?.variant_id ?? null,
-          selected_divine_god: item.selectedDivineGod?.id ?? null,
-          selected_divine_epiphany_id: item.selectedDivineEpiphany?.id ?? null,
-          selected_common_epiphany_id: item.selectedCommonEpiphany?.id ?? null,
-        })),
-      })),
-    }
+    const payload = createDeckBuilderExportPayload()
 
     const filePath = await save({
       defaultPath: getDeckBuilderExportFileName(),
@@ -623,84 +849,73 @@ export function useDeckBuilder() {
   async function importDeck(file: File) {
     const text = await file.text()
     const parsed = JSON.parse(text) as unknown
-    const payload = normalizeImportedPayload(parsed)
 
-    setVariantModalTarget(null)
+    await loadDeckFromPayload(parsed)
+    setSelectedSavedDeckId(null)
+  }
 
-    const importedSlots = payload.slots.slice(0, DECK_BUILDER_MAX_SLOTS)
+  async function loadSavedDeck(deckId: string) {
+    const savedDeck = savedDecks.find(deck => deck.id === deckId)
 
-    const nextSquad = await Promise.all(
-      Array.from({ length: DECK_BUILDER_MAX_SLOTS }, async (_, slotIndex): Promise<SquadSlot> => {
-        const importedSlot = importedSlots[slotIndex]
+    if (!savedDeck) {
+      throw new Error('Deck salvo não encontrado.')
+    }
 
-        if (!importedSlot?.combatant_id) {
-          return createEmptySlot()
-        }
+    await loadDeckFromPayload(savedDeck.payload)
+    setSelectedSavedDeckId(deckId)
+  }
 
-        const importedEquipment = resolveImportedEquipment(importedSlot.equipment)
+  async function saveCurrentDeck() {
+    if (!selectedSavedDeckId) {
+      throw new Error('Nenhum deck salvo selecionado.')
+    }
 
-        try {
-          const deckBuilderData = await api.deckBuilderCombatant(importedSlot.combatant_id)
+    const deckExists = savedDecks.some(deck => deck.id === selectedSavedDeckId)
 
-          const startingCards = (deckBuilderData.starting_cards ?? [])
-            .map(item => normalizeDeckBuilderCard(item as DeckBuilderCardWithVariants))
+    if (!deckExists) {
+      throw new Error('Deck salvo não encontrado.')
+    }
 
-          const epiphanyCards = (deckBuilderData.epiphany_cards ?? [])
-            .map(item => normalizeDeckBuilderCard(item as DeckBuilderCardWithVariants))
+    const payload = createDeckBuilderExportPayload()
+    const updatedAt = new Date().toISOString()
 
-          const egoSkill = deckBuilderData.ego_skill
-            ? normalizeDeckBuilderCard(deckBuilderData.ego_skill as DeckBuilderCardWithVariants)
-            : null
+    const nextSavedDecks = savedDecks.map(deck => {
+      if (deck.id !== selectedSavedDeckId) {
+        return deck
+      }
 
-          const availableCards = getAllDeckBuilderCards(
-            startingCards,
-            epiphanyCards,
-            egoSkill,
-          )
+      return {
+        ...deck,
+        updated_at: updatedAt,
+        payload,
+      }
+    })
 
-          const cards = importedSlot.cards
-            .map(importedCard => {
-              const source = findDeckBuilderCardById(
-                availableCards,
-                importedCard.card_id,
-              )
+    persistNextSavedDecks(nextSavedDecks)
+  }
 
-              if (!source) {
-                return null
-              }
+  async function saveCurrentDeckAs(name: string) {
+    const normalizedName = name.trim()
 
-              return createCardInstanceFromDeckBuilderCard(
-                source,
-                resolveImportedCardSettings(source, importedCard),
-              )
-            })
-            .filter((card): card is DeckCardInstance => card !== null)
+    if (!normalizedName) {
+      throw new Error('Informe um nome para salvar o deck.')
+    }
 
-          return {
-            combatantId: importedSlot.combatant_id,
-            cards,
-            equipment: importedEquipment,
-            startingCards,
-            epiphanyCards,
-            egoSkill,
-            isLoading: false,
-            error: null,
-          }
-        } catch (error) {
-          return {
-            ...createEmptySlot(),
-            combatantId: importedSlot.combatant_id,
-            equipment: importedEquipment,
-            isLoading: false,
-            error: error instanceof Error
-              ? error.message
-              : 'Erro ao importar deck do combatente.',
-          }
-        }
-      }),
-    )
+    const payload = createDeckBuilderExportPayload()
+    const savedDeck = createSavedDeck(normalizedName, payload)
 
-    setSquad(nextSquad)
+    persistNextSavedDecks([savedDeck, ...savedDecks])
+    setSelectedSavedDeckId(savedDeck.id)
+  }
+
+  function deleteSavedDeck(deckId: string) {
+    const nextSavedDecks = savedDecks.filter(deck => deck.id !== deckId)
+
+    persistNextSavedDecks(nextSavedDecks)
+
+    if (selectedSavedDeckId === deckId) {
+      setSelectedSavedDeckId(null)
+    }
   }
 
   return {
@@ -710,7 +925,10 @@ export function useDeckBuilder() {
     totalCards,
     totalCost,
     selectedCombatants,
+    slotBuildCosts,
     variantModalTarget,
+    savedDecks,
+    selectedSavedDeckId,
     selectCombatant,
     duplicateCard,
     removeCard,
@@ -726,5 +944,9 @@ export function useDeckBuilder() {
     closeVariantModal,
     exportDeck,
     importDeck,
+    loadSavedDeck,
+    saveCurrentDeck,
+    saveCurrentDeckAs,
+    deleteSavedDeck,
   }
 }
