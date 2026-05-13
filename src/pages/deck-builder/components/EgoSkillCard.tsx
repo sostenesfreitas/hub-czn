@@ -15,7 +15,7 @@ export function EgoSkillCard({
     <section className="mt-4 overflow-hidden rounded-xl border border-[#3b2f1d] bg-[#1a1410]">
       <div className="flex gap-3 p-3">
         <div className="h-20 w-14 shrink-0 overflow-hidden rounded-md border border-[#3b2f1d] bg-[#101018]">
-          <CardImage card={egoSkill.card} variant="thumbnail" />
+          <CardImage card={egoSkill.card} variant="cover" />
         </div>
 
         <div className="min-w-0 flex-1">

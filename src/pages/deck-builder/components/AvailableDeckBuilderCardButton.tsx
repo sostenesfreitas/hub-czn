@@ -37,7 +37,7 @@ export function AvailableDeckBuilderCardButton({
         className="flex w-full gap-3 p-2 text-left"
       >
         <div className="h-20 w-14 shrink-0 overflow-hidden rounded-md border border-[#2d2d3a] bg-[#101018]">
-          <CardImage card={card} variant="thumbnail" />
+          <CardImage card={card} variant="cover" />
         </div>
 
         <div className="min-w-0 flex-1">

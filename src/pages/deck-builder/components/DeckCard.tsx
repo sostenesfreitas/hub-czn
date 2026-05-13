@@ -28,7 +28,7 @@ export function DeckCard({
     <article className="flex h-full flex-col overflow-hidden rounded-lg border border-[#2d2d3a] bg-[#15151f] transition-colors hover:border-[#c084fc]">
       <div className="flex flex-1 gap-3 p-3">
         <div className="h-24 w-16 shrink-0 overflow-hidden rounded-md border border-[#2d2d3a] bg-[#101018]">
-          <CardImage card={card} variant="thumbnail" />
+          <CardImage card={card} variant="cover" />
         </div>
 
         <div className="min-w-0 flex-1">

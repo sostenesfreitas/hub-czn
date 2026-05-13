@@ -162,7 +162,7 @@ export function ScoringPage() {
   const setMap: Record<number, SetInfo> = {}
   if (gameData?.sets) {
     for (const [id, s] of Object.entries(gameData.sets)) {
-      setMap[Number(id)] = s
+      setMap[Number(id)] = s as SetInfo
     }
   }
 
