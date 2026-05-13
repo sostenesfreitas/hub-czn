@@ -11,6 +11,7 @@ import type {
   DeckBuilderExportSlot,
   DeckBuilderImportedCard,
   DeckBuilderImportedEquipment,
+  DeckBuilderImportedPersonaEngravingIds,
   DeckBuilderItem,
   DeckBuilderItemSlot,
   DeckCardEpiphanySettings,
@@ -22,12 +23,17 @@ import { SHARED_DECK_BUILDER_CARDS } from '../deck-builder-card-pool.utils'
 import { calculateDeckBuilderSlotCost } from '../deck-builder-cost.utils'
 import { findDeckBuilderItemById } from '../deck-builder-items.utils'
 import {
+  createPersonaEngravingSelectionFromIds,
+  getPersonaEngravingIds,
+} from '../deck-builder-persona-engraving.utils'
+import {
   createSavedDeck,
   loadSavedDecks,
   persistSavedDecks,
   type SavedDeck,
 } from '../deck-builder-saved-decks.utils'
 import {
+  applyPersonaEngravingImageOverride,
   cloneCardInstance,
   createCardInstanceFromDeckBuilderCard,
   createEmptyEquipment,
@@ -39,7 +45,7 @@ import {
   getDeckCardIdentityKey,
 } from '../deck-builder.utils'
 
-const DECK_BUILDER_EXPORT_VERSION = 3
+const DECK_BUILDER_EXPORT_VERSION = 4
 const DECK_BUILDER_MAX_SLOTS = 3
 
 function getDeckBuilderExportFileName() {
@@ -184,6 +190,19 @@ function normalizeOptionalString(value: unknown) {
     : null
 }
 
+function normalizeImportedPersonaEngravingIds(
+  value: unknown,
+): DeckBuilderImportedPersonaEngravingIds {
+  if (!Array.isArray(value)) {
+    return [null, null]
+  }
+
+  return [
+    normalizeOptionalString(value[0]),
+    normalizeOptionalString(value[1]),
+  ]
+}
+
 function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
   if (!isRecord(value)) {
     return null
@@ -201,6 +220,9 @@ function normalizeImportedCard(value: unknown): DeckBuilderImportedCard | null {
     selected_divine_god: normalizeOptionalString(value.selected_divine_god),
     selected_divine_epiphany_id: normalizeOptionalString(value.selected_divine_epiphany_id),
     selected_common_epiphany_id: normalizeOptionalString(value.selected_common_epiphany_id),
+    selected_persona_engraving_ids: normalizeImportedPersonaEngravingIds(
+      value.selected_persona_engraving_ids,
+    ),
   }
 }
 
@@ -296,11 +318,16 @@ function resolveImportedCardSettings(
     importedCard.selected_common_epiphany_id,
   )
 
+  const selectedPersonaEngravings = createPersonaEngravingSelectionFromIds(
+    importedCard.selected_persona_engraving_ids,
+  )
+
   return {
     selectedVariant,
     selectedDivineGod,
     selectedDivineEpiphany,
     selectedCommonEpiphany,
+    selectedPersonaEngravings,
   }
 }
 
@@ -350,6 +377,9 @@ export function useDeckBuilder() {
           selected_divine_god: item.selectedDivineGod?.id ?? null,
           selected_divine_epiphany_id: item.selectedDivineEpiphany?.id ?? null,
           selected_common_epiphany_id: item.selectedCommonEpiphany?.id ?? null,
+          selected_persona_engraving_ids: getPersonaEngravingIds(
+            item.selectedPersonaEngravings,
+          ),
         })),
       })),
     }
@@ -679,6 +709,7 @@ export function useDeckBuilder() {
       selectedDivineGod: item.selectedDivineGod,
       selectedDivineEpiphany: item.selectedDivineEpiphany,
       selectedCommonEpiphany: item.selectedCommonEpiphany,
+      selectedPersonaEngravings: item.selectedPersonaEngravings,
     })
   }
 
@@ -714,10 +745,12 @@ export function useDeckBuilder() {
 
             return {
               ...item,
+              card: applyPersonaEngravingImageOverride(item.card, settings.selectedPersonaEngravings),
               selectedVariant: settings.selectedVariant,
               selectedDivineGod: settings.selectedDivineGod,
               selectedDivineEpiphany: settings.selectedDivineEpiphany,
               selectedCommonEpiphany: settings.selectedCommonEpiphany,
+              selectedPersonaEngravings: settings.selectedPersonaEngravings,
             }
           }),
         }
@@ -729,10 +762,12 @@ export function useDeckBuilder() {
 
       return {
         ...current,
+        card: applyPersonaEngravingImageOverride(current.card, settings.selectedPersonaEngravings),
         selectedVariant: settings.selectedVariant,
         selectedDivineGod: settings.selectedDivineGod,
         selectedDivineEpiphany: settings.selectedDivineEpiphany,
         selectedCommonEpiphany: settings.selectedCommonEpiphany,
+        selectedPersonaEngravings: settings.selectedPersonaEngravings,
       }
     })
   }
@@ -755,10 +790,15 @@ export function useDeckBuilder() {
 
             return {
               ...item,
+              card: applyPersonaEngravingImageOverride(
+                item.card,
+                createPersonaEngravingSelectionFromIds([null, null]),
+              ),
               selectedVariant: null,
               selectedDivineGod: null,
               selectedDivineEpiphany: null,
               selectedCommonEpiphany: null,
+              selectedPersonaEngravings: createPersonaEngravingSelectionFromIds([null, null]),
             }
           }),
         }
@@ -768,12 +808,16 @@ export function useDeckBuilder() {
     setVariantModalTarget(current => {
       if (!current || current.type !== 'deck') return current
 
+      const emptyPersonaEngravingSelection = createPersonaEngravingSelectionFromIds([null, null])
+
       return {
         ...current,
+        card: applyPersonaEngravingImageOverride(current.card, emptyPersonaEngravingSelection),
         selectedVariant: null,
         selectedDivineGod: null,
         selectedDivineEpiphany: null,
         selectedCommonEpiphany: null,
+        selectedPersonaEngravings: emptyPersonaEngravingSelection,
       }
     })
   }

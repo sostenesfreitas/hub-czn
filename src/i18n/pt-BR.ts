@@ -662,7 +662,7 @@ const ptBR = {
       engravingHeaderDescription: 'Veja a descrição completa ou configure Gravação sem sair do modal da carta.',
       engravingSectionLabel: 'Gravação',
       personaCard: 'Carta Persona',
-      engravingDescription: 'Configure as Engravings da Carta Persona. Esta seção substitui Epifania apenas para cartas Persona.',
+      engravingDescription: 'Configure as gravações dos seus cards de Persona.',
       engravingSlot1: 'Slot 1',
       engravingSlot2: 'Slot 2',
       noEngravingSelected: 'Nenhuma Engraving selecionada',

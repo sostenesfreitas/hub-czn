@@ -1,6 +1,12 @@
 import type { CardEntry } from '@/lib/types'
 import commonEpiphaniesData from './data/deck-builder-common-epiphanies.json'
 import divineEpiphaniesData from './data/deck-builder-divine-epiphanies.json'
+import {
+  createEmptyPersonaEngravingSelection,
+  getPersonaEngravingSelectionImagePath,
+  getPersonaEngravingSelectionSlots,
+  getPersonaEngravingSelectionSummary,
+} from './deck-builder-persona-engraving.utils'
 import type {
   DeckBuilderCardGroup,
   DeckBuilderCardWithVariants,
@@ -10,10 +16,34 @@ import type {
   DeckBuilderDivineGodId,
   DeckBuilderEpiphanyVariant,
   DeckBuilderEquipment,
+  DeckBuilderPersonaEngravingSelection,
   DeckCardEpiphanySettings,
   DeckCardInstance,
   SquadSlot,
 } from './deck-builder.types'
+
+
+export const DECK_BUILDER_PERSONA_IMAGE_OVERRIDE_FIELD = '__deckBuilderPersonaImagePath'
+
+type CardEntryWithPersonaImageOverride = CardEntry & {
+  [DECK_BUILDER_PERSONA_IMAGE_OVERRIDE_FIELD]?: string | null
+}
+
+export function applyPersonaEngravingImageOverride(
+  card: CardEntry,
+  selectedPersonaEngravings: DeckBuilderPersonaEngravingSelection,
+): CardEntry {
+  const imagePath = getPersonaEngravingSelectionImagePath(selectedPersonaEngravings)
+  const nextCard = { ...card } as CardEntryWithPersonaImageOverride
+
+  if (imagePath) {
+    nextCard[DECK_BUILDER_PERSONA_IMAGE_OVERRIDE_FIELD] = imagePath
+  } else {
+    delete nextCard[DECK_BUILDER_PERSONA_IMAGE_OVERRIDE_FIELD]
+  }
+
+  return nextCard
+}
 
 export const DECK_BUILDER_DIVINE_GODS: DeckBuilderDivineGod[] = [
   {
@@ -93,6 +123,7 @@ export function createEmptyEpiphanySettings(): DeckCardEpiphanySettings {
     selectedDivineGod: null,
     selectedDivineEpiphany: null,
     selectedCommonEpiphany: null,
+    selectedPersonaEngravings: createEmptyPersonaEngravingSelection(),
   }
 }
 
@@ -107,16 +138,18 @@ export function createCardInstance(
   group: DeckBuilderCardGroup = 'starting',
   rarity: string | null = null,
   tags: string[] = [],
+  selectedPersonaEngravings: DeckBuilderPersonaEngravingSelection = createEmptyPersonaEngravingSelection(),
 ): DeckCardInstance {
   return {
     instanceId: `${card.card_id}-${Date.now()}-${Math.random()}`,
-    card,
+    card: applyPersonaEngravingImageOverride(card, selectedPersonaEngravings),
     description,
     variants,
     selectedVariant,
     selectedDivineGod,
     selectedDivineEpiphany,
     selectedCommonEpiphany,
+    selectedPersonaEngravings,
     group,
     rarity,
     tags,
@@ -138,6 +171,7 @@ export function createCardInstanceFromDeckBuilderCard(
     item.group,
     item.rarity ?? null,
     item.tags ?? [],
+    settings.selectedPersonaEngravings ?? createEmptyPersonaEngravingSelection(),
   )
 }
 
@@ -153,6 +187,7 @@ export function cloneCardInstance(item: DeckCardInstance): DeckCardInstance {
     item.group,
     item.rarity,
     item.tags,
+    item.selectedPersonaEngravings,
   )
 }
 
@@ -312,6 +347,8 @@ export function getDeckCardIdentityKey(item: DeckCardInstance) {
     item.selectedDivineGod?.id ?? 'no-god',
     item.selectedDivineEpiphany?.id ?? 'no-divine',
     item.selectedCommonEpiphany?.id ?? 'no-common',
+    item.selectedPersonaEngravings.slot1?.engraving_id ?? 'no-persona-slot-1',
+    item.selectedPersonaEngravings.slot2?.engraving_id ?? 'no-persona-slot-2',
   ].join('::')
 }
 
@@ -320,6 +357,7 @@ export function getDeckCardAppliedEpiphanyCount(item: DeckCardInstance) {
     item.selectedVariant,
     item.selectedDivineEpiphany,
     item.selectedCommonEpiphany,
+    ...getPersonaEngravingSelectionSlots(item.selectedPersonaEngravings),
   ].filter(Boolean).length
 }
 
@@ -328,6 +366,7 @@ export function getDeckCardEpiphanySummary(item: DeckCardInstance) {
     item.selectedDivineGod?.displayName,
     item.selectedDivineEpiphany?.description,
     item.selectedCommonEpiphany?.description,
+    getPersonaEngravingSelectionSummary(item.selectedPersonaEngravings),
   ].filter(Boolean)
 
   return labels.join(' • ')

@@ -29,6 +29,15 @@ const divineGodImages = import.meta.glob(
   },
 ) as Record<string, string>
 
+const personaCardImages = import.meta.glob(
+  '../pages/deck-builder/data/persona/*.{webp,png,jpg,jpeg,avif}',
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+) as Record<string, string>
+
 const cardImages = {
   ...combatantCardImages,
   ...neutralAndMonsterCardImages,
@@ -48,6 +57,7 @@ const mappedCardImages = DECK_BUILDER_CARD_IMAGE_BY_ID as Record<string, string>
 const warnedMissingCardImages = new Set<string>()
 const warnedMissingCharacterFaces = new Set<number | string>()
 const warnedMissingDivineGodIcons = new Set<string>()
+const warnedMissingPersonaImages = new Set<string>()
 
 function normalizePath(value: string) {
   return value.replace(/\\/g, '/').toLowerCase()
@@ -144,6 +154,22 @@ function warnMissingDivineGodIcon(god: DeckBuilderDivineGod) {
   )
 }
 
+function warnMissingPersonaImage(fileNameOrPath: string) {
+  if (!import.meta.env.DEV) {
+    return
+  }
+
+  if (warnedMissingPersonaImages.has(fileNameOrPath)) {
+    return
+  }
+
+  warnedMissingPersonaImages.add(fileNameOrPath)
+
+  console.warn(
+    `[Deck Builder] Imagem de Persona não encontrada: ${fileNameOrPath}`,
+  )
+}
+
 export function getCharacterFaceUrl(charResId: number | string) {
   const imageUrl = findAssetUrl(
     `bookmark_face_character_map_${charResId}.png`,
@@ -190,6 +216,20 @@ export function getDivineGodIconUrl(god: DeckBuilderDivineGod) {
 
   if (!imageUrl) {
     warnMissingDivineGodIcon(god)
+  }
+
+  return imageUrl
+}
+
+export function getDeckBuilderPersonaImageUrl(fileNameOrPath: string | null | undefined) {
+  if (!fileNameOrPath) {
+    return null
+  }
+
+  const imageUrl = findAssetUrl(fileNameOrPath, personaCardImages)
+
+  if (!imageUrl) {
+    warnMissingPersonaImage(fileNameOrPath)
   }
 
   return imageUrl

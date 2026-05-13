@@ -662,7 +662,7 @@ const en = {
       engravingHeaderDescription: 'View the full description or configure Engraving without leaving the card modal.',
       engravingSectionLabel: 'Engraving',
       personaCard: 'Persona Card',
-      engravingDescription: 'Configure this Persona Card Engravings. This section replaces Epiphany only for Persona cards.',
+      engravingDescription: 'Configure this Persona Card Engravings.',
       engravingSlot1: 'Slot 1',
       engravingSlot2: 'Slot 2',
       noEngravingSelected: 'No Engraving selected',
