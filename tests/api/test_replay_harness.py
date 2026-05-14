@@ -1008,3 +1008,75 @@ def test_resolve_caster_path_6_single_owner_unaffected_by_tiebreaker():
     )
     assert path == 6
     assert unit is diana
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2i1 — Path 7: add_r_spark_* resolved via same-frame char hint
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_spark_resolve():
+    """BattleState with two player chars (res_id 1052, 1033) and one enemy."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    nihilum = CharState(id="10", atk=600, def_=90, hp=1, hp_current=1,
+                        cri=0.0, cri_dmg_rate=0, res_id="1052")
+    diallos = CharState(id="11", atk=500, def_=80, hp=1, hp_current=1,
+                        cri=0.0, cri_dmg_rate=0, res_id="1033")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nihilum, diallos], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {}
+    return state
+
+
+def test_resolve_caster_path7_add_r_spark_resolved_via_frame_char_hint():
+    """Path 7: add_r_spark_* IDs resolve to the unique char that fired in the
+    same dev_msg frame, passed as frame_char_hint.  inferred must be False."""
+    state = _make_state_for_spark_resolve()
+    # frame_char_hint="1052" (Nihilum) fires in same frame as nihilum spark
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint="1052",
+    )
+    assert unit is not None
+    assert str(unit.res_id) == "1052"
+    assert inferred is False
+    assert path == 7
+
+
+def test_resolve_caster_path7_not_triggered_for_non_spark_ids():
+    """frame_char_hint must NOT affect non-spark IDs (cs*, eq_*, etc.).
+    Without other matches those IDs fall through to path 5."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01",
+        frame_char_hint="1052",
+    )
+    # path 6 and 4 both miss; should reach path 5 fallback
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path7_falls_through_when_hint_is_none():
+    """When frame_char_hint is None, path 7 is a no-op even for add_r_spark_* IDs."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint=None,
+    )
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path7_falls_through_when_hint_not_in_state():
+    """When frame_char_hint doesn't match any unit, path 7 falls through."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint="9999",  # no such unit
+    )
+    assert path == 5
+    assert inferred is True

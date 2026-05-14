@@ -42,28 +42,21 @@ def test_real_capture_replays_without_crash():
 
 @pytest.mark.slow
 def test_real_capture_caster_resolution_rate_above_80_pct():
-    """Sprint 2b success criterion #2: At least 80% of dispatched events in
-    the real capture must have inferred_caster=False (i.e., caster_id was
-    resolved from dev_msg via 'unit_id used card' pattern, not fallback to
-    player_team[0]).
+    """Resolution rate gate: at least 75% of dispatched events must have
+    inferred_caster=False (caster resolved via paths 1-7, not fallback).
 
-    Sprint 2c upgraded the resolver with 3 paths:
-    1. Direct: caster_id matches unit.id (player_team or enemies)
-    2. card_owner_lookup: caster_id is a card-instance-id, translate via lookup
-    3. skill_eff_id prefix: extract char/monster res_id from prefix, match unit.res_id
+    Path progression (Sprint 2b through 2i1):
+    1. Direct caster_id match
+    2. card_owner_lookup
+    3. skill_eff_id prefix (c_<N>_ or <N>_)
+    6. cs_map_raw lookup (cs* and eq_* IDs)
+    7. frame_char_hint for add_r_spark_* (Sprint 2i1: +3.1%)
+    4. segment_caster from StateAccumulator.caster_at
+    5. Fallback (player_team[0], inferred=True)
 
-    Floor: 25% (Sprint 2c achieved ~29% empirically). The remaining ~71% of
-    dispatched events are genuinely caster-less from state's perspective:
-    - Equipment effects (eq_*), r_spark side-effects (add_r_spark_*),
-      condition stack effects (cs0X_*) — no associated unit.
-    - Cards whose char_res_id matches a character NOT in player_team
-      (NPCs, summons, characters from other party rotations).
-    - Snapshot frames in capture are sparse (4 frames per battle); many units
-      that appear in dev_msg never appear in any snapshot.
-
-    Reaching higher rates would require event-stream capture instead of
-    snapshot polling. That's Sprint 2d+ architectural work, not this gate's
-    responsibility.
+    Structural ceiling ~78%: cs01_0473/cs01_0833 global passives have zero
+    caster context in snapshot-polling captures; card economy no_target events
+    are not dispatched.  Floor set at 75% (rate achieved: ~77.5%).
     """
     sprint2b_capture = (
         Path(__file__).resolve().parents[2] / "api" / "snapshots"
@@ -81,8 +74,8 @@ def test_real_capture_caster_resolution_rate_above_80_pct():
         pytest.skip("no dispatched events in this capture")
     resolved = [r for r in dispatched if not r.inferred_caster]
     rate = len(resolved) / len(dispatched)
-    assert rate >= 0.25, (
-        f"caster resolution rate {rate:.1%} below 25% floor ({len(resolved)}/{len(dispatched)})"
+    assert rate >= 0.75, (
+        f"caster resolution rate {rate:.1%} below 75% floor ({len(resolved)}/{len(dispatched)})"
     )
 
 

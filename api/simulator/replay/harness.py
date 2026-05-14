@@ -114,6 +114,15 @@ class ReplayHarness:
         pending_dispatches: list[EventReport] = []
         for ce_idx, event in enumerate(captured):
             if event.skill_eff_fires and state is not None:
+                # Compute frame_char_hint: if exactly one distinct char res_id
+                # fired c_<id>_* skills in this frame, that char is the spark owner
+                # for any add_r_spark_* events in the same frame (Path 7).
+                frame_char_res_ids: set = set()
+                for _f in event.skill_eff_fires:
+                    _m = _CHAR_PREFIX_RE.match(_f.skill_eff_id)
+                    if _m:
+                        frame_char_res_ids.add(_m.group(1))
+                frame_char_hint = next(iter(frame_char_res_ids)) if len(frame_char_res_ids) == 1 else None
                 for fire in event.skill_eff_fires:
                     fire_seq = skill_eff_global_seq.get((ce_idx, fire.skill_eff_id))
                     seg_caster = None
@@ -141,7 +150,8 @@ class ReplayHarness:
                     else:
                         state.dva_stacks = {}
                         state.cs_multiplier_index = self._get_cs_index()
-                    row = self._dispatch_one(event, fire, state, segment_caster=seg_caster)
+                    row = self._dispatch_one(event, fire, state, segment_caster=seg_caster,
+                                             frame_char_hint=frame_char_hint)
                     reports.append(row)
                     summary.record(row.eff_type or "?", row.status, None)
                     if row.status == "dispatched":
@@ -208,7 +218,8 @@ class ReplayHarness:
             return int(lde.get("damage", 0) or 0)
         return None
 
-    def _dispatch_one(self, event, fire, state, segment_caster: "str | None" = None) -> EventReport:
+    def _dispatch_one(self, event, fire, state, segment_caster: "str | None" = None,
+                      frame_char_hint: "str | None" = None) -> EventReport:
         row = EventReport(seq=event.seq, skill_eff_id=fire.skill_eff_id)
         try:
             inst = self._runtime._instances.get(fire.skill_eff_id)
@@ -222,6 +233,7 @@ class ReplayHarness:
             state,
             skill_eff_id=fire.skill_eff_id,
             segment_caster=segment_caster,
+            frame_char_hint=frame_char_hint,
         )
         row.inferred_caster = inferred
         row.resolution_path = path_num
@@ -257,6 +269,7 @@ class ReplayHarness:
         state,
         skill_eff_id: "str | None" = None,
         segment_caster: "str | None" = None,
+        frame_char_hint: "str | None" = None,
     ) -> tuple:
         """Resolve a caster unit.
 
@@ -269,13 +282,16 @@ class ReplayHarness:
            unique char_id (or owner_id) is present, use it (Sprint 2g1/2g4).
            For multi-owner entries, use segment_caster as tiebreaker
            (Sprint 2g5). Authoritative.
+        7. frame_char_hint for add_r_spark_* IDs: if exactly one c_<id>_*
+           skill fired in the same dev_msg frame, that char is the reactive
+           spark owner (Sprint 2i1). Authoritative — not inferred.
         4. Segment caster: chain SkillEffs with no cs_map_raw match attribute
            to the actor of the most recent UsedCardEvent (Sprint 2d's
            StateAccumulator.caster_at). Authoritative — not inferred.
         5. Fallback: player_team[0] with inferred=True.
 
         Returns (unit, inferred, path_num) where inferred=True if fallback was
-        used and path_num (1-6) records which branch succeeded (Sprint 2g1).
+        used and path_num (1-7) records which branch succeeded (Sprint 2g1).
         """
         # 1. Direct match
         if caster_id is not None:
@@ -399,6 +415,15 @@ class ReplayHarness:
                         for unit in state.enemies:
                             if str(unit.id) == only:
                                 return unit, False, 6
+        # 7. frame_char_hint for add_r_spark_* IDs: if a single c_<id>_* skill
+        # fired in the same dev_msg frame, that char is the reactive spark owner.
+        if skill_eff_id and skill_eff_id.startswith("add_r_spark_") and frame_char_hint is not None:
+            for unit in state.player_team:
+                if str(unit.res_id) == str(frame_char_hint):
+                    return unit, False, 7
+            for unit in state.enemies:
+                if str(unit.id) == str(frame_char_hint) or str(unit.res_id).startswith(str(frame_char_hint)):
+                    return unit, False, 7
         # 4. segment_caster from StateAccumulator.caster_at(fire_seq)
         if segment_caster is not None:
             for unit in state.player_team:
