@@ -1011,6 +1011,8 @@ export function VariantSettingsModal({
   const hasSelectedEpiphanySettings = Boolean(
     selectedDivineGod || selectedDivineEpiphany || selectedCommonEpiphany,
   )
+  const shouldShowSelectedEpiphanySummary =
+    !isPersonaCard && canShowEpiphanySection && hasSelectedEpiphanySettings
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
@@ -1142,36 +1144,6 @@ export function VariantSettingsModal({
                 </div>
               )}
 
-              {activeSection === 'epiphany' &&
-                canShowEpiphanySection &&
-                hasSelectedEpiphanySettings && (
-                  <div className="mt-2.5 space-y-1.5 rounded-lg border border-[#303044] bg-[#12121a] p-2">
-                    {selectedDivineGod && (
-                      <SelectedEpiphanySummaryRow
-                        label={t('deckBuilder.variantModal.divineGod')}
-                        value={selectedDivineGod.displayName}
-                        tone="god"
-                      />
-                    )}
-
-                    {selectedDivineEpiphany && (
-                      <SelectedEpiphanySummaryRow
-                        label={t('deckBuilder.variantModal.divineEpiphany')}
-                        value={selectedDivineEpiphany.description}
-                        tone="divine"
-                      />
-                    )}
-
-                    {selectedCommonEpiphany && (
-                      <SelectedEpiphanySummaryRow
-                        label={t('deckBuilder.variantModal.sparkEpiphany')}
-                        value={selectedCommonEpiphany.description}
-                        tone="spark"
-                      />
-                    )}
-                  </div>
-                )}
-
               {isPersonaCard && (
                 <div className="mt-3 rounded-lg border border-[#7c3aed]/30 bg-[#1a1630]/55 p-2.5">
                   <div className="flex items-center justify-between gap-2">
@@ -1179,7 +1151,7 @@ export function VariantSettingsModal({
                       {t('deckBuilder.variantModal.engravingSettings')}
                     </p>
 
-                    <span className="rounded border border-[#7c3aed]/40 bg-[#2e1065]/60 px-1.5 py-0.5 text-[9px] font-black uppercase leading-none text-[#ddd6fe]">
+                    <span className="inline-flex min-w-max shrink-0 items-center whitespace-nowrap rounded border border-[#7c3aed]/40 bg-[#2e1065]/60 px-1.5 py-0.5 text-[9px] font-black uppercase leading-none text-[#ddd6fe]">
                       {getSelectedPersonaEngravingSummary(selectedPersonaEngravings) ??
                         t('deckBuilder.variantModal.noEngravingSelected')}
                     </span>
@@ -1265,6 +1237,40 @@ export function VariantSettingsModal({
                 </div>
               </section>
             )}
+
+              {shouldShowSelectedEpiphanySummary && (
+                <div className="mt-3 rounded-lg border border-[#0ea5e9]/25 bg-[#0f172a]/45 p-2.5">
+                  <p className="text-[10px] font-black uppercase tracking-wide text-[#93c5fd]">
+                    {t('deckBuilder.variantModal.epiphanySettings')}
+                  </p>
+
+                  <div className="mt-1.5 space-y-1.5">
+                    {selectedDivineGod && (
+                      <SelectedEpiphanySummaryRow
+                        label={t('deckBuilder.variantModal.divineGod')}
+                        value={selectedDivineGod.displayName}
+                        tone="god"
+                      />
+                    )}
+
+                    {selectedDivineEpiphany && (
+                      <SelectedEpiphanySummaryRow
+                        label={t('deckBuilder.variantModal.divineEpiphany')}
+                        value={selectedDivineEpiphany.description}
+                        tone="divine"
+                      />
+                    )}
+
+                    {selectedCommonEpiphany && (
+                      <SelectedEpiphanySummaryRow
+                        label={t('deckBuilder.variantModal.sparkEpiphany')}
+                        value={selectedCommonEpiphany.description}
+                        tone="spark"
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
           </aside>
 
           <section className="min-h-0 overflow-hidden rounded-xl border border-[#303044] bg-[#15151f] p-4">

@@ -138,7 +138,7 @@ function CompactTypeBadge({ type }: { type: string }) {
     <span
       title={type}
       className={[
-        'max-w-[52px] truncate rounded border px-1 py-[1px] text-[7px] font-black uppercase leading-none tracking-wide shadow',
+        'inline-block min-w-0 max-w-[34px] truncate rounded border px-0.5 py-[1px] text-[6px] font-black uppercase leading-none tracking-wide shadow',
         getCompactTypeClassName(type),
       ].join(' ')}
     >
@@ -149,7 +149,7 @@ function CompactTypeBadge({ type }: { type: string }) {
 
 function CompactHiddenTypeBadge({ count }: { count: number }) {
   return (
-    <span className="rounded border border-[#a78bfa]/25 bg-[#1f1b2e]/95 px-1 py-[1px] text-[7px] font-black uppercase leading-none text-[#c4b5fd] shadow">
+    <span className="inline-block w-fit rounded border border-[#a78bfa]/25 bg-[#1f1b2e]/95 px-1 py-[1px] text-[7px] font-black uppercase leading-none text-[#c4b5fd] shadow">
       +{count}
     </span>
   )
@@ -181,7 +181,7 @@ function CompactDeckCard({
     getDisplayTypes(item.card, item.selectedVariant),
     formattedDescription.tags,
   )
-  const visibleTypes = displayTypes.slice(0, 4)
+  const visibleTypes = displayTypes.slice(0, 3)
   const hiddenTypesCount = Math.max(0, displayTypes.length - visibleTypes.length)
   const hasEpiphanySettings = item.variants.length > 0 || canUseDeckBuilderEpiphanies(item.card)
   const epiphanySummary = getDeckCardEpiphanySummary(item)
@@ -206,7 +206,7 @@ function CompactDeckCard({
           onOpenDetails()
         }
       }}
-      className="group relative flex h-[210px] cursor-pointer flex-col overflow-hidden rounded-xl border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#60a5fa] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]/45"
+      className="group relative flex h-[180px] cursor-pointer flex-col overflow-hidden rounded-lg border border-[#2d2d3a] bg-[#101018] shadow-lg transition hover:border-[#60a5fa] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]/45"
     >
       <div className="absolute inset-0">
         <CardImage
@@ -217,24 +217,26 @@ function CompactDeckCard({
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/95" />
-      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/90 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/90 to-transparent" />
 
-      <div className="absolute left-2 right-2 top-2 z-20 flex items-start justify-between gap-2">
-        <span className="rounded-md border border-[#facc15]/80 bg-black/85 px-2 py-0.5 text-xs font-black text-[#facc15] shadow">
+      <div className="absolute left-1.5 right-1.5 top-1.5 z-20 flex items-start justify-between gap-1">
+        <span className="rounded border border-[#facc15]/80 bg-black/85 px-1.5 py-0.5 text-[10px] font-black leading-none text-[#facc15] shadow">
           {count}x
         </span>
 
-        <span className="grid h-8 min-w-8 place-items-center rounded-md border border-[#075985] bg-[#082f49]/95 px-2 text-sm font-black text-[#93c5fd] shadow">
+        <span className="grid h-6 min-w-6 place-items-center rounded border border-[#075985] bg-[#082f49]/95 px-1.5 text-[11px] font-black leading-none text-[#93c5fd] shadow">
           {displayCost}
         </span>
       </div>
 
-      <div className="relative z-10 mt-auto flex min-h-[112px] flex-col justify-end px-3 pb-2.5 pt-9">
+      <div className="relative z-10 mt-auto flex min-h-[94px] flex-col justify-end px-2 pb-2 pt-7">
         {visibleTypes.length > 0 && (
-          <div className="mb-1 flex min-h-[13px] flex-wrap gap-1">
-            {visibleTypes.map(type => (
-              <CompactTypeBadge key={type} type={type} />
-            ))}
+          <div className="mb-1 flex flex-col items-start gap-0.5">
+            <div className="flex min-h-[10px] max-w-full flex-nowrap items-center gap-0.5 overflow-hidden">
+              {visibleTypes.map(type => (
+                <CompactTypeBadge key={type} type={type} />
+              ))}
+            </div>
 
             {hiddenTypesCount > 0 && (
               <CompactHiddenTypeBadge count={hiddenTypesCount} />
@@ -246,10 +248,10 @@ function CompactDeckCard({
           className={[
             'line-clamp-2 font-black text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]',
             isVeryLongTitle
-              ? 'text-[13px] leading-[1.06]'
+              ? 'text-[10.5px] leading-[1.04]'
               : isLongTitle
-                ? 'text-[14px] leading-[1.08]'
-                : 'text-[15px] leading-[1.1]',
+                ? 'text-[11px] leading-[1.05]'
+                : 'text-[12px] leading-[1.08]',
           ].join(' ')}
         >
           {displayName}
@@ -260,8 +262,8 @@ function CompactDeckCard({
             className={[
               'mt-1 font-bold text-white/95 drop-shadow-[0_2px_2px_rgba(0,0,0,0.95)]',
               isLongDescription
-                ? 'line-clamp-3 text-[10px] leading-[1.1]'
-                : 'line-clamp-3 text-[10.5px] leading-[1.14]',
+                ? 'line-clamp-2 text-[8.5px] leading-[1.08]'
+                : 'line-clamp-2 text-[9px] leading-[1.1]',
             ].join(' ')}
           >
             {displayDescription}
@@ -269,13 +271,13 @@ function CompactDeckCard({
         )}
 
         {epiphanySummary && (
-          <p className="mt-1 line-clamp-1 text-[9px] font-black leading-tight text-[#c4b5fd] drop-shadow">
+          <p className="mt-1 line-clamp-1 text-[8px] font-black leading-tight text-[#c4b5fd] drop-shadow">
             {epiphanySummary}
           </p>
         )}
 
         {hasCombatStats && (
-          <div className="mt-1.5 flex min-h-[14px] flex-wrap items-center gap-x-2 gap-y-0.5 text-[9.5px] font-bold">
+          <div className="mt-1 flex min-h-[12px] flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[8.5px] font-bold leading-tight">
             {item.card.eff_value > 0 && (
               <span>
                 {t('deckBuilder.damage')} <span className="text-[#93c5fd]">{item.card.eff_value}%</span>
@@ -306,9 +308,9 @@ function CompactDeckCard({
               onOpenVariants()
             }}
             title={t('deckBuilder.card.configureEpiphanies')}
-            className="inline-flex h-6 items-center gap-1 rounded-md border border-[#075985] bg-[#082f49]/90 px-2 text-[9px] font-black text-[#7dd3fc] hover:bg-[#0c4a6e]"
+            className="inline-flex h-5 items-center gap-1 rounded border border-[#075985] bg-[#082f49]/90 px-1.5 text-[8px] font-black text-[#7dd3fc] hover:bg-[#0c4a6e]"
           >
-            <Sparkles size={11} />
+            <Sparkles size={9} />
             {t('deckBuilder.card.epiphanyShort')}
           </button>
         )}
@@ -320,9 +322,9 @@ function CompactDeckCard({
             onDuplicate()
           }}
           title={t('deckBuilder.card.duplicate')}
-          className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
+          className="grid h-5 w-5 place-items-center rounded border border-[#333348] bg-[#111827]/90 text-[#d8b4fe] hover:bg-[#312e81]"
         >
-          <Copy size={12} />
+          <Copy size={10} />
         </button>
 
         <button
@@ -332,9 +334,9 @@ function CompactDeckCard({
             onRemove()
           }}
           title={t('deckBuilder.card.remove')}
-          className="grid h-6 w-6 place-items-center rounded-md border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
+          className="grid h-5 w-5 place-items-center rounded border border-[#333348] bg-[#111827]/90 text-[#fca5a5] hover:bg-[#7f1d1d]"
         >
-          <X size={12} />
+          <X size={10} />
         </button>
       </div>
     </article>
@@ -764,7 +766,7 @@ export function CombatantDeckColumn({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2.5 2xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-2.5 xl:grid-cols-3 2xl:grid-cols-4">
               {groupedCards.map(group => (
                 <CompactDeckCard
                   key={getCardGroupKey(group.item)}
@@ -816,10 +818,13 @@ export function CombatantDeckColumn({
           kind={cardSelectionKind}
           items={selectedModalItems}
           onClose={() => setCardSelectionKind(null)}
-          onAdd={item => onAddDeckBuilderCard(item)}
-          onOpenVariants={item => {
+          onAdd={item => {
+            onAddDeckBuilderCard(item)
             setCardSelectionKind(null)
+          }}
+          onOpenVariants={item => {
             onOpenAvailableCardVariants(item)
+            setCardSelectionKind(null)
           }}
         />
       )}
