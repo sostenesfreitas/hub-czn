@@ -1,0 +1,184 @@
+
+======================================================================
+== c_30093: websocket_debug_20260509_111039.jsonl
+== target prefix: c_30093_srt4_rsp1
+======================================================================
+  measurable hits: 3
+
+  --- seq=161 c_30093_srt4_rsp1_01 target=347 ---
+    sim=1236 obs=1398 delta=-11.6% ratio=1.1311
+    accumulator stacks (4):
+      cs00_0002=1
+      cs00_0003=1
+      cs02_0404=1
+      cs02_0405=1
+    snapshot csMap entries on target (0):
+
+  --- seq=164 c_30093_srt4_rsp1_01 target=374 ---
+    sim=828 obs=1148 delta=-27.9% ratio=1.3865
+    accumulator stacks (1):
+      cs02_2013=1
+    snapshot csMap entries on target (0):
+
+  --- seq=173 c_30093_srt4_rsp1_01 target=453 ---
+    sim=1242 obs=1219 delta=+1.9% ratio=0.9815
+    accumulator stacks (6):
+      cs00_0002=1
+      cs00_0003=1
+      cs02_0124=1
+      cs02_0382=16
+      cs02_0404=1
+      cs02_0428=1
+    snapshot csMap entries on target (0):
+
+======================================================================
+== c_1052_rich: websocket_debug_20260510_154057.jsonl
+== target prefix: c_1052_uni4_lbk
+======================================================================
+  measurable hits: 5
+
+  --- seq=425 c_1052_uni4_lbk_02 target=39 ---
+    sim=1771 obs=4197 delta=-57.8% ratio=2.3698
+    accumulator stacks (15):
+      cs00_0001=6
+      cs00_0002=13
+      cs00_0003=2
+      cs00_0004=12
+      cs00_0007=1
+      cs00_0012=1
+      cs02_0023=1
+      cs02_0082=3
+      cs02_0083=3
+      cs02_0084=2
+      cs02_0105=1
+      cs02_0108=1
+      cs02_0124=1
+      cs02_0258=2
+      cs06_0064=6
+    snapshot csMap entries on target (1):
+      cs_inst[31] res=cs02_0258 term_value=2 skillEffs=[]
+
+  --- seq=439 c_1052_uni4_lbk_02 target=39 ---
+    sim=1771 obs=4197 delta=-57.8% ratio=2.3698
+    accumulator stacks (14):
+      cs00_0001=6
+      cs00_0002=14
+      cs00_0003=2
+      cs00_0004=14
+      cs00_0007=3
+      cs00_0012=1
+      cs02_0023=1
+      cs02_0082=3
+      cs02_0083=3
+      cs02_0084=2
+      cs02_0105=1
+      cs02_0108=1
+      cs02_0124=1
+      cs06_0064=9
+    snapshot csMap entries on target (1):
+      cs_inst[31] res=cs02_0258 term_value=2 skillEffs=[]
+
+  --- seq=459 c_1052_uni4_lbk_02 target=39 ---
+    sim=909 obs=4197 delta=-78.3% ratio=4.6172
+    accumulator stacks (14):
+      cs00_0001=6
+      cs00_0002=14
+      cs00_0003=2
+      cs00_0004=14
+      cs00_0007=3
+      cs00_0012=1
+      cs02_0023=1
+      cs02_0082=3
+      cs02_0083=3
+      cs02_0084=2
+      cs02_0105=1
+      cs02_0108=1
+      cs02_0124=1
+      cs06_0064=9
+    snapshot csMap entries on target (1):
+      cs_inst[31] res=cs02_0258 term_value=2 skillEffs=[]
+
+  --- seq=478 c_1052_uni4_lbk_02 target=39 ---
+    sim=909 obs=4197 delta=-78.3% ratio=4.6172
+    accumulator stacks (14):
+      cs00_0001=6
+      cs00_0002=14
+      cs00_0003=2
+      cs00_0004=14
+      cs00_0007=3
+      cs00_0012=1
+      cs02_0023=1
+      cs02_0082=3
+      cs02_0083=3
+      cs02_0084=2
+      cs02_0105=1
+      cs02_0108=1
+      cs02_0124=1
+      cs06_0064=9
+    snapshot csMap entries on target (1):
+      cs_inst[57] res=cs00_0004 term_value=3 skillEffs=[144]
+        skillMap[144] res=cs00_0004_01 eff_value=50 opts=[] parent={'type': 'CS', 'id': 57}
+
+  --- seq=493 c_1052_uni4_lbk_02 target=39 ---
+    sim=1771 obs=4197 delta=-57.8% ratio=2.3698
+    accumulator stacks (14):
+      cs00_0001=6
+      cs00_0002=14
+      cs00_0003=2
+      cs00_0004=14
+      cs00_0007=3
+      cs00_0012=1
+      cs02_0023=1
+      cs02_0082=3
+      cs02_0083=3
+      cs02_0084=2
+      cs02_0105=1
+      cs02_0108=1
+      cs02_0124=1
+      cs06_0064=9
+    snapshot csMap entries on target (1):
+      cs_inst[57] res=cs00_0004 term_value=3 skillEffs=[144]
+        skillMap[144] res=cs00_0004_01 eff_value=50 opts=[] parent={'type': 'CS', 'id': 57}
+
+======================================================================
+== c_1052_low: websocket_debug_20260505_104037.jsonl
+== target prefix: c_1052_uni4_lbk
+======================================================================
+  measurable hits: 5
+
+  --- seq=124 c_1052_uni4_lbk_02 target=43 ---
+    sim=894 obs=604 delta=+48.0% ratio=0.6756
+    accumulator stacks (4):
+      cs00_0002=2
+      cs00_0025=2
+      cs02_0108=1
+      cs02_0124=1
+    snapshot csMap entries on target (0):
+
+  --- seq=143 c_1052_uni4_lbk_02 target=84 ---
+    sim=2294 obs=547 delta=+319.4% ratio=0.2384
+    accumulator stacks (4):
+      cs00_0001=2
+      cs00_0025=2
+      cs02_0270=20
+      cs02_0590=1
+    snapshot csMap entries on target (0):
+
+  --- seq=143 c_1052_uni4_lbk_04 target=84 ---
+    sim=0 obs=547 delta=-100.0% ratio=0.0000
+    accumulator stacks (0):
+    snapshot csMap entries on target (0):
+
+  --- seq=221 c_1052_uni4_lbk_02 target=84 ---
+    sim=2294 obs=547 delta=+319.4% ratio=0.2384
+    accumulator stacks (4):
+      cs00_0001=3
+      cs00_0025=3
+      cs02_0270=20
+      cs02_0590=1
+    snapshot csMap entries on target (0):
+
+  --- seq=221 c_1052_uni4_lbk_04 target=84 ---
+    sim=0 obs=547 delta=-100.0% ratio=0.0000
+    accumulator stacks (0):
+    snapshot csMap entries on target (0):

@@ -14,6 +14,10 @@ DEFAULT_CHARACTER = {
     "base_hp": 0,
     "base_crit_rate": 0,
     "base_crit_dmg": 125.0,
+    # Sprint 2f5 Feature 3: empirically 125 for every live char in the
+    # client db; kept as 100 in DEFAULT so an unknown res_id doesn't get a
+    # surprise damage boost when the "treat target as weak" toggle is on.
+    "base_weak_ego_dmg_rate": 100.0,
     "node_50": None,
     "node_60": None,
 }
@@ -555,5 +559,33 @@ def get_character_name(res_id: int) -> str:
 
 
 def get_character_by_name(name: str) -> dict:
-    """Get character data by name, returning DEFAULT_CHARACTER if not found."""
-    return CHARACTERS_BY_NAME.get(name, DEFAULT_CHARACTER)
+    """Get character data by name, returning DEFAULT_CHARACTER if not found.
+
+    Sprint 2f5 Feature 3: when the legacy CHARACTERS entry pre-dates the
+    base_weak_ego_dmg_rate field, look it up from the scaling tables (which
+    are sourced from the client db at build time). This keeps the legacy
+    dict slim while still serving fresh data through the same accessor.
+    """
+    char = CHARACTERS_BY_NAME.get(name)
+    if char is None:
+        return DEFAULT_CHARACTER
+    if "base_weak_ego_dmg_rate" not in char:
+        # Lazy enrichment: find the res_id (reverse lookup once) and pull
+        # WeakEgoDmgRate from the scaling table. Mutates the dict in place so
+        # subsequent calls skip the lookup. Falls back to 100.0 silently if
+        # the res_id is unknown to the scaling table (e.g. test stubs).
+        try:
+            from api.game_data.scaling import _load_char_base
+            res_id = next(
+                (rid for rid, cd in CHARACTERS.items() if cd is char), None
+            )
+            if res_id is not None:
+                base = _load_char_base().get(str(res_id), {})
+                char["base_weak_ego_dmg_rate"] = float(
+                    base.get("weak_ego_dmg_rate", 100.0)
+                )
+            else:
+                char["base_weak_ego_dmg_rate"] = 100.0
+        except Exception:
+            char["base_weak_ego_dmg_rate"] = 100.0
+    return char

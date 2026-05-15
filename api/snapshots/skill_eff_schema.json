@@ -1,0 +1,663 @@
+{
+  "summary": {
+    "source_file": "C:\\Users\\soste\\AppData\\Local\\hub-czn\\snapshots\\websocket_debug_20260509_170617.jsonl",
+    "messages_with_dev_msg": 1956,
+    "battle_log_lines": 148950,
+    "skill_eff_lines": 16105,
+    "distinct_eff_types": 42,
+    "distinct_equip_leaves": 52,
+    "distinct_equip_bases": 34
+  },
+  "by_type": {
+    "SKILL_EFF_CS_SET_ADD": {
+      "count": 4776,
+      "param_keys": {
+        "link_cs_id": 4776,
+        "opt": 624
+      },
+      "source_id_kinds": {
+        "card": 3371,
+        "potential": 1087,
+        "other": 318
+      },
+      "examples": [
+        "SkillEff 1:3000489_01_pt1_00_01:SKILL_EFF_CS_SET_ADD:link_cs_id=[\"cs02_0699\"]",
+        "SkillEff 88:cs06_0040_02:SKILL_EFF_CS_SET_ADD:link_cs_id=[\"cs06_0112\"]",
+        "SkillEff 112:cs02_0699_01:SKILL_EFF_CS_SET_ADD:link_cs_id=[\"cs01_0029\"]",
+        "SkillEff 82:cs06_0157_01:SKILL_EFF_CS_SET_ADD:link_cs_id=[\"cs06_0155\"]",
+        "SkillEff 20:cs01_1062_01:SKILL_EFF_CS_SET_ADD:link_cs_id=[\"cs01_1060\"]"
+      ]
+    },
+    "SKILL_EFF_CS_SET_ADD_IGNORE_COND": {
+      "count": 4508,
+      "param_keys": {
+        "link_cs_id": 4508
+      },
+      "source_id_kinds": {
+        "card": 1716,
+        "char_skill": 1500,
+        "equip": 1031,
+        "ego_relic": 261
+      },
+      "examples": [
+        "SkillEff 80:cs06_0166_04:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs06_0169\"]",
+        "SkillEff 93:30053_c2_lv1_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs03_0247\"]",
+        "SkillEff 95:20001_c2_lv5_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs03_0135\"]",
+        "SkillEff 100:eq_ds03_003_01_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"eq_ds03_003_02\"]",
+        "SkillEff 64:cs01_1084_01:SKILL_EFF_CS_SET_ADD_IGNORE_COND:link_cs_id=[\"cs01_1085\"]"
+      ]
+    },
+    "SKILL_EFF_DMG_IGNORE_COND": {
+      "count": 1641,
+      "param_keys": {
+        "opt": 532
+      },
+      "source_id_kinds": {
+        "card": 1263,
+        "ego_relic": 309,
+        "equip": 69
+      },
+      "examples": [
+        "SkillEff 107:rr_lux_01_01_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 110:cs06_0169_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 110:cs06_0169_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 110:cs06_0169_01:SKILL_EFF_DMG_IGNORE_COND",
+        "SkillEff 110:cs06_0169_01:SKILL_EFF_DMG_IGNORE_COND"
+      ]
+    },
+    "SKILL_EFF_DMG": {
+      "count": 1199,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 953,
+        "potential": 182,
+        "other": 64
+      },
+      "examples": [
+        "SkillEff 11:c_30093_srt4_rsp1_01:SKILL_EFF_DMG",
+        "SkillEff 115:c_30093_cre1_mut1_02:SKILL_EFF_DMG",
+        "SkillEff 119:c_30093_cre1_mut1_02:SKILL_EFF_DMG",
+        "SkillEff 129:c_30093_cre1_mut1_02:SKILL_EFF_DMG",
+        "SkillEff 15:c_30093_uni2_rsp3_01:SKILL_EFF_DMG"
+      ]
+    },
+    "SKILL_EFF_CARD_DRAW": {
+      "count": 662,
+      "param_keys": {
+        "opt": 4
+      },
+      "source_id_kinds": {
+        "card": 418,
+        "other": 130,
+        "equip": 110,
+        "ego_relic": 4
+      },
+      "examples": [
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 21:c_30093_uni1_rsp1_01:SKILL_EFF_CARD_DRAW",
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW",
+        "SkillEff 109:eq_p_nih_005_01_02:SKILL_EFF_CARD_DRAW"
+      ]
+    },
+    "SKILL_EFF_SHIELD": {
+      "count": 414,
+      "param_keys": {},
+      "source_id_kinds": {
+        "potential": 218,
+        "card": 179,
+        "other": 17
+      },
+      "examples": [
+        "SkillEff 280:1002017_01_pt1_14_01:SKILL_EFF_SHIELD",
+        "SkillEff 3:1003009_01_pt1_00_01:SKILL_EFF_SHIELD",
+        "SkillEff 7:1003009_01_pt1_11_01:SKILL_EFF_SHIELD",
+        "SkillEff 172:1003004_01_pt1_00_02:SKILL_EFF_SHIELD",
+        "SkillEff 179:1003004_01_pt1_00_02:SKILL_EFF_SHIELD"
+      ]
+    },
+    "SKILL_EFF_SHIELD_IGNORE_COND": {
+      "count": 397,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 271,
+        "equip": 126
+      },
+      "examples": [
+        "SkillEff 134:cs00_0010_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 134:cs00_0010_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 134:cs00_0010_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 134:cs00_0010_01:SKILL_EFF_SHIELD_IGNORE_COND",
+        "SkillEff 134:cs00_0010_01:SKILL_EFF_SHIELD_IGNORE_COND"
+      ]
+    },
+    "SKILL_EFF_CURE_IGNORE_COND": {
+      "count": 288,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 288
+      },
+      "examples": [
+        "SkillEff 143:cs01_1071_01:SKILL_EFF_CURE_IGNORE_COND",
+        "SkillEff 143:cs01_1071_01:SKILL_EFF_CURE_IGNORE_COND",
+        "SkillEff 143:cs01_1071_01:SKILL_EFF_CURE_IGNORE_COND",
+        "SkillEff 75:cs06_0041_01:SKILL_EFF_CURE_IGNORE_COND",
+        "SkillEff 143:cs01_1071_01:SKILL_EFF_CURE_IGNORE_COND"
+      ]
+    },
+    "SKILL_EFF_TRIGGER_INSPIRATION": {
+      "count": 273,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 273
+      },
+      "examples": [
+        "SkillEff 101:cs01_0784_01:SKILL_EFF_TRIGGER_INSPIRATION",
+        "SkillEff 101:cs01_0784_01:SKILL_EFF_TRIGGER_INSPIRATION",
+        "SkillEff 101:cs01_0784_01:SKILL_EFF_TRIGGER_INSPIRATION",
+        "SkillEff 101:cs01_0784_01:SKILL_EFF_TRIGGER_INSPIRATION",
+        "SkillEff 16:c_1057_uni2_rsp3_01:SKILL_EFF_TRIGGER_INSPIRATION"
+      ]
+    },
+    "SKILL_EFF_CARD_GET": {
+      "count": 264,
+      "param_keys": {
+        "opt": 134
+      },
+      "source_id_kinds": {
+        "card": 186,
+        "potential": 44,
+        "other": 34
+      },
+      "examples": [
+        "SkillEff 14:cs01_1011_01:SKILL_EFF_CARD_GET:opt=[\"trigger_attunment\"]",
+        "SkillEff 28:cs01_1011_01:SKILL_EFF_CARD_GET:opt=[\"trigger_attunment\"]",
+        "SkillEff 28:cs01_1011_01:SKILL_EFF_CARD_GET:opt=[\"trigger_attunment\"]",
+        "SkillEff 23:c_30093_uni3_rsp1_01:SKILL_EFF_CARD_GET",
+        "SkillEff 34:c_1061_srt4_rsp4_01:SKILL_EFF_CARD_GET"
+      ]
+    },
+    "SKILL_EFF_CARD_DISCARD": {
+      "count": 263,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 227,
+        "other": 32,
+        "equip": 4
+      },
+      "examples": [
+        "SkillEff 108:eq_p_nih_005_01_01:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 108:eq_p_nih_005_01_01:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 41:c_1003_uni3_02:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 46:ds03_umbra_0008_01:SKILL_EFF_CARD_DISCARD",
+        "SkillEff 167:c_1061_cre1_02:SKILL_EFF_CARD_DISCARD"
+      ]
+    },
+    "SKILL_EFF_CURE": {
+      "count": 230,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 230
+      },
+      "examples": [
+        "SkillEff 52:c_1056_uni2_rsp2_1:SKILL_EFF_CURE",
+        "SkillEff 47:c_1056_uni2_rsp2_1:SKILL_EFF_CURE",
+        "SkillEff 56:c_1056_uni2_rsp2_1:SKILL_EFF_CURE",
+        "SkillEff 49:c_1056_uni2_rsp2_1:SKILL_EFF_CURE",
+        "SkillEff 46:c_1056_uni2_rsp2_1:SKILL_EFF_CURE"
+      ]
+    },
+    "SKILL_EFF_CARD_MOVE_TO": {
+      "count": 157,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 132,
+        "other": 24,
+        "potential": 1
+      },
+      "examples": [
+        "SkillEff 78:cs06_0166_02:SKILL_EFF_CARD_MOVE_TO",
+        "SkillEff 78:cs06_0166_02:SKILL_EFF_CARD_MOVE_TO",
+        "SkillEff 42:c_1003_uni3_03:SKILL_EFF_CARD_MOVE_TO",
+        "SkillEff 42:c_1003_uni3_03:SKILL_EFF_CARD_MOVE_TO",
+        "SkillEff 45:card_ds03_eid_00006_01:SKILL_EFF_CARD_MOVE_TO"
+      ]
+    },
+    "SKILL_EFF_CARD_USE": {
+      "count": 130,
+      "param_keys": {
+        "opt": 130
+      },
+      "source_id_kinds": {
+        "equip": 130
+      },
+      "examples": [
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 93:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]",
+        "SkillEff 90:eq_pub_029_01_01:SKILL_EFF_CARD_USE:opt=[\"nocost\"]"
+      ]
+    },
+    "SKILL_EFF_ENERGY_CHANGE": {
+      "count": 126,
+      "param_keys": {},
+      "source_id_kinds": {
+        "equip": 71,
+        "card": 42,
+        "other": 11,
+        "potential": 2
+      },
+      "examples": [
+        "SkillEff 44:add_r_spark_circen_02_0:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 44:add_r_spark_circen_02_0:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 63:c_1056_eps_lbk_2:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 60:c_1056_eps_lbk_2:SKILL_EFF_ENERGY_CHANGE",
+        "SkillEff 80:c_1056_eps_lbk_2:SKILL_EFF_ENERGY_CHANGE"
+      ]
+    },
+    "SKILL_EFF_MONSTER_TURN_COUNT": {
+      "count": 118,
+      "param_keys": {},
+      "source_id_kinds": {
+        "equip": 102,
+        "other": 14,
+        "card": 2
+      },
+      "examples": [
+        "SkillEff 176:eq_ds03_007_02_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 150:eq_ds03_007_02_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT",
+        "SkillEff 99:eq_chr_020_01_01:SKILL_EFF_MONSTER_TURN_COUNT"
+      ]
+    },
+    "SKILL_EFF_STRESS_ADD": {
+      "count": 105,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 53,
+        "equip": 45,
+        "potential": 7
+      },
+      "examples": [
+        "SkillEff 86:eq_pub_038_01_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 86:eq_pub_038_01_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 284:cs02_0567_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 284:cs02_0567_01:SKILL_EFF_STRESS_ADD",
+        "SkillEff 284:cs02_0567_01:SKILL_EFF_STRESS_ADD"
+      ]
+    },
+    "SKILL_EFF_CS_SET_ADD_AUTO": {
+      "count": 95,
+      "param_keys": {
+        "link_cs_id": 95
+      },
+      "source_id_kinds": {
+        "card": 81,
+        "other": 14
+      },
+      "examples": [
+        "SkillEff 16:c_30093_uni2_rsp3_02:SKILL_EFF_CS_SET_ADD_AUTO:link_cs_id=[\"cs01_1066\"]",
+        "SkillEff 139:c_30093_uni4_lbk_mut1_03:SKILL_EFF_CS_SET_ADD_AUTO:link_cs_id=[\"cs01_1065\"]",
+        "SkillEff 332:card_ab_00018_02:SKILL_EFF_CS_SET_ADD_AUTO:link_cs_id=[\"cs00_0051\"]",
+        "SkillEff 335:card_ab_00018_02:SKILL_EFF_CS_SET_ADD_AUTO:link_cs_id=[\"cs00_0051\"]",
+        "SkillEff 80:card_ab_00015_02:SKILL_EFF_CS_SET_ADD_AUTO:link_cs_id=[\"cs00_0049\"]"
+      ]
+    },
+    "SKILL_EFF_STRESS_ADD_NONE_COLLAPSE": {
+      "count": 76,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 76
+      },
+      "examples": [
+        "SkillEff 54:cs00_0222_01:SKILL_EFF_STRESS_ADD_NONE_COLLAPSE",
+        "SkillEff 73:cs00_0222_01:SKILL_EFF_STRESS_ADD_NONE_COLLAPSE",
+        "SkillEff 81:cs00_0222_01:SKILL_EFF_STRESS_ADD_NONE_COLLAPSE",
+        "SkillEff 89:cs00_0222_01:SKILL_EFF_STRESS_ADD_NONE_COLLAPSE",
+        "SkillEff 69:cs00_0223_01:SKILL_EFF_STRESS_ADD_NONE_COLLAPSE"
+      ]
+    },
+    "SKILL_EFF_HEAL": {
+      "count": 50,
+      "param_keys": {},
+      "source_id_kinds": {
+        "equip": 41,
+        "potential": 4,
+        "char_skill": 3,
+        "card": 2
+      },
+      "examples": [
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL",
+        "SkillEff 88:eq_pub_021_01_01:SKILL_EFF_HEAL"
+      ]
+    },
+    "SKILL_EFF_CARD_TALENT_ADD": {
+      "count": 44,
+      "param_keys": {
+        "opt": 44
+      },
+      "source_id_kinds": {
+        "card": 29,
+        "other": 15
+      },
+      "examples": [
+        "SkillEff 35:c_1061_srt4_rsp4_02:SKILL_EFF_CARD_TALENT_ADD:opt=[\"TALENT_TESTAMENT\"]",
+        "SkillEff 35:c_1061_srt4_rsp4_02:SKILL_EFF_CARD_TALENT_ADD:opt=[\"TALENT_TESTAMENT\"]",
+        "SkillEff 32:c_1061_srt4_rsp4_02:SKILL_EFF_CARD_TALENT_ADD:opt=[\"TALENT_TESTAMENT\"]",
+        "SkillEff 32:c_1061_srt4_rsp4_02:SKILL_EFF_CARD_TALENT_ADD:opt=[\"TALENT_TESTAMENT\"]",
+        "SkillEff 37:c_1061_srt4_rsp4_02:SKILL_EFF_CARD_TALENT_ADD:opt=[\"TALENT_TESTAMENT\"]"
+      ]
+    },
+    "SKILL_EFF_MONSTER_CREATE": {
+      "count": 40,
+      "param_keys": {},
+      "source_id_kinds": {
+        "potential": 40
+      },
+      "examples": [
+        "SkillEff 4:1006012_01_pt1_00_02:SKILL_EFF_MONSTER_CREATE",
+        "SkillEff 105:1006012_01_pt1_01_d01:SKILL_EFF_MONSTER_CREATE",
+        "SkillEff 272:1002017_01_pt1_10_01:SKILL_EFF_MONSTER_CREATE",
+        "SkillEff 247:1001013_01_pt1_01_01:SKILL_EFF_MONSTER_CREATE",
+        "SkillEff 247:1001013_01_pt1_01_01:SKILL_EFF_MONSTER_CREATE"
+      ]
+    },
+    "SKILL_EFF_CARD_COPY_TO_IGNORE_COND": {
+      "count": 35,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 35
+      },
+      "examples": [
+        "SkillEff 81:cs05_0007_01:SKILL_EFF_CARD_COPY_TO_IGNORE_COND",
+        "SkillEff 81:cs05_0007_01:SKILL_EFF_CARD_COPY_TO_IGNORE_COND",
+        "SkillEff 82:cs05_0007_01:SKILL_EFF_CARD_COPY_TO_IGNORE_COND",
+        "SkillEff 82:cs05_0007_01:SKILL_EFF_CARD_COPY_TO_IGNORE_COND",
+        "SkillEff 92:cs05_0007_01:SKILL_EFF_CARD_COPY_TO_IGNORE_COND"
+      ]
+    },
+    "SKILL_EFF_EGO_FIELD_CHANGE": {
+      "count": 32,
+      "param_keys": {
+        "opt": 6
+      },
+      "source_id_kinds": {
+        "card": 16,
+        "other": 12,
+        "equip": 4
+      },
+      "examples": [
+        "SkillEff 44:card_ne_00034_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 51:card_ne_00034_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 106:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 118:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE",
+        "SkillEff 107:eq_pub_026_01_01:SKILL_EFF_EGO_FIELD_CHANGE"
+      ]
+    },
+    "SKILL_EFF_CARD_EXHAUST": {
+      "count": 28,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 28
+      },
+      "examples": [
+        "SkillEff 80:c_1056_uni2_2:SKILL_EFF_CARD_EXHAUST",
+        "SkillEff 29:c_1056_uni2_2:SKILL_EFF_CARD_EXHAUST",
+        "SkillEff 33:c_1056_uni2_2:SKILL_EFF_CARD_EXHAUST",
+        "SkillEff 29:c_1056_uni2_2:SKILL_EFF_CARD_EXHAUST",
+        "SkillEff 21:c_1056_uni2_2:SKILL_EFF_CARD_EXHAUST"
+      ]
+    },
+    "SKILL_EFF_CARD_CHANGE": {
+      "count": 18,
+      "param_keys": {
+        "opt": 18
+      },
+      "source_id_kinds": {
+        "card": 18
+      },
+      "examples": [
+        "SkillEff 127:cs01_1060_01:SKILL_EFF_CARD_CHANGE:opt=[\"c_30093_uni4_lbk_mut1\"]",
+        "SkillEff 127:cs01_1060_01:SKILL_EFF_CARD_CHANGE:opt=[\"c_30093_uni4_lbk_mut1\"]",
+        "SkillEff 111:cs01_1060_01:SKILL_EFF_CARD_CHANGE:opt=[\"c_30093_uni4_lbk_mut1\"]",
+        "SkillEff 131:cs01_1060_01:SKILL_EFF_CARD_CHANGE:opt=[\"c_30093_uni4_lbk_mut1\"]",
+        "SkillEff 145:cs01_1060_01:SKILL_EFF_CARD_CHANGE:opt=[\"c_30093_uni4_lbk_mut1\"]"
+      ]
+    },
+    "SKILL_EFF_MAX_HP": {
+      "count": 18,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 18
+      },
+      "examples": [
+        "SkillEff 61:cs00_0336_04:SKILL_EFF_MAX_HP",
+        "SkillEff 46:cs00_0336_04:SKILL_EFF_MAX_HP",
+        "SkillEff 56:cs00_0336_04:SKILL_EFF_MAX_HP",
+        "SkillEff 59:cs00_0336_04:SKILL_EFF_MAX_HP",
+        "SkillEff 91:cs00_0336_04:SKILL_EFF_MAX_HP"
+      ]
+    },
+    "SKILL_EFF_CARD_TALENT_REMOVE": {
+      "count": 17,
+      "param_keys": {
+        "opt": 17
+      },
+      "source_id_kinds": {
+        "card": 17
+      },
+      "examples": [
+        "SkillEff 117:cs01_0344_01:SKILL_EFF_CARD_TALENT_REMOVE:opt=[\"TALENT_ETHEREAL\"]",
+        "SkillEff 117:cs01_0344_01:SKILL_EFF_CARD_TALENT_REMOVE:opt=[\"TALENT_ETHEREAL\"]",
+        "SkillEff 117:cs01_0344_01:SKILL_EFF_CARD_TALENT_REMOVE:opt=[\"TALENT_ETHEREAL\"]",
+        "SkillEff 117:cs01_0344_01:SKILL_EFF_CARD_TALENT_REMOVE:opt=[\"TALENT_ETHEREAL\"]",
+        "SkillEff 102:cs01_0344_01:SKILL_EFF_CARD_TALENT_REMOVE:opt=[\"TALENT_ETHEREAL\"]"
+      ]
+    },
+    "SKILL_EFF_MONSTER_CARD_RESELECT_FORCE": {
+      "count": 16,
+      "param_keys": {
+        "opt": 7
+      },
+      "source_id_kinds": {
+        "card": 14,
+        "potential": 2
+      },
+      "examples": [
+        "SkillEff 275:1002017_01_pt1_10_04:SKILL_EFF_MONSTER_CARD_RESELECT_FORCE:opt=[\"allow_reuse\"]",
+        "SkillEff 305:cs02_0481_01:SKILL_EFF_MONSTER_CARD_RESELECT_FORCE:opt=[\"allow_reuse\"]",
+        "SkillEff 119:cs02_0404_01:SKILL_EFF_MONSTER_CARD_RESELECT_FORCE",
+        "SkillEff 136:cs02_0404_01:SKILL_EFF_MONSTER_CARD_RESELECT_FORCE",
+        "SkillEff 118:cs02_0404_01:SKILL_EFF_MONSTER_CARD_RESELECT_FORCE"
+      ]
+    },
+    "SKILL_EFF_DMG_COOP": {
+      "count": 12,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 12
+      },
+      "examples": [
+        "SkillEff 84:cs06_0157_03:SKILL_EFF_DMG_COOP",
+        "SkillEff 85:cs06_0157_04:SKILL_EFF_DMG_COOP",
+        "SkillEff 86:cs06_0157_05:SKILL_EFF_DMG_COOP",
+        "SkillEff 84:cs06_0157_03:SKILL_EFF_DMG_COOP",
+        "SkillEff 85:cs06_0157_04:SKILL_EFF_DMG_COOP"
+      ]
+    },
+    "SKILL_EFF_CS_SET_ADD_RANDOM": {
+      "count": 12,
+      "param_keys": {
+        "link_cs_id": 12,
+        "opt": 10
+      },
+      "source_id_kinds": {
+        "card": 10,
+        "potential": 2
+      },
+      "examples": [
+        "SkillEff 251:1001013_01_pt1_01_05:SKILL_EFF_CS_SET_ADD_RANDOM:link_cs_id=[\"cs02_0340\"]",
+        "SkillEff 251:1001013_01_pt1_01_05:SKILL_EFF_CS_SET_ADD_RANDOM:link_cs_id=[\"cs02_0340\"]",
+        "SkillEff 103:cs02_0148_02:SKILL_EFF_CS_SET_ADD_RANDOM:opt=[\"flat\"]:link_cs_id=[\"cs00_0002\",\"cs00_0003\",\"cs00_0007\"]",
+        "SkillEff 101:cs02_0148_02:SKILL_EFF_CS_SET_ADD_RANDOM:opt=[\"flat\"]:link_cs_id=[\"cs00_0002\",\"cs00_0003\",\"cs00_0007\"]",
+        "SkillEff 109:cs02_0148_02:SKILL_EFF_CS_SET_ADD_RANDOM:opt=[\"flat\"]:link_cs_id=[\"cs00_0002\",\"cs00_0003\",\"cs00_0007\"]"
+      ]
+    },
+    "SKILL_EFF_SHIELD_CHANGE": {
+      "count": 12,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 12
+      },
+      "examples": [
+        "SkillEff 92:cs01_0566_01:SKILL_EFF_SHIELD_CHANGE",
+        "SkillEff 90:cs01_0566_01:SKILL_EFF_SHIELD_CHANGE",
+        "SkillEff 100:cs01_0566_01:SKILL_EFF_SHIELD_CHANGE",
+        "SkillEff 91:cs01_0566_01:SKILL_EFF_SHIELD_CHANGE",
+        "SkillEff 80:cs01_0566_01:SKILL_EFF_SHIELD_CHANGE"
+      ]
+    },
+    "SKILL_EFF_KILL": {
+      "count": 11,
+      "param_keys": {},
+      "source_id_kinds": {
+        "potential": 8,
+        "card": 3
+      },
+      "examples": [
+        "SkillEff 230:1001013_01_pt4_00_02:SKILL_EFF_KILL",
+        "SkillEff 11:1003008_01_pt2_00_01:SKILL_EFF_KILL",
+        "SkillEff 121:cs02_0216_01:SKILL_EFF_KILL",
+        "SkillEff 11:1003008_01_pt2_00_01:SKILL_EFF_KILL",
+        "SkillEff 11:1003008_01_pt2_00_01:SKILL_EFF_KILL"
+      ]
+    },
+    "SKILL_EFF_CARD_RAN_SELECT_USE": {
+      "count": 8,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 8
+      },
+      "examples": [
+        "SkillEff 51:c_1049_srt4_rsp2_1:SKILL_EFF_CARD_RAN_SELECT_USE",
+        "SkillEff 51:c_1049_srt4_rsp2_1:SKILL_EFF_CARD_RAN_SELECT_USE",
+        "SkillEff 48:c_1049_srt4_rsp2_1:SKILL_EFF_CARD_RAN_SELECT_USE",
+        "SkillEff 48:c_1049_srt4_rsp2_1:SKILL_EFF_CARD_RAN_SELECT_USE",
+        "SkillEff 55:c_1049_srt4_rsp2_1:SKILL_EFF_CARD_RAN_SELECT_USE"
+      ]
+    },
+    "SKILL_EFF_CS_SET": {
+      "count": 8,
+      "param_keys": {
+        "link_cs_id": 8
+      },
+      "source_id_kinds": {
+        "card": 8
+      },
+      "examples": [
+        "SkillEff 115:c_1049_cre7_1:SKILL_EFF_CS_SET:link_cs_id=[\"cs01_0521\",\"cs01_0522\",\"cs01_0523\",\"cs01_0524\",\"cs01_0525\",\"cs01_0526\",\"cs01_0527\",\"cs01_0528\",\"cs01_0529\",\"cs01_0530\",\"cs01_0531\",\"cs01_0532\"]",
+        "SkillEff 115:c_1049_cre7_1:SKILL_EFF_CS_SET:link_cs_id=[\"cs01_0521\",\"cs01_0522\",\"cs01_0523\",\"cs01_0524\",\"cs01_0525\",\"cs01_0526\",\"cs01_0527\",\"cs01_0528\",\"cs01_0529\",\"cs01_0530\",\"cs01_0531\",\"cs01_0532\"]",
+        "SkillEff 100:c_1049_cre7_1:SKILL_EFF_CS_SET:link_cs_id=[\"cs01_0521\",\"cs01_0522\",\"cs01_0523\",\"cs01_0524\",\"cs01_0525\",\"cs01_0526\",\"cs01_0527\",\"cs01_0528\",\"cs01_0529\",\"cs01_0530\",\"cs01_0531\",\"cs01_0532\"]",
+        "SkillEff 100:c_1049_cre7_1:SKILL_EFF_CS_SET:link_cs_id=[\"cs01_0521\",\"cs01_0522\",\"cs01_0523\",\"cs01_0524\",\"cs01_0525\",\"cs01_0526\",\"cs01_0527\",\"cs01_0528\",\"cs01_0529\",\"cs01_0530\",\"cs01_0531\",\"cs01_0532\"]",
+        "SkillEff 111:c_1049_cre8_1:SKILL_EFF_CS_SET:link_cs_id=[\"cs01_0521\",\"cs01_0522\",\"cs01_0523\",\"cs01_0524\",\"cs01_0525\",\"cs01_0526\",\"cs01_0527\",\"cs01_0528\",\"cs01_0529\",\"cs01_0530\",\"cs01_0531\",\"cs01_0532\"]"
+      ]
+    },
+    "SKILL_EFF_CS_SET_ADD_CASTER_MODIFY": {
+      "count": 6,
+      "param_keys": {
+        "link_cs_id": 6
+      },
+      "source_id_kinds": {
+        "potential": 6
+      },
+      "examples": [
+        "SkillEff 11:1003018_01_pt1_10_02:SKILL_EFF_CS_SET_ADD_CASTER_MODIFY:link_cs_id=[\"cs02_0404\"]",
+        "SkillEff 11:1003018_01_pt1_10_02:SKILL_EFF_CS_SET_ADD_CASTER_MODIFY:link_cs_id=[\"cs02_0404\"]",
+        "SkillEff 9:1003018_01_pt1_10_02:SKILL_EFF_CS_SET_ADD_CASTER_MODIFY:link_cs_id=[\"cs02_0404\"]",
+        "SkillEff 9:1003018_01_pt1_10_02:SKILL_EFF_CS_SET_ADD_CASTER_MODIFY:link_cs_id=[\"cs02_0404\"]",
+        "SkillEff 9:1003018_01_pt1_10_02:SKILL_EFF_CS_SET_ADD_CASTER_MODIFY:link_cs_id=[\"cs02_0404\"]"
+      ]
+    },
+    "SKILL_EFF_TACTIC_GAUGE_ADD": {
+      "count": 5,
+      "param_keys": {},
+      "source_id_kinds": {
+        "equip": 5
+      },
+      "examples": [
+        "SkillEff 69:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 75:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 113:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 113:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD",
+        "SkillEff 96:eq_p_dll_005_01_01:SKILL_EFF_TACTIC_GAUGE_ADD"
+      ]
+    },
+    "SKILL_EFF_BUFF_TYPE_CS_SET_ADD": {
+      "count": 4,
+      "param_keys": {
+        "opt": 4
+      },
+      "source_id_kinds": {
+        "potential": 4
+      },
+      "examples": [
+        "SkillEff 86:1003014_01_pt2_00_01:SKILL_EFF_BUFF_TYPE_CS_SET_ADD:opt=[\"all\",\"CS_DEBUFF\"]",
+        "SkillEff 94:1003014_01_pt2_00_01:SKILL_EFF_BUFF_TYPE_CS_SET_ADD:opt=[\"all\",\"CS_DEBUFF\"]",
+        "SkillEff 116:1003014_01_pt2_00_01:SKILL_EFF_BUFF_TYPE_CS_SET_ADD:opt=[\"all\",\"CS_DEBUFF\"]",
+        "SkillEff 125:1003014_01_pt2_00_01:SKILL_EFF_BUFF_TYPE_CS_SET_ADD:opt=[\"all\",\"CS_DEBUFF\"]"
+      ]
+    },
+    "SKILL_EFF_CARD_COPY_TO": {
+      "count": 4,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 4
+      },
+      "examples": [
+        "SkillEff 154:cs01_0938_01:SKILL_EFF_CARD_COPY_TO",
+        "SkillEff 118:cs01_0938_01:SKILL_EFF_CARD_COPY_TO",
+        "SkillEff 113:cs01_0938_01:SKILL_EFF_CARD_COPY_TO",
+        "SkillEff 135:cs01_0938_01:SKILL_EFF_CARD_COPY_TO"
+      ]
+    },
+    "SKILL_EFF_CARD_SHUFFLE": {
+      "count": 1,
+      "param_keys": {
+        "opt": 1
+      },
+      "source_id_kinds": {
+        "potential": 1
+      },
+      "examples": [
+        "SkillEff 3:3000353_01_pt1_10_02:SKILL_EFF_CARD_SHUFFLE:opt=[\"random\"]"
+      ]
+    },
+    "SKILL_EFF_CARD_OPTION_SELECT": {
+      "count": 1,
+      "param_keys": {},
+      "source_id_kinds": {
+        "card": 1
+      },
+      "examples": [
+        "SkillEff 19:c_30084_srt4_rsp3_02:SKILL_EFF_CARD_OPTION_SELECT"
+      ]
+    },
+    "SKILL_EFF_MONSTER_CHANGE": {
+      "count": 1,
+      "param_keys": {
+        "opt": 1
+      },
+      "source_id_kinds": {
+        "potential": 1
+      },
+      "examples": [
+        "SkillEff 361:1002019_01_pt1_01_01:SKILL_EFF_MONSTER_CHANGE:opt=[\"CS_BUFF\",\"CS_DEBUFF\",\"CS_NEUTRAL\"]"
+      ]
+    }
+  }
+}

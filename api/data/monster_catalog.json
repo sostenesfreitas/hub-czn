@@ -1,0 +1,3062 @@
+[
+  {
+    "id": "1001020_01",
+    "name": "Abyssal Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003016_01",
+    "name": "Achurus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006019_01",
+    "name": "Aqua Ball",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001011_01",
+    "name": "Arbitum",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001010_01",
+    "name": "Armored Kurete",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003015_01",
+    "name": "Automata Cavalry",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003012_01",
+    "name": "Automata Golem",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003003_01",
+    "name": "Automata Halo",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000482_01",
+    "name": "Automata Hussar",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003010_01",
+    "name": "Automata Reaper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000424_01",
+    "name": "Azureflame Elemental Vulkano",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000423_01",
+    "name": "Azureflame Mass",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104110_01",
+    "name": "Bandit",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1001023_01",
+    "name": "Bare Tougherbug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003013_01",
+    "name": "Beam Shooter",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000340_01",
+    "name": "Beginning of Desire",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001021_01",
+    "name": "Bercula",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104109_01",
+    "name": "Black Market Guard",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "2104108_01",
+    "name": "Black Market Guard",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "2104120_01",
+    "name": "Black Market Merchant",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006020_01",
+    "name": "Blade Identifier",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002003_01",
+    "name": "Bolt Runner",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302005_01",
+    "name": "Brainsect",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1006002_01",
+    "name": "Broodling",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006021_01",
+    "name": "Brute Granny",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2100108_01",
+    "name": "Cannibal Spirit",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "2300001_01",
+    "name": "Captured Prisoner",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001014_01",
+    "name": "Cast Iron Heavy Shell Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000011_01",
+    "name": "Cat",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104104_01",
+    "name": "Centurion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005014_01",
+    "name": "Changeling Seed",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104103_01",
+    "name": "Chief Priest Critias",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000353_01",
+    "name": "Chilling Godfather",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000478_01",
+    "name": "Cold, Sweet Dream",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000383_01",
+    "name": "Colossus",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000390_01",
+    "name": "Colossus's Left Arm",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000389_01",
+    "name": "Colossus's Right Arm",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000237_01",
+    "name": "Cool Turtle",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000401_01",
+    "name": "Corruption Luminus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104114_01",
+    "name": "Critias Tactical Officer",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104115_01",
+    "name": "Critias Tactical Officer",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000320_01",
+    "name": "Cruel Bone",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002006_01",
+    "name": "Cultist Arbiter",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000384_01",
+    "name": "Cyborg Automaton",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006006_01",
+    "name": "Dark Grip",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006008_01",
+    "name": "Dark Humanoid Beast",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_01",
+    "name": "Darkstar Assault Trooper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_01",
+    "name": "Darkstar Shieldman",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006009_01",
+    "name": "Deer Shadow",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1007008_01",
+    "name": "Dibellum",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003006_01",
+    "name": "Dominion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001024_01",
+    "name": "Double-edged Reptatus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006018_01",
+    "name": "Dust Mite",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005004_01",
+    "name": "Elemental Bogart",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005019_01",
+    "name": "Elemental Phoenix",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005020_01",
+    "name": "Elemental Phoenix",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005006_01",
+    "name": "Elemental Spirit",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005011_01",
+    "name": "Elemental Vulkano",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2300004_01",
+    "name": "Elite Heretic",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1004011_01",
+    "name": "Empty Gatekeeper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004005_01",
+    "name": "Empty Mouths",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000476_01",
+    "name": "Enforcer Achurus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000475_01",
+    "name": "Enforcer Seraphion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000483_01",
+    "name": "Enforcer Slaughter",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006004_01",
+    "name": "Eturok",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005022_01",
+    "name": "Evil Spirit Alraune",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005005_01",
+    "name": "Evil Spirit Argos",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005003_01",
+    "name": "Evil Spirit Dullahan",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000484_01",
+    "name": "Evil Spirit Dullahan of Desolation",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005021_01",
+    "name": "Evil Spirit Salamander",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000485_01",
+    "name": "Evil Spirit Salamander of Desolation",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005016_01",
+    "name": "Evil Spirit Serpent",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005015_01",
+    "name": "Fairy Changeling",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005017_01",
+    "name": "Fairy Gremlin",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005001_01",
+    "name": "Fairy Knocker",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005012_01",
+    "name": "Fairy Lava",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005002_01",
+    "name": "Fairy Spriggan",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004008_01",
+    "name": "Family Head",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003001_01",
+    "name": "Fanatic",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004004_01",
+    "name": "Fickle Taste",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000422_01",
+    "name": "Floral Fairy Gremlin",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302004_01",
+    "name": "Fluider",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1001018_01",
+    "name": "Flying Shell Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001002_01",
+    "name": "Flying Vamp",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001013_01",
+    "name": "Formica",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002019_01",
+    "name": "Ghoul",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002005_01",
+    "name": "Ghoul Slave",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002004_01",
+    "name": "Ghoul Undertaker",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006017_01",
+    "name": "Gloomy Beast",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004016_01",
+    "name": "Gloomy Godmother",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006012_01",
+    "name": "Gloomy Prime",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000252_01",
+    "name": "Gluttonous Mother-of-Pearl",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "2900004_01",
+    "name": "God Diallos",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000416_01",
+    "name": "Golden Mane",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "2104105_01",
+    "name": "Grave Robber",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004020_01",
+    "name": "Growing Gluttony",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000372_01",
+    "name": "Guardian of the Soul",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302006_01",
+    "name": "Heart of the Brood Lord",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1004002_01",
+    "name": "Hearty Appetite",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001015_01",
+    "name": "Heavy Shell Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001008_01",
+    "name": "Hemoptera",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2300006_01",
+    "name": "Heretic Interrogator",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2300007_01",
+    "name": "Heretic Interrogator",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002010_01",
+    "name": "Hexer",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000239_01",
+    "name": "Homeros 04",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001016_01",
+    "name": "Honey Pot Porde",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006011_01",
+    "name": "Human Shadow",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002012_01",
+    "name": "Hunchback",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000354_01",
+    "name": "Hunger of Loss",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004006_01",
+    "name": "Hunger of the Void",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003018_01",
+    "name": "Indigo Oracle",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302108_01",
+    "name": "Invader Egg",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000305_01",
+    "name": "Judge Dominion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2300002_01",
+    "name": "Junior Heretic",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1006007_01",
+    "name": "Kentris",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001009_01",
+    "name": "Kurete",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006026_01",
+    "name": "Lantern Toad",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302001_01",
+    "name": "Lepidola",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000394_01",
+    "name": "Lightfeeder",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2905001_01",
+    "name": "Looty",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004018_01",
+    "name": "Loyal Nanny",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000402_01",
+    "name": "Luminous of Oblivion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000398_01",
+    "name": "Luminous of Origin",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000400_01",
+    "name": "Luminus of Extinction",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000399_01",
+    "name": "Luminus of Judgment",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002013_01",
+    "name": "Maggot",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000479_01",
+    "name": "Malevolent One",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002011_01",
+    "name": "Man-Eater",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104112_01",
+    "name": "Merchant Marici",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000250_01",
+    "name": "Moss Robot",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000235_01",
+    "name": "Mutant Lifeform",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1006022_01",
+    "name": "Nimble Granny",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000417_01",
+    "name": "Oppressed Servant",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000248_01",
+    "name": "Overindulgent Eater",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "3000463_01",
+    "name": "Paean of Delusions Ghoul Slave",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000461_01",
+    "name": "Paean of Delusions Hexer",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000462_01",
+    "name": "Paean of Delusions Hunchback",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004001_01",
+    "name": "Pale Guard Dog",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004012_01",
+    "name": "Pale Messenger",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005009_01",
+    "name": "Phoenix Seed",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006010_01",
+    "name": "Phropto",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004010_01",
+    "name": "Picky Palate",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005007_01",
+    "name": "Plague Lord",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001017_01",
+    "name": "Porde",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000197_01",
+    "name": "Rabbit",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003014_01",
+    "name": "Recharger",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000434_01",
+    "name": "Replicated Combatant",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000489_01",
+    "name": "Revenant Arbiter",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001019_01",
+    "name": "Rock Shell Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000185_01",
+    "name": "Roger Scar",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1002008_01",
+    "name": "Rotten Ripper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001003_01",
+    "name": "Rupture Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000490_01",
+    "name": "Rusted Nail Rotten Ripper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000491_01",
+    "name": "Rusted Nail Seven Arms",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003011_01",
+    "name": "Saint Hound",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003009_01",
+    "name": "Scarlet Oracle",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006003_01",
+    "name": "Scout Identifier",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1007004_01",
+    "name": "Scratcher",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000332_01",
+    "name": "Senectus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2300003_01",
+    "name": "Senior Heretic",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1006015_01",
+    "name": "Seraphim of Pain",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003017_01",
+    "name": "Seraphion",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302104_01",
+    "name": "Sergarc",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1002014_01",
+    "name": "Seven Arms",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000481_01",
+    "name": "Shadow Collector",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001004_01",
+    "name": "Shell Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000254_01",
+    "name": "Shepherd of the Void",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1004007_01",
+    "name": "Shy Gardener",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001025_01",
+    "name": "Single-edged Reptatus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002021_01",
+    "name": "Slash Ghoul",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003007_01",
+    "name": "Slaughter",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104111_01",
+    "name": "Slave",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2104113_01",
+    "name": "Slave",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002020_01",
+    "name": "Snap Ghoul",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002002_01",
+    "name": "Snipper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001001_01",
+    "name": "Soldier Blade",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001006_01",
+    "name": "Soldier Giant",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001012_01",
+    "name": "Soldier Prime",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_01",
+    "name": "Sorrowful Godfather",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002017_01",
+    "name": "Soul Collector",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000190_01",
+    "name": "Special Asset Recovery Specialist",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005008_01",
+    "name": "Spirit Kefox",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2302007_01",
+    "name": "Spreader",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1002009_01",
+    "name": "Stalker",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002001_01",
+    "name": "Steeler",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000339_01",
+    "name": "Suppressed Servant",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004009_01",
+    "name": "Sweet Dream",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003004_01",
+    "name": "Templar",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003005_01",
+    "name": "Testudo",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000306_01",
+    "name": "The Cold Godmother",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000256_01",
+    "name": "The Devoured One",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000350_01",
+    "name": "The First Replica",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1001005_01",
+    "name": "Thorned Hemoptera",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1002007_01",
+    "name": "Trapper",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000196_01",
+    "name": "Turtle",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006001_01",
+    "name": "Tustra",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000443_01",
+    "name": "Unanswered",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004003_01",
+    "name": "Uncomfortable Guest",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004021_01",
+    "name": "Uncontrollable Gluttony",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000321_01",
+    "name": "Venom Spirit Kefox",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000421_01",
+    "name": "Verdant Wraith Serpent",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003019_01",
+    "name": "Via",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003008_01",
+    "name": "Viadeus",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000385_01",
+    "name": "Vine Lord",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1005010_01",
+    "name": "Volcanic Shot",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1004019_01",
+    "name": "Wailing Prodigal",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000486_01",
+    "name": "Wanderer Abyssal Bug",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000488_01",
+    "name": "Wanderer Arbitum",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000477_01",
+    "name": "Wanderer Formica",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000487_01",
+    "name": "Wanderer Soldier Prime",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "3000420_01",
+    "name": "Weapon Pile",
+    "def": 47,
+    "has_weak": true
+  },
+  {
+    "id": "1004015_01",
+    "name": "White Hunting Dog",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006013_01",
+    "name": "Winged Humanoid Beast",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1006005_01",
+    "name": "Wolves Bane",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "1003002_01",
+    "name": "Wrecker",
+    "def": 47,
+    "has_weak": false
+  },
+  {
+    "id": "2100110_02",
+    "name": "Alice",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2104110_02",
+    "name": "Bandit",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2104109_02",
+    "name": "Black Market Guard",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2104108_02",
+    "name": "Black Market Guard",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2302005_02",
+    "name": "Brainsect",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2100108_02",
+    "name": "Cannibal Spirit",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2300001_02",
+    "name": "Captured Prisoner",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2104104_02",
+    "name": "Centurion",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "3000401_02",
+    "name": "Corruption Luminus",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000384_02",
+    "name": "Cyborg Automaton",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1006006_02",
+    "name": "Dark Grip",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_02",
+    "name": "Darkstar Assault Trooper",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_02",
+    "name": "Darkstar Shieldman",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1007021_02",
+    "name": "Deforsa",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2302101_02",
+    "name": "Doctor Mosus",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "1005004_02",
+    "name": "Elemental Bogart",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2300004_02",
+    "name": "Elite Heretic",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "1005017_02",
+    "name": "Fairy Gremlin",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1005001_02",
+    "name": "Fairy Knocker",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2104102_02",
+    "name": "Fubesco",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "1002019_02",
+    "name": "Ghoul",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1004016_02",
+    "name": "Gloomy Godmother",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2104105_02",
+    "name": "Grave Robber",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "3000305_02",
+    "name": "Judge Dominion",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2300002_02",
+    "name": "Junior Heretic",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2302001_02",
+    "name": "Lepidola",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000394_02",
+    "name": "Lightfeeder",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2905001_02",
+    "name": "Looty",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1002013_02",
+    "name": "Maggot",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1004012_02",
+    "name": "Pale Messenger",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2300003_02",
+    "name": "Senior Heretic",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "3000247_02",
+    "name": "Senior Vassal",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000254_02",
+    "name": "Shepherd of the Void",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "1002021_02",
+    "name": "Slash Ghoul",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1002020_02",
+    "name": "Snap Ghoul",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "1001006_02",
+    "name": "Soldier Giant",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "1005008_02",
+    "name": "Spirit Kefox",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2302007_02",
+    "name": "Spreader",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "3000258_02",
+    "name": "Starving Intangible Anglerfish",
+    "def": 49,
+    "has_weak": true
+  },
+  {
+    "id": "2100106_02",
+    "name": "Survivor",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000306_02",
+    "name": "The Cold Godmother",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000350_02",
+    "name": "The First Replica",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000196_02",
+    "name": "Turtle",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "3000321_02",
+    "name": "Venom Spirit Kefox",
+    "def": 49,
+    "has_weak": false
+  },
+  {
+    "id": "2104109_03",
+    "name": "Black Market Guard",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2100108_03",
+    "name": "Cannibal Spirit",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2302106_03",
+    "name": "Darkstar Shieldman",
+    "def": 50,
+    "has_weak": false
+  },
+  {
+    "id": "2300004_03",
+    "name": "Elite Heretic",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2104102_03",
+    "name": "Fubesco",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2302001_03",
+    "name": "Lepidola",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2905001_03",
+    "name": "Looty",
+    "def": 50,
+    "has_weak": false
+  },
+  {
+    "id": "2104110_03",
+    "name": "Raider",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "2300003_03",
+    "name": "Senior Heretic",
+    "def": 50,
+    "has_weak": true
+  },
+  {
+    "id": "1001007_03",
+    "name": "Soldier Shadow",
+    "def": 50,
+    "has_weak": false
+  },
+  {
+    "id": "3000196_03",
+    "name": "The Fishing Turtle",
+    "def": 50,
+    "has_weak": false
+  },
+  {
+    "id": "2104109_04",
+    "name": "Black Market Guard",
+    "def": 52,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_04",
+    "name": "Corrupted Darkstar Assault Trooper",
+    "def": 52,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_04",
+    "name": "Corrupted Darkstar Shieldman",
+    "def": 52,
+    "has_weak": false
+  },
+  {
+    "id": "2104102_04",
+    "name": "Fubesco",
+    "def": 52,
+    "has_weak": true
+  },
+  {
+    "id": "2905001_04",
+    "name": "Looty",
+    "def": 52,
+    "has_weak": false
+  },
+  {
+    "id": "2100101_04",
+    "name": "Luscus",
+    "def": 52,
+    "has_weak": true
+  },
+  {
+    "id": "1003019_04",
+    "name": "Via",
+    "def": 52,
+    "has_weak": false
+  },
+  {
+    "id": "2104109_05",
+    "name": "Black Market Guard",
+    "def": 53,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_05",
+    "name": "Corrupted Darkstar Assault Trooper",
+    "def": 53,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_05",
+    "name": "Corrupted Darkstar Shieldman",
+    "def": 53,
+    "has_weak": false
+  },
+  {
+    "id": "2104102_05",
+    "name": "Fubesco",
+    "def": 53,
+    "has_weak": true
+  },
+  {
+    "id": "2905001_05",
+    "name": "Looty",
+    "def": 53,
+    "has_weak": false
+  },
+  {
+    "id": "1003019_05",
+    "name": "Via",
+    "def": 53,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_06",
+    "name": "Corrupted Darkstar Assault Trooper",
+    "def": 54,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_06",
+    "name": "Darkstar Shieldman",
+    "def": 54,
+    "has_weak": false
+  },
+  {
+    "id": "1001009_02",
+    "name": "Kurete of Fortitude",
+    "def": 54,
+    "has_weak": false
+  },
+  {
+    "id": "2905001_06",
+    "name": "Looty",
+    "def": 54,
+    "has_weak": false
+  },
+  {
+    "id": "1003019_06",
+    "name": "Via",
+    "def": 54,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_07",
+    "name": "Darkstar Assault Trooper",
+    "def": 55,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_07",
+    "name": "Darkstar Shieldman",
+    "def": 55,
+    "has_weak": false
+  },
+  {
+    "id": "1003019_07",
+    "name": "Via",
+    "def": 55,
+    "has_weak": false
+  },
+  {
+    "id": "2104110_09",
+    "name": "Bandit",
+    "def": 58,
+    "has_weak": true
+  },
+  {
+    "id": "1001023_09",
+    "name": "Bare Tougherbug",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_08",
+    "name": "Darkstar Assault Trooper",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_09",
+    "name": "Darkstar Assault Trooper",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_08",
+    "name": "Darkstar Shieldman",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_09",
+    "name": "Darkstar Shieldman",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1003006_09",
+    "name": "Dominion",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1005012_09",
+    "name": "Fairy Lava",
+    "def": 58,
+    "has_weak": true
+  },
+  {
+    "id": "1004006_08",
+    "name": "Hunger of the Void",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1004018_09",
+    "name": "Loyal Nanny",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1002013_09",
+    "name": "Maggot",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1003016_09",
+    "name": "Penitent Achurus",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1005008_09",
+    "name": "Spirit Kefox",
+    "def": 58,
+    "has_weak": true
+  },
+  {
+    "id": "1005008_08",
+    "name": "Spirit Kefox",
+    "def": 58,
+    "has_weak": true
+  },
+  {
+    "id": "1003011_08",
+    "name": "Unstable Saint Hound",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "1003019_08",
+    "name": "Via",
+    "def": 58,
+    "has_weak": false
+  },
+  {
+    "id": "3000340_10",
+    "name": "Beginning of Desire",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000383_10",
+    "name": "Colossus",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000389_10",
+    "name": "Colossus",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000390_10",
+    "name": "Colossus",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_10",
+    "name": "Darkstar Assault Trooper",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000291_10",
+    "name": "Judas",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000292_10",
+    "name": "Judas",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "1004018_10",
+    "name": "Loyal Nanny",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "1007004_10",
+    "name": "Scratcher",
+    "def": 68,
+    "has_weak": true
+  },
+  {
+    "id": "1005008_10",
+    "name": "Spirit Kefox",
+    "def": 68,
+    "has_weak": true
+  },
+  {
+    "id": "3000339_10",
+    "name": "Suppressed Servant",
+    "def": 68,
+    "has_weak": true
+  },
+  {
+    "id": "1004019_10",
+    "name": "Wailing Prodigal",
+    "def": 68,
+    "has_weak": false
+  },
+  {
+    "id": "3000340_11",
+    "name": "Beginning of Desire",
+    "def": 73,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_11",
+    "name": "Darkstar Assault Trooper",
+    "def": 73,
+    "has_weak": false
+  },
+  {
+    "id": "1001024_11",
+    "name": "Double-edged Reptatus",
+    "def": 73,
+    "has_weak": false
+  },
+  {
+    "id": "1001025_11",
+    "name": "Single-edged Reptatus",
+    "def": 73,
+    "has_weak": false
+  },
+  {
+    "id": "3000339_11",
+    "name": "Suppressed Servant",
+    "def": 73,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_12",
+    "name": "Darkstar Assault Trooper",
+    "def": 74,
+    "has_weak": false
+  },
+  {
+    "id": "1001025_12",
+    "name": "Single-edged Reptatus",
+    "def": 74,
+    "has_weak": false
+  },
+  {
+    "id": "1003006_20",
+    "name": "Dominion",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1005022_20",
+    "name": "Evil Spirit Alraune",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1005003_20",
+    "name": "Evil Spirit Dullahan",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1005021_20",
+    "name": "Evil Spirit Salamander",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1004004_20",
+    "name": "Fickle Taste",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1004006_20",
+    "name": "Hunger of the Void",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1004007_20",
+    "name": "Shy Gardener",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_20",
+    "name": "Sorrowful Godfather",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1002001_20",
+    "name": "Steeler",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1006013_20",
+    "name": "Winged Humanoid Beast",
+    "def": 92,
+    "has_weak": false
+  },
+  {
+    "id": "1004011_21",
+    "name": "Empty Gatekeeper",
+    "def": 93,
+    "has_weak": false
+  },
+  {
+    "id": "1005008_21",
+    "name": "Spirit Kefox",
+    "def": 93,
+    "has_weak": false
+  },
+  {
+    "id": "1006009_22",
+    "name": "Deer Shadow",
+    "def": 95,
+    "has_weak": false
+  },
+  {
+    "id": "1005017_22",
+    "name": "Fairy Gremlin",
+    "def": 95,
+    "has_weak": false
+  },
+  {
+    "id": "1003001_22",
+    "name": "Fanatic",
+    "def": 95,
+    "has_weak": false
+  },
+  {
+    "id": "1001001_22",
+    "name": "Soldier Blade",
+    "def": 95,
+    "has_weak": false
+  },
+  {
+    "id": "1001020_80",
+    "name": "Abyssal Bug",
+    "def": 120,
+    "has_weak": false
+  },
+  {
+    "id": "1004009_80",
+    "name": "Sweet Dream",
+    "def": 143,
+    "has_weak": false
+  },
+  {
+    "id": "1003015_50",
+    "name": "Automata Cavalry",
+    "def": 165,
+    "has_weak": false
+  },
+  {
+    "id": "3000281_50",
+    "name": "APO1001",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1003016_50",
+    "name": "Achurus",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000267_50",
+    "name": "Aether-Eater",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000280_50",
+    "name": "Angel of Revelation",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1001010_50",
+    "name": "Armored Kurete",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1003003_50",
+    "name": "Automata Halo",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1002003_50",
+    "name": "Bolt Runner",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2302005_50",
+    "name": "Brainsect",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "3000377_50",
+    "name": "Chizuru",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000457_50",
+    "name": "Curator",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000318_50",
+    "name": "Dark Star Research Center",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_50",
+    "name": "Darkstar Assault Trooper",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_50",
+    "name": "Darkstar Shieldman",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005004_50",
+    "name": "Elemental Bogart",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000385_50",
+    "name": "Enraged Vine Lord",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005005_50",
+    "name": "Evil Spirit Argos",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005003_50",
+    "name": "Evil Spirit Dullahan",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005017_50",
+    "name": "Fairy Gremlin",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1003001_50",
+    "name": "Fanatic",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000316_50",
+    "name": "Forest Keeper",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1002005_50",
+    "name": "Ghoul Slave",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000287_50",
+    "name": "Giant Gluttonous Mother-of-Pearl",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "3000286_50",
+    "name": "Giant Spore Mushroom",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "1004020_50",
+    "name": "Growing Gluttony",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1006011_50",
+    "name": "Human Shadow",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2300002_50",
+    "name": "Junior Heretic",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000282_50",
+    "name": "Kaori",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "1001009_50",
+    "name": "Kurete",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2905001_50",
+    "name": "Looty",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000250_50",
+    "name": "Moss Robot",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005009_50",
+    "name": "Phoenix Seed",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "2302101_50",
+    "name": "Possessed Doctor Mosus",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "3000284_50",
+    "name": "Prophet",
+    "def": 206,
+    "has_weak": true
+  },
+  {
+    "id": "1001003_50",
+    "name": "Rupture Bug",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000247_50",
+    "name": "Senior Vassal",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1003017_50",
+    "name": "Seraphion",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1004007_50",
+    "name": "Shy Gardener",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1002002_50",
+    "name": "Snipper",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1002001_50",
+    "name": "Steeler",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1005022_50",
+    "name": "Strange Alraune",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000464_50",
+    "name": "Street Peddler",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1003005_50",
+    "name": "Testudo",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000256_50",
+    "name": "The Devoured One",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000269_50",
+    "name": "Wanted Criminal",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "1006014_50",
+    "name": "Watcher of the Forbidden Tome",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000319_50",
+    "name": "Wheel of Order",
+    "def": 206,
+    "has_weak": false
+  },
+  {
+    "id": "3000318_51",
+    "name": "Dark Star Research Center",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_51",
+    "name": "Darkstar Assault Trooper",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "1005004_51",
+    "name": "Elemental Bogart",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "3000385_51",
+    "name": "Enraged Vine Lord",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "3000316_51",
+    "name": "Forest Keeper",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "3000286_51",
+    "name": "Giant Spore Mushroom",
+    "def": 207,
+    "has_weak": true
+  },
+  {
+    "id": "1004020_51",
+    "name": "Growing Gluttony",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "1001009_51",
+    "name": "Kurete",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "3000464_51",
+    "name": "Street Peddler",
+    "def": 207,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_52",
+    "name": "Darkstar Assault Trooper",
+    "def": 208,
+    "has_weak": false
+  },
+  {
+    "id": "3000385_52",
+    "name": "Enraged Vine Lord",
+    "def": 208,
+    "has_weak": false
+  },
+  {
+    "id": "1004020_52",
+    "name": "Growing Gluttony",
+    "def": 208,
+    "has_weak": false
+  },
+  {
+    "id": "1001009_52",
+    "name": "Kurete",
+    "def": 208,
+    "has_weak": false
+  },
+  {
+    "id": "1001011_80",
+    "name": "Arbitum",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1003015_80",
+    "name": "Automata Cavalry",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2104110_80",
+    "name": "Bandit",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "3000340_80",
+    "name": "Beginning of Desire",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1001021_80",
+    "name": "Bercula",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2104108_80",
+    "name": "Black Market Guard",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "2104109_80",
+    "name": "Black Market Guard",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "2302003_80",
+    "name": "Brood Lord",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006002_80",
+    "name": "Broodling",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006021_80",
+    "name": "Brute Granny",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2100108_80",
+    "name": "Cannibal Spirit",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000353_80",
+    "name": "Chilling Godfather",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000383_80",
+    "name": "Colossus",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "3000390_80",
+    "name": "Colossus's Left Arm",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "3000389_80",
+    "name": "Colossus's Right Arm",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "1006008_80",
+    "name": "Dark Humanoid Beast",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000318_80",
+    "name": "Dark Star Research Center",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_80",
+    "name": "Darkstar Assault Trooper",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_80",
+    "name": "Darkstar Shieldman",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006018_80",
+    "name": "Dust Mite",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004005_80",
+    "name": "Empty Mouths",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1005005_80",
+    "name": "Evil Spirit Argos",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1005003_80",
+    "name": "Evil Spirit Dullahan",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000361_80",
+    "name": "Failed Replica",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1005001_80",
+    "name": "Fairy Knocker",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004004_80",
+    "name": "Fickle Taste",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006017_80",
+    "name": "Gloomy Beast",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_80",
+    "name": "Gloomy Godfather Seized by Fear",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000183_80",
+    "name": "Golden Mane",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "3000416_80",
+    "name": "Golden Mane",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "2302006_80",
+    "name": "Heart of the Brood Lord",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004002_80",
+    "name": "Hearty Appetite",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000354_80",
+    "name": "Hunger of Loss",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004006_80",
+    "name": "Hunger of the Void",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000291_80",
+    "name": "Judas",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000292_80",
+    "name": "Judas",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004018_80",
+    "name": "Loyal Nanny",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2100101_80",
+    "name": "Luscus",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004001_80",
+    "name": "Pale Guard Dog",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006010_80",
+    "name": "Phropto",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004010_80",
+    "name": "Picky Palate",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000438_80",
+    "name": "Punisher of Resentment",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "2104121_80",
+    "name": "Sand Worm",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "2104123_80",
+    "name": "Sand Worm Nest",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1003007_80",
+    "name": "Slaughter",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1001001_80",
+    "name": "Soldier Blade",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000322_80",
+    "name": "Strange Renoa",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000339_80",
+    "name": "Suppressed Servant",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000306_80",
+    "name": "The Cold Godmother",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000256_80",
+    "name": "The Devoured One",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006001_80",
+    "name": "Tustra",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000443_80",
+    "name": "Unanswered",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "1004021_80",
+    "name": "Uncontrollable Gluttony",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1007021_80",
+    "name": "Vile Deforsa",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1004019_80",
+    "name": "Wailing Prodigal",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006013_80",
+    "name": "Winged Humanoid Beast",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "1006005_80",
+    "name": "Wolves Bane",
+    "def": 239,
+    "has_weak": false
+  },
+  {
+    "id": "3000433_80",
+    "name": "char_base@name@30085",
+    "def": 239,
+    "has_weak": true
+  },
+  {
+    "id": "3000340_81",
+    "name": "Beginning of Desire",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "2100108_81",
+    "name": "Cannibal Spirit",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "3000383_81",
+    "name": "Colossus",
+    "def": 240,
+    "has_weak": true
+  },
+  {
+    "id": "3000390_81",
+    "name": "Colossus's Left Arm",
+    "def": 240,
+    "has_weak": true
+  },
+  {
+    "id": "3000389_81",
+    "name": "Colossus's Right Arm",
+    "def": 240,
+    "has_weak": true
+  },
+  {
+    "id": "3000384_81",
+    "name": "Cyborg Automaton",
+    "def": 240,
+    "has_weak": true
+  },
+  {
+    "id": "1006008_81",
+    "name": "Dark Humanoid Beast",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "3000318_81",
+    "name": "Dark Star Research Center",
+    "def": 240,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_81",
+    "name": "Darkstar Assault Trooper",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_81",
+    "name": "Darkstar Shieldman",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004005_81",
+    "name": "Empty Mouths",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1005003_81",
+    "name": "Evil Spirit Dullahan",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1005001_81",
+    "name": "Fairy Knocker",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004004_81",
+    "name": "Fickle Taste",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004002_81",
+    "name": "Hearty Appetite",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004006_81",
+    "name": "Hunger of the Void",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "2100101_81",
+    "name": "Luscus",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004001_81",
+    "name": "Pale Guard Dog",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004010_81",
+    "name": "Picky Palate",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "2104123_81",
+    "name": "Sand Worm Nest",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_81",
+    "name": "Sorrowful Godfather",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1004009_81",
+    "name": "Sweet Dream",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1006001_81",
+    "name": "Tustra",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "1006005_81",
+    "name": "Wolves Bane",
+    "def": 240,
+    "has_weak": false
+  },
+  {
+    "id": "3000340_82",
+    "name": "Beginning of Desire",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "3000384_82",
+    "name": "Cyborg Automaton",
+    "def": 241,
+    "has_weak": true
+  },
+  {
+    "id": "3000318_82",
+    "name": "Dark Star Research Center",
+    "def": 241,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_82",
+    "name": "Darkstar Assault Trooper",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_82",
+    "name": "Darkstar Shieldman",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "1004002_82",
+    "name": "Hearty Appetite",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "2100101_82",
+    "name": "Luscus",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "1004010_82",
+    "name": "Picky Palate",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_82",
+    "name": "Sorrowful Godfather",
+    "def": 241,
+    "has_weak": false
+  },
+  {
+    "id": "3000318_83",
+    "name": "Dark Star Research Center",
+    "def": 242,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_83",
+    "name": "Darkstar Assault Trooper",
+    "def": 242,
+    "has_weak": false
+  },
+  {
+    "id": "2302106_83",
+    "name": "Darkstar Shieldman",
+    "def": 242,
+    "has_weak": true
+  },
+  {
+    "id": "1004002_83",
+    "name": "Hearty Appetite",
+    "def": 242,
+    "has_weak": false
+  },
+  {
+    "id": "2100101_83",
+    "name": "Luscus",
+    "def": 242,
+    "has_weak": false
+  },
+  {
+    "id": "1004017_83",
+    "name": "Sorrowful Godfather",
+    "def": 242,
+    "has_weak": false
+  },
+  {
+    "id": "2302107_84",
+    "name": "Darkstar Assault Trooper",
+    "def": 243,
+    "has_weak": true
+  },
+  {
+    "id": "2302107_85",
+    "name": "Darkstar Assault Trooper",
+    "def": 244,
+    "has_weak": true
+  },
+  {
+    "id": "1006021_88",
+    "name": "Brute Granny",
+    "def": 247,
+    "has_weak": false
+  },
+  {
+    "id": "1006022_88",
+    "name": "Nimble Granny",
+    "def": 247,
+    "has_weak": false
+  },
+  {
+    "id": "1001023_98",
+    "name": "Bare Tougherbug",
+    "def": 257,
+    "has_weak": false
+  },
+  {
+    "id": "3000265_99",
+    "name": "니힐럼 신",
+    "def": 258,
+    "has_weak": false
+  },
+  {
+    "id": "2900004_b_01_99",
+    "name": "디알로스 팔(뒷쪽, 샌드박스전용)",
+    "def": 258,
+    "has_weak": false
+  },
+  {
+    "id": "2900004_f_01_99",
+    "name": "디알로스 팔(앞쪽, 샌드박스전용)",
+    "def": 258,
+    "has_weak": false
+  },
+  {
+    "id": "3000189_99",
+    "name": "세크레드",
+    "def": 258,
+    "has_weak": false
+  }
+]

@@ -3,7 +3,7 @@ import type {
   SetupStatus, SetupActionResponse, CaptureStatus,
   CaptureStartRequest, CaptureStopResponse, RescueBanner,
   Combatant, CombatantStats, ScoringPriorities,
-  OptimizerConfig, EquipmentSet, AboutInfo, CharPreset,
+  OptimizerConfig, EquipmentSet, Monster, AboutInfo, CharPreset,
   SimulateRequest, SimulateDamageResponse, DeckInfo,
   CardEntry, CardCharacter, BattleRecord, BattleAnalytics,
   BattleOverview,
@@ -108,6 +108,9 @@ export const api = {
     }),
 
   optimizeSets: () => request<EquipmentSet[]>('/api/optimize/sets'),
+
+  // Sprint 2h1: monster catalog feeds the Optimizer's Monster Picker dropdown.
+  monsterCatalog: () => request<Monster[]>('/api/optimize/monster-catalog'),
 
   optimizeStart: (config: OptimizerConfig) =>
     request<{ job_id: string }>('/api/optimize/start', {

@@ -1,0 +1,317 @@
+==============================================================================
+=== Sprint 2f3 T3 - cs_map_raw analysis for LBK hits ===
+=== Capture: websocket_debug_20260510_154057.jsonl
+==============================================================================
+Measurable LBK hits: 5
+
+--- LBK seq=425 target=39 sim=1771 obs=4197 ratio=2.3698 ---
+  matched snapshot at line 556
+  csMap entries with caster_id=3: 14
+    cs_inst[7] res=cs06_0131 tv=1 owner=38
+    cs_inst[8] res=cs06_0132 tv=1 owner=38
+    cs_inst[9] res=cs06_0133 tv=1 owner=38
+    cs_inst[14] res=20002_c1_lv1_01 tv=1 owner=38
+    cs_inst[15] res=20002_c2_lv1_01 tv=1 owner=38
+    cs_inst[17] res=cs01_0855 tv=10 owner=38
+    cs_inst[18] res=cs01_0856 tv=20 owner=38
+    cs_inst[66] res=cs01_0833 tv=1 owner=7
+    cs_inst[91] res=cs01_0805 tv=23 owner=38 | mods: eff=80 sign=MATHSIGN_ADD
+    cs_inst[93] res=cs03_0201 tv=1 owner=38
+    cs_inst[95] res=cs01_0833 tv=1 owner=85
+    cs_inst[107] res=eq_g01_006_02 tv=3 owner=38
+    cs_inst[121] res=cs01_0833 tv=1 owner=99
+    cs_inst[206] res=cs06_0134 tv=2 owner=38
+
+--- LBK seq=439 target=39 sim=1771 obs=4197 ratio=2.3698 ---
+  matched snapshot at line 556
+  csMap entries with caster_id=3: 14
+    cs_inst[7] res=cs06_0131 tv=1 owner=38
+    cs_inst[8] res=cs06_0132 tv=1 owner=38
+    cs_inst[9] res=cs06_0133 tv=1 owner=38
+    cs_inst[14] res=20002_c1_lv1_01 tv=1 owner=38
+    cs_inst[15] res=20002_c2_lv1_01 tv=1 owner=38
+    cs_inst[17] res=cs01_0855 tv=10 owner=38
+    cs_inst[18] res=cs01_0856 tv=20 owner=38
+    cs_inst[66] res=cs01_0833 tv=1 owner=7
+    cs_inst[91] res=cs01_0805 tv=23 owner=38 | mods: eff=80 sign=MATHSIGN_ADD
+    cs_inst[93] res=cs03_0201 tv=1 owner=38
+    cs_inst[95] res=cs01_0833 tv=1 owner=85
+    cs_inst[107] res=eq_g01_006_02 tv=3 owner=38
+    cs_inst[121] res=cs01_0833 tv=1 owner=99
+    cs_inst[206] res=cs06_0134 tv=2 owner=38
+
+--- LBK seq=459 target=39 sim=909 obs=4197 ratio=4.6172 ---
+  matched snapshot at line 556
+  csMap entries with caster_id=3: 14
+    cs_inst[7] res=cs06_0131 tv=1 owner=38
+    cs_inst[8] res=cs06_0132 tv=1 owner=38
+    cs_inst[9] res=cs06_0133 tv=1 owner=38
+    cs_inst[14] res=20002_c1_lv1_01 tv=1 owner=38
+    cs_inst[15] res=20002_c2_lv1_01 tv=1 owner=38
+    cs_inst[17] res=cs01_0855 tv=10 owner=38
+    cs_inst[18] res=cs01_0856 tv=20 owner=38
+    cs_inst[66] res=cs01_0833 tv=1 owner=7
+    cs_inst[91] res=cs01_0805 tv=23 owner=38 | mods: eff=80 sign=MATHSIGN_ADD
+    cs_inst[93] res=cs03_0201 tv=1 owner=38
+    cs_inst[95] res=cs01_0833 tv=1 owner=85
+    cs_inst[107] res=eq_g01_006_02 tv=3 owner=38
+    cs_inst[121] res=cs01_0833 tv=1 owner=99
+    cs_inst[206] res=cs06_0134 tv=2 owner=38
+
+--- LBK seq=478 target=39 sim=909 obs=4197 ratio=4.6172 ---
+  matched snapshot at line 556
+  csMap entries with caster_id=3: 14
+    cs_inst[7] res=cs06_0131 tv=1 owner=38
+    cs_inst[8] res=cs06_0132 tv=1 owner=38
+    cs_inst[9] res=cs06_0133 tv=1 owner=38
+    cs_inst[14] res=20002_c1_lv1_01 tv=1 owner=38
+    cs_inst[15] res=20002_c2_lv1_01 tv=1 owner=38
+    cs_inst[17] res=cs01_0855 tv=10 owner=38
+    cs_inst[18] res=cs01_0856 tv=20 owner=38
+    cs_inst[66] res=cs01_0833 tv=1 owner=7
+    cs_inst[91] res=cs01_0805 tv=23 owner=38 | mods: eff=80 sign=MATHSIGN_ADD
+    cs_inst[93] res=cs03_0201 tv=1 owner=38
+    cs_inst[95] res=cs01_0833 tv=1 owner=85
+    cs_inst[107] res=eq_g01_006_02 tv=3 owner=38
+    cs_inst[121] res=cs01_0833 tv=1 owner=99
+    cs_inst[206] res=cs06_0134 tv=2 owner=38
+
+--- LBK seq=493 target=39 sim=1771 obs=4197 ratio=2.3698 ---
+  matched snapshot at line 556
+  csMap entries with caster_id=3: 14
+    cs_inst[7] res=cs06_0131 tv=1 owner=38
+    cs_inst[8] res=cs06_0132 tv=1 owner=38
+    cs_inst[9] res=cs06_0133 tv=1 owner=38
+    cs_inst[14] res=20002_c1_lv1_01 tv=1 owner=38
+    cs_inst[15] res=20002_c2_lv1_01 tv=1 owner=38
+    cs_inst[17] res=cs01_0855 tv=10 owner=38
+    cs_inst[18] res=cs01_0856 tv=20 owner=38
+    cs_inst[66] res=cs01_0833 tv=1 owner=7
+    cs_inst[91] res=cs01_0805 tv=23 owner=38 | mods: eff=80 sign=MATHSIGN_ADD
+    cs_inst[93] res=cs03_0201 tv=1 owner=38
+    cs_inst[95] res=cs01_0833 tv=1 owner=85
+    cs_inst[107] res=eq_g01_006_02 tv=3 owner=38
+    cs_inst[121] res=cs01_0833 tv=1 owner=99
+    cs_inst[206] res=cs06_0134 tv=2 owner=38
+
+
+=== Candidate formula evaluation (MATHSIGN_ADD only, caster_id=3) ===
+
+  LBK seq=425 sim=1771 obs=4197 ratio=2.3698
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    3188 obs=4197 err=  -24.0% 
+    cand=(b) eff*tv/100     flat_add=    18.40 v2_mult=1.1840 predicted=    2097 obs=4197 err=  -50.0% 
+    cand=(c) eff*tv         flat_add=  1840.00 v2_mult=19.4000 predicted=   34357 obs=4197 err= +718.6% 
+    cand=(d) eff+tv         flat_add=   103.00 v2_mult=2.0300 predicted=    3595 obs=4197 err=  -14.3% 
+    cand=(e) eff*log(tv+1)  flat_add=   254.24 v2_mult=3.5424 predicted=    6274 obs=4197 err=  +49.5% 
+
+  LBK seq=439 sim=1771 obs=4197 ratio=2.3698
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    3188 obs=4197 err=  -24.0% 
+    cand=(b) eff*tv/100     flat_add=    18.40 v2_mult=1.1840 predicted=    2097 obs=4197 err=  -50.0% 
+    cand=(c) eff*tv         flat_add=  1840.00 v2_mult=19.4000 predicted=   34357 obs=4197 err= +718.6% 
+    cand=(d) eff+tv         flat_add=   103.00 v2_mult=2.0300 predicted=    3595 obs=4197 err=  -14.3% 
+    cand=(e) eff*log(tv+1)  flat_add=   254.24 v2_mult=3.5424 predicted=    6274 obs=4197 err=  +49.5% 
+
+  LBK seq=459 sim=909 obs=4197 ratio=4.6172
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    1636 obs=4197 err=  -61.0% 
+    cand=(b) eff*tv/100     flat_add=    18.40 v2_mult=1.1840 predicted=    1076 obs=4197 err=  -74.4% 
+    cand=(c) eff*tv         flat_add=  1840.00 v2_mult=19.4000 predicted=   17635 obs=4197 err= +320.2% 
+    cand=(d) eff+tv         flat_add=   103.00 v2_mult=2.0300 predicted=    1845 obs=4197 err=  -56.0% 
+    cand=(e) eff*log(tv+1)  flat_add=   254.24 v2_mult=3.5424 predicted=    3220 obs=4197 err=  -23.3% 
+
+  LBK seq=478 sim=909 obs=4197 ratio=4.6172
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    1636 obs=4197 err=  -61.0% 
+    cand=(b) eff*tv/100     flat_add=    18.40 v2_mult=1.1840 predicted=    1076 obs=4197 err=  -74.4% 
+    cand=(c) eff*tv         flat_add=  1840.00 v2_mult=19.4000 predicted=   17635 obs=4197 err= +320.2% 
+    cand=(d) eff+tv         flat_add=   103.00 v2_mult=2.0300 predicted=    1845 obs=4197 err=  -56.0% 
+    cand=(e) eff*log(tv+1)  flat_add=   254.24 v2_mult=3.5424 predicted=    3220 obs=4197 err=  -23.3% 
+
+  LBK seq=493 sim=1771 obs=4197 ratio=2.3698
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    3188 obs=4197 err=  -24.0% 
+    cand=(b) eff*tv/100     flat_add=    18.40 v2_mult=1.1840 predicted=    2097 obs=4197 err=  -50.0% 
+    cand=(c) eff*tv         flat_add=  1840.00 v2_mult=19.4000 predicted=   34357 obs=4197 err= +718.6% 
+    cand=(d) eff+tv         flat_add=   103.00 v2_mult=2.0300 predicted=    3595 obs=4197 err=  -14.3% 
+    cand=(e) eff*log(tv+1)  flat_add=   254.24 v2_mult=3.5424 predicted=    6274 obs=4197 err=  +49.5% 
+
+
+=== Detailed contribution dump (best candidate per hit) ===
+  --- seq=425 sim=1771 obs=4197 ---
+    (a) eff: total=80.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=80.00
+    (b) eff*tv/100: total=18.40
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=18.40
+    (c) eff*tv: total=1840.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=1840.00
+    (d) eff+tv: total=103.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=103.00
+    (e) eff*log(tv+1): total=254.24
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=254.24
+  --- seq=439 sim=1771 obs=4197 ---
+    (a) eff: total=80.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=80.00
+    (b) eff*tv/100: total=18.40
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=18.40
+    (c) eff*tv: total=1840.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=1840.00
+    (d) eff+tv: total=103.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=103.00
+    (e) eff*log(tv+1): total=254.24
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=254.24
+  --- seq=459 sim=909 obs=4197 ---
+    (a) eff: total=80.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=80.00
+    (b) eff*tv/100: total=18.40
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=18.40
+    (c) eff*tv: total=1840.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=1840.00
+    (d) eff+tv: total=103.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=103.00
+    (e) eff*log(tv+1): total=254.24
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=254.24
+  --- seq=478 sim=909 obs=4197 ---
+    (a) eff: total=80.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=80.00
+    (b) eff*tv/100: total=18.40
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=18.40
+    (c) eff*tv: total=1840.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=1840.00
+    (d) eff+tv: total=103.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=103.00
+    (e) eff*log(tv+1): total=254.24
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=254.24
+  --- seq=493 sim=1771 obs=4197 ---
+    (a) eff: total=80.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=80.00
+    (b) eff*tv/100: total=18.40
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=18.40
+    (c) eff*tv: total=1840.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=1840.00
+    (d) eff+tv: total=103.00
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=103.00
+    (e) eff*log(tv+1): total=254.24
+      cs_inst[91] res=cs01_0805 tv=23 eff=80 sign=MATHSIGN_ADD contrib=254.24
+
+==============================================================================
+=== Cross-check capture: websocket_debug_20260509_111039.jsonl
+==============================================================================
+Measurable c_30093 hits: 3
+  seq=161 caster_candidate=1 entries=8
+  seq=161 caster_candidate=2 entries=6
+  seq=161 caster_candidate=3 entries=5
+  C30093 seq=161 sim=1236 obs=1398 ratio=1.1311
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+  C30093 seq=161 sim=1236 obs=1398 ratio=1.1311
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+  C30093 seq=161 sim=1236 obs=1398 ratio=1.1311
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1236 obs=1398 err=  -11.6% 
+
+  seq=164 caster_candidate=1 entries=8
+  seq=164 caster_candidate=2 entries=5
+  seq=164 caster_candidate=3 entries=5
+  C30093 seq=164 sim=828 obs=1148 ratio=1.3865
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+  C30093 seq=164 sim=828 obs=1148 ratio=1.3865
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+  C30093 seq=164 sim=828 obs=1148 ratio=1.3865
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=     828 obs=1148 err=  -27.9% 
+
+  seq=173 caster_candidate=1 entries=8
+  seq=173 caster_candidate=2 entries=7
+  seq=173 caster_candidate=3 entries=5
+  C30093 seq=173 sim=1242 obs=1219 ratio=0.9815
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+  C30093 seq=173 sim=1242 obs=1219 ratio=0.9815
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+  C30093 seq=173 sim=1242 obs=1219 ratio=0.9815
+    cand=(a) eff            flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(b) eff*tv/100     flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(c) eff*tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(d) eff+tv         flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+    cand=(e) eff*log(tv+1)  flat_add=     0.00 v2_mult=1.0000 predicted=    1242 obs=1219 err=   +1.9% WITHIN_5PCT
+
+
+==============================================================================
+=== Cross-check capture: websocket_debug_20260505_104037.jsonl
+==============================================================================
+Measurable c_1052 (low) hits: 5
+  seq=124 caster_candidate=1 entries=10
+  seq=124 caster_candidate=2 entries=4
+  seq=124 caster_candidate=3 entries=13
+  LBK_LOW seq=124 sim=894 obs=604 ratio=0.6756
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    1609 obs=604 err= +166.4% 
+    cand=(b) eff*tv/100     flat_add=     6.40 v2_mult=1.0640 predicted=     951 obs=604 err=  +57.5% 
+    cand=(c) eff*tv         flat_add=   640.00 v2_mult=7.4000 predicted=    6616 obs=604 err= +995.3% 
+    cand=(d) eff+tv         flat_add=    88.00 v2_mult=1.8800 predicted=    1681 obs=604 err= +178.3% 
+    cand=(e) eff*log(tv+1)  flat_add=   175.78 v2_mult=2.7578 predicted=    2465 obs=604 err= +308.2% 
+
+  seq=143 caster_candidate=1 entries=10
+  seq=143 caster_candidate=2 entries=4
+  seq=143 caster_candidate=3 entries=13
+  LBK_LOW seq=143 sim=2294 obs=547 ratio=0.2384
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    4129 obs=547 err= +654.9% 
+    cand=(b) eff*tv/100     flat_add=     6.40 v2_mult=1.0640 predicted=    2441 obs=547 err= +346.2% 
+    cand=(c) eff*tv         flat_add=   640.00 v2_mult=7.4000 predicted=   16976 obs=547 err=+3003.4% 
+    cand=(d) eff+tv         flat_add=    88.00 v2_mult=1.8800 predicted=    4313 obs=547 err= +688.4% 
+    cand=(e) eff*log(tv+1)  flat_add=   175.78 v2_mult=2.7578 predicted=    6326 obs=547 err=+1056.6% 
+
+  seq=143 caster_candidate=1 entries=10
+  seq=143 caster_candidate=2 entries=4
+  seq=143 caster_candidate=3 entries=13
+  LBK_LOW seq=143 sim=0 obs=547 ratio=0.0000
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=       0 obs=547 err= -100.0% 
+    cand=(b) eff*tv/100     flat_add=     6.40 v2_mult=1.0640 predicted=       0 obs=547 err= -100.0% 
+    cand=(c) eff*tv         flat_add=   640.00 v2_mult=7.4000 predicted=       0 obs=547 err= -100.0% 
+    cand=(d) eff+tv         flat_add=    88.00 v2_mult=1.8800 predicted=       0 obs=547 err= -100.0% 
+    cand=(e) eff*log(tv+1)  flat_add=   175.78 v2_mult=2.7578 predicted=       0 obs=547 err= -100.0% 
+
+  seq=221 caster_candidate=1 entries=10
+  seq=221 caster_candidate=2 entries=4
+  seq=221 caster_candidate=3 entries=13
+  LBK_LOW seq=221 sim=2294 obs=547 ratio=0.2384
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=    4129 obs=547 err= +654.9% 
+    cand=(b) eff*tv/100     flat_add=     6.40 v2_mult=1.0640 predicted=    2441 obs=547 err= +346.2% 
+    cand=(c) eff*tv         flat_add=   640.00 v2_mult=7.4000 predicted=   16976 obs=547 err=+3003.4% 
+    cand=(d) eff+tv         flat_add=    88.00 v2_mult=1.8800 predicted=    4313 obs=547 err= +688.4% 
+    cand=(e) eff*log(tv+1)  flat_add=   175.78 v2_mult=2.7578 predicted=    6326 obs=547 err=+1056.6% 
+
+  seq=221 caster_candidate=1 entries=10
+  seq=221 caster_candidate=2 entries=4
+  seq=221 caster_candidate=3 entries=13
+  LBK_LOW seq=221 sim=0 obs=547 ratio=0.0000
+    cand=(a) eff            flat_add=    80.00 v2_mult=1.8000 predicted=       0 obs=547 err= -100.0% 
+    cand=(b) eff*tv/100     flat_add=     6.40 v2_mult=1.0640 predicted=       0 obs=547 err= -100.0% 
+    cand=(c) eff*tv         flat_add=   640.00 v2_mult=7.4000 predicted=       0 obs=547 err= -100.0% 
+    cand=(d) eff+tv         flat_add=    88.00 v2_mult=1.8800 predicted=       0 obs=547 err= -100.0% 
+    cand=(e) eff*log(tv+1)  flat_add=   175.78 v2_mult=2.7578 predicted=       0 obs=547 err= -100.0% 
+

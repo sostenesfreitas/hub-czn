@@ -1,0 +1,1082 @@
+"""Unit tests for ReplayHarness."""
+import json
+from pathlib import Path
+from unittest.mock import MagicMock
+
+import pytest
+
+from api.simulator.replay.capture_reader import CaptureEvent
+from api.simulator.replay.dev_msg_parser import SkillEffFire
+from api.simulator.replay.harness import ReplayHarness, EventReport, ReplaySummary
+from api.simulator.replay.reconstructor import StateReconstructor
+from api.simulator.replay.report import render_report
+
+
+class _FakeReader:
+    """Stand-in for CaptureReader that yields prebuilt events."""
+    def __init__(self, events: list[CaptureEvent]):
+        self._events = events
+    def events(self):
+        return iter(self._events)
+    def first_battle_wt(self) -> dict | None:
+        return self._events[0].snapshot if self._events else None
+
+
+def _minimal_bw():
+    return {
+        "chars": [{"id": 1, "res_id": "1057", "status": {"info": {"S_ATK": 1000}}}],
+        "monsters": [{"id": 79, "res_id": "x", "state": "alive",
+                      "status": {"info": {"S_HP": 5000, "S_DEF": 200, "S_DMG_DECREASE_RATE": 0.3, "S_CURRENT_HP": 5000}}}],
+        "cardMap": {}, "csMap": {}, "used_cards": [],
+    }
+
+
+def test_first_event_is_baseline_no_dispatch():
+    runtime = MagicMock()
+    runtime.apply = MagicMock()
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=_minimal_bw(), is_state_update=True,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="c_1057_srt1_01", eff_type="SKILL_EFF_DMG")]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    # state is set on the first is_state_update event; skill_eff_ids are only
+    # dispatched when state is ALREADY set (i.e. after the first baseline).
+    # With only one event, skill fires but state was None when we checked,
+    # so nothing dispatches.
+    runtime.apply.assert_not_called()
+    assert summary.total_events == 0
+    assert reports == []
+
+
+def test_dispatch_records_event_report():
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    runtime.apply = MagicMock(return_value=EffectResult(damage=500, target_id="79"))
+    bw = _minimal_bw()
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="c_1057_srt1_01", eff_type="SKILL_EFF_DMG")]),
+    ])
+    instances = MagicMock()
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    runtime._instances = instances
+    instances.get = MagicMock(return_value=fake_inst)
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert summary.total_events == 1
+    assert len(reports) == 1
+    assert reports[0].seq == 1
+    assert reports[0].skill_eff_id == "c_1057_srt1_01"
+    assert reports[0].status in {"dispatched", "stub", "no_target"}
+
+
+def test_runtime_keyerror_records_missing():
+    runtime = MagicMock()
+    runtime.apply = MagicMock(side_effect=KeyError("not in index"))
+    instances = MagicMock()
+    instances.get = MagicMock(side_effect=KeyError("not in index"))
+    runtime._instances = instances
+    bw = _minimal_bw()
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="unknown_id", eff_type="SKILL_EFF_DMG")]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert summary.missing_from_index == 1
+    assert reports[0].status == "missing"
+
+
+def test_runtime_unexpected_exception_records_crashed():
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime.apply = MagicMock(side_effect=RuntimeError("boom"))
+    bw = _minimal_bw()
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG")]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert summary.crashed == 1
+    assert reports[0].status == "crashed"
+    assert "boom" in reports[0].error
+
+
+def test_damage_within_5_percent_categorized_correctly():
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=950, target_id="79"))
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG")]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].status == "dispatched"
+    assert reports[0].obs_damage == 1000
+    assert reports[0].delta_pct is not None
+    assert abs(reports[0].delta_pct) <= 0.05
+    assert summary.dispatched_dmg_within_5pct == 1
+
+
+def test_damage_outside_5_percent_counted_in_outliers():
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=500, target_id="79"))
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    bw2["monsters"][0]["lastDamageEvent"] = {"damage": 1000, "old_hp": 5000, "new_hp": 4000}
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False,
+                     skill_eff_fires=[SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG")]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert summary.dispatched_dmg_outside_5pct == 1
+
+
+def test_render_report_contains_summary_and_per_eff_type():
+    summary = ReplaySummary(total_events=10, crashed=0,
+                            dispatched_dmg_within_5pct=4, dispatched_dmg_outside_5pct=2,
+                            stubbed=3, missing_from_index=1, no_target=0,
+                            by_eff_type={
+                                "SKILL_EFF_DMG": {"dispatched": 6, "stub": 0, "missing": 0, "crashed": 0, "no_target": 0},
+                                "SKILL_EFF_NONE": {"dispatched": 0, "stub": 3, "missing": 0, "crashed": 0, "no_target": 0},
+                            })
+    reports = [
+        EventReport(seq=5, skill_eff_id="c_a", eff_type="SKILL_EFF_DMG",
+                    status="dispatched", sim_damage=1200, obs_damage=1000, delta_pct=0.20),
+        EventReport(seq=6, skill_eff_id="c_b", eff_type="SKILL_EFF_DMG",
+                    status="dispatched", sim_damage=950, obs_damage=1000, delta_pct=-0.05),
+    ]
+    md = render_report(summary, reports, capture_id="test_capture")
+    assert "test_capture" in md
+    assert "Total events: 10" in md
+    assert "SKILL_EFF_DMG" in md
+    assert "SKILL_EFF_NONE" in md
+    # outliers section sorts by abs(delta_pct) desc
+    assert md.index("c_a") < md.index("c_b")
+
+
+def test_harness_resolves_caster_from_fire_caster_id():
+    """If SkillEffFire has caster_id matching a unit's id, the harness uses that
+    unit as caster (not player_team[0])."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    # extend bw to have two chars; second one has id="2"
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG", caster_id="2")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    # the caster passed to runtime.apply should be the char with id="2"
+    call_args = runtime.apply.call_args
+    assert call_args is not None
+    passed_caster = call_args.args[1] if len(call_args.args) > 1 else call_args.kwargs.get("caster")
+    assert str(passed_caster.id) == "2"
+
+
+def test_harness_falls_back_when_caster_id_not_in_state():
+    """If SkillEffFire.caster_id doesn't match any unit, fall back to player_team[0]."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG", caster_id="999")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].status == "dispatched"
+    # row records inferred_caster=True
+    assert reports[0].inferred_caster is True
+
+
+def test_harness_uses_fire_target_id_for_obs_lookup():
+    """When SkillEffFire.target_id is set, obs_damage is read from that monster's lastDamageEvent."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=950, target_id=None))
+
+    bw1 = _minimal_bw()
+    bw2 = _minimal_bw()
+    # second monster id 200, with lastDamageEvent.damage=1000
+    bw2["monsters"].append({"id": 200, "res_id": "z", "state": "alive",
+                            "status": {"info": {"S_HP": 9999, "S_DEF": 100, "S_CURRENT_HP": 9999}},
+                            "lastDamageEvent": {"damage": 1000, "old_hp": 9999, "new_hp": 8999}})
+    fire = SkillEffFire(skill_eff_id="c_x", eff_type="SKILL_EFF_DMG",
+                        caster_id="1", target_id="200")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw1, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw2, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].obs_damage == 1000  # read from monster id=200, not 79
+
+
+def test_render_report_includes_char_names_in_outlier_table():
+    from api.simulator.replay.char_resolver import CharResolver
+
+    summary = ReplaySummary(total_events=2, dispatched_dmg_within_5pct=0,
+                            dispatched_dmg_outside_5pct=1,
+                            by_eff_type={
+                                "SKILL_EFF_DMG": {"dispatched": 1, "stub": 0, "missing": 0,
+                                                  "crashed": 0, "no_target": 0},
+                            })
+    reports = [
+        EventReport(seq=11, skill_eff_id="c_30093_uni4_lbk_mut1_01",
+                    eff_type="SKILL_EFF_DMG", status="dispatched",
+                    sim_damage=12227, obs_damage=300, delta_pct=39.76,
+                    target_id="79"),
+    ]
+    md = render_report(summary, reports, capture_id="test", char_resolver=CharResolver())
+    # caster char id 30093 → Heidemarie should appear in the outliers table
+    assert "Heidemarie" in md
+
+
+def test_extract_obs_skips_auto_attack_last_damage_event():
+    """lastDamageEvent with is_auto=true represents an auto-attack tick,
+    not a player skill hit. Treat as no observation."""
+    snapshot = {
+        "monsters": [{
+            "id": 38,
+            "lastDamageEvent": {
+                "damage": 30, "is_auto": True,
+                "type": ["DMG_ATTR_FIX", "DMG_ATTR_AUTO"],
+                "old_hp": 1100, "new_hp": 1070,
+            },
+        }],
+    }
+    obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, "38")
+    assert obs is None  # auto-attack tick is filtered out
+
+
+def test_extract_obs_returns_damage_for_real_skill_hit():
+    """A non-auto lastDamageEvent IS a player skill hit — return its damage."""
+    snapshot = {
+        "monsters": [{
+            "id": 38,
+            "lastDamageEvent": {
+                "damage": 543, "is_auto": False,
+                "type": ["DMG_ATTR_BASE_ON_DEF"],
+                "old_hp": 1100, "new_hp": 557,
+            },
+        }],
+    }
+    obs = ReplayHarness._extract_observed_damage_from_snapshot(snapshot, "38")
+    assert obs == 543
+
+
+def test_harness_resolves_caster_via_skill_eff_id_prefix():
+    """When dev_msg has no caster_id but skill_eff_id encodes a char_res_id,
+    the harness resolves via res_id prefix match."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="38"))
+
+    bw = _minimal_bw()
+    bw["chars"][0]["res_id"] = "30093"  # Heidemarie's res_id
+    # caster_id absent, but skill_eff_id encodes char 30093
+    fire = SkillEffFire(skill_eff_id="c_30093_uni4_lbk_mut1_01",
+                        eff_type="SKILL_EFF_DMG", caster_id=None)
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    assert reports[0].inferred_caster is False
+
+
+def test_harness_resolves_caster_via_card_owner_lookup():
+    """When SkillEffFire.caster_id is a card-instance-id (not a unit id),
+    the harness translates via state.card_owner_lookup."""
+    from api.simulator.result import EffectResult
+    runtime = MagicMock()
+    instances = MagicMock()
+    runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    instances.get = MagicMock(return_value=fake_inst)
+    runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+    runtime.apply = MagicMock(return_value=EffectResult(damage=100, target_id="79"))
+
+    bw = _minimal_bw()
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    bw["cardMap"] = {
+        "54": {"id": 54, "res_id": "card_x", "char_id": 2, "cost": 1,
+               "card_place": "CARD_PLACE_HAND", "skill_eff_ids": ["card_x_01"],
+               "r_spark": "none", "curEgo": 0, "interruptOutline": False},
+    }
+    fire = SkillEffFire(skill_eff_id="card_x_01", eff_type="SKILL_EFF_DMG", caster_id="54")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False, skill_eff_fires=[fire]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True, skill_eff_fires=[]),
+    ])
+    summary, reports = ReplayHarness(runtime, StateReconstructor()).replay(reader)
+    call_args = runtime.apply.call_args
+    passed_caster = call_args.args[1] if len(call_args.args) > 1 else call_args.kwargs.get("caster")
+    assert str(passed_caster.id) == "2"
+    assert reports[0].inferred_caster is False
+
+
+def test_harness_populates_dva_stacks_on_dispatched_events():
+    """When the accumulator has stacks on target before a SkillEff fires,
+    EventReport.dva_stacks_observed reflects them via state.dva_stacks."""
+    from api.simulator.result import EffectResult
+    from api.simulator.replay.event_parser import StackAddEvent, SkillEffEvent
+
+    fake_runtime = MagicMock()
+    instances = MagicMock()
+    fake_runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    fake_inst.link_cs_id = ["cs_91"]
+    instances.get = MagicMock(return_value=fake_inst)
+    fake_runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+
+    def fake_apply(skill_eff_id, caster, state):
+        dva = getattr(state, "dva_stacks", None)
+        target_stacks = dva.get("38", {}) if dva else {}
+        observed = {cs_id: target_stacks.get(cs_id, 0) for cs_id in ["cs_91"]}
+        return EffectResult(damage=100, target_id="38",
+                             dva_stacks_observed=observed)
+    fake_runtime.apply = fake_apply
+
+    bw = _minimal_bw()
+    stack_add_ev = StackAddEvent(seq=0, raw_line="", actor_id="1",
+                                  target_id="38", target_role="monster",
+                                  cs_id="cs_91", value=3, sign="MATHSIGN_ADD")
+    skill_eff_ev = SkillEffEvent(seq=1, raw_line="", skill_eff_id="c_x_01",
+                                  eff_type="SKILL_EFF_DMG", seq_num=1)
+    fire = SkillEffFire(skill_eff_id="c_x_01", eff_type="SKILL_EFF_DMG",
+                       caster_id="1")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False,
+                     skill_eff_fires=[fire],
+                     parsed_events=[stack_add_ev, skill_eff_ev]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+    ])
+    summary, reports = ReplayHarness(fake_runtime, StateReconstructor()).replay(reader)
+    assert reports[0].dva_stacks_observed == {"cs_91": 3}
+
+
+def test_render_report_includes_stacks_column_for_dispatched_events():
+    """Outlier rows for dispatched DMG events with observed stacks show a
+    'stacks' column listing 'cs_id=count' joined by commas."""
+    summary = ReplaySummary(
+        total_events=1, dispatched_dmg_within_5pct=0,
+        dispatched_dmg_outside_5pct=1,
+        by_eff_type={"SKILL_EFF_DMG": {
+            "dispatched": 1, "stub": 0, "missing": 0, "crashed": 0, "no_target": 0,
+        }},
+    )
+    reports = [
+        EventReport(
+            seq=11, skill_eff_id="c_30093_uni4_lbk_mut1_01",
+            eff_type="SKILL_EFF_DMG", status="dispatched",
+            sim_damage=12227, obs_damage=300, delta_pct=39.76,
+            target_id="79",
+            dva_stacks_observed={"cs_91": 3, "cs_112": 1},
+        ),
+    ]
+    md = render_report(summary, reports, capture_id="test")
+    assert "cs_91=3" in md
+    assert "cs_112=1" in md
+
+
+def test_harness_sets_cs_multiplier_index_on_state():
+    """When the harness populates state.dva_stacks, it should also set
+    state.cs_multiplier_index so the formula can compose multipliers."""
+    from api.simulator.result import EffectResult
+    from api.simulator.replay.event_parser import StackAddEvent, SkillEffEvent
+
+    captured_state_attrs = []
+
+    fake_runtime = MagicMock()
+    instances = MagicMock()
+    fake_runtime._instances = instances
+    fake_inst = MagicMock()
+    fake_inst.eff_type = "SKILL_EFF_DMG"
+    fake_inst.link_cs_id = []
+    instances.get = MagicMock(return_value=fake_inst)
+    fake_runtime._catalog = {"SKILL_EFF_DMG": {"effect": {"formula_ref": "F_BASE_DMG"}}}
+
+    def fake_apply(skill_eff_id, caster, state):
+        captured_state_attrs.append(getattr(state, "cs_multiplier_index", None))
+        return EffectResult(damage=100, target_id="38")
+
+    fake_runtime.apply = fake_apply
+
+    bw = _minimal_bw()
+    stack_add_ev = StackAddEvent(
+        seq=0, raw_line="", actor_id="1", target_id="38",
+        target_role="monster", cs_id="cs_91", value=3, sign="MATHSIGN_ADD",
+    )
+    skill_eff_ev = SkillEffEvent(
+        seq=1, raw_line="", skill_eff_id="c_x_01",
+        eff_type="SKILL_EFF_DMG", seq_num=1,
+    )
+    fire = SkillEffFire(skill_eff_id="c_x_01", eff_type="SKILL_EFF_DMG", caster_id="1")
+    reader = _FakeReader([
+        CaptureEvent(ts="t0", seq=0, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+        CaptureEvent(ts="t1", seq=1, snapshot={}, is_state_update=False,
+                     skill_eff_fires=[fire],
+                     parsed_events=[stack_add_ev, skill_eff_ev]),
+        CaptureEvent(ts="t2", seq=2, snapshot=bw, is_state_update=True,
+                     skill_eff_fires=[], parsed_events=[]),
+    ])
+    summary, reports = ReplayHarness(fake_runtime, StateReconstructor()).replay(reader)
+    # Harness should have set state.cs_multiplier_index before fake_apply was called
+    assert len(captured_state_attrs) == 1
+    assert captured_state_attrs[0] is not None
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2f5 — chain caster resolution via accumulator.caster_at (path 4)
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_resolve():
+    """Build a minimal BattleState with two player chars and one enemy
+    suitable for _resolve_caster() direct tests."""
+    bw = _minimal_bw()
+    bw["chars"].append({"id": 2, "res_id": "1062",
+                        "status": {"info": {"S_ATK": 1500}}})
+    return StateReconstructor().reconstruct(bw)
+
+
+def test_resolve_caster_uses_segment_caster_when_paths_1_to_3_fail():
+    """When direct match (1), card_owner_lookup (2), and prefix (3) all
+    miss, the segment_caster (path 4) must be consulted before the
+    player_team[0] fallback. A chain SkillEff like 'cs01_0473_01' has
+    no player-prefix and no caster_id; without path 4 it falls back to
+    player_team[0] with inferred=True."""
+    state = _make_state_for_resolve()
+    # caster_id=None (no direct/lookup), skill_eff_id is a chain effect
+    # whose prefix doesn't match any char res_id => paths 1-3 all miss.
+    unit, inferred, _ = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster="2",
+    )
+    assert unit is not None
+    assert str(unit.id) == "2"
+    assert inferred is False, "segment_caster is authoritative, not inferred"
+
+
+def test_resolve_caster_prefix_match_preferred_over_segment_caster():
+    """Path 3 (skill_eff_id prefix) must run BEFORE path 4 (segment_caster):
+    if the skill encodes a real char res_id, trust that — segment_caster
+    may belong to a different actor."""
+    state = _make_state_for_resolve()
+    # state.chars: id=1 res_id=1057, id=2 res_id=1062
+    # skill_eff_id encodes char 1057 (player_team[0]), segment_caster says "2"
+    unit, inferred, _ = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="c_1057_srt1_01", segment_caster="2",
+    )
+    assert str(unit.id) == "1"
+    assert inferred is False
+
+
+def test_resolve_caster_falls_back_when_segment_caster_does_not_match():
+    """If segment_caster is set but doesn't match any unit in
+    player_team or enemies, path 4 falls through to path 5 (player_team[0]
+    with inferred=True). This guards against stale segment_caster values."""
+    state = _make_state_for_resolve()
+    unit, inferred, _ = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster="999",
+    )
+    assert str(unit.id) == "1"  # player_team[0]
+    assert inferred is True
+
+
+def test_resolve_caster_segment_caster_none_falls_through():
+    """When segment_caster is None (no active UsedCardEvent), path 4
+    is a no-op and we fall through to player_team[0] fallback."""
+    state = _make_state_for_resolve()
+    unit, inferred, _ = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01", segment_caster=None,
+    )
+    assert str(unit.id) == "1"
+    assert inferred is True
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g1 — resolution_path instrumentation
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_returns_path_num():
+    """Sprint 2g1: _resolve_caster returns (unit, inferred, path_num)."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    nia = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+
+    # Path 1: direct match
+    result = ReplayHarness._resolve_caster("1", state)
+    assert len(result) == 3
+    assert result[2] == 1
+
+    # Path 3: prefix match via skill_eff_id
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "c_1003_srt1_01", state, skill_eff_id="c_1003_srt1_01"
+    )
+    assert path == 3
+
+    # Path 5: fallback
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="unknown"
+    )
+    assert path == 5
+    assert inferred is True
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g1 — path 6: cs_map_raw lookup for cs_* skill_eff_ids
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_cs_resolve(cs_map_raw):
+    """Build a BattleState with 2 player chars + 1 enemy and the given cs_map_raw."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    c1 = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                   cri=0.0, cri_dmg_rate=0, res_id="1057")
+    c2 = CharState(id="3", atk=500, def_=100, hp=1, hp_current=1,
+                   cri=0.0, cri_dmg_rate=0, res_id="1052")
+    mon = MonsterState(id="38", def_=0, hp=1, hp_current=1)
+    s = BattleState(turn=1, player_team=[c1, c2], enemies=[mon],
+                    hand=[], deck=[], discard=[], morale=0,
+                    ego_state={}, spark_state={}, cs_stacks={},
+                    rng=random.Random(0))
+    s.cs_map_raw = cs_map_raw
+    return s
+
+
+def test_resolve_caster_path6_cs_map_raw_unique_char_id():
+    """Path 6: cs_* skill_eff_id resolves via cs_map_raw when exactly one
+    char_id is found for the matching cs res_id."""
+    cs_map = {
+        "5": {"res_id": "cs01_0808", "char_id": 3, "caster_id": 21, "owner_id": 21},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert str(unit.id) == "3"
+    assert inferred is False
+    assert path == 6
+
+
+def test_resolve_caster_path6_falls_through_when_ambiguous():
+    """When multiple csMap entries with same res_id have different char_ids,
+    path 6 cannot disambiguate; falls through to path 5."""
+    cs_map = {
+        "66": {"res_id": "cs01_0833", "char_id": 1, "caster_id": 7, "owner_id": 7},
+        "95": {"res_id": "cs01_0833", "char_id": 3, "caster_id": 85, "owner_id": 85},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0833_01", segment_caster=None,
+    )
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path6_falls_through_when_no_cs_map_raw():
+    """When state.cs_map_raw is None, path 6 is skipped entirely."""
+    state = _make_state_for_cs_resolve(None)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert path == 5
+
+
+def test_resolve_caster_path6_resolves_monster_caster():
+    """Path 6 can resolve to a monster when char_id matches an enemy unit id."""
+    cs_map = {
+        "1": {"res_id": "cs19_0071", "char_id": 38, "caster_id": 38, "owner_id": 38},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs19_0071_01", segment_caster=None,
+    )
+    assert str(unit.id) == "38"
+    assert inferred is False
+    assert path == 6
+
+
+def test_resolve_caster_path6_only_runs_for_cs_or_eq_prefix():
+    """Path 6 applies to skill_eff_ids starting with 'cs' or 'eq_' (Sprint 2g2).
+    Other prefixes (add_r_spark_*, monster res ids) fall through to path 5."""
+    cs_map = {
+        "1": {"res_id": "add_r_spark_001", "char_id": 3, "caster_id": 3, "owner_id": 3},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_001_01", segment_caster=None,
+    )
+    assert path == 5  # path 6 should not resolve non-cs/non-eq effects
+
+
+def test_resolve_caster_path6_preferred_over_path5_only():
+    """Verify paths 1-4 still win over path 6 when they match (path order
+    is preserved). Direct match (path 1) for caster_id='1' wins even when
+    cs_map_raw has a cs entry that would resolve to a different unit."""
+    cs_map = {
+        "5": {"res_id": "cs01_0808", "char_id": 3, "caster_id": 21, "owner_id": 21},
+    }
+    state = _make_state_for_cs_resolve(cs_map)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "1", state, skill_eff_id="cs01_0808_01", segment_caster=None,
+    )
+    assert str(unit.id) == "1"
+    assert path == 1
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g2 — T1: widen path 6 to include eq_* prefix
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_6_handles_eq_prefix():
+    """Sprint 2g2 T1: path 6 (cs_map_raw lookup) extends to eq_* skill_eff_ids.
+    eq_*_01 entries in cs_map_raw carry char_id pointing to equipped player."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    nia = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "19": {"res_id": "eq_p_sec_003_01", "char_id": 1,
+               "caster_id": 27, "owner_id": 38, "skillEffs": [82]}
+    }
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="eq_p_sec_003_01"
+    )
+    assert path == 6
+    assert unit is nia
+    assert inferred is False
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g2 — T3: path 3 consults monster_history for cross-snapshot resolution
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_3_uses_monster_history():
+    """Sprint 2g2 T3: when monster prefix doesn't match state.enemies, fall
+    back to state.monster_history (monsters from previous snapshots)."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    # State has Diana (player) and a DIFFERENT monster (3000489) visible.
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    other_monster = MonsterState(id="m_visible", def_=200, hp=2000, hp_current=2000,
+                                   res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[other_monster],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # But monster_history has the firing monster from an earlier snapshot
+    historical = MonsterState(id="m_hist", def_=100, hp=1000, hp_current=1000,
+                                res_id="1001012_01")
+    state.monster_history = {"1001012_01": historical}
+
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="1001012_01_pt1_00_01"
+    )
+    assert path == 3
+    assert unit is historical
+    assert inferred is False
+
+
+def test_resolve_caster_path_3_prefers_state_enemies_over_history():
+    """When a monster is in state.enemies, that takes precedence over history."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    monster_now = MonsterState(id="m_now", def_=200, hp=2000, hp_current=2000,
+                                 res_id="1001012_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[monster_now],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # History has a DIFFERENT instance with same res_id
+    historical = MonsterState(id="m_hist", def_=999, hp=999, hp_current=999,
+                                res_id="1001012_01")
+    state.monster_history = {"1001012_01": historical}
+
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="1001012_01_pt1_00_01"
+    )
+    # state.enemies match wins
+    assert unit is monster_now
+    assert path == 3
+
+
+def test_replay_enriches_monster_history_with_synthetic_entries():
+    """Sprint 2g3: after replay, monsters mentioned in monster_use_card
+    events are in monster_history even if they never appear in a snapshot.
+    Verifies that 1003009_* skill_eff events — fired by a monster that may
+    only appear via monster_use_card and not always in a snapshot frame —
+    now resolve via path 3 (monster_history with synthetic entries)."""
+    import json
+    from pathlib import Path
+    from api.game_data.eff_instances import EffInstanceIndex
+    from api.simulator.runtime import Runtime
+    from api.simulator.replay.capture_reader import CaptureReader
+    from api.simulator.replay.reconstructor import StateReconstructor
+    from api.simulator.replay.harness import ReplayHarness
+
+    REPO = Path(__file__).resolve().parents[2]
+    CAP = Path(r"C:\Users\soste\AppData\Local\hub-czn\snapshots\websocket_debug_20260509_111039.jsonl")
+    if not CAP.exists():
+        pytest.skip("capture not available")
+
+    catalog = json.loads((REPO / "api" / "data" / "eff_type_catalog.json").read_text(encoding="utf-8"))
+    instances = EffInstanceIndex(Path(r"C:\Users\soste\Downloads\output\db"))
+    harness = ReplayHarness(Runtime(catalog=catalog, instances=instances), StateReconstructor())
+    summary, reports = harness.replay(CaptureReader(CAP))
+    # 3000332 is a monster res_id known to fire monster_use_card events
+    # but the monster never appears in any battle_wt snapshot frame.
+    # Pre-2g3: all 3000332 skill_eff events fell to path 5 (fallback,
+    # inferred=True). Post-2g3: synthetic monster_history entry catches
+    # them on path 3.
+    monster_reports = [r for r in reports
+                       if r.skill_eff_id.startswith("3000332_")
+                       and r.status == "dispatched"]
+    assert len(monster_reports) > 0, "no 3000332 events in this capture"
+    path3 = [r for r in monster_reports if r.resolution_path == 3]
+    path5 = [r for r in monster_reports if r.resolution_path == 5]
+    # Pre-2g3: path5 dominated; Post-2g3: path3 dominates.
+    assert len(path3) > 0, (
+        f"expected path-3 resolutions for 3000332 post-2g3, got 0; paths="
+        f"{[r.resolution_path for r in monster_reports]}"
+    )
+    assert len(path3) > len(path5), (
+        f"expected path 3 > path 5 for 3000332, got path3={len(path3)} "
+        f"path5={len(path5)}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2g4 — widen path 6 to handle numeric-prefix monster-applied buffs
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_caster_path_6_handles_numeric_buff_prefix():
+    """Sprint 2g4: path 6 also handles numeric-prefix buff skill_eff_ids
+    (e.g., 30094_c1_lv5_01_01) by stripping _NN and looking up cs_map_raw."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    monster = MonsterState(id="37", def_=200, hp=2000, hp_current=2000,
+                            res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[monster],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "30094_c1_lv5_01", "char_id": 1,
+                "owner_id": 37, "caster_id": 1, "skillEffs": [10]}
+    }
+    # When char_id (1) and owner_id (37) both available, prefer owner_id
+    # for monster-applied buffs because the skill_eff fires "FROM" the
+    # monster carrying it.
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="30094_c1_lv5_01_01"
+    )
+    assert path == 6
+    # Should resolve to the monster (owner_id=37), not the player (char_id=1)
+    assert unit is monster
+    assert inferred is False
+
+
+def test_resolve_caster_path_6_falls_back_to_char_id_when_owner_not_in_state():
+    """If owner_id doesn't match any unit, fall back to char_id."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m_visible", def_=200, hp=2000, hp_current=2000,
+                            res_id="3000489_01")
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # owner_id=99 doesn't match any unit; char_id=1 does
+    state.cs_map_raw = {
+        "55": {"res_id": "30094_c1_lv5_01", "char_id": 1,
+                "owner_id": 99, "skillEffs": [10]}
+    }
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="30094_c1_lv5_01_01"
+    )
+    assert path == 6
+    assert unit is diana  # falls back to char_id=1 player
+
+
+def test_resolve_caster_path_6_falls_through_when_no_cs_map_entry():
+    """If no cs_map_raw entry matches, fall through to path 5."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {}
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="99999_unknown_01"
+    )
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path_6_disambiguates_multi_owner_via_segment_caster():
+    """Sprint 2g5: when multiple cs_map_raw entries have the same res_id with
+    different char_ids, use segment_caster as tiebreaker."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    nia = CharState(id="2", atk=300, def_=80, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    haru = CharState(id="3", atk=600, def_=90, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1062")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana, nia, haru], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    # Three entries for cs01_0473, owned by 3 different chars
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+        "56": {"res_id": "cs01_0473", "char_id": 2, "owner_id": 2, "skillEffs": [11]},
+        "57": {"res_id": "cs01_0473", "char_id": 3, "owner_id": 3, "skillEffs": [12]},
+    }
+    # segment_caster="2" (Nia) — should disambiguate to her
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="2"
+    )
+    assert path == 6
+    assert unit is nia
+    assert inferred is False
+
+
+def test_resolve_caster_path_6_falls_through_when_segment_caster_not_in_candidates():
+    """When segment_caster doesn't match any candidate char_id, fall through."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    nia = CharState(id="2", atk=300, def_=80, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1003")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana, nia], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+        "56": {"res_id": "cs01_0473", "char_id": 2, "owner_id": 2, "skillEffs": [11]},
+    }
+    # segment_caster="99" (not Diana, not Nia)
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="99"
+    )
+    # Should fall through to path 5 (still ambiguous)
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path_6_single_owner_unaffected_by_tiebreaker():
+    """When path 6 already resolves cleanly (1 char_id), tiebreaker doesn't matter."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    from api.simulator.replay.harness import ReplayHarness
+
+    diana = CharState(id="1", atk=500, def_=100, hp=1, hp_current=1,
+                       cri=0.0, cri_dmg_rate=0, res_id="1061")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[diana], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {
+        "55": {"res_id": "cs01_0473", "char_id": 1, "owner_id": 1, "skillEffs": [10]},
+    }
+    # Even with segment_caster="999" (irrelevant), single char_id resolves
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        "unknown", state, skill_eff_id="cs01_0473_01", segment_caster="999"
+    )
+    assert path == 6
+    assert unit is diana
+
+
+# ---------------------------------------------------------------------------
+# Sprint 2i1 — Path 7: add_r_spark_* resolved via same-frame char hint
+# ---------------------------------------------------------------------------
+
+
+def _make_state_for_spark_resolve():
+    """BattleState with two player chars (res_id 1052, 1033) and one enemy."""
+    import random
+    from api.simulator.state import BattleState, CharState, MonsterState
+    nihilum = CharState(id="10", atk=600, def_=90, hp=1, hp_current=1,
+                        cri=0.0, cri_dmg_rate=0, res_id="1052")
+    diallos = CharState(id="11", atk=500, def_=80, hp=1, hp_current=1,
+                        cri=0.0, cri_dmg_rate=0, res_id="1033")
+    target = MonsterState(id="m", def_=0, hp=1, hp_current=1)
+    state = BattleState(turn=1, player_team=[nihilum, diallos], enemies=[target],
+                        hand=[], deck=[], discard=[], morale=0,
+                        ego_state={}, spark_state={}, cs_stacks={},
+                        rng=random.Random(0))
+    state.cs_map_raw = {}
+    return state
+
+
+def test_resolve_caster_path7_add_r_spark_resolved_via_frame_char_hint():
+    """Path 7: add_r_spark_* IDs resolve to the unique char that fired in the
+    same dev_msg frame, passed as frame_char_hint.  inferred must be False."""
+    state = _make_state_for_spark_resolve()
+    # frame_char_hint="1052" (Nihilum) fires in same frame as nihilum spark
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint="1052",
+    )
+    assert unit is not None
+    assert str(unit.res_id) == "1052"
+    assert inferred is False
+    assert path == 7
+
+
+def test_resolve_caster_path7_not_triggered_for_non_spark_ids():
+    """frame_char_hint must NOT affect non-spark IDs (cs*, eq_*, etc.).
+    Without other matches those IDs fall through to path 5."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="cs01_0473_01",
+        frame_char_hint="1052",
+    )
+    # path 6 and 4 both miss; should reach path 5 fallback
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path7_falls_through_when_hint_is_none():
+    """When frame_char_hint is None, path 7 is a no-op even for add_r_spark_* IDs."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint=None,
+    )
+    assert path == 5
+    assert inferred is True
+
+
+def test_resolve_caster_path7_falls_through_when_hint_not_in_state():
+    """When frame_char_hint doesn't match any unit, path 7 falls through."""
+    state = _make_state_for_spark_resolve()
+    unit, inferred, path = ReplayHarness._resolve_caster(
+        None, state, skill_eff_id="add_r_spark_nihilum_01_0",
+        frame_char_hint="9999",  # no such unit
+    )
+    assert path == 5
+    assert inferred is True

@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CZN eff_type catalog",
+  "description": "Per-eff_type descriptive metadata consumed by the simulator runtime.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "category", "trigger", "target_resolution", "effect", "stack_rule",
+      "params_used", "confidence", "observed_count", "client_instances",
+      "linked_conditions", "linked_cs_ids", "notes", "todos"
+    ],
+    "properties": {
+      "category": {
+        "type": ["string", "null"],
+        "enum": ["damage", "stat_mod", "card_control", "status", "cs_management", "shield", "heal", "meta", null]
+      },
+      "trigger": {
+        "type": ["string", "null"],
+        "enum": ["on_skill_use", "on_turn_start", "on_turn_end", "on_hit", "on_taken", "on_card_play", "passive", "on_kill", "on_low_hp", "manual", null]
+      },
+      "target_resolution": {
+        "type": ["string", "null"],
+        "enum": ["self", "selected_unit", "selected_card", "all_enemies", "all_allies", "random_enemy", "summoner", "team_average", "caster", null]
+      },
+      "effect": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "formula_ref"],
+        "properties": {
+          "kind": {
+            "type": ["string", "null"],
+            "enum": ["deal_damage", "modify_stat", "add_cs", "remove_cs", "add_shield", "heal_hp", "add_card", "discard_card", "draw_card", "move_card", "apply_status", "meta_action", "unknown", null]
+          },
+          "formula_ref": { "type": ["string", "null"] }
+        }
+      },
+      "stack_rule": {
+        "type": ["string", "null"],
+        "enum": ["instant", "stack_additive", "replace", "refresh_duration", "unique", "unknown", null]
+      },
+      "params_used": { "type": "array", "items": { "type": "string" } },
+      "confidence": {
+        "type": "string",
+        "enum": ["confirmed", "inferred_high", "inferred_low", "unknown"]
+      },
+      "observed_count": { "type": "integer", "minimum": 0 },
+      "client_instances": { "type": "integer", "minimum": 0 },
+      "linked_conditions": { "type": "array", "items": { "type": "string" } },
+      "linked_cs_ids": { "type": "array", "items": { "type": "string" } },
+      "notes": { "type": "string" },
+      "todos": { "type": "array", "items": { "type": "string" } }
+    }
+  }
+}

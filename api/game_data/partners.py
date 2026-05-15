@@ -782,6 +782,58 @@ PARTNER_CLASS_STATS = {
 }
 
 
+# Per-partner fixed flat stat additions sourced from partner_base@char_partner.json.
+# These are applied unconditionally on top of the level-scaled base stats.
+# Key: res_id (int), Value: {"atk": int, "def": int, "hp": int}
+PARTNER_DEFAULT_ADD: dict[int, dict] = {
+    20001: {"atk": 0,  "def": 6,  "hp": 0},
+    20002: {"atk": 0,  "def": 9,  "hp": 1},
+    20003: {"atk": 0,  "def": 6,  "hp": 0},
+    20004: {"atk": 27, "def": 0,  "hp": 1},
+    20005: {"atk": 0,  "def": 7,  "hp": 0},
+    20006: {"atk": 0,  "def": 7,  "hp": 0},
+    20007: {"atk": 16, "def": 0,  "hp": 0},
+    20008: {"atk": 19, "def": 0,  "hp": 0},
+    20009: {"atk": 0,  "def": 9,  "hp": 1},
+    20010: {"atk": 13, "def": 0,  "hp": 0},
+    20011: {"atk": 16, "def": 0,  "hp": 0},
+    20012: {"atk": 13, "def": 0,  "hp": 0},
+    20013: {"atk": 0,  "def": 5,  "hp": 0},
+    20014: {"atk": 19, "def": 0,  "hp": 0},
+    20015: {"atk": 13, "def": 0,  "hp": 0},
+    20016: {"atk": 13, "def": 0,  "hp": 0},
+    20019: {"atk": 19, "def": 0,  "hp": 0},
+    20021: {"atk": 27, "def": 0,  "hp": 1},
+    20023: {"atk": 0,  "def": 7,  "hp": 0},
+    20024: {"atk": 0,  "def": 6,  "hp": 0},
+    20025: {"atk": 16, "def": 0,  "hp": 0},
+    20026: {"atk": 0,  "def": 5,  "hp": 0},
+    20027: {"atk": 16, "def": 0,  "hp": 0},
+    20028: {"atk": 19, "def": 0,  "hp": 0},
+    20030: {"atk": 27, "def": 0,  "hp": 1},
+    20032: {"atk": 0,  "def": 6,  "hp": 0},
+    20033: {"atk": 16, "def": 0,  "hp": 0},
+    20034: {"atk": 27, "def": 0,  "hp": 1},
+    20035: {"atk": 16, "def": 0,  "hp": 0},
+    20036: {"atk": 16, "def": 0,  "hp": 0},
+    20037: {"atk": 27, "def": 0,  "hp": 1},
+    20038: {"atk": 27, "def": 0,  "hp": 1},
+    30044: {"atk": 27, "def": 0,  "hp": 1},
+    30045: {"atk": 27, "def": 0,  "hp": 1},
+    1058:  {"atk": 19, "def": 0,  "hp": 0},
+    30051: {"atk": 27, "def": 0,  "hp": 1},
+    30052: {"atk": 0,  "def": 9,  "hp": 1},
+    30054: {"atk": 0,  "def": 9,  "hp": 1},
+    30046: {"atk": 27, "def": 0,  "hp": 1},
+    30076: {"atk": 27, "def": 0,  "hp": 1},
+    30085: {"atk": 0,  "def": 9,  "hp": 1},
+    30091: {"atk": 0,  "def": 9,  "hp": 1},
+    1025:  {"atk": 27, "def": 0,  "hp": 1},
+    30053: {"atk": 27, "def": 0,  "hp": 1},
+    30094: {"atk": 27, "def": 0,  "hp": 1},
+}
+
+
 def get_partner(res_id: int) -> dict:
     """Get partner data by res_id, returning DEFAULT_PARTNER if not found."""
     return PARTNERS.get(res_id, DEFAULT_PARTNER)
@@ -807,13 +859,19 @@ def get_partner_base_stats(res_id: int) -> dict:
 
 def get_partner_stats(res_id: int, level: int) -> dict:
     """Calculate partner card stats based on level.
-    Stats scale linearly from base values to max at level 60."""
+    Stats scale linearly from base values to max at level 60, then
+    default_atk_add / default_def_add / default_hp_add from partner_base
+    are added unconditionally (these are fixed per-partner flat bonuses
+    loaded from partner_base@char_partner.json)."""
     base = get_partner_base_stats(res_id)
     scale = level / 60.0
+    # Per-partner default flat additions from partner_base@char_partner.json.
+    # These are independent of level and ascend.
+    default_add = PARTNER_DEFAULT_ADD.get(res_id, {"atk": 0, "def": 0, "hp": 0})
     return {
-        "atk": int(base["atk"] * scale),
-        "def": int(base["def"] * scale),
-        "hp": int(base["hp"] * scale),
+        "atk": int(base["atk"] * scale) + default_add["atk"],
+        "def": int(base["def"] * scale) + default_add["def"],
+        "hp": int(base["hp"] * scale) + default_add["hp"],
     }
 
 

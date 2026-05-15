@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, KeyboardEvent } from 'react'
 import { X, ChevronDown, Loader2 } from 'lucide-react'
 import { assetUrl } from '@/lib/api'
 
@@ -29,7 +29,9 @@ export function SetCombobox({
 }: SetComboboxProps) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const [highlightedIdx, setHighlightedIdx] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
 
   const filtered = options.filter(
     (o) =>
@@ -45,10 +47,53 @@ export function SetCombobox({
     }
     setQuery('')
     setOpen(false)
+    setHighlightedIdx(null)
   }
 
   function remove(id: string) {
     onChange(selected.filter((s) => s !== id))
+  }
+
+  function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (!open) {
+        setOpen(true)
+        setHighlightedIdx(filtered.length > 0 ? 0 : null)
+        return
+      }
+      if (filtered.length === 0) return
+      setHighlightedIdx((idx) => {
+        if (idx === null) return 0
+        return Math.min(idx + 1, filtered.length - 1)
+      })
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (!open) {
+        setOpen(true)
+        return
+      }
+      if (filtered.length === 0) return
+      setHighlightedIdx((idx) => {
+        if (idx === null || idx <= 0) return 0
+        return idx - 1
+      })
+    } else if (e.key === 'Enter') {
+      if (open && highlightedIdx !== null && filtered[highlightedIdx]) {
+        e.preventDefault()
+        add(filtered[highlightedIdx].id)
+      }
+    } else if (e.key === 'Escape') {
+      if (open) {
+        e.preventDefault()
+        setOpen(false)
+        setHighlightedIdx(null)
+      }
+    } else if (e.key === 'Tab') {
+      // Don't trap focus; just close the dropdown
+      setOpen(false)
+      setHighlightedIdx(null)
+    }
   }
 
   useEffect(() => {
@@ -58,11 +103,33 @@ export function SetCombobox({
         !containerRef.current.contains(e.target as Node)
       ) {
         setOpen(false)
+        setHighlightedIdx(null)
       }
     }
     document.addEventListener('pointerdown', onPointerDown)
     return () => document.removeEventListener('pointerdown', onPointerDown)
   }, [])
+
+  // Reset highlight when filter changes or dropdown reopens with new options
+  useEffect(() => {
+    setHighlightedIdx(null)
+  }, [query])
+
+  // Keep highlight within bounds if the filtered list shrinks
+  useEffect(() => {
+    if (highlightedIdx !== null && highlightedIdx >= filtered.length) {
+      setHighlightedIdx(filtered.length > 0 ? filtered.length - 1 : null)
+    }
+  }, [filtered.length, highlightedIdx])
+
+  // Scroll highlighted item into view
+  useEffect(() => {
+    if (highlightedIdx === null || !listRef.current) return
+    const el = listRef.current.children[highlightedIdx] as HTMLElement | undefined
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ block: 'nearest' })
+    }
+  }, [highlightedIdx])
 
   const atMax = selected.length >= maxSelect && maxSelect !== 99
   const inputDisabled = disabled || isLoading || (atMax && maxSelect > 1)
@@ -119,12 +186,19 @@ export function SetCombobox({
           type="text"
           role="combobox"
           aria-expanded={open}
+          aria-controls="setcombobox-listbox"
+          aria-activedescendant={
+            open && highlightedIdx !== null && filtered[highlightedIdx]
+              ? `setcombobox-option-${filtered[highlightedIdx].id}`
+              : undefined
+          }
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
             setOpen(true)
           }}
           onFocus={() => setOpen(true)}
+          onKeyDown={onKeyDown}
           disabled={inputDisabled}
           placeholder={
             atMax && maxSelect === 1
@@ -141,14 +215,25 @@ export function SetCombobox({
       </div>
 
       {open && !inputDisabled && filtered.length > 0 && (
-        <div role="listbox" className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#181818] border border-[#282828] rounded shadow-lg max-h-48 overflow-y-auto">
-          {filtered.map((opt) => (
+        <div
+          ref={listRef}
+          id="setcombobox-listbox"
+          role="listbox"
+          className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#181818] border border-[#282828] rounded shadow-lg max-h-48 overflow-y-auto"
+        >
+          {filtered.map((opt, idx) => (
             <button
               key={opt.id}
+              id={`setcombobox-option-${opt.id}`}
               type="button"
               role="option"
+              aria-selected={idx === highlightedIdx}
               onClick={() => add(opt.id)}
-              className="w-full text-left flex items-center gap-2 px-3 py-1.5 text-xs text-[#ffffff] hover:bg-[#282828] transition-colors"
+              onMouseEnter={() => setHighlightedIdx(idx)}
+              className={[
+                'w-full text-left flex items-center gap-2 px-3 py-1.5 text-xs text-[#ffffff] transition-colors',
+                idx === highlightedIdx ? 'bg-[#282828]' : 'hover:bg-[#282828]',
+              ].join(' ')}
             >
               {opt.icon_path && (
                 <img

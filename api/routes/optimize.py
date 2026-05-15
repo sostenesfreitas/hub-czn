@@ -4,6 +4,8 @@ from api.frozen_path import add_vribbels_to_path
 add_vribbels_to_path()
 
 import asyncio
+import json
+from pathlib import Path
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
@@ -37,6 +39,14 @@ class OptimizeStartRequest(BaseModel):
     allow_wildcards: bool = False
     min_priority_substats: int = Field(default=0, ge=0, le=4)
     stat_constraints: dict[str, float] | None = None
+    # Sprint 2f4: AvgDMG configuration knobs
+    target_def: int = Field(default=500, ge=0)
+    treat_target_as_weak: bool = False
+    # Sprint 2h3: AoE / multi-target modeling
+    # Sprint 2h9: 0 = auto-detect from char's best damage card's target_class
+    target_count: int = Field(default=1, ge=0, le=5)
+    # Sprint 2h6: DoT ticks knob
+    dot_ticks: int = Field(default=3, ge=1, le=10)
 
 
 def _format_results(results: list) -> list[dict]:
@@ -102,6 +112,22 @@ def optimize_sets():
     )
 
 
+@router.get("/optimize/monster-catalog")
+def optimize_monster_catalog():
+    """Sprint 2h1: returns the static monster catalog for the Optimizer
+    Monster Picker UI.
+
+    Catalog is built offline by scripts/build_monster_catalog.py from
+    client_db monster definitions. Returns a list of
+    {id, name, def, has_weak} dicts (sorted by DEF then name).
+    Returns an empty list when the catalog file is missing.
+    """
+    path = Path(__file__).resolve().parents[1] / "data" / "monster_catalog.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 @router.post("/optimize/start")
 async def optimize_start(body: OptimizeStartRequest):
     if not state.data_loaded:
@@ -129,6 +155,13 @@ async def optimize_start(body: OptimizeStartRequest):
         "allow_wildcards": body.allow_wildcards,
         "min_priority_substats": body.min_priority_substats,
         "stat_constraints": body.stat_constraints,
+        # Sprint 2f4: AvgDMG configuration knobs
+        "target_def": body.target_def,
+        "treat_target_as_weak": body.treat_target_as_weak,
+        # Sprint 2h3: AoE / multi-target modeling
+        "target_count": body.target_count,
+        # Sprint 2h6: DoT ticks knob
+        "dot_ticks": body.dot_ticks,
     }
 
     loop = asyncio.get_running_loop()

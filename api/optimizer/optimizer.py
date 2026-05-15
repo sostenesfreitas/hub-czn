@@ -18,6 +18,9 @@ from game_data import (
     get_partner_stats, get_partner_ascend_bonus, get_partner_passive_stats, get_potential_stat_bonus,
     SETS, SLOT_ORDER, ALL_STAT_NAMES
 )
+from game_data.scaling import get_char_base_stats
+from game_data.char_eff import best_damage_eff_for
+from optimizer.expected_damage import expected_damage, expected_dot_damage
 
 
 class GearOptimizer:
@@ -42,6 +45,13 @@ class GearOptimizer:
         self.priorities: dict[str, int] = {name: 0 for name in ALL_STAT_NAMES}
         self.char_weights: dict[str, dict[str, int]] = {}
         self.raw_data = {}
+        # Sprint 2f4: AvgDMG configuration knobs
+        self._config_target_def: int = 500
+        self._config_treat_target_as_weak: bool = False
+        # Sprint 2h3: AoE / multi-target modeling
+        self._config_target_count: int = 1
+        # Sprint 2h6: DoT ticks knob
+        self._config_dot_ticks: int = 3
 
     def load_data(self, filepath: str):
         """
@@ -278,14 +288,41 @@ class GearOptimizer:
             Dictionary with final stat values and derived stats (EHP, Avg DMG, etc.)
         """
         base_atk, base_def, base_hp, base_cr, base_cd = 0, 0, 0, 0, 125.0
+        # Sprint 2f5 Feature 3: base weak/EGO dmg rate (default 100 = no-op).
+        # Sourced alongside ATK/DEF/HP so the "treat target as weak" toggle
+        # downstream sees the real value (~125 for all live chars) instead of
+        # silently falling back to 100 via .get("base_weak_ego_dmg_rate", 100).
+        base_weak_ego_dmg_rate = 100.0
 
-        if char_name:
+        if char_name and char_name in self.character_info:
+            info = self.character_info[char_name]
+            res_id_str = str(info.res_id)
+            try:
+                scaled = get_char_base_stats(res_id_str, info.level, info.ascend)
+                base_atk = scaled["ATK"]
+                base_def = scaled["DEF"]
+                base_hp = scaled["HP"]
+                base_cr = scaled["CRate"]
+                base_cd = scaled["CDmg"]
+                base_weak_ego_dmg_rate = scaled.get("WeakEgoDmgRate", 100.0)
+            except KeyError:
+                # Unknown combatant_id — fall back to legacy hardcoded data
+                print(f"Warning: scaling data missing for res_id={res_id_str!r} ({char_name!r}), falling back to legacy CHARACTERS")
+                char_data = get_character_by_name(char_name)
+                base_atk = char_data.get("base_atk", 0)
+                base_def = char_data.get("base_def", 0)
+                base_hp = char_data.get("base_hp", 0)
+                base_cr = char_data.get("base_crit_rate", 0)
+                base_cd = char_data.get("base_crit_dmg", 125.0)
+                base_weak_ego_dmg_rate = char_data.get("base_weak_ego_dmg_rate", 100.0)
+        elif char_name:
             char_data = get_character_by_name(char_name)
             base_atk = char_data.get("base_atk", 0)
             base_def = char_data.get("base_def", 0)
             base_hp = char_data.get("base_hp", 0)
             base_cr = char_data.get("base_crit_rate", 0)
             base_cd = char_data.get("base_crit_dmg", 125.0)
+            base_weak_ego_dmg_rate = char_data.get("base_weak_ego_dmg_rate", 100.0)
 
         # Add friendship bonus and partner card stats
         friendship_atk, friendship_def, friendship_hp = 0, 0, 0
@@ -398,7 +435,44 @@ class GearOptimizer:
         total_cd = base_cd + crit_dmg
 
         ehp = total_hp * (total_def / 300 + 1)
-        avg_dmg = total_atk * (total_cr / 100) * (total_cd / 100)
+        # Sprint 2f4: expected damage with configurable target_def + optional weak_mult
+        eff_pct = best_damage_eff_for(char_name) if char_name else 100.0
+        target_def = getattr(self, "_config_target_def", None) or 500
+        if getattr(self, "_config_treat_target_as_weak", False) and char_name:
+            # Sprint 2f5: pull base_weak_ego_dmg_rate from the scaling-resolved
+            # value computed above. Pre-2f5 the lookup went via
+            # get_character_by_name() which never populated this field, so the
+            # toggle silently defaulted to 100 (no-op).
+            weak_mult = float(base_weak_ego_dmg_rate or 100.0) / 100.0
+        else:
+            weak_mult = 1.0
+        target_count_raw = getattr(self, "_config_target_count", None)
+        if target_count_raw is None or target_count_raw <= 0:
+            # Sprint 2h9: 0 (or None) is the "auto" sentinel — detect from
+            # char's best damage card's target_class.
+            from game_data.char_eff import best_damage_card_target_count
+            target_count = best_damage_card_target_count(char_name) if char_name else 1
+        else:
+            target_count = target_count_raw
+        avg_dmg_base = expected_damage(
+            atk=total_atk,
+            cri=total_cr,
+            cri_dmg_rate=total_cd,
+            eff_pct=eff_pct,
+            dummy_def=target_def,
+            weak_mult=weak_mult,
+            extra_dmg_pct=extra_dmg,  # Sprint 2h2: include Extra DMG%
+            target_count=target_count,  # Sprint 2h3
+        )
+        # Sprint 2h5: DoT damage contribution (separate damage source)
+        avg_dmg_dot = expected_dot_damage(
+            atk=total_atk,
+            dot_pct=dot_dmg,
+            ticks=getattr(self, "_config_dot_ticks", None) or 3,  # Sprint 2h6
+            target_count=target_count,
+            extra_dmg_pct=extra_dmg,
+        )
+        avg_dmg = avg_dmg_base + avg_dmg_dot
         max_cd = total_atk * (total_cd / 100)
         dmg_h = total_hp * (total_cd / 100)
 
@@ -435,6 +509,14 @@ class GearOptimizer:
             List of tuples: (gear_list, total_score, final_stats)
             Sorted by score (highest first), limited to max_results
         """
+        # Sprint 2f4: thread AvgDMG config from settings → instance attributes
+        self._config_target_def = int(settings.get("target_def", 500) or 500)
+        self._config_treat_target_as_weak = bool(settings.get("treat_target_as_weak", False))
+        # Sprint 2h3: thread target_count from settings
+        self._config_target_count = int(settings.get("target_count", 1) or 1)
+        # Sprint 2h6: thread dot_ticks from settings
+        self._config_dot_ticks = int(settings.get("dot_ticks", 3) or 3)
+
         stat_weights = settings.get("stat_weights")
 
         saved_scores = None

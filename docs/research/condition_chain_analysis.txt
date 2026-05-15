@@ -1,0 +1,69 @@
+=== Sprint 2h7 condition_triggered followup analysis ===
+Total ConditionTriggeredEvents: 134949
+  followed by SkillEffEvent: 11985 (8.9%)
+  followed by other event:   122927
+  no next event:             37
+
+Per-capture breakdown:
+  websocket_debug_20260511_100845.jsonl: 4294 conditions, 439 followed by skill_eff (10.2%)
+  websocket_debug_20260510_154057.jsonl: 38506 conditions, 3523 followed by skill_eff (9.1%)
+  websocket_debug_20260509_111039.jsonl: 67474 conditions, 5351 followed by skill_eff (7.9%)
+  websocket_debug_20260505_104037.jsonl: 24675 conditions, 2672 followed by skill_eff (10.8%)
+
+Next-event type distribution (immediately after ConditionTriggered):
+  99710  ConditionTriggeredEvent
+  16671  TimingEvent
+  11985  SkillEffEvent
+   6177  StackAddEvent
+    230  UsedCardEvent
+    139  SegmentEndEvent
+     37  None
+
+Of conditions followed by SkillEff:
+  dispatched: 9175 (76.6%)
+  undispatched: 2810
+  follow-up status distribution: {'dispatched': 9175, 'missing': 786, 'no_target': 2024}
+
+Top follow-up eff_types:
+   4555  SKILL_EFF_CS_SET_ADD_IGNORE_COND
+   3497  SKILL_EFF_CS_SET_ADD
+    615  SKILL_EFF_CS_SET_ADD_AUTO
+    437  SKILL_EFF_CARD_MOVE_TO
+    330  SKILL_EFF_CARD_GET
+    287  SKILL_EFF_SHIELD_IGNORE_COND
+    280  SKILL_EFF_CARD_DRAW
+    261  SKILL_EFF_CURE_IGNORE_COND
+    230  SKILL_EFF_CARD_DISCARD
+    217  SKILL_EFF_SHIELD
+    214  SKILL_EFF_DMG
+    195  SKILL_EFF_DMG_IGNORE_COND
+    165  SKILL_EFF_TRIGGER_INSPIRATION
+    119  SKILL_EFF_STRESS_ADD
+     90  SKILL_EFF_CARD_TALENT_ADD
+
+Top condition->eff_type pairs:
+   2037  cu_usr_icre_ge01                                   -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+   1180  cu_usr_icre_ge01                                   -> SKILL_EFF_CS_SET_ADD
+    397  cu_set_cs01_1085_01                                -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    351  cc_set_upr_han_tel_exhaust_1                       -> SKILL_EFF_CARD_MOVE_TO
+    341  cu_usr_givedmg_01                                  -> SKILL_EFF_CS_SET_ADD
+    321  cu_usr_icre_ge01                                   -> SKILL_EFF_CS_SET_ADD_AUTO
+    272  cc_set_upr_han_tel_exhaust_1                       -> SKILL_EFF_CS_SET_ADD
+    272  cc_use_1                                           -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    245  cc_set_upr_han_tel_exhaust_1                       -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    240  cu_tv_changed_cs01_0798_01                         -> SKILL_EFF_CS_SET_ADD
+    190  cc_set_upr_dis_tel_exhaust_1                       -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    181  cu_icre_cs03_0266_eq03                             -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+    176  cu_usr_icre_ge01                                   -> SKILL_EFF_SHIELD_IGNORE_COND
+    162  cc_set_self_han_atk_1                              -> SKILL_EFF_CS_SET_ADD
+    139  cc_use_1055_cre1_1055_cre2_1                       -> SKILL_EFF_CS_SET_ADD_IGNORE_COND
+
+Sample condition->skill_eff_id pairs (first 8):
+  cond=cu_usr_icre_ge01                         seid=30053_c2_lv1_01_01                       type=SKILL_EFF_CS_SET_ADD_IGNORE_COND status=dispatched
+  cond=cu_usr_icre_ge01                         seid=cs02_0699_01                             type=SKILL_EFF_CS_SET_ADD           status=dispatched
+  cond=cu_usr_icre_ge01                         seid=rr_lux_01_01_01                          type=SKILL_EFF_DMG_IGNORE_COND      status=dispatched
+  cond=cc_set_ab_00012_han_1                    seid=eq_p_nih_005_01_02                       type=SKILL_EFF_CARD_DRAW            status=dispatched
+  cond=cc_set_ab_00012_han_1                    seid=cs01_1084_01                             type=SKILL_EFF_CS_SET_ADD_IGNORE_COND status=dispatched
+  cond=cu_set_cs01_1085_01                      seid=cs06_0166_03                             type=SKILL_EFF_CS_SET_ADD_IGNORE_COND status=missing
+  cond=cu_usr_icre_ge01                         seid=cs06_0157_01                             type=SKILL_EFF_CS_SET_ADD           status=dispatched
+  cond=cu_set_icre_cs06_0155_01                 seid=30094_c1_lv5_01_01                       type=SKILL_EFF_CS_SET_ADD_IGNORE_COND status=dispatched
