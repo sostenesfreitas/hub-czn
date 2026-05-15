@@ -337,10 +337,23 @@ export function useDeckBuilder() {
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>(() => loadSavedDecks())
   const [selectedSavedDeckId, setSelectedSavedDeckId] = useState<string | null>(null)
 
+  // The sidecar API may not be reachable yet when the deck builder is the first
+  // page opened: the dynamic port resolves asynchronously (useApiPort) and the
+  // PyInstaller sidecar is slow to boot. Poll status until the API responds,
+  // then gate the characters query on it — mirrors OptimizerPanel's pattern.
+  // Without this gate the query fires too early, fails (retry: 1), and stays
+  // empty until the page is remounted.
+  const { data: status } = useQuery({
+    queryKey: ['status'],
+    queryFn: () => api.status(),
+    refetchInterval: 5_000,
+  })
+
   const { data: characters = [], isLoading: loadingCharacters } = useQuery<CardCharacter[]>({
     queryKey: ['deck-builder-card-characters'],
     queryFn: () => api.cardCharacters(),
     staleTime: Infinity,
+    enabled: !!status,
   })
 
   const slotBuildCosts = squad.map(calculateDeckBuilderSlotCost)
@@ -921,7 +934,9 @@ export function useDeckBuilder() {
   return {
     squad,
     characters,
-    isLoading: loadingCharacters,
+    // Show the loading state while the API status poll is still pending too,
+    // otherwise the columns flash empty before the characters query is enabled.
+    isLoading: loadingCharacters || !status,
     totalCards,
     totalCost,
     selectedCombatants,
