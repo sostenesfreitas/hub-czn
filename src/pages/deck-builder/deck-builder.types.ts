@@ -2,6 +2,7 @@ import type {
   CardEntry,
   DeckBuilderCard as ApiDeckBuilderCard,
 } from '@/lib/types'
+import type { LocalizedText } from '@/pages/encyclopedia/encyclopedia.types'
 
 export type DeckBuilderEpiphanyVariant = {
   variant_id: string
@@ -132,7 +133,7 @@ export type DeckCardInstance = {
   tags: string[]
 }
 
-export type LocalizedText = { en: string; 'pt-BR': string }
+export type { LocalizedText }
 
 export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'
 
