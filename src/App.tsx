@@ -14,7 +14,11 @@ import { AboutPage } from './pages/about/AboutPage'
 import { HomePage } from './pages/home/HomePage'
 import { ScoringPage } from './pages/scoring/ScoringPage'
 import { SimulatorPage } from './pages/simulator/SimulatorPage'
-import { CardsPage } from './pages/cards/CardsPage'
+import { EncyclopediaPage } from './pages/encyclopedia/EncyclopediaPage'
+import { CardsTab } from './pages/encyclopedia/components/CardsTab'
+import { EquipmentsTab } from './pages/encyclopedia/components/EquipmentsTab'
+import { EngravingsTab } from './pages/encyclopedia/components/EngravingsTab'
+import { GlossaryTab } from './pages/encyclopedia/components/GlossaryTab'
 import { BattlePage } from './pages/battle/BattlePage'
 import { DeckBuilderPage } from './pages/deck-builder/DeckBuilderPage'
 
@@ -41,7 +45,14 @@ function AppRoutes() {
           <Route path="fragments"  element={<FragmentsPage />} />
           <Route path="combatants" element={<CombatantsPage />} />
           <Route path="scoring"    element={<ScoringPage />} />
-          <Route path="cards"      element={<CardsPage />} />
+          <Route path="encyclopedia" element={<EncyclopediaPage />}>
+            <Route index element={<Navigate to="cards" replace />} />
+            <Route path="cards"      element={<CardsTab />} />
+            <Route path="equipments" element={<EquipmentsTab />} />
+            <Route path="engravings" element={<EngravingsTab />} />
+            <Route path="glossary"   element={<GlossaryTab />} />
+          </Route>
+          <Route path="cards" element={<Navigate to="/encyclopedia/cards" replace />} />
           <Route path="deck-builder" element={<DeckBuilderPage />} />
           <Route path="simulator"  element={<SimulatorPage />} />
           <Route path="capture"    element={<CapturePage />} />
