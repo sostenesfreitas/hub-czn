@@ -56,6 +56,7 @@ export function EngravingsTab() {
         <input
           type="search"
           placeholder={t('encyclopedia.search')}
+          aria-label={t('encyclopedia.search')}
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="w-full rounded border border-[#333] bg-[#222] px-2 py-1.5 text-xs text-[#e5e7eb] placeholder:text-[#555]"

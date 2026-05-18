@@ -21,6 +21,8 @@ export function GlossaryTab() {
     )
   }, [search, lang])
 
+  const filteredIds = useMemo(() => new Set(filtered.map(e => e.id)), [filtered])
+
   return (
     <div className="h-full overflow-y-auto">
       <div className="mx-auto flex max-w-2xl flex-col gap-4 p-6">
@@ -32,6 +34,7 @@ export function GlossaryTab() {
         <input
           type="search"
           placeholder={t('encyclopedia.search')}
+          aria-label={t('encyclopedia.search')}
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="w-full rounded border border-[#333] bg-[#222] px-2 py-1.5 text-xs text-[#e5e7eb] placeholder:text-[#555]"
@@ -59,31 +62,35 @@ export function GlossaryTab() {
                   <p className="mt-1 text-xs leading-relaxed text-[#d4d4d4]">
                     {localized(entry.definition, lang)}
                   </p>
-                  {entry.seeAlso.length > 0 && (
-                    <p className="mt-2 text-[10px] text-[#666]">
-                      {t('encyclopedia.glossary.seeAlso')}:{' '}
-                      {entry.seeAlso.map((ref, i) => {
-                        const target = glossaryById.get(ref)
-                        if (!target) return null
-                        return (
-                          <span key={ref}>
-                            {i > 0 && ', '}
-                            <button
-                              type="button"
-                              onClick={() =>
-                                document
-                                  .getElementById(`glossary-${ref}`)
-                                  ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                              }
-                              className="cursor-pointer border-none bg-transparent p-0 text-[#c084fc] underline decoration-dotted hover:text-[#d8b4fe]"
-                            >
-                              {localized(target.term, lang)}
-                            </button>
-                          </span>
-                        )
-                      })}
-                    </p>
-                  )}
+                  {(() => {
+                    const visibleRefs = entry.seeAlso.filter(ref => filteredIds.has(ref))
+                    if (visibleRefs.length === 0) return null
+                    return (
+                      <p className="mt-2 text-[10px] text-[#666]">
+                        {t('encyclopedia.glossary.seeAlso')}:{' '}
+                        {visibleRefs.map((ref, i) => {
+                          const target = glossaryById.get(ref)
+                          if (!target) return null
+                          return (
+                            <span key={ref}>
+                              {i > 0 && ', '}
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  document
+                                    .getElementById(`glossary-${ref}`)
+                                    ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                                }
+                                className="cursor-pointer border-none bg-transparent p-0 text-[#c084fc] underline decoration-dotted hover:text-[#d8b4fe]"
+                              >
+                                {localized(target.term, lang)}
+                              </button>
+                            </span>
+                          )
+                        })}
+                      </p>
+                    )
+                  })()}
                 </div>
               ))}
             </section>

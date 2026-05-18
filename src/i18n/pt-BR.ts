@@ -348,8 +348,6 @@ const ptBR = {
     engravings: {
       eidolon: 'Eidolon',
       cardType: 'Tipo de carta',
-      class: 'Classe',
-      modifiers: 'Modificadores',
       classes: 'Classes',
     },
     glossary: {

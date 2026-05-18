@@ -348,8 +348,6 @@ const en = {
     engravings: {
       eidolon: 'Eidolon',
       cardType: 'Card type',
-      class: 'Class',
-      modifiers: 'Modifiers',
       classes: 'Classes',
     },
     glossary: {
