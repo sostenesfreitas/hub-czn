@@ -132,23 +132,25 @@ export type DeckCardInstance = {
   tags: string[]
 }
 
+export type LocalizedText = { en: string; 'pt-BR': string }
+
 export type DeckBuilderItemSlot = 'weapon' | 'armor' | 'accessory'
 
 export type DeckBuilderItem = {
   id: string
-  image_id: string
-  slug: string
+  image_id?: string
+  slug?: string
   name: string
   rarity: string
   slot: 'Weapon' | 'Armor' | 'Accessory' | string
   raw_slot?: string
   original_slot?: string
   tags: string[]
-  description: string
-  stat_type: string | null
-  stat_values: number[]
-  source: string
-  sources: string[]
+  description: LocalizedText
+  stat_type?: string | null
+  stat_values?: number[]
+  source?: string
+  sources?: string[]
   image_path: string
 }
 

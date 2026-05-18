@@ -66,7 +66,7 @@ describe('clarification content', () => {
   })
 
   it('findClarification returns the entry for a known key and undefined otherwise', () => {
-    expect(findClarification('equipment', 'item_0003')).toBeDefined()
+    expect(findClarification('equipment', 'eq_p_inv_003')).toBeDefined()
     expect(findClarification('equipment', 'no-such-id')).toBeUndefined()
   })
 })

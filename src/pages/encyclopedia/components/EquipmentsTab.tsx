@@ -20,7 +20,7 @@ function ClarifiedDescription({ item }: { item: DeckBuilderItem }) {
   const clar = findClarification('equipment', item.id)
 
   if (!clar) {
-    return <RichDescription text={item.description} className="text-xs leading-relaxed text-[#d4d4d4]" />
+    return <RichDescription text={item.description[lang]} className="text-xs leading-relaxed text-[#d4d4d4]" />
   }
   return (
     <div className="flex flex-col gap-2">
@@ -34,7 +34,7 @@ function ClarifiedDescription({ item }: { item: DeckBuilderItem }) {
         <p className="text-[10px] font-bold uppercase tracking-wide text-[#555]">
           {t('encyclopedia.gameText')}
         </p>
-        <p className="text-xs leading-relaxed text-[#777]">{item.description}</p>
+        <p className="text-xs leading-relaxed text-[#777]">{item.description[lang]}</p>
       </div>
     </div>
   )
@@ -129,7 +129,7 @@ export function EquipmentsTab() {
               <ClarifiedDescription item={selected} />
             </div>
 
-            {selected.stat_type && selected.stat_values.length > 0 && (
+            {selected.stat_type && selected.stat_values?.length ? (
               <div>
                 <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#666]">
                   {t('encyclopedia.equipments.stat')} · {selected.stat_type}
@@ -146,11 +146,13 @@ export function EquipmentsTab() {
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
 
-            <p className="text-xs text-[#666]">
-              {t('encyclopedia.equipments.source')}: {selected.source}
-            </p>
+            {selected.source && (
+              <p className="text-xs text-[#666]">
+                {t('encyclopedia.equipments.source')}: {selected.source}
+              </p>
+            )}
           </div>
         )}
       </div>

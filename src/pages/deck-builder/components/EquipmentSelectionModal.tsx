@@ -14,6 +14,7 @@ import {
   getDeckBuilderItemsBySlot,
   getItemRarityClassName,
 } from '../deck-builder-items.utils'
+import { resolveLang } from '@/pages/encyclopedia/encyclopedia.utils'
 
 const RARITIES = ['All', 'Rare', 'Legendary', 'Unique'] as const
 const PAGE_SIZE = 12
@@ -35,7 +36,8 @@ function EquipmentCard({
   selected: boolean
   onSelect: () => void
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = resolveLang(i18n.language)
   const imageUrl = getDeckBuilderItemImageUrl(item)
   const statText = getStatText(item)
 
@@ -81,7 +83,7 @@ function EquipmentCard({
         </div>
 
         <p className="mt-2 line-clamp-3 text-[11px] leading-relaxed text-[#c7c7d1]">
-          {item.description}
+          {item.description[lang]}
         </p>
 
         <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px]">
@@ -91,9 +93,11 @@ function EquipmentCard({
             </span>
           )}
 
-          <span className="text-[#888]">
-            {t('deckBuilder.source')}: <span className="text-[#ddd]">{item.source}</span>
-          </span>
+          {item.source && (
+            <span className="text-[#888]">
+              {t('deckBuilder.source')}: <span className="text-[#ddd]">{item.source}</span>
+            </span>
+          )}
         </div>
       </div>
     </button>
@@ -111,7 +115,8 @@ export function EquipmentSelectionModal({
   onClose: () => void
   onSelect: (item: DeckBuilderItem) => void
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = resolveLang(i18n.language)
   const [search, setSearch] = useState('')
   const [rarity, setRarity] = useState<(typeof RARITIES)[number]>('All')
   const [source, setSource] = useState('All')
@@ -121,7 +126,9 @@ export function EquipmentSelectionModal({
   const items = getDeckBuilderItemsBySlot(slot)
 
   const sources = useMemo(() => {
-    const values = items.flatMap(item => item.sources?.length ? item.sources : [item.source])
+    const values = items.flatMap(item =>
+      item.sources?.length ? item.sources : item.source ? [item.source] : [],
+    )
 
     return ['All', ...Array.from(new Set(values)).sort()]
   }, [items])
@@ -133,8 +140,8 @@ export function EquipmentSelectionModal({
       const matchesSearch =
         !normalizedSearch ||
         item.name.toLowerCase().includes(normalizedSearch) ||
-        item.description.toLowerCase().includes(normalizedSearch) ||
-        item.source.toLowerCase().includes(normalizedSearch)
+        item.description[lang].toLowerCase().includes(normalizedSearch) ||
+        (item.source ?? '').toLowerCase().includes(normalizedSearch)
 
       const matchesRarity = rarity === 'All' || item.rarity === rarity
 
@@ -145,7 +152,7 @@ export function EquipmentSelectionModal({
 
       return matchesSearch && matchesRarity && matchesSource
     })
-  }, [items, rarity, search, source])
+  }, [items, lang, rarity, search, source])
 
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
