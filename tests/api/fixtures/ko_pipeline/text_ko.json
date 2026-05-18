@@ -1,0 +1,8 @@
+[
+  { "id": "relic@name@eq_test_w1", "text": "테스트 무기" },
+  { "id": "relic@s1_description@eq_test_w1", "text": "치명타 시 <cc>50</>% 확률로 $고통$ <cc>#rev_0_0#</>" },
+  { "id": "relic@name@eq_test_a1", "text": "테스트 방어구" },
+  { "id": "relic@desc@eq_test_a1", "text": "턴 시작 시 $고정 실드$ #rev_0_0#%" },
+  { "id": "relic@name@eq_test_relic", "text": "테스트 유물" },
+  { "id": "relic@desc@eq_test_relic", "text": "사용 안 함" }
+]

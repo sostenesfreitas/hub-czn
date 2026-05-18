@@ -1,0 +1,1807 @@
+[
+  {
+    "id": "eq_p_inv_001",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1081",
+    "name": {
+      "en": "Twin Swords of Great and Lesser Evil",
+      "pt-BR": "대악과 소악 쌍수검"
+    },
+    "desc_en": "Increase Damage Amount by X% against targets in a Ravaged state",
+    "desc_ko": "격파 상태인 대상에게 피해량 X% 증가",
+    "jargon_en": [
+      "Ravage"
+    ],
+    "jargon_ko": [
+      "격파"
+    ]
+  },
+  {
+    "id": "eq_p_inv_002",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1082",
+    "name": {
+      "en": "Shell Bug Horn",
+      "pt-BR": "갑각충의 뿔"
+    },
+    "desc_en": "+20% Critical Damage",
+    "desc_ko": "치명피해 +20%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_inv_003",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1083",
+    "name": {
+      "en": "Abyssal Bug Tooth",
+      "pt-BR": "나락충의 이빨"
+    },
+    "desc_en": "On Critical Hit, 50% chance to X Agony",
+    "desc_ko": "치명타 시 대상에게 50% 확률로 고통 X",
+    "jargon_en": [
+      "Agony"
+    ],
+    "jargon_ko": [
+      "고통"
+    ]
+  },
+  {
+    "id": "eq_p_inv_004",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1141_6",
+    "name": {
+      "en": "The Destruction of Erysichthon",
+      "pt-BR": "에리식톤의 파멸"
+    },
+    "desc_en": "When an Attack Card is used, 5% chance to add 1 Hit",
+    "desc_ko": "공격 카드 사용 시 5% 확률로 타격 1회 추가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_inv_005",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0063",
+    "name": {
+      "en": "Growing Carapace",
+      "pt-BR": "자라나는 갑각"
+    },
+    "desc_en": "At the start of the turn, gain X% Fixed Shield",
+    "desc_ko": "턴 시작 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_inv_006",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1143_6",
+    "name": {
+      "en": "Dance of the Night Butterflies",
+      "pt-BR": "밤나비의 춤"
+    },
+    "desc_en": "On Ravage, X% Fixed Shield",
+    "desc_ko": "격파 시 고정 실드 X%",
+    "jargon_en": [
+      "Ravage",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "격파",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_inv_007",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1143",
+    "name": {
+      "en": "Wings of the Swarm",
+      "pt-BR": "군체의 날개"
+    },
+    "desc_en": "At the start of battle, X Immunity",
+    "desc_ko": "전투 시작 시 면역 X",
+    "jargon_en": [
+      "Immunity"
+    ],
+    "jargon_ko": [
+      "면역"
+    ]
+  },
+  {
+    "id": "eq_p_inv_008",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1140",
+    "name": {
+      "en": "Pulsating Egg",
+      "pt-BR": "고동치는 알"
+    },
+    "desc_en": "+15% Attack, +X% Max HP",
+    "desc_ko": "공격력 +15%, 최대 체력 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_inv_009",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1144_6",
+    "name": {
+      "en": "Natural Predator",
+      "pt-BR": "선천적 포식자"
+    },
+    "desc_en": "On Ravage, +X% Damage to next 1 Attack Card used",
+    "desc_ko": "격파 시 다음 사용하는 공격 카드 1장의 피해량 +X%",
+    "jargon_en": [
+      "Ravage"
+    ],
+    "jargon_ko": [
+      "격파"
+    ]
+  },
+  {
+    "id": "eq_p_inv_010",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1176",
+    "name": {
+      "en": "Voracious Swarm",
+      "pt-BR": "포식하는 군체"
+    },
+    "desc_en": "When taking Damage, X Agony on the attacker",
+    "desc_ko": "피해를 받을 시 공격자에게 고통 X",
+    "jargon_en": [
+      "Agony"
+    ],
+    "jargon_ko": [
+      "고통"
+    ]
+  },
+  {
+    "id": "eq_p_dll_001",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1095",
+    "name": {
+      "en": "Cavalry of Lightning",
+      "pt-BR": "전격의 기병창"
+    },
+    "desc_en": "When dealing Damage to a target with Shield, +X% Damage to the next Attack Card",
+    "desc_ko": "실드 보유 대상에게 피해를 줄 시 다음 사용하는 공격 카드의 피해량 +X%",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_p_dll_002",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1096",
+    "name": {
+      "en": "Radiant Orb",
+      "pt-BR": "광휘로운 보주"
+    },
+    "desc_en": "Increase Damage Amount by X% against targets holding Shield",
+    "desc_ko": "실드 보유 대상에게 피해량 X% 증가",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_p_dll_004",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1094",
+    "name": {
+      "en": "Consecrated Halo",
+      "pt-BR": "축성된 광륜"
+    },
+    "desc_en": "Increase Shield Gain Amount by X%",
+    "desc_ko": "실드 획득량 X% 증가",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_p_dll_005",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1179",
+    "name": {
+      "en": "Wings of Light",
+      "pt-BR": "빛의 날개"
+    },
+    "desc_en": "When Ego Points are 3 or lower, 0.2 Ego Points on Critical Hit",
+    "desc_ko": "에고 포인트 3 이하라면 치명타 시 에고 포인트 0.2 획득",
+    "jargon_en": [
+      "Ego Points"
+    ],
+    "jargon_ko": [
+      "에고 포인트"
+    ]
+  },
+  {
+    "id": "eq_p_dll_006",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1181",
+    "name": {
+      "en": "Ring of the Seraphim",
+      "pt-BR": "천사의 고리"
+    },
+    "desc_en": "When an Upgrade Card is used, +X% Damage Amount for 1 turn",
+    "desc_ko": "강화 카드 사용 시 1턴간 피해량 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_dll_007",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0002",
+    "name": {
+      "en": "Lead-Colored Holy Water",
+      "pt-BR": "납빛 성수"
+    },
+    "desc_en": "On Ravage, X Impair to the target",
+    "desc_ko": "격파 시 대상에게 손상 X",
+    "jargon_en": [
+      "Ravage",
+      "Impair"
+    ],
+    "jargon_ko": [
+      "격파",
+      "손상"
+    ]
+  },
+  {
+    "id": "eq_p_dll_008",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1097",
+    "name": {
+      "en": "Eye of the Punisher",
+      "pt-BR": "징벌자의 눈"
+    },
+    "desc_en": "If the enemy is alone, increase damage by X%",
+    "desc_ko": "적이 혼자라면 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_dll_009",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1099",
+    "name": {
+      "en": "Viadeus’s Reactor",
+      "pt-BR": "비아데우스 원자로"
+    },
+    "desc_en": "When an Upgrade Card is used, X Damage Reduction",
+    "desc_ko": "강화 카드 사용 시 피해 감소 X",
+    "jargon_en": [
+      "Damage Reduction"
+    ],
+    "jargon_ko": [
+      "피해 감소"
+    ]
+  },
+  {
+    "id": "eq_p_dll_010",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1180",
+    "name": {
+      "en": "The Golden Rule",
+      "pt-BR": "황금률"
+    },
+    "desc_en": "+X% Damage Amount, +X Shield gain",
+    "desc_ko": "피해량 +X%, 실드 획득량 +X%",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_p_nih_001",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0040",
+    "name": {
+      "en": "Foggy Crystal Ball",
+      "pt-BR": "안개 낀 수정구"
+    },
+    "desc_en": "Increase Damage Amount of Attack Cards with a Cost of 0 by X%",
+    "desc_ko": "비용 0인 공격 카드의 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_nih_002",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1088",
+    "name": {
+      "en": "Unexploded Plasma Bomber",
+      "pt-BR": "불발된 플라즈마 봄버"
+    },
+    "desc_en": "When a card is Exhausted, X% Fixed Damage on a random enemy",
+    "desc_ko": "카드 소멸 시 무작위 적 고정 피해 X%",
+    "jargon_en": [
+      "Exhausted",
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "소멸",
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_p_nih_003",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1092",
+    "name": {
+      "en": "Blood Giant Claw",
+      "pt-BR": "블러드 자이언트 클로"
+    },
+    "desc_en": "On Ravage, X% Fixed Damage to the target",
+    "desc_ko": "격파 시 대상에게 고정 피해 X%",
+    "jargon_en": [
+      "Ravage",
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "격파",
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_p_nih_004",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1089",
+    "name": {
+      "en": "Regenerative Ribcage",
+      "pt-BR": "재생형 늑골"
+    },
+    "desc_en": "Max HP +X%",
+    "desc_ko": "최대 체력 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_nih_005",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1093",
+    "name": {
+      "en": "Fragment of the Empty Void",
+      "pt-BR": "텅 빈 공허의 파편"
+    },
+    "desc_en": "At the start of battle, Discard up to 3 cards, Draw equal to the number",
+    "desc_ko": "전투 시작 시 3장까지 버리기, 그 수만큼 드로우",
+    "jargon_en": [
+      "Discard",
+      "Draw"
+    ],
+    "jargon_ko": [
+      "버리기",
+      "드로우"
+    ]
+  },
+  {
+    "id": "eq_p_nih_006",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1183",
+    "name": {
+      "en": "Gluttonous Tailcoat",
+      "pt-BR": "게걸스러운 연미복"
+    },
+    "desc_en": "At the start of the next turn after taking Damage, X% Fixed Shield",
+    "desc_ko": "피해를 받은 다음 턴 시작 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_nih_007",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1040",
+    "name": {
+      "en": "Eye of the Eyeless",
+      "pt-BR": "눈 없는 것들의 눈동자"
+    },
+    "desc_en": "Increase damage of Basic attack cards by X%",
+    "desc_ko": "기본 공격 카드의 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_nih_008",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1090",
+    "name": {
+      "en": "Palasia’s Orb",
+      "pt-BR": "팔라시아의 구슬"
+    },
+    "desc_en": "When Vulnerable is applied by a card, also X Weaken to the target",
+    "desc_ko": "카드로 취약 부여 시 대상에게 약화 X",
+    "jargon_en": [
+      "Vulnerable",
+      "Weaken"
+    ],
+    "jargon_ko": [
+      "취약",
+      "약화"
+    ]
+  },
+  {
+    "id": "eq_p_nih_009",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1132",
+    "name": {
+      "en": "Torch That Should Not Be Extinguished",
+      "pt-BR": "꺼져서는 안 되는 등불"
+    },
+    "desc_en": "If you have Shield at the start of turn, X% Fixed Shield",
+    "desc_ko": "실드 보유하고 턴 시작 시 고정 실드 X%",
+    "jargon_en": [
+      "Shield",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "실드",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_sec_001",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1186",
+    "name": {
+      "en": "Dagger That Tricked the Shadow",
+      "pt-BR": "그림자를 속인 단검"
+    },
+    "desc_en": "+12% Critical Damage",
+    "desc_ko": "치명피해 +12%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_002",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1187",
+    "name": {
+      "en": "Sword Reflected in the Lake",
+      "pt-BR": "호수에 비친 검"
+    },
+    "desc_en": "When there are 6 or more cards in hand, increase Damage Amount by X%",
+    "desc_ko": "핸드의 카드가 6장 이상일 시 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_003",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1191",
+    "name": {
+      "en": "Sun-Setting Bow",
+      "pt-BR": "해를 떨어트린 활"
+    },
+    "desc_en": "Increase Damage Amount of Attack Cards with a Cost of 2 or higher by X% (1 time per turn)",
+    "desc_ko": "비용이 2 이상인 공격 카드의 피해량 X% 증가 (턴당 1회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_004",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1114",
+    "name": {
+      "en": "Immortal Scale",
+      "pt-BR": "불멸의 비늘"
+    },
+    "desc_en": "When gaining Counterattack by an ability, add X Counterattack",
+    "desc_ko": "능력으로 반격 획득 시 반격 X 추가",
+    "jargon_en": [
+      "Counterattack"
+    ],
+    "jargon_ko": [
+      "반격"
+    ]
+  },
+  {
+    "id": "eq_p_sec_005",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1189",
+    "name": {
+      "en": "Star-Lit Cloak",
+      "pt-BR": "별빛 서린 망토"
+    },
+    "desc_en": "Decrease Damage Taken by X% (1 time per turn)",
+    "desc_ko": "받는 피해량 X% 감소 (턴당 1회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_006",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1062",
+    "name": {
+      "en": "Fairy King’s Crown",
+      "pt-BR": "요정왕의 관"
+    },
+    "desc_en": "+6% Critical Chance",
+    "desc_ko": "치명확률 +6%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_007",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1115",
+    "name": {
+      "en": "Mask of Flames",
+      "pt-BR": "불꽃의 가면"
+    },
+    "desc_en": "Increase damage dealt to Vulnerable targets by X%",
+    "desc_ko": "취약 대상에게 피해량 X% 증가",
+    "jargon_en": [
+      "Vulnerable"
+    ],
+    "jargon_ko": [
+      "취약"
+    ]
+  },
+  {
+    "id": "eq_p_sec_008",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1113",
+    "name": {
+      "en": "Bone Ring of Wildfire",
+      "pt-BR": "들불 품은 뼈 가락지"
+    },
+    "desc_en": "When an Upgrade Card is used, +X% Damage Amount for 1 turn",
+    "desc_ko": "강화 카드 사용 시 1턴간 피해량 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_sec_009",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1112",
+    "name": {
+      "en": "Dormant Seeds",
+      "pt-BR": "동면하는 씨앗"
+    },
+    "desc_en": "When Shield is gained through a card, X% Fixed Shield (1 time per turn)",
+    "desc_ko": "카드로 실드 획득 시 고정 실드 X% (턴당 1회)",
+    "jargon_en": [
+      "Shield",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "실드",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_sec_010",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1116",
+    "name": {
+      "en": "Call of the Ancient Spirit",
+      "pt-BR": "고대 영혼의 부름"
+    },
+    "desc_en": "On Critical Hit, Heal X%",
+    "desc_ko": "치명타 시 치유 X%",
+    "jargon_en": [
+      "Heal"
+    ],
+    "jargon_ko": [
+      "치유"
+    ]
+  },
+  {
+    "id": "eq_p_var_001",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1118",
+    "name": {
+      "en": "Dark Grip’s Claws",
+      "pt-BR": "어둠 손아귀의 손톱"
+    },
+    "desc_en": "Increase Damage Amount of All-Target Attacks by X%",
+    "desc_ko": "전체 공격의 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_p_var_002",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1120",
+    "name": {
+      "en": "Nature’s Hostility",
+      "pt-BR": "자연의 적의"
+    },
+    "desc_en": "When an enemy is defeated, X% Fixed Damage to all enemies",
+    "desc_ko": "처치 시 모든 적 고정 피해 X%",
+    "jargon_en": [
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_p_var_003",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0048",
+    "name": {
+      "en": "Mutated Claws",
+      "pt-BR": "변이한 발톱"
+    },
+    "desc_en": "When Drawing a Status Ailment or Curse Card, +X% Damage Amount for 1 turn",
+    "desc_ko": "상태이상, 저주 카드 드로우 시 1턴간 피해량 +X%",
+    "jargon_en": [
+      "Draw"
+    ],
+    "jargon_ko": [
+      "드로우"
+    ]
+  },
+  {
+    "id": "eq_p_var_004",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1119",
+    "name": {
+      "en": "Wolves Bane’s Spine",
+      "pt-BR": "울브즈 베인의 등뼈"
+    },
+    "desc_en": "On Critical Hit, X% Fixed Shield",
+    "desc_ko": "치명타 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_var_005",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1122",
+    "name": {
+      "en": "Wild Fur Cloak",
+      "pt-BR": "야성의 털가죽 망토"
+    },
+    "desc_en": "At turn start, Counterattack X",
+    "desc_ko": "턴 시작 시 반격 X",
+    "jargon_en": [
+      "Counterattack"
+    ],
+    "jargon_ko": [
+      "반격"
+    ]
+  },
+  {
+    "id": "eq_p_var_006",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1123",
+    "name": {
+      "en": "Kentris Chitin Armor",
+      "pt-BR": "켄트리스 키틴 갑주"
+    },
+    "desc_en": "Increase Shield Gain Amount of allies by X%",
+    "desc_ko": "아군 실드 획득량 X% 증가",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_p_var_007",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1171",
+    "name": {
+      "en": "Shield of the Watcher",
+      "pt-BR": "주시하는 방패"
+    },
+    "desc_en": "When taking Damage, X Mark on the attacker",
+    "desc_ko": "피해를 받을 시 공격자에게 표식 X",
+    "jargon_en": [
+      "Mark"
+    ],
+    "jargon_ko": [
+      "표식"
+    ]
+  },
+  {
+    "id": "eq_p_var_008",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0023",
+    "name": {
+      "en": "Nature’s Gift",
+      "pt-BR": "자연의 선물"
+    },
+    "desc_en": "Heal X% at the end of turn",
+    "desc_ko": "턴 종료 시 치유 X%",
+    "jargon_en": [
+      "Heal"
+    ],
+    "jargon_ko": [
+      "치유"
+    ]
+  },
+  {
+    "id": "eq_p_var_009",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1047",
+    "name": {
+      "en": "Eternal Stone",
+      "pt-BR": "풍화하지 않는 돌"
+    },
+    "desc_en": "At the start of the turn, X% Fixed Shield for each enemy count",
+    "desc_ko": "턴 시작 시 적 수만큼 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_p_var_010",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_1121",
+    "name": {
+      "en": "Gloomy Prime’s Eye",
+      "pt-BR": "글루미 프라임의 눈"
+    },
+    "desc_en": "+X% Shield Gain Amount",
+    "desc_ko": "실드 획득량 +X%",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_tut_001",
+    "slot": "Armor",
+    "rarity": "Common",
+    "icon_name": "relics/relic_1158",
+    "name": {
+      "en": "Light Combat Suit",
+      "pt-BR": "경량형 전투 강화복"
+    },
+    "desc_en": "+X% Shield Gain Amount",
+    "desc_ko": "실드 획득량 +X%",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_pub_001",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1168",
+    "name": {
+      "en": "Second Method",
+      "pt-BR": "제2의 수단"
+    },
+    "desc_en": "Extra Attack damage +X%",
+    "desc_ko": "추가 공격 피해량 +X%",
+    "jargon_en": [
+      "Extra Attack"
+    ],
+    "jargon_ko": [
+      "추가 공격"
+    ]
+  },
+  {
+    "id": "eq_pub_002",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1037",
+    "name": {
+      "en": "Gastronomicon",
+      "pt-BR": "가스트로노미콘"
+    },
+    "desc_en": "When a 2-Cost or higher Attack Card is activated, X Agony to the target",
+    "desc_ko": "비용 2 이상인 공격 카드 발동 시 대상에게 고통 X",
+    "jargon_en": [
+      "Agony"
+    ],
+    "jargon_ko": [
+      "고통"
+    ]
+  },
+  {
+    "id": "eq_pub_003",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0072",
+    "name": {
+      "en": "RFS-17",
+      "pt-BR": "RFS-17"
+    },
+    "desc_en": "+X% Critical Chance of Attack Cards with cost 0",
+    "desc_ko": "비용 0인 공격 카드의 치명확률 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_004",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0072_6",
+    "name": {
+      "en": "Mountain of Corpses",
+      "pt-BR": "시산혈해"
+    },
+    "desc_en": "Increase Damage Amount of Attack Cards by X% (1 time per turn)",
+    "desc_ko": "공격 카드의 피해량 X% 증가 (턴당 1회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_005",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0084",
+    "name": {
+      "en": "M85 Military Grenade",
+      "pt-BR": "M85 군용 수류탄"
+    },
+    "desc_en": "When an Upgrade Card is used, X% Fixed Damage to all enemies",
+    "desc_ko": "강화 카드 사용 시 모든 적 고정 피해 X%",
+    "jargon_en": [
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_pub_006",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1060",
+    "name": {
+      "en": "Obsidian Sword",
+      "pt-BR": "흑요석 검"
+    },
+    "desc_en": "Increase Damage Amount by X%",
+    "desc_ko": "피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_007",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1154",
+    "name": {
+      "en": "Sneering Dagger",
+      "pt-BR": "비웃는 단도"
+    },
+    "desc_en": "When an enemy is defeated, X Vulnerable to all enemies",
+    "desc_ko": "적 처치 시 모든 적 취약 X",
+    "jargon_en": [
+      "Vulnerable"
+    ],
+    "jargon_ko": [
+      "취약"
+    ]
+  },
+  {
+    "id": "eq_pub_008",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1170",
+    "name": {
+      "en": "Crimson Sword",
+      "pt-BR": "붉은 검"
+    },
+    "desc_en": "When dealing Damage with a targeting Attack Card, X Agony (1 per turn)",
+    "desc_ko": "타게팅 공격 카드로 피해를 준 대상에게 고통 X (턴당 1회)",
+    "jargon_en": [
+      "Agony"
+    ],
+    "jargon_ko": [
+      "고통"
+    ]
+  },
+  {
+    "id": "eq_tut_002",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1170",
+    "name": {
+      "en": "Crimson Sword",
+      "pt-BR": "붉은 검"
+    },
+    "desc_en": "When dealing Damage with a Targeting Attack Card, X Agony to the target (1 per turn)",
+    "desc_ko": "타게팅 공격 카드로 피해를 준 대상에게 고통 X (턴당 1회)",
+    "jargon_en": [
+      "Agony"
+    ],
+    "jargon_ko": [
+      "고통"
+    ]
+  },
+  {
+    "id": "eq_pub_009",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1195",
+    "name": {
+      "en": "Big Game Hunter",
+      "pt-BR": "거물 사냥꾼"
+    },
+    "desc_en": "Increase Tenacity Damage of the first Attack Card used per battle by X%",
+    "desc_ko": "전투당 처음 사용하는 공격 카드의 강인도 피해 X% 증가",
+    "jargon_en": [
+      "Tenacity"
+    ],
+    "jargon_ko": [
+      "강인도"
+    ]
+  },
+  {
+    "id": "eq_pub_010",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1200",
+    "name": {
+      "en": "Bone Cutter",
+      "pt-BR": "뼈절단기"
+    },
+    "desc_en": "When hitting a target under Weakened status, +X% Damage",
+    "desc_ko": "약화 상태인 대상 타격 시 피해량 +X%",
+    "jargon_en": [
+      "Weakened"
+    ],
+    "jargon_ko": [
+      "약화"
+    ]
+  },
+  {
+    "id": "eq_pub_011",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1202",
+    "name": {
+      "en": "Command: #108",
+      "pt-BR": "명령: 108호"
+    },
+    "desc_en": "Increase Damage of Attack Cards by X% (1 time per battle)",
+    "desc_ko": "공격 카드의 피해량 X% 증가 (전투당 1회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_012",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1164",
+    "name": {
+      "en": "Torch of Wrath",
+      "pt-BR": "진노의 횃불"
+    },
+    "desc_en": "At the start of battle, X Mark to a random enemy",
+    "desc_ko": "전투 시작 시 무작위 적 표식 X",
+    "jargon_en": [
+      "Mark"
+    ],
+    "jargon_ko": [
+      "표식"
+    ]
+  },
+  {
+    "id": "eq_pub_013",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1161",
+    "name": {
+      "en": "Flashbang",
+      "pt-BR": "섬광탄"
+    },
+    "desc_en": "At the start of battle, apply X Weaken to a random enemy",
+    "desc_ko": "전투 시작 시 무작위 적 약화 X",
+    "jargon_en": [
+      "Weaken"
+    ],
+    "jargon_ko": [
+      "약화"
+    ]
+  },
+  {
+    "id": "eq_pub_014",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1188",
+    "name": {
+      "en": "Cloud-Walking Shoes",
+      "pt-BR": "구름을 걸은 구두"
+    },
+    "desc_en": "When an ally inflicts Ravage, X% Fixed Shield",
+    "desc_ko": "아군이 격파 시 고정 실드 X%",
+    "jargon_en": [
+      "Ravage",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "격파",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_015",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1165",
+    "name": {
+      "en": "Gladiator’s Helmet",
+      "pt-BR": "검투사의 헬멧"
+    },
+    "desc_en": "At the start of battle, gain X Damage Reduction",
+    "desc_ko": "전투 시작 시 피해 감소 X",
+    "jargon_en": [
+      "Damage Reduction"
+    ],
+    "jargon_ko": [
+      "피해 감소"
+    ]
+  },
+  {
+    "id": "eq_pub_016",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0070",
+    "name": {
+      "en": "Scout’s Combat Boots",
+      "pt-BR": "척후병의 군화"
+    },
+    "desc_en": "When defeating the enemy, X% Fixed Shield",
+    "desc_ko": "처치 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_017",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0074",
+    "name": {
+      "en": "Standard Gas Mask",
+      "pt-BR": "표준형 방독면"
+    },
+    "desc_en": "At the start of battle, X Immunity",
+    "desc_ko": "전투 시작 시 면역 X",
+    "jargon_en": [
+      "Immunity"
+    ],
+    "jargon_ko": [
+      "면역"
+    ]
+  },
+  {
+    "id": "eq_pub_018",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1065",
+    "name": {
+      "en": "Assault Boots",
+      "pt-BR": "강습 부츠"
+    },
+    "desc_en": "At the start of the second turn, X% Fixed Shield",
+    "desc_ko": "2번째 턴 시작 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_019",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1072",
+    "name": {
+      "en": "Assault Gauntlets",
+      "pt-BR": "강습 건틀렛"
+    },
+    "desc_en": "At the start of battle, gain X Counterattack",
+    "desc_ko": "전투 시작 시 반격 X",
+    "jargon_en": [
+      "Counterattack"
+    ],
+    "jargon_ko": [
+      "반격"
+    ]
+  },
+  {
+    "id": "eq_pub_020",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1076",
+    "name": {
+      "en": "Reinforced Combat Suit",
+      "pt-BR": "보강형 전투 강화복"
+    },
+    "desc_en": "At the end of the turn, if there is no Shield, gain X% Fixed Shield",
+    "desc_ko": "턴 종료 시 실드가 없다면 고정 실드 X%",
+    "jargon_en": [
+      "Shield",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "실드",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_021",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1136",
+    "name": {
+      "en": "Titan Combat Suit",
+      "pt-BR": "타이탄 전투 강화복"
+    },
+    "desc_en": "When taking Damage, $RecoverXrev_0_0#% of Max HP (1 time per turn)",
+    "desc_ko": "피해를 받을 시 최대 체력의 X% 회복#1 (턴당 1회)",
+    "jargon_en": [],
+    "jargon_ko": [
+      "회복#1"
+    ]
+  },
+  {
+    "id": "eq_pub_022",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1148",
+    "name": {
+      "en": "Survivor’s Hood",
+      "pt-BR": "생존자의 후드"
+    },
+    "desc_en": "At the start of battle, gain X% Fixed Shield",
+    "desc_ko": "전투 시작 시 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_023",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1158_6",
+    "name": {
+      "en": "Psionic Combat Suit",
+      "pt-BR": "사이오닉 전투 강화복"
+    },
+    "desc_en": "When a card is Exhausted, 30% Fixed Shield (5 times per turn)",
+    "desc_ko": "카드 소멸 시 고정 실드 30% (턴당 5회)",
+    "jargon_en": [
+      "Exhaust",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "소멸",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_024",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1196",
+    "name": {
+      "en": "Lush Seaweed Armor",
+      "pt-BR": "무성한 해초 갑옷"
+    },
+    "desc_en": "When Shield is gained through a card, X% Fixed Shield",
+    "desc_ko": "카드로 실드 획득 시 고정 실드 X%",
+    "jargon_en": [
+      "Shield",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "실드",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_pub_026",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0008",
+    "name": {
+      "en": "Magic-Infused Sapphire",
+      "pt-BR": "마력이 담긴 사파이어"
+    },
+    "desc_en": "At the start of battle, if the Initiation card is in hand, 1 Tenacity Damage to all enemies",
+    "desc_ko": "전투 시작 시 개전 카드가 핸드에 있다면 모든 적 강인도 피해 1",
+    "jargon_en": [
+      "Initiation",
+      "Tenacity Damage"
+    ],
+    "jargon_ko": [
+      "개전",
+      "강인도 피해"
+    ]
+  },
+  {
+    "id": "eq_pub_027",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1043",
+    "name": {
+      "en": "Quantum Collector",
+      "pt-BR": "양자 포집기"
+    },
+    "desc_en": "When an ally uses an Upgrade Card, increase Damage, Shield Gain, Heal Amounts by X% for 1 turn",
+    "desc_ko": "아군이 강화 카드 사용 시 1턴간 피해량, 실드 획득량, 치유량 X% 증가",
+    "jargon_en": [
+      "Shield",
+      "Heal"
+    ],
+    "jargon_ko": [
+      "실드",
+      "치유"
+    ]
+  },
+  {
+    "id": "eq_pub_028",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1048",
+    "name": {
+      "en": "Heart of Gold",
+      "pt-BR": "황금 심장"
+    },
+    "desc_en": "At the end of battle, if HP is 50% or less, $RecoverXrev_0_0#% of Max HP",
+    "desc_ko": "전투 종료 시 체력이 50% 이하라면 최대 체력의 X% 회복#1",
+    "jargon_en": [],
+    "jargon_ko": [
+      "회복#1"
+    ]
+  },
+  {
+    "id": "eq_pub_029",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1059",
+    "name": {
+      "en": "Multifaceted Parallel Universe Nexus",
+      "pt-BR": "다면 평행우주 연결체"
+    },
+    "desc_en": "At the start of the turn, activate 1 random Lead card in hand",
+    "desc_ko": "턴 시작 시 핸드의 무작위 주도 카드 1장 발동",
+    "jargon_en": [
+      "Lead"
+    ],
+    "jargon_ko": [
+      "주도"
+    ]
+  },
+  {
+    "id": "eq_pub_030",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1063",
+    "name": {
+      "en": "Absolute Zero Tetrahedron",
+      "pt-BR": "절대영도의 사면체"
+    },
+    "desc_en": "At the start of battle, +X% Shield",
+    "desc_ko": "전투 시작 시 실드 획득량 +X%",
+    "jargon_en": [
+      "Shield"
+    ],
+    "jargon_ko": [
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_pub_031",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1075",
+    "name": {
+      "en": "Amorphous Cube",
+      "pt-BR": "비정형 큐브"
+    },
+    "desc_en": "+X% Damage Amount",
+    "desc_ko": "피해량 +X%",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_032",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1077",
+    "name": {
+      "en": "Dimensional Cube",
+      "pt-BR": "차원의 큐브"
+    },
+    "desc_en": "When a card is Discarded by an ally, +15% Damage Amount for 1 turn (max 3 times)",
+    "desc_ko": "아군이 카드를 버릴 시 1턴간 피해량 +15% (최대 3회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_033",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1079",
+    "name": {
+      "en": "Water Drops of the Goddess",
+      "pt-BR": "여신의 물방울"
+    },
+    "desc_en": "At the start of battle, X Stockpile",
+    "desc_ko": "전투 시작 시 저장 X",
+    "jargon_en": [
+      "Stockpile"
+    ],
+    "jargon_ko": [
+      "저장"
+    ]
+  },
+  {
+    "id": "eq_pub_034",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1080",
+    "name": {
+      "en": "Moon of Destruction",
+      "pt-BR": "파괴의 달"
+    },
+    "desc_en": "At the start of battle, X% Fixed Damage to all enemies",
+    "desc_ko": "전투 시작 시 모든 적 고정 피해 X%",
+    "jargon_en": [
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_pub_035",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1130",
+    "name": {
+      "en": "Time Regulator",
+      "pt-BR": "시간조율기"
+    },
+    "desc_en": "Activate Epiphany for the equipped combatant",
+    "desc_ko": "장착한 전투원 번뜩임 발동",
+    "jargon_en": [
+      "Epiphany"
+    ],
+    "jargon_ko": [
+      "번뜩임"
+    ]
+  },
+  {
+    "id": "eq_pub_036",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1146",
+    "name": {
+      "en": "Heart of the Jewel",
+      "pt-BR": "보석의 심장"
+    },
+    "desc_en": "X is applied as X+X",
+    "desc_ko": "X가 X+X로 적용",
+    "jargon_en": [
+      "X"
+    ],
+    "jargon_ko": [
+      "X"
+    ]
+  },
+  {
+    "id": "eq_pub_037",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_5002",
+    "name": {
+      "en": "Grey Orb",
+      "pt-BR": "그레이 구"
+    },
+    "desc_en": "At the start of battle, gain X Damage Reduction",
+    "desc_ko": "전투 시작 시 피해 감소 X",
+    "jargon_en": [
+      "Damage Reduction"
+    ],
+    "jargon_ko": [
+      "피해 감소"
+    ]
+  },
+  {
+    "id": "eq_pub_038",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0094",
+    "name": {
+      "en": "Criticism of Discord",
+      "pt-BR": "혼돈의 지적"
+    },
+    "desc_en": "+18% Attack On Ravage, decrease Stress of allies by X",
+    "desc_ko": "공격력 +18% 격파 시 아군 스트레스 X 감소",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_039",
+    "slot": "Weapon",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0095",
+    "name": {
+      "en": "Tentacles of a Ruined Age",
+      "pt-BR": "혼세의 촉수"
+    },
+    "desc_en": "+8% ally Attack Upon enemy Defeat, -2 Stress to the Combatant with the highest Stress",
+    "desc_ko": "아군 공격력 +8% 처치 시 스트레스가 높은 전투원 스트레스 2 감소",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_040",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0098",
+    "name": {
+      "en": "Shell of Aberration",
+      "pt-BR": "괴이의 껍질"
+    },
+    "desc_en": "+12% Defense When Stress increases, there is a 50% chance that Stress increases by 1 less",
+    "desc_ko": "방어력 +12% 스트레스 증가 시 50% 확률로 1 적게 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_041",
+    "slot": "Armor",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0099",
+    "name": {
+      "en": "Announcement of Catastrophe",
+      "pt-BR": "재앙의 성포"
+    },
+    "desc_en": "+12% Defense Decrease the number of Break Recovery cards required by all Combatants by 1",
+    "desc_ko": "방어력 +12% 모든 전투원 붕괴 회복에 필요한 카드 수 1장 감소",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_pub_042",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0096",
+    "name": {
+      "en": "Sphere of Randomness",
+      "pt-BR": "난수의 구체"
+    },
+    "desc_en": "+X% max HP At the start of battle, +1 AP, Draw 1",
+    "desc_ko": "최대 체력 +X% 전투 시작 시 행동 포인트 1 획득, 드로우 1",
+    "jargon_en": [
+      "AP",
+      "Draw"
+    ],
+    "jargon_ko": [
+      "행동 포인트",
+      "드로우"
+    ]
+  },
+  {
+    "id": "eq_pub_043",
+    "slot": "Accessory",
+    "rarity": "Unique",
+    "icon_name": "relics/relic_0097",
+    "name": {
+      "en": "Dice of Derangement",
+      "pt-BR": "착란의 다이스"
+    },
+    "desc_en": "+X% Max HP At the end of battle, if HP is below 50%, recover X% Max HP At the end of the battle, if HP is 50% or higher, -5 Stress to the Combatant with the highest Stress",
+    "desc_ko": "최대 체력 +X% 전투 종료 시 최대 체력의 50% 미만이라면 최대 체력의 X% 회복 전투 종료 시 최대 체력의 50% 이상이면 스트레스가 높은 전투원 스트레스 5 감소",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_tut_006",
+    "slot": "Armor",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_1076",
+    "name": {
+      "en": "Reinforced Combat Suit",
+      "pt-BR": "보강형 전투 강화복"
+    },
+    "desc_en": "At the end of the turn, if there is no Shield, gain X% Fixed Shield",
+    "desc_ko": "턴 종료 시 실드가 없다면 고정 실드 X%",
+    "jargon_en": [
+      "Shield",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "실드",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_tut_007",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_12027",
+    "name": {
+      "en": "Arc Drive",
+      "pt-BR": "아크 드라이브"
+    },
+    "desc_en": "Activate Epiphany for the equipped combatant",
+    "desc_ko": "장착한 전투원 번뜩임 발동",
+    "jargon_en": [
+      "Epiphany"
+    ],
+    "jargon_ko": [
+      "번뜩임"
+    ]
+  },
+  {
+    "id": "eq_tut_005",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_1158",
+    "name": {
+      "en": "Reactive Deflecting Suit",
+      "pt-BR": "반응형 반사 슈트"
+    },
+    "desc_en": "At the start of battle, gain X Thorns",
+    "desc_ko": "전투 시작 시 가시 X",
+    "jargon_en": [
+      "Thorns"
+    ],
+    "jargon_ko": [
+      "가시"
+    ]
+  },
+  {
+    "id": "eq_ds01_001",
+    "slot": "Weapon",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0100",
+    "name": {
+      "en": "Overcurrent Shock Unit",
+      "pt-BR": "과전류 충격기"
+    },
+    "desc_en": "When you Draw by an ability, X% Fixed Damage to a random enemy",
+    "desc_ko": "능력으로 드로우 시 무작위 적 고정 피해 X%",
+    "jargon_en": [
+      "Draw",
+      "Fixed Damage"
+    ],
+    "jargon_ko": [
+      "드로우",
+      "고정 피해"
+    ]
+  },
+  {
+    "id": "eq_ds01_002",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0101",
+    "name": {
+      "en": "Nerve Hacking Module",
+      "pt-BR": "신경 해킹 모듈"
+    },
+    "desc_en": "When an ally uses a Forbidden Card, +20% Damage Amount, +20% Shield Gain Amount (2 times per battle)",
+    "desc_ko": "아군이 금기 카드 사용 시 피해량 +20%, 실드 획득량 +20% (전투당 2회)",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_ds01_003",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0102",
+    "name": {
+      "en": "Brainwave-Blocking Helmet",
+      "pt-BR": "뇌파 차단 헬멧"
+    },
+    "desc_en": "When Drawing through an ability, 40% Fixed Shield (5 times per turn)",
+    "desc_ko": "능력으로 드로우 시 고정 실드 40% (턴당 5회)",
+    "jargon_en": [
+      "Draw",
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "드로우",
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_ds01_004",
+    "slot": "Accessory",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0103",
+    "name": {
+      "en": "Hyperimmunity Hormone",
+      "pt-BR": "과잉 면역 호르몬"
+    },
+    "desc_en": "When you Draw by an ability, +25% Shield gain for 1 turn (Max 2 times per turn)",
+    "desc_ko": "능력으로 드로우 시 1턴간 실드 획득량 +25% (턴당 2회)",
+    "jargon_en": [
+      "Draw"
+    ],
+    "jargon_ko": [
+      "드로우",
+      "실드"
+    ]
+  },
+  {
+    "id": "eq_ds01_005",
+    "slot": "Armor",
+    "rarity": "Rare",
+    "icon_name": "relics/relic_0104",
+    "name": {
+      "en": "Incomplete Carapace",
+      "pt-BR": "불완전 갑각"
+    },
+    "desc_en": "At the end of the turn, if there are 3 or more cards in hand, X% Fixed Shield",
+    "desc_ko": "턴 종료 시 핸드의 카드 3장 이상이라면 고정 실드 X%",
+    "jargon_en": [
+      "Fixed Shield"
+    ],
+    "jargon_ko": [
+      "고정 실드"
+    ]
+  },
+  {
+    "id": "eq_ds01_006",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0105",
+    "name": {
+      "en": "Unconfirmed Recovery Ampule",
+      "pt-BR": "미확인 회복 앰플"
+    },
+    "desc_en": "When an ally uses a Forbidden Card, RecoverXrev_0_0Xrev_1_0#%Fixed Shield$",
+    "desc_ko": "아군이 금기 카드 사용 시 최대 체력의 X% $회복Xrev_1_0#%",
+    "jargon_en": [
+      "RecoverXrev_0_0Xrev_1_0#%"
+    ],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_ds01_007",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0106",
+    "name": {
+      "en": "Mutagenic Wave Amplifier",
+      "pt-BR": "변이 파동 증폭기"
+    },
+    "desc_en": "When Drawing a Status Ailment or Curse Card, +X% Damage Amount for 1 turn",
+    "desc_ko": "상태이상, 저주 카드 드로우 시 1턴간 피해량 +X%",
+    "jargon_en": [
+      "Draw"
+    ],
+    "jargon_ko": [
+      "드로우"
+    ]
+  },
+  {
+    "id": "eq_ds01_008",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0107",
+    "name": {
+      "en": "W-52 \"Dopamine Injector\"",
+      "pt-BR": "W-52 '도파민 주입기'"
+    },
+    "desc_en": "When Drawing by an ability, increase Damage Amount by 20% for 1 turn (2 times per turn)",
+    "desc_ko": "능력으로 드로우 시 1턴간 피해량 20% 증가 (턴당 2회)",
+    "jargon_en": [
+      "Draw"
+    ],
+    "jargon_ko": [
+      "드로우"
+    ]
+  },
+  {
+    "id": "eq_ds01_009",
+    "slot": "Weapon",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0108",
+    "name": {
+      "en": "Mutant Predator Spike",
+      "pt-BR": "변종 포식체 돌기"
+    },
+    "desc_en": "When there are 4 or more cards in hand, increase Damage Amount of cards by X%",
+    "desc_ko": "핸드의 카드가 4장 이상일 시 카드 피해량 X% 증가",
+    "jargon_en": [],
+    "jargon_ko": []
+  },
+  {
+    "id": "eq_ds01_010",
+    "slot": "Accessory",
+    "rarity": "Legendary",
+    "icon_name": "relics/relic_0109",
+    "name": {
+      "en": "Superconductive Protein",
+      "pt-BR": "초전도 단백질"
+    },
+    "desc_en": "At the start of the battle, change the cost of 1 card in your hand to 0 for 1 turn",
+    "desc_ko": "전투 시작 시 핸드의 카드 1장 1턴간 비용 0으로 변경",
+    "jargon_en": [],
+    "jargon_ko": []
+  }
+]

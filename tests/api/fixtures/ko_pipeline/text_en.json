@@ -1,0 +1,8 @@
+[
+  { "id": "relic@name@eq_test_w1", "text": "Test Weapon" },
+  { "id": "relic@s1_description@eq_test_w1", "text": "On Critical Hit, <cc>50</>% chance to <cc>#rev_0_0#</> $Agony$" },
+  { "id": "relic@name@eq_test_a1", "text": "Test Armor" },
+  { "id": "relic@desc@eq_test_a1", "text": "At the start of the turn, $Fixed Shield$ #rev_0_0#%" },
+  { "id": "relic@name@eq_test_relic", "text": "Test Relic" },
+  { "id": "relic@desc@eq_test_relic", "text": "unused" }
+]

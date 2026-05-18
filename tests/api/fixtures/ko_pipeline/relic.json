@@ -1,0 +1,29 @@
+[
+  {
+    "id": "eq_test_w1",
+    "name": "relic@name@eq_test_w1",
+    "rarity": "RARITY_LEGEND",
+    "relic_category": "EQUIPMENT",
+    "relic_type": "EQUIP_WEAPON",
+    "icon_name": "relics/relic_9001",
+    "s1_description": "relic@s1_description@eq_test_w1"
+  },
+  {
+    "id": "eq_test_a1",
+    "name": "relic@name@eq_test_a1",
+    "rarity": "RARITY_RARE",
+    "relic_category": "EQUIPMENT",
+    "relic_type": "EQUIP_ARMOR",
+    "icon_name": "relics/relic_9002",
+    "s1_description": "relic@desc@eq_test_a1"
+  },
+  {
+    "id": "eq_test_relic",
+    "name": "relic@name@eq_test_relic",
+    "rarity": "RARITY_UNIQUE",
+    "relic_category": "EQUIPMENT",
+    "relic_type": "RELIC",
+    "icon_name": "relics/relic_9003",
+    "s1_description": "relic@desc@eq_test_relic"
+  }
+]
