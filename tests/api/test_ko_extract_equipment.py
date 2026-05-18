@@ -33,7 +33,7 @@ def test_maps_rarity():
 
 def test_resolves_bilingual_name():
     catalog = {e["id"]: e for e in _run()}
-    assert catalog["eq_test_w1"]["name"] == {"en": "Test Weapon", "pt-BR": "테스트 무기"}
+    assert catalog["eq_test_w1"]["name"] == {"en": "Test Weapon", "ko": "테스트 무기"}
 
 
 def test_detemplatizes_descriptions_and_collects_jargon():

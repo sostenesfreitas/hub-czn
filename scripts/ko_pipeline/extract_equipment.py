@@ -50,6 +50,9 @@ def extract_equipment(
         if slot is None:
             continue  # RELIC-type rows have no deck slot — skip
 
+        if not r.get("id"):
+            continue  # skip malformed rows with no id
+
         name_key = r.get("name", "")
         desc_key = r.get("s1_description", "")
         desc_ko, jargon_ko = detemplatize(ko.get(desc_key, ""))
@@ -61,7 +64,7 @@ def extract_equipment(
                 "slot": slot,
                 "rarity": _RARITY.get(r.get("rarity", ""), "Rare"),
                 "icon_name": r.get("icon_name", ""),
-                "name": {"en": en.get(name_key, ""), "pt-BR": ko.get(name_key, "")},
+                "name": {"en": en.get(name_key, ""), "ko": ko.get(name_key, "")},
                 "desc_en": desc_en,
                 "desc_ko": desc_ko,
                 "jargon_en": jargon_en,
@@ -78,6 +81,15 @@ def main(output_dir: str) -> None:
         text_ko_path=output / "text" / "ko" / "text.json",
         text_en_path=output / "text" / "en" / "text.json",
     )
+    flagged = [
+        e["id"]
+        for e in catalog
+        if "$" in e["desc_en"] or "#" in e["desc_en"]
+        or "$" in e["desc_ko"] or "#" in e["desc_ko"]
+    ]
+    for relic_id in flagged:
+        print(f"[warn] {relic_id}: unresolved markup in description (corrupt source text)")
+
     out = Path(__file__).parent / "data" / "equipment_catalog.raw.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
