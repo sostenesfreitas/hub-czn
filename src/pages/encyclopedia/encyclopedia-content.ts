@@ -7,6 +7,8 @@ import type {
 } from './encyclopedia.types'
 import { buildMatcher } from './encyclopedia.utils'
 
+// Cast is safe at the top level (resolveJsonModule infers the shape); the
+// vitest content-shape tests guard the enum/union fields at runtime.
 const content = rawContent as EncyclopediaContent
 
 export const GLOSSARY: GlossaryEntry[] = content.glossary

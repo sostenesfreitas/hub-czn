@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { GLOSSARY, CLARIFICATIONS, glossaryById } from './encyclopedia-content'
+import {
+  GLOSSARY,
+  CLARIFICATIONS,
+  glossaryById,
+  matcher,
+  findClarification,
+} from './encyclopedia-content'
+import { linkDescription } from './encyclopedia.utils'
 import { DECK_BUILDER_ITEMS } from '@/pages/deck-builder/deck-builder-items.utils'
 import { DECK_BUILDER_PERSONA_ENGRAVING_CARDS } from '@/pages/deck-builder/deck-builder-persona-engraving.utils'
 
@@ -31,6 +38,11 @@ describe('glossary content', () => {
       }
     }
   })
+
+  it('matcher resolves at least one known alias', () => {
+    const segs = linkDescription('Agony', matcher)
+    expect(segs).toContainEqual({ kind: 'term', value: 'Agony', termId: 'agony' })
+  })
 })
 
 describe('clarification content', () => {
@@ -48,6 +60,13 @@ describe('clarification content', () => {
       } else if (c.kind === 'engraving') {
         expect(engravingIds.has(c.refId), c.refId).toBe(true)
       }
+      // kind === 'card' is intentionally not validated: card ids come from the
+      // API at runtime, so there is no offline registry to check against.
     }
+  })
+
+  it('findClarification returns the entry for a known key and undefined otherwise', () => {
+    expect(findClarification('equipment', 'item_0003')).toBeDefined()
+    expect(findClarification('equipment', 'no-such-id')).toBeUndefined()
   })
 })
