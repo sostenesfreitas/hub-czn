@@ -1,0 +1,333 @@
+{
+  "glossary": [
+    {
+      "id": "agony",
+      "term": { "en": "Agony", "pt-BR": "Agonia" },
+      "aliases": ["Agony"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff that deals damage over time — the affected target loses HP at the start of each of its turns. Often applied in stacks.",
+        "pt-BR": "Um debuff de dano contínuo — o alvo afetado perde HP no início de cada turno dele. Costuma ser aplicado em acúmulos (stacks)."
+      },
+      "seeAlso": ["ravaged"]
+    },
+    {
+      "id": "quietus",
+      "term": { "en": "Quietus", "pt-BR": "Quietus" },
+      "aliases": ["Quietus"],
+      "category": "status",
+      "definition": {
+        "en": "A card keyword. Quietus cards belong to a special category referenced by some equipment and skill effects.",
+        "pt-BR": "Uma palavra-chave de carta. Cartas Quietus pertencem a uma categoria especial referenciada por alguns equipamentos e efeitos de habilidade."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "ravaged",
+      "term": { "en": "Ravaged", "pt-BR": "Devastado" },
+      "aliases": ["Ravaged"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff state on an enemy. Several set bonuses and skills deal extra damage to Ravaged targets.",
+        "pt-BR": "Um estado de debuff em um inimigo. Vários bônus de conjunto e habilidades causam dano extra a alvos Devastados."
+      },
+      "seeAlso": ["agony"]
+    },
+    {
+      "id": "weaken",
+      "term": { "en": "Weaken", "pt-BR": "Enfraquecer" },
+      "aliases": ["Weaken", "Weakened"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff that reduces the damage the affected unit deals.",
+        "pt-BR": "Um debuff que reduz o dano causado pela unidade afetada."
+      },
+      "seeAlso": ["vulnerable"]
+    },
+    {
+      "id": "vulnerable",
+      "term": { "en": "Vulnerable", "pt-BR": "Vulnerável" },
+      "aliases": ["Vulnerable"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff that increases the damage the affected target takes.",
+        "pt-BR": "Um debuff que aumenta o dano recebido pelo alvo afetado."
+      },
+      "seeAlso": ["weaken"]
+    },
+    {
+      "id": "shield",
+      "term": { "en": "Shield", "pt-BR": "Escudo" },
+      "aliases": ["Shield"],
+      "category": "status",
+      "definition": {
+        "en": "A temporary barrier that absorbs incoming damage before it reaches HP.",
+        "pt-BR": "Uma barreira temporária que absorve o dano recebido antes de ele atingir o HP."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "attack-card",
+      "term": { "en": "Attack Card", "pt-BR": "Carta de Ataque" },
+      "aliases": ["Attack Card"],
+      "category": "card-type",
+      "definition": {
+        "en": "A card that deals damage when used, in contrast with Skill cards, which produce non-damage effects.",
+        "pt-BR": "Uma carta que causa dano ao ser usada, em contraste com cartas de Habilidade, que produzem efeitos sem dano."
+      },
+      "seeAlso": ["instinct", "order", "void", "passion", "justice"]
+    },
+    {
+      "id": "instinct",
+      "term": { "en": "Instinct", "pt-BR": "Instinto" },
+      "aliases": ["Instinct"],
+      "category": "card-type",
+      "definition": {
+        "en": "One of the card affinities in Chaos Zero Nightmare. Cards and set bonuses can be tied to a specific affinity.",
+        "pt-BR": "Uma das afinidades de carta em Chaos Zero Nightmare. Cartas e bônus de conjunto podem estar ligados a uma afinidade específica."
+      },
+      "seeAlso": ["attack-card"]
+    },
+    {
+      "id": "order",
+      "term": { "en": "Order", "pt-BR": "Ordem" },
+      "aliases": [],
+      "category": "card-type",
+      "definition": {
+        "en": "One of the card affinities in Chaos Zero Nightmare. Cards and set bonuses can be tied to a specific affinity.",
+        "pt-BR": "Uma das afinidades de carta em Chaos Zero Nightmare. Cartas e bônus de conjunto podem estar ligados a uma afinidade específica."
+      },
+      "seeAlso": ["attack-card"]
+    },
+    {
+      "id": "void",
+      "term": { "en": "Void", "pt-BR": "Vazio" },
+      "aliases": ["Void"],
+      "category": "card-type",
+      "definition": {
+        "en": "One of the card affinities in Chaos Zero Nightmare. Cards and set bonuses can be tied to a specific affinity.",
+        "pt-BR": "Uma das afinidades de carta em Chaos Zero Nightmare. Cartas e bônus de conjunto podem estar ligados a uma afinidade específica."
+      },
+      "seeAlso": ["attack-card"]
+    },
+    {
+      "id": "passion",
+      "term": { "en": "Passion", "pt-BR": "Paixão" },
+      "aliases": ["Passion"],
+      "category": "card-type",
+      "definition": {
+        "en": "One of the card affinities in Chaos Zero Nightmare. Cards and set bonuses can be tied to a specific affinity.",
+        "pt-BR": "Uma das afinidades de carta em Chaos Zero Nightmare. Cartas e bônus de conjunto podem estar ligados a uma afinidade específica."
+      },
+      "seeAlso": ["attack-card"]
+    },
+    {
+      "id": "justice",
+      "term": { "en": "Justice", "pt-BR": "Justiça" },
+      "aliases": [],
+      "category": "card-type",
+      "definition": {
+        "en": "One of the card affinities in Chaos Zero Nightmare. Cards and set bonuses can be tied to a specific affinity.",
+        "pt-BR": "Uma das afinidades de carta em Chaos Zero Nightmare. Cartas e bônus de conjunto podem estar ligados a uma afinidade específica."
+      },
+      "seeAlso": ["attack-card"]
+    },
+    {
+      "id": "spark",
+      "term": { "en": "Spark", "pt-BR": "Spark" },
+      "aliases": ["Spark"],
+      "category": "mechanic",
+      "definition": {
+        "en": "An enhanced version of a card unlocked through Spark tiers. The Cards view shows how many Spark tiers a card has (✦N).",
+        "pt-BR": "Uma versão aprimorada de uma carta liberada pelos níveis de Spark. A aba Cartas mostra quantos níveis de Spark a carta tem (✦N)."
+      },
+      "seeAlso": ["epiphany"]
+    },
+    {
+      "id": "epiphany",
+      "term": { "en": "Epiphany", "pt-BR": "Epiphany" },
+      "aliases": ["Epiphany"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A card upgrade system. Epiphany variants change a card's effect, cost, or scaling.",
+        "pt-BR": "Um sistema de aprimoramento de cartas. Variantes de Epiphany alteram o efeito, o custo ou o scaling de uma carta."
+      },
+      "seeAlso": ["spark", "engraving"]
+    },
+    {
+      "id": "engraving",
+      "term": { "en": "Engraving", "pt-BR": "Engraving" },
+      "aliases": ["Engraving"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A modification applied to a Persona card through two engraving slots. Each engraving belongs to the Lux or Umbra Eidolon and changes how the card behaves.",
+        "pt-BR": "Uma modificação aplicada a uma carta de Persona por meio de dois slots de engraving. Cada engraving pertence ao Eidolon Lux ou Umbra e altera o comportamento da carta."
+      },
+      "seeAlso": ["eidolon", "epiphany"]
+    },
+    {
+      "id": "eidolon",
+      "term": { "en": "Eidolon", "pt-BR": "Eidolon" },
+      "aliases": ["Eidolon", "Lux", "Umbra"],
+      "category": "mechanic",
+      "definition": {
+        "en": "The two opposing aspects a Persona engraving can belong to: Lux and Umbra.",
+        "pt-BR": "Os dois aspectos opostos a que um engraving de Persona pode pertencer: Lux e Umbra."
+      },
+      "seeAlso": ["engraving"]
+    },
+    {
+      "id": "morale",
+      "term": { "en": "Morale", "pt-BR": "Moral" },
+      "aliases": ["Morale"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A battle resource that builds up during a fight and scales the damage of certain cards.",
+        "pt-BR": "Um recurso de batalha que se acumula durante o combate e escala o dano de certas cartas."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "action-count",
+      "term": { "en": "Action Count", "pt-BR": "Contagem de Ação" },
+      "aliases": ["Action Count"],
+      "category": "mechanic",
+      "definition": {
+        "en": "The number shown on an enemy indicating how many turns remain before it acts.",
+        "pt-BR": "O número exibido em um inimigo indicando quantos turnos faltam para ele agir."
+      },
+      "seeAlso": ["haste"]
+    },
+    {
+      "id": "haste",
+      "term": { "en": "Haste", "pt-BR": "Pressa" },
+      "aliases": ["Haste"],
+      "category": "mechanic",
+      "definition": {
+        "en": "An effect that reduces a card's Cost, letting it be played sooner.",
+        "pt-BR": "Um efeito que reduz o Custo de uma carta, permitindo jogá-la mais cedo."
+      },
+      "seeAlso": ["action-count"]
+    },
+    {
+      "id": "attunement",
+      "term": { "en": "Attunement", "pt-BR": "Attunement" },
+      "aliases": ["Attunement"],
+      "category": "mechanic",
+      "definition": {
+        "en": "An engraving keyword. An Attunement effect stays active on the card until the card is used.",
+        "pt-BR": "Uma palavra-chave de engraving. Um efeito de Attunement permanece ativo na carta até que ela seja usada."
+      },
+      "seeAlso": ["engraving"]
+    },
+    {
+      "id": "exhaust",
+      "term": { "en": "Exhaust", "pt-BR": "Exaurir" },
+      "aliases": ["Exhaust", "Exhausted"],
+      "category": "mechanic",
+      "definition": {
+        "en": "To remove a card from play for the rest of the battle. An Exhausted card does not return to the deck.",
+        "pt-BR": "Remover uma carta da partida pelo resto da batalha. Uma carta exaurida não volta para o baralho."
+      },
+      "seeAlso": []
+    }
+  ],
+  "clarifications": [
+    {
+      "kind": "equipment",
+      "refId": "item_0003",
+      "text": {
+        "en": "On a critical hit, 50% chance to inflict 1 stack of Agony on the target.",
+        "pt-BR": "Em acerto crítico, 50% de chance de aplicar 1 acúmulo de Agonia no alvo."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0014",
+      "text": {
+        "en": "When you use an Attack Card, recover HP equal to 6% of the damage dealt (once per turn).",
+        "pt-BR": "Ao usar uma Carta de Ataque, recupera HP igual a 6% do dano causado (1x por turno)."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0024",
+      "text": {
+        "en": "When you use an Attack Card, inflict 1 Agony on the target (once per turn). In Invader battles, inflict 2 extra Agony.",
+        "pt-BR": "Ao usar uma Carta de Ataque, aplica 1 Agonia no alvo (1x por turno). Em batalhas de Invasor, aplica +2 Agonia."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0034",
+      "text": {
+        "en": "After 5 Skill Cards have been created, the next ally card used deals +20% damage (max 1 stack).",
+        "pt-BR": "Depois que 5 Cartas de Habilidade forem criadas, a próxima carta aliada usada causa +20% de dano (máx. 1 acúmulo)."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0042",
+      "text": {
+        "en": "When you deal damage with a single-target Attack Card, inflict 3 Agony (once per turn).",
+        "pt-BR": "Ao causar dano com uma Carta de Ataque de alvo único, aplica 3 Agonia (1x por turno)."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0054",
+      "text": {
+        "en": "When a card is Exhausted, the next card you use deals +25% damage (stacks up to 1 time).",
+        "pt-BR": "Quando uma carta é exaurida, a próxima carta usada causa +25% de dano (acumula até 1 vez)."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0072",
+      "text": {
+        "en": "At the start of battle, you may Discard up to 3 cards, then Draw that many cards.",
+        "pt-BR": "No início da batalha, você pode descartar até 3 cartas e então comprar a mesma quantidade."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0073",
+      "text": {
+        "en": "When you use an Attack Card costing 2 or more, inflict 3 Agony on the target.",
+        "pt-BR": "Ao usar uma Carta de Ataque de custo 2 ou mais, aplica 3 Agonia no alvo."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0206",
+      "text": {
+        "en": "When a card is Exhausted, the next card you use deals +35% damage (stacks up to 1 time).",
+        "pt-BR": "Quando uma carta é exaurida, a próxima carta usada causa +35% de dano (acumula até 1 vez)."
+      }
+    },
+    {
+      "kind": "equipment",
+      "refId": "item_0207",
+      "text": {
+        "en": "When you take damage, inflict 4 Agony on the attacker.",
+        "pt-BR": "Ao receber dano, aplica 4 Agonia no atacante."
+      }
+    },
+    {
+      "kind": "engraving",
+      "refId": "pe_0001",
+      "text": {
+        "en": "While at least one enemy with an Action Count of 1 is present, this card costs 2 less.",
+        "pt-BR": "Enquanto houver pelo menos um inimigo com Contagem de Ação 1, esta carta custa 2 a menos."
+      }
+    },
+    {
+      "kind": "engraving",
+      "refId": "pe_0002",
+      "text": {
+        "en": "Attunement: this card costs 1 less; the reduction stays until the card is used.",
+        "pt-BR": "Attunement: esta carta custa 1 a menos; a redução permanece até a carta ser usada."
+      }
+    }
+  ]
+}
