@@ -15,10 +15,10 @@
       "id": "quietus",
       "term": { "en": "Quietus", "pt-BR": "Quietus" },
       "aliases": ["Quietus"],
-      "category": "status",
+      "category": "mechanic",
       "definition": {
-        "en": "A card keyword. Quietus cards belong to a special category referenced by some equipment and skill effects.",
-        "pt-BR": "Uma palavra-chave de carta. Cartas Quietus pertencem a uma categoria especial referenciada por alguns equipamentos e efeitos de habilidade."
+        "en": "A card keyword. Attaching or playing a card with the Quietus effect triggers specific abilities without spending extra Cost (such as applying resonance or generating additional resources). It is central to discard-and-recycle strategies — paired with Bullet cards (like Diana's), each discard sets off a chain reaction that speeds up your hand cycle.",
+        "pt-BR": "Uma palavra-chave de carta. Ao anexar ou jogar uma carta com o efeito Quietus, ela aciona habilidades específicas sem consumir custo extra (como aplicar ressonância ou gerar recursos adicionais). É central em estratégias de descarte e reciclagem rápida — combinada com cartas de Balas (como as da Diana), cada descarte desencadeia uma reação em cadeia que acelera o ciclo da sua mão."
       },
       "seeAlso": []
     },
