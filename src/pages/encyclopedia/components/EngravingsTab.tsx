@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { DECK_BUILDER_PERSONA_ENGRAVING_CARDS } from '@/pages/deck-builder/deck-builder-persona-engraving.utils'
 import type { DeckBuilderPersonaEngraving } from '@/pages/deck-builder/deck-builder.types'
 import { findClarification } from '../encyclopedia-content'
+import { FilterSection } from './FilterSection'
 import { RichDescription } from './RichDescription'
 import { resolveLang } from '../encyclopedia.utils'
 
@@ -21,46 +22,6 @@ function Badge({ children }: { children: string }) {
     <span className="rounded border border-[#334155] bg-[#1e293b] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#cbd5e1]">
       {children}
     </span>
-  )
-}
-
-function FilterRow({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string
-  options: string[]
-  value: string | null
-  onChange: (v: string | null) => void
-}) {
-  const { t } = useTranslation()
-  return (
-    <div className="flex flex-col gap-0.5">
-      <p className="mb-0.5 text-[10px] uppercase tracking-wide text-[#666]">{label}</p>
-      <button
-        type="button"
-        onClick={() => onChange(null)}
-        className={`rounded px-2 py-1 text-left text-xs transition-colors ${
-          value === null ? 'bg-[#c084fc] text-white' : 'text-[#888] hover:bg-[#222] hover:text-[#e5e7eb]'
-        }`}
-      >
-        {t('encyclopedia.all')}
-      </button>
-      {options.map(opt => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          className={`rounded px-2 py-1 text-left text-xs transition-colors ${
-            value === opt ? 'bg-[#c084fc] text-white' : 'text-[#888] hover:bg-[#222] hover:text-[#e5e7eb]'
-          }`}
-        >
-          {opt}
-        </button>
-      ))}
-    </div>
   )
 }
 
@@ -99,8 +60,8 @@ export function EngravingsTab() {
           onChange={e => setSearch(e.target.value)}
           className="w-full rounded border border-[#333] bg-[#222] px-2 py-1.5 text-xs text-[#e5e7eb] placeholder:text-[#555]"
         />
-        <FilterRow label={t('encyclopedia.engravings.eidolon')} options={EIDOLONS} value={eidolon} onChange={setEidolon} />
-        <FilterRow label={t('encyclopedia.engravings.cardType')} options={CARD_TYPES} value={cardType} onChange={setCardType} />
+        <FilterSection label={t('encyclopedia.engravings.eidolon')} options={EIDOLONS} value={eidolon} onChange={setEidolon} />
+        <FilterSection label={t('encyclopedia.engravings.cardType')} options={CARD_TYPES} value={cardType} onChange={setCardType} />
       </div>
 
       {/* List */}
