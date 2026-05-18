@@ -32,7 +32,7 @@ export function buildMatcher(glossary: GlossaryEntry[]): Matcher {
   const regex =
     aliases.length === 0
       ? /(?!)/g
-      : new RegExp(`(?<![\\w])(${aliases.map(escapeRegExp).join('|')})(?![\\w])`, 'gi')
+      : new RegExp(`(?<![\\w])(?:${aliases.map(escapeRegExp).join('|')})(?![\\w])`, 'gi')
 
   return { regex, aliasToTermId }
 }
@@ -48,6 +48,8 @@ export function linkDescription(text: string, matcher: Matcher): DescriptionSegm
   let match: RegExpExecArray | null
   while ((match = matcher.regex.exec(text)) !== null) {
     const value = match[0]
+    // Safety guard: a malformed glossary with an empty-string alias would
+    // produce zero-length matches; skip them to avoid an infinite loop.
     if (value.length === 0) {
       matcher.regex.lastIndex++
       continue
@@ -55,6 +57,8 @@ export function linkDescription(text: string, matcher: Matcher): DescriptionSegm
     if (match.index > last) {
       segments.push({ kind: 'text', value: text.slice(last, match.index) })
     }
+    // The regex is built only from aliasToTermId's keys, so a match always
+    // resolves; the text fallback is a defensive default.
     const termId = matcher.aliasToTermId.get(value.toLowerCase())
     segments.push(termId ? { kind: 'term', value, termId } : { kind: 'text', value })
     last = match.index + value.length
