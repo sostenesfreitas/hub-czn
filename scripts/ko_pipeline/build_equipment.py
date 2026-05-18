@@ -20,6 +20,15 @@ _OUT = _REPO / "src" / "pages" / "deck-builder" / "data" / "deck-builder-items.j
 # A broken official-EN description reads literally "unused" in the game data.
 _BROKEN_EN = {"", "unused"}
 
+# Three game-data entries have corrupt source text (unbalanced markup) that the
+# de-templatizer cannot clean. Their English is hand-authored here; applied only
+# when residual markup is still present (so a future game-data fix is not overridden).
+_CORRUPT_EN_OVERRIDE = {
+    "eq_pub_021": "When taking damage, recover X% of Max HP (once per turn).",
+    "eq_pub_028": "At the end of battle, if HP is 50% or less, recover X% of Max HP.",
+    "eq_ds01_006": "When an ally uses a Forbidden Card, recover X% of Max HP and gain X% Fixed Shield.",
+}
+
 
 def build_items(
     catalog: list[dict],
@@ -33,6 +42,9 @@ def build_items(
         en = e["desc_en"]
         if en.strip().lower() in _BROKEN_EN:
             en = pt  # fall back to the pt-BR (KO-derived) text
+        if "#" in en or "$" in en:
+            # residual markup survived — corrupt source; use the hand-authored English
+            en = _CORRUPT_EN_OVERRIDE.get(e["id"], en)
         items.append(
             {
                 "id": e["id"],

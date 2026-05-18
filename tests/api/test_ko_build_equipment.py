@@ -68,3 +68,23 @@ def test_english_falls_back_to_ko_translation_when_unused():
     items = build_items(catalog, {"eq_u": "descrição real"}, old_images={})
     # broken EN ("unused") is replaced by the pt-BR translation
     assert items[0]["description"]["en"] == "descrição real"
+
+
+def test_corrupt_en_uses_hand_authored_override():
+    catalog = [
+        {
+            "id": "eq_pub_021",
+            "slot": "Armor",
+            "rarity": "Rare",
+            "icon_name": "i",
+            "name": {"en": "Titan", "ko": "..."},
+            "desc_en": "When taking Damage, $RecoverXrev_0_0#% of Max HP",
+            "desc_ko": "...",
+            "jargon_en": [],
+            "jargon_ko": [],
+        }
+    ]
+    items = build_items(catalog, {"eq_pub_021": "texto pt"}, old_images={})
+    en = items[0]["description"]["en"]
+    assert "#" not in en and "$" not in en
+    assert en == "When taking damage, recover X% of Max HP (once per turn)."

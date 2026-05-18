@@ -846,7 +846,7 @@
     "slot": "Armor",
     "tags": [],
     "description": {
-      "en": "When taking Damage, $RecoverXrev_0_0#% of Max HP (1 time per turn)",
+      "en": "When taking damage, recover X% of Max HP (once per turn).",
       "pt-BR": "Ao receber dano, recupera X% do HP Máximo (1 vez por turno). [texto corrompido: fragmento de jargão '회복#1' no dado original]"
     },
     "image_path": "itens/item_0188.webp"
@@ -918,7 +918,7 @@
     "slot": "Accessory",
     "tags": [],
     "description": {
-      "en": "At the end of battle, if HP is 50% or less, $RecoverXrev_0_0#% of Max HP",
+      "en": "At the end of battle, if HP is 50% or less, recover X% of Max HP.",
       "pt-BR": "No final da batalha, se o HP for 50% ou menos, recupera X% do HP Máximo. [texto corrompido: fragmento de jargão '회복#1' no dado original]"
     },
     "image_path": "itens/item_0085.webp"
@@ -1206,7 +1206,7 @@
     "slot": "Accessory",
     "tags": [],
     "description": {
-      "en": "When an ally uses a Forbidden Card, RecoverXrev_0_0Xrev_1_0#%Fixed Shield$",
+      "en": "When an ally uses a Forbidden Card, recover X% of Max HP and gain X% Fixed Shield.",
       "pt-BR": "Quando um aliado usa uma carta Proibida, recupera X% do HP Máximo e ganha Escudo Fixo de X%. [texto corrompido: fragmentos 'RecoverXrev_0_0Xrev_1_0#%' e '$' no dado original]"
     },
     "image_path": "itens/item_0195.webp"
