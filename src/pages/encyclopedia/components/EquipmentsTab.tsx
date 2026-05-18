@@ -7,15 +7,15 @@ import {
 } from '@/pages/deck-builder/deck-builder-items.utils'
 import type { DeckBuilderItem } from '@/pages/deck-builder/deck-builder.types'
 import { findClarification } from '../encyclopedia-content'
+import { resolveLang } from '../encyclopedia.utils'
 import { RichDescription } from './RichDescription'
 
 const SLOTS = ['Weapon', 'Armor', 'Accessory']
 const RARITIES = ['Rare', 'Legendary', 'Unique']
 
 function ClarifiedDescription({ item }: { item: DeckBuilderItem }) {
-  const { t } = useTranslation()
-  const { i18n } = useTranslation()
-  const lang = i18n.language === 'en' ? 'en' : 'pt-BR'
+  const { t, i18n } = useTranslation()
+  const lang = resolveLang(i18n.language)
   const clar = findClarification('equipment', item.id)
 
   if (!clar) {
@@ -100,6 +100,7 @@ export function EquipmentsTab() {
     () => DECK_BUILDER_ITEMS.find(i => i.id === selectedId) ?? null,
     [selectedId],
   )
+  const imageUrl = selected ? getDeckBuilderItemImageUrl(selected) : null
 
   return (
     <div className="flex h-full overflow-hidden">
@@ -147,9 +148,9 @@ export function EquipmentsTab() {
         ) : (
           <div className="flex max-w-xl flex-col gap-4">
             <div className="flex items-center gap-3">
-              {getDeckBuilderItemImageUrl(selected) && (
+              {imageUrl && (
                 <img
-                  src={getDeckBuilderItemImageUrl(selected) ?? undefined}
+                  src={imageUrl}
                   alt={selected.name}
                   className={`h-14 w-14 rounded-lg border object-cover ${getItemRarityClassName(selected.rarity)}`}
                 />
