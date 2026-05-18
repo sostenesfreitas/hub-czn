@@ -65,7 +65,7 @@ def main() -> None:
     old_images = _old_images_by_name()
     items = build_items(catalog, translations, old_images)
     _OUT.write_text(
-        json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8"
+        json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print(f"Wrote {_OUT} ({len(items)} items)")
 
