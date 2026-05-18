@@ -46,3 +46,7 @@ def test_full_real_example():
 
 def test_whitespace_collapsed():
     assert detemplatize("a  <cc></>  b") == ("a b", [])
+
+
+def test_cal_expression_spanning_lines():
+    assert detemplatize("damage {cal}#rev_0_0#\n*100{/}% up") == ("damage X% up", [])

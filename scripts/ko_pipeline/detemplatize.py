@@ -17,7 +17,7 @@ import re
 
 VALUE_TOKEN = "X"
 
-_CAL = re.compile(r"\{cal\}.*?\{/\}")
+_CAL = re.compile(r"\{cal\}.*?\{/\}", re.DOTALL)
 _PLACEHOLDER = re.compile(r"#[^#]+#")
 _BR = re.compile(r"<br\s*/?>", re.IGNORECASE)
 _TAG = re.compile(r"<[^>]+>")
