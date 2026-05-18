@@ -3,7 +3,7 @@
     {
       "id": "agony",
       "term": { "en": "Agony", "pt-BR": "Agonia" },
-      "aliases": ["Agony"],
+      "aliases": ["Agony", "Agonia"],
       "category": "status",
       "definition": {
         "en": "A debuff that deals damage over time — the affected target loses HP at the start of each of its turns. Often applied in stacks.",
@@ -25,7 +25,7 @@
     {
       "id": "ravaged",
       "term": { "en": "Ravaged", "pt-BR": "Devastado" },
-      "aliases": ["Ravaged"],
+      "aliases": ["Ravaged", "Ravage", "Devastar", "Devastado"],
       "category": "status",
       "definition": {
         "en": "A debuff state on an enemy. Several set bonuses and skills deal extra damage to Ravaged targets.",
@@ -36,7 +36,7 @@
     {
       "id": "weaken",
       "term": { "en": "Weaken", "pt-BR": "Enfraquecer" },
-      "aliases": ["Weaken", "Weakened"],
+      "aliases": ["Weaken", "Weakened", "Enfraquecer", "Enfraquecido"],
       "category": "status",
       "definition": {
         "en": "A debuff that reduces the damage the affected unit deals.",
@@ -47,7 +47,7 @@
     {
       "id": "vulnerable",
       "term": { "en": "Vulnerable", "pt-BR": "Vulnerável" },
-      "aliases": ["Vulnerable"],
+      "aliases": ["Vulnerable", "Vulnerável"],
       "category": "status",
       "definition": {
         "en": "A debuff that increases the damage the affected target takes.",
@@ -58,13 +58,13 @@
     {
       "id": "shield",
       "term": { "en": "Shield", "pt-BR": "Escudo" },
-      "aliases": ["Shield"],
+      "aliases": ["Shield", "Escudo"],
       "category": "status",
       "definition": {
         "en": "A temporary barrier that absorbs incoming damage before it reaches HP.",
         "pt-BR": "Uma barreira temporária que absorve o dano recebido antes de ele atingir o HP."
       },
-      "seeAlso": []
+      "seeAlso": ["fixed-shield"]
     },
     {
       "id": "attack-card",
@@ -145,12 +145,12 @@
     },
     {
       "id": "epiphany",
-      "term": { "en": "Epiphany", "pt-BR": "Epiphany" },
-      "aliases": ["Epiphany"],
+      "term": { "en": "Epiphany", "pt-BR": "Epifania" },
+      "aliases": ["Epiphany", "Epifania"],
       "category": "mechanic",
       "definition": {
         "en": "A card upgrade system. Epiphany variants change a card's effect, cost, or scaling.",
-        "pt-BR": "Um sistema de aprimoramento de cartas. Variantes de Epiphany alteram o efeito, o custo ou o scaling de uma carta."
+        "pt-BR": "Um sistema de aprimoramento de cartas. Variantes de Epifania alteram o efeito, o custo ou o scaling de uma carta."
       },
       "seeAlso": ["spark", "engraving"]
     },
@@ -223,56 +223,225 @@
     {
       "id": "exhaust",
       "term": { "en": "Exhaust", "pt-BR": "Exaurir" },
-      "aliases": ["Exhaust", "Exhausted"],
+      "aliases": ["Exhaust", "Exhausted", "Exaurir", "Exaurido"],
       "category": "mechanic",
       "definition": {
         "en": "To remove a card from play for the rest of the battle. An Exhausted card does not return to the deck.",
         "pt-BR": "Remover uma carta da partida pelo resto da batalha. Uma carta exaurida não volta para o baralho."
       },
       "seeAlso": []
+    },
+    {
+      "id": "ap",
+      "term": { "en": "AP", "pt-BR": "PA" },
+      "aliases": ["AP", "PA"],
+      "category": "mechanic",
+      "definition": {
+        "en": "Action Points — the resource spent to play cards each turn. Every card has an AP cost shown on it.",
+        "pt-BR": "Pontos de Ação — o recurso gasto para jogar cartas a cada turno. Cada carta tem um custo de PA exibido nela."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "counterattack",
+      "term": { "en": "Counterattack", "pt-BR": "Contra-ataque" },
+      "aliases": ["Counterattack", "Contra-ataque"],
+      "category": "mechanic",
+      "definition": {
+        "en": "An automatic retaliatory attack triggered when the unit is hit under certain conditions.",
+        "pt-BR": "Um ataque de retaliação automático acionado quando a unidade é atingida sob certas condições."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "damage-reduction",
+      "term": { "en": "Damage Reduction", "pt-BR": "Redução de Dano" },
+      "aliases": ["Damage Reduction", "Redução de Dano"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A stat or effect that reduces the amount of incoming damage a unit receives.",
+        "pt-BR": "Um atributo ou efeito que reduz a quantidade de dano recebido por uma unidade."
+      },
+      "seeAlso": ["shield"]
+    },
+    {
+      "id": "discard",
+      "term": { "en": "Discard", "pt-BR": "Descartar" },
+      "aliases": ["Discard", "Descartar"],
+      "category": "mechanic",
+      "definition": {
+        "en": "To send a card from your hand to the discard pile. Some effects trigger when a card is discarded.",
+        "pt-BR": "Enviar uma carta da sua mão para o descarte. Alguns efeitos são acionados quando uma carta é descartada."
+      },
+      "seeAlso": ["draw", "exhaust"]
+    },
+    {
+      "id": "draw",
+      "term": { "en": "Draw", "pt-BR": "Comprar" },
+      "aliases": ["Draw", "Comprar"],
+      "category": "mechanic",
+      "definition": {
+        "en": "To take a card from the top of your deck and add it to your hand.",
+        "pt-BR": "Pegar uma carta do topo do seu baralho e adicioná-la à sua mão."
+      },
+      "seeAlso": ["discard"]
+    },
+    {
+      "id": "ego-points",
+      "term": { "en": "Ego Points", "pt-BR": "Pontos de Ego" },
+      "aliases": ["Ego Points", "Pontos de Ego"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A special resource separate from AP, used to activate powerful Ego abilities.",
+        "pt-BR": "Um recurso especial separado de PA, usado para ativar poderosas habilidades de Ego."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "extra-attack",
+      "term": { "en": "Extra Attack", "pt-BR": "Ataque Extra" },
+      "aliases": ["Extra Attack", "Ataque Extra"],
+      "category": "mechanic",
+      "definition": {
+        "en": "An additional attack granted outside of the normal card-play sequence, often as a bonus effect.",
+        "pt-BR": "Um ataque adicional concedido fora da sequência normal de jogo de cartas, geralmente como efeito bônus."
+      },
+      "seeAlso": ["counterattack"]
+    },
+    {
+      "id": "fixed-damage",
+      "term": { "en": "Fixed Damage", "pt-BR": "Dano Fixo" },
+      "aliases": ["Fixed Damage", "Dano Fixo"],
+      "category": "mechanic",
+      "definition": {
+        "en": "Damage that deals a set amount regardless of DEF, resistances, or other damage modifiers.",
+        "pt-BR": "Dano que causa uma quantidade fixa independentemente de DEF, resistências ou outros modificadores de dano."
+      },
+      "seeAlso": ["tenacity-damage"]
+    },
+    {
+      "id": "fixed-shield",
+      "term": { "en": "Fixed Shield", "pt-BR": "Escudo Fixo" },
+      "aliases": ["Fixed Shield", "Escudo Fixo"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A shield whose absorption value is a fixed number, unaffected by the unit's stats or scaling.",
+        "pt-BR": "Um escudo cujo valor de absorção é um número fixo, sem ser afetado pelos atributos ou scaling da unidade."
+      },
+      "seeAlso": ["shield"]
+    },
+    {
+      "id": "heal",
+      "term": { "en": "Heal", "pt-BR": "Curar" },
+      "aliases": ["Heal", "Curar"],
+      "category": "mechanic",
+      "definition": {
+        "en": "To restore HP to a unit. Healing cannot exceed a unit's maximum HP.",
+        "pt-BR": "Restaurar HP de uma unidade. A cura não pode exceder o HP máximo da unidade."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "immunity",
+      "term": { "en": "Immunity", "pt-BR": "Imunidade" },
+      "aliases": ["Immunity", "Imunidade"],
+      "category": "status",
+      "definition": {
+        "en": "A buff that prevents the unit from being affected by a specific debuff or category of negative effects.",
+        "pt-BR": "Um buff que impede a unidade de ser afetada por um debuff específico ou categoria de efeitos negativos."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "impair",
+      "term": { "en": "Impair", "pt-BR": "Comprometer" },
+      "aliases": ["Impair", "Comprometer"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff that hinders a unit's capabilities, such as reducing its stats or limiting its actions.",
+        "pt-BR": "Um debuff que prejudica as capacidades de uma unidade, como reduzir seus atributos ou limitar suas ações."
+      },
+      "seeAlso": ["weaken", "vulnerable"]
+    },
+    {
+      "id": "initiation",
+      "term": { "en": "Initiation", "pt-BR": "Iniciativa" },
+      "aliases": ["Initiation", "Iniciativa"],
+      "category": "mechanic",
+      "definition": {
+        "en": "The ability to act first at the start of battle or a round, determined by a unit's Initiation stat.",
+        "pt-BR": "A capacidade de agir primeiro no início da batalha ou de uma rodada, determinada pelo atributo de Iniciativa da unidade."
+      },
+      "seeAlso": ["action-count"]
+    },
+    {
+      "id": "lead",
+      "term": { "en": "Lead", "pt-BR": "Liderança" },
+      "aliases": ["Lead", "Liderança"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A party-wide passive or buff provided by the designated lead character that benefits the whole team.",
+        "pt-BR": "Uma passiva ou buff aplicada ao grupo inteiro pelo personagem líder designado, beneficiando toda a equipe."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "mark",
+      "term": { "en": "Mark", "pt-BR": "Marcar" },
+      "aliases": ["Mark", "Marcar"],
+      "category": "status",
+      "definition": {
+        "en": "A debuff applied to an enemy that causes it to receive increased damage or triggers additional effects when attacked.",
+        "pt-BR": "Um debuff aplicado a um inimigo que faz ele receber dano aumentado ou aciona efeitos adicionais ao ser atacado."
+      },
+      "seeAlso": ["vulnerable"]
+    },
+    {
+      "id": "stockpile",
+      "term": { "en": "Stockpile", "pt-BR": "Acumular" },
+      "aliases": ["Stockpile", "Acumular"],
+      "category": "mechanic",
+      "definition": {
+        "en": "To accumulate a resource or stacks of an effect over multiple turns for a delayed, larger payoff.",
+        "pt-BR": "Acumular um recurso ou acúmulos de um efeito ao longo de vários turnos para um benefício maior e adiado."
+      },
+      "seeAlso": []
+    },
+    {
+      "id": "tenacity",
+      "term": { "en": "Tenacity", "pt-BR": "Tenacidade" },
+      "aliases": ["Tenacity", "Tenacidade"],
+      "category": "status",
+      "definition": {
+        "en": "A buff that grants resistance to crowd-control effects and reduces the duration or potency of debuffs.",
+        "pt-BR": "Um buff que concede resistência a efeitos de controle de grupo e reduz a duração ou potência de debuffs."
+      },
+      "seeAlso": ["tenacity-damage"]
+    },
+    {
+      "id": "tenacity-damage",
+      "term": { "en": "Tenacity Damage", "pt-BR": "Dano de Tenacidade" },
+      "aliases": ["Tenacity Damage", "Dano de Tenacidade"],
+      "category": "mechanic",
+      "definition": {
+        "en": "A damage type that specifically depletes Tenacity stacks on the target rather than dealing HP damage.",
+        "pt-BR": "Um tipo de dano que especificamente consome acúmulos de Tenacidade no alvo em vez de causar dano ao HP."
+      },
+      "seeAlso": ["tenacity", "fixed-damage"]
+    },
+    {
+      "id": "thorns",
+      "term": { "en": "Thorns", "pt-BR": "Espinhos" },
+      "aliases": ["Thorns", "Espinhos"],
+      "category": "status",
+      "definition": {
+        "en": "A buff that reflects a portion of damage back to the attacker when the buffed unit is struck.",
+        "pt-BR": "Um buff que reflete uma parte do dano de volta ao atacante quando a unidade com o buff é atingida."
+      },
+      "seeAlso": []
     }
   ],
   "clarifications": [
-    {
-      "kind": "equipment",
-      "refId": "eq_p_inv_003",
-      "text": {
-        "en": "On a critical hit, 50% chance to inflict 1 stack of Agony on the target.",
-        "pt-BR": "Em acerto crítico, 50% de chance de aplicar 1 acúmulo de Agonia no alvo."
-      }
-    },
-    {
-      "kind": "equipment",
-      "refId": "eq_pub_008",
-      "text": {
-        "en": "When you deal damage with a single-target Attack Card, inflict 3 Agony (once per turn).",
-        "pt-BR": "Ao causar dano com uma Carta de Ataque de alvo único, aplica 3 Agonia (1x por turno)."
-      }
-    },
-    {
-      "kind": "equipment",
-      "refId": "eq_p_nih_005",
-      "text": {
-        "en": "At the start of battle, you may Discard up to 3 cards, then Draw that many cards.",
-        "pt-BR": "No início da batalha, você pode descartar até 3 cartas e então comprar a mesma quantidade."
-      }
-    },
-    {
-      "kind": "equipment",
-      "refId": "eq_pub_002",
-      "text": {
-        "en": "When you use an Attack Card costing 2 or more, inflict 3 Agony on the target.",
-        "pt-BR": "Ao usar uma Carta de Ataque de custo 2 ou mais, aplica 3 Agonia no alvo."
-      }
-    },
-    {
-      "kind": "equipment",
-      "refId": "eq_p_inv_010",
-      "text": {
-        "en": "When you take damage, inflict 4 Agony on the attacker.",
-        "pt-BR": "Ao receber dano, aplica 4 Agonia no atacante."
-      }
-    },
     {
       "kind": "engraving",
       "refId": "pe_0001",
