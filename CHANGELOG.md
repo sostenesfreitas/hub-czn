@@ -5,6 +5,18 @@ All notable changes to Vribbels CZN Optimizer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-05-27
+
+### Added
+- **Adelheid** (1055) — Vanguard, Void, SSR — ATK 327 / DEF 153 / HP 403 (Lv 60 in-game stats; her DB row still carries placeholder Controller-SR values, will self-correct on next client refresh)
+- **Clara** (30095) — Vanguard partner, SSR — passive "Dreamwoven Prism" (DEF% boost + Blessing-card heal + Prism stacking buff), EGO "Genius Stage Director" (200% Shield + Draw 2 Blessing cards)
+- **`scripts/extract_combatant.py`** — reusable auto-extractor for `CHARACTERS` entries. Reads the unpacked client, parses `link_char_growth_material_id` (`c_{class}_{color}` pattern), scales base stats to Lv60/Ascend5, and resolves potential node stat types. Anchor-tested against 6 known combatants.
+- **`scripts/extract_partner.py`** — assisted scaffold for `PARTNERS` entries. Auto-resolves name, class (from `s_*` growth material), grade, and ego details; emits TODO markers for fields needing human curation. Anchor-tested against 3 known partners.
+
+### Notes
+- Future game updates: drop a fresh `output/` extract, run `extract_combatant.py`/`extract_partner.py` with the new res_ids, paste, rebuild — minutes instead of hours.
+- The pivot from `char_combatant.json` to `char_base@char_base.json` as the source of truth for display class/attribute (verified across 6 anchor combatants) handles DB inconsistencies where a combatant's mechanical class and display class disagree (as observed for Adelheid).
+
 ## [0.2.1] - 2026-05-04
 
 ### Fixed
