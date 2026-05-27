@@ -704,6 +704,21 @@ PARTNERS = {
         "ego_cost": 2,
         "ego_desc": "Select up to 2 cards in hand and apply Linked. If a selected card is the assigned combatant's Linked card, +X% Critical Damage to the assigned combatant for each such card instead.",
     },
+    30095: {
+        "name": "Clara",
+        "grade": 5,
+        "class": "Vanguard",
+        "passive_name": "Dreamwoven Prism",
+        "passive_desc": "Increase the assigned Combatant's Defense by {DEF%}%.\nWhen a card with the Blessing effect applied by the assigned Combatant is used, Fixed Heal {Heal%}% (5 times per turn).\nWhen the assigned Combatant's Blessing card is used, allies gain 1 Prism.\n[Prism]: Increase Damage Amount of Attack Cards and Shield Gain Amount of Skill Cards by 5% (max 4 stacks).",
+        "values": {
+            "DEF%": (16, 18, 20, 22, 24),
+            "Heal%": (40, 45, 50, 55, 60),
+        },
+        "stats": {"DEF%": (16, 18, 20, 22, 24)},
+        "ego_name": "Genius Stage Director",
+        "ego_cost": 3,
+        "ego_desc": "200% Shield\nDraw 2 Blessing cards from Draw Pile.",
+    },
 }
 
 # Base stats by grade and class at level 60
