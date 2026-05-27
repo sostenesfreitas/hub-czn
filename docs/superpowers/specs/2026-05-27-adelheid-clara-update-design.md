@@ -113,7 +113,17 @@ After running the two extractors and pasting their output into `characters.py` /
 
 1. `python scripts/bundle_game_data.py C:/Users/soste/Downloads/output` — regenerates `api/data/game_db.json` (now contains 1055 and 30095 in `char_base` plus their cards).
 2. `python scripts/build_scaling_tables.py` — refreshes `api/data/char_base_l1.json` and `api/data/level_scaling.json`.
-3. **Portraits**: copy `output/face/character/face_character_1055.png` and `face_character_30095.png` (plus `portrait_character_*` variants if present) into `api/assets/game/faces/`. Then `python scripts/copy_portraits.py` distributes them into `android-app/.../assets/faces/`.
+3. **Portraits**: the frontend uses four distinct filename patterns. Run `python scripts/extract_portraits.py <output_dir> <res_id> [<res_id>...]` to pull all of them. The patterns are:
+
+| Destination subdir | Filename pattern | Source folder | Used by |
+|---|---|---|---|
+| `api/assets/game/faces/` | `bookmark_face_character_map_{res_id}.png` | `output/face/character/` | Detail page, picker, pull history |
+| `api/assets/game/tp_skill/` | `battle_icon_tp_skill_{res_id}.png` | `output/tp_skill/` | Combatant card row icon, partner badge |
+| `api/assets/game/collapse/` | `collapse_{res_id}_01.png` and `_02.png` | `output/collapse/collapse_illustration/` | Expanded combatant row background |
+
+Then run `python scripts/copy_portraits.py` to mirror the `faces/` content into `android-app/.../assets/faces/`.
+
+**Pitfall:** `face_character_*.png`, `portrait_character_*.png`, and `portrait_character_crop_*.png` exist in `output/face/character/` but are **not used by the optimizer frontend** — don't copy them. The frontend only reads `bookmark_face_character_map_*.png` from that folder.
 4. `python scripts/extract_characters.py` — regenerates `android-app/app/src/main/assets/characters.json` from the updated dicts.
 5. **Char presets** (combatant only): add an entry for Adelheid (1055) in `api/game_data/char_presets.py::_RAW`. The source is `db/piece_valid_setting@piece_valid_setting.json`; for now this is hand-translated. If `link_piece_valid_setting_id` in Adelheid's row is `"none"`, skip — she uses the default preset. (Note: Adelheid's row shows `link_piece_valid_setting_id: "none"`, so this step is a no-op for her.)
 
