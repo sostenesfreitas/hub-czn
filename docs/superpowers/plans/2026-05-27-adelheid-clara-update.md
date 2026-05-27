@@ -6,6 +6,8 @@
 
 **Architecture:** Two new scripts read the unpacked client (`C:\Users\soste\Downloads\output\`) plus the localized `text/en/text.json`. They emit Python dict literals ready to paste into `api/game_data/characters.py::CHARACTERS` and `api/game_data/partners.py::PARTNERS`. After paste, existing pipeline scripts (`bundle_game_data.py`, `build_scaling_tables.py`, `copy_portraits.py`, `extract_characters.py`) regenerate all derived bundles.
 
+**Key field-mapping decision:** for combatant *display* attributes (class, attribute, grade) the authoritative source is `char_base@char_base.json` (specifically `link_char_growth_material_id` of form `c_{classKey}_{colorKey}` and `rarity`). For *stats* (`s_atk` etc.) the authoritative source remains `char_base@char_combatant.json`. The two can disagree — e.g., Adelheid (1055) is `c_knight_purple` + `RARITY_SSR` (display: Vanguard / Void / SSR) but her `char_combatant` row still carries Controller-SR placeholder stats. We preserve both as-is and let `build_scaling_tables.py` continue reading stats from `char_combatant`.
+
 **Tech Stack:** Python 3.11+, pytest, json stdlib, dataclasses-free (functions + dicts to match existing style).
 
 **Spec:** `docs/superpowers/specs/2026-05-27-adelheid-clara-update-design.md`
@@ -84,7 +86,7 @@ def extractor():
 
 
 def test_yuki_1057_round_trip(extractor):
-    """Yuki: Order/Striker/grade 5 — anchor for ego_type=GREEN mapping."""
+    """Yuki: Order/Striker/grade 5 — anchor for c_striker_green."""
     entry = extractor.extract(OUTPUT_DIR, 1057)
     expected = CHARACTERS[1057]
     assert entry["name"] == expected["name"]
@@ -97,7 +99,7 @@ def test_yuki_1057_round_trip(extractor):
 
 
 def test_nia_1003_round_trip(extractor):
-    """Nia: Instinct/Controller/grade 4 — anchor for ego_type=ORANGE, _sr."""
+    """Nia: Instinct/Controller/grade 4 — anchor for c_controller_orange."""
     entry = extractor.extract(OUTPUT_DIR, 1003)
     expected = CHARACTERS[1003]
     assert entry["attribute"] == expected["attribute"]
@@ -105,37 +107,50 @@ def test_nia_1003_round_trip(extractor):
     assert entry["grade"] == expected["grade"]
 
 
-def test_luke_1004_round_trip(extractor):
-    """Luke: Order/Hunter/grade 5 — anchor for ego_type=GREEN, _ssr."""
-    entry = extractor.extract(OUTPUT_DIR, 1004)
-    expected = CHARACTERS[1004]
+def test_khalipe_1008_round_trip(extractor):
+    """Khalipe: Instinct/Vanguard/grade 5 — anchor for c_knight_orange, RARITY_SSR."""
+    entry = extractor.extract(OUTPUT_DIR, 1008)
+    expected = CHARACTERS[1008]
     assert entry["attribute"] == expected["attribute"]
     assert entry["class"] == expected["class"]
     assert entry["grade"] == expected["grade"]
 
 
+def test_magna_1010_round_trip(extractor):
+    """Magna: Justice/Vanguard — anchor for c_knight_blue (BLUE → Justice, NOT Adelheid's variant!)."""
+    entry = extractor.extract(OUTPUT_DIR, 1010)
+    expected = CHARACTERS[1010]
+    assert entry["attribute"] == expected["attribute"]
+    assert entry["class"] == expected["class"]
+
+
 def test_rin_1018_round_trip(extractor):
-    """Rin: Void/Striker — anchor for ego_type=PURPLE."""
+    """Rin: Void/Striker — anchor for c_striker_purple."""
     entry = extractor.extract(OUTPUT_DIR, 1018)
     expected = CHARACTERS[1018]
     assert entry["attribute"] == expected["attribute"]
+    assert entry["class"] == expected["class"]
 
 
 def test_veronica_1033_round_trip(extractor):
-    """Veronica: Passion/Ranger — anchor for ego_type=RED."""
+    """Veronica: Passion/Ranger — anchor for c_ranger_red."""
     entry = extractor.extract(OUTPUT_DIR, 1033)
     expected = CHARACTERS[1033]
     assert entry["attribute"] == expected["attribute"]
+    assert entry["class"] == expected["class"]
 
 
-def test_adelheid_1055_emits_required_fields(extractor):
-    """Adelheid: should emit all required CHARACTERS fields."""
+def test_adelheid_1055_is_vanguard_void_ssr(extractor):
+    """Adelheid: display class+attr from char_base@char_base (c_knight_purple, RARITY_SSR)."""
     entry = extractor.extract(OUTPUT_DIR, 1055)
     required = {"name", "grade", "attribute", "class", "base_atk",
                 "base_def", "base_hp", "base_crit_rate", "base_crit_dmg",
                 "base_weak_ego_dmg_rate", "node_50", "node_60"}
     assert required.issubset(entry.keys())
     assert entry["name"] == "Adelheid"
+    assert entry["class"] == "Vanguard"
+    assert entry["attribute"] == "Void"
+    assert entry["grade"] == 5
 ```
 
 - [ ] **Step 2: Run test to verify it fails for the right reason**
@@ -164,6 +179,12 @@ Create `scripts/extract_combatant.py`:
 ```python
 """Auto-extract a combatant entry for api/game_data/characters.py::CHARACTERS.
 
+Reads from the unpacked client (output/):
+  - db/char_base@char_base.json — display class, attribute, grade (authoritative)
+  - db/char_base@char_combatant.json — base stats (authoritative)
+  - db/potential_node@potential_node_effect.json — node_50 / node_60 stat types
+  - text/en/text.json — English combatant name
+
 Usage:
     python scripts/extract_combatant.py <output_dir> <res_id> [<res_id> ...]
 
@@ -173,26 +194,31 @@ Example:
 from __future__ import annotations
 
 import json
-import pprint
 import sys
 from pathlib import Path
 
-EGO_TYPE_TO_ATTRIBUTE = {
-    "BLUE": "Justice",
-    "RED": "Passion",
-    "PURPLE": "Void",
-    "ORANGE": "Instinct",
-    "GREEN": "Order",
+# link_char_growth_material_id is "c_{class_key}_{color_key}".
+GROWTH_CLASS_TO_CLASS = {
+    "controller": "Controller",
+    "knight": "Vanguard",
+    "striker": "Striker",
+    "ranger": "Ranger",
+    "hunter": "Hunter",
+    "psionic": "Psionic",
 }
 
-CLASS_DEFINE_TO_CLASS = {
-    "controller": "Controller",
-    "hunter": "Hunter",
-    "ranger": "Ranger",
-    "striker": "Striker",
-    "vanguard": "Vanguard",
-    "psionic": "Psionic",
-    "knight": "Vanguard",
+GROWTH_COLOR_TO_ATTRIBUTE = {
+    "orange": "Instinct",
+    "blue": "Justice",
+    "purple": "Void",
+    "red": "Passion",
+    "green": "Order",
+}
+
+RARITY_TO_GRADE = {
+    "RARITY_SSR": 5,
+    "RARITY_SR": 4,
+    "RARITY_R": 3,
 }
 
 NODE_STAT_TYPE_TO_LABEL = {
@@ -220,20 +246,25 @@ def _name_from_text_json(text_rows: list[dict], res_id: int) -> str | None:
     return None
 
 
-def _grade_from_level_group(level_group: str) -> int:
-    if level_group.endswith("_ssr"):
-        return 5
-    if level_group.endswith("_sr"):
-        return 4
-    raise ValueError(f"unknown level group suffix: {level_group}")
+def _parse_growth_material(growth_id: str) -> tuple[str, str]:
+    """Parse 'c_knight_purple' → ('Vanguard', 'Void')."""
+    parts = growth_id.split("_")
+    if len(parts) != 3 or parts[0] != "c":
+        raise ValueError(f"unexpected link_char_growth_material_id: {growth_id!r}")
+    klass = GROWTH_CLASS_TO_CLASS.get(parts[1])
+    if klass is None:
+        raise ValueError(f"unmapped class key in {growth_id!r}: {parts[1]!r}")
+    attr = GROWTH_COLOR_TO_ATTRIBUTE.get(parts[2])
+    if attr is None:
+        raise ValueError(f"unmapped color key in {growth_id!r}: {parts[2]!r}")
+    return klass, attr
 
 
 def _resolve_node(node_effects: list[dict], res_id: int, node_num: int) -> str | None:
     """Find the stat type for a specific potential node (e.g. 50 or 60).
 
-    Node id format: {res_id}{2-digit-node-num}{2-digit-level}. We pick the
-    level-01 row (any level works — they share the stat type) and read its
-    stat_type field.
+    Node id format: {res_id}{2-digit-node-num}{2-digit-level}. Any level row
+    works — they share the stat type within a node.
     """
     prefix = f"{res_id}{node_num:02d}"
     for row in node_effects:
@@ -251,41 +282,39 @@ def extract(output_dir: Path, res_id: int) -> dict:
     db = output_dir / "db"
     text_json = output_dir / "text" / "en" / "text.json"
 
+    char_base = _index_by_id(_load_json(db / "char_base@char_base.json"))
     combatants = _index_by_id(_load_json(db / "char_base@char_combatant.json"))
     text_rows = _load_json(text_json)
     node_effects = _load_json(db / "potential_node@potential_node_effect.json")
 
-    row = combatants.get(str(res_id))
-    if row is None:
+    base_row = char_base.get(str(res_id))
+    if base_row is None:
+        raise KeyError(f"res_id {res_id} not found in char_base@char_base.json")
+    stat_row = combatants.get(str(res_id))
+    if stat_row is None:
         raise KeyError(f"res_id {res_id} not found in char_base@char_combatant.json")
 
     name = _name_from_text_json(text_rows, res_id)
     if name is None:
         raise KeyError(f"no English name for res_id {res_id} in text.json")
 
-    ego_type = row["link_ego_type_id"]
-    attribute = EGO_TYPE_TO_ATTRIBUTE.get(ego_type)
-    if attribute is None:
-        raise ValueError(f"unmapped link_ego_type_id: {ego_type}")
+    klass, attribute = _parse_growth_material(base_row["link_char_growth_material_id"])
 
-    class_define = row["link_base_class_define_id"]
-    klass = CLASS_DEFINE_TO_CLASS.get(class_define)
-    if klass is None:
-        raise ValueError(f"unmapped link_base_class_define_id: {class_define}")
-
-    grade = _grade_from_level_group(row["link_combatant_level_group"])
+    grade = RARITY_TO_GRADE.get(base_row["rarity"])
+    if grade is None:
+        raise ValueError(f"unmapped rarity: {base_row['rarity']!r}")
 
     entry = {
         "name": name,
         "grade": grade,
         "attribute": attribute,
         "class": klass,
-        "base_atk": int(row["s_atk"]),
-        "base_def": int(row["s_def"]),
-        "base_hp": int(row["s_hp"]),
-        "base_crit_rate": float(row["s_cri"]),
-        "base_crit_dmg": float(row["s_cri_dmg_rate"]),
-        "base_weak_ego_dmg_rate": float(row["s_weak_ego_dmg_rate"]),
+        "base_atk": int(stat_row["s_atk"]),
+        "base_def": int(stat_row["s_def"]),
+        "base_hp": int(stat_row["s_hp"]),
+        "base_crit_rate": float(stat_row["s_cri"]),
+        "base_crit_dmg": float(stat_row["s_cri_dmg_rate"]),
+        "base_weak_ego_dmg_rate": float(stat_row["s_weak_ego_dmg_rate"]),
         "node_50": _resolve_node(node_effects, res_id, 50),
         "node_60": _resolve_node(node_effects, res_id, 60),
     }
@@ -328,12 +357,12 @@ Expected: all 6 tests PASS.
 
 - [ ] **Step 3: If any anchor test fails, fix mapping table**
 
-If `test_yuki_1057_round_trip`, `_nia_`, `_luke_`, `_rin_`, or `_veronica_` fails, the `EGO_TYPE_TO_ATTRIBUTE` table is wrong. Read the failing assertion to see which color → attribute is mismatched, then fix `EGO_TYPE_TO_ATTRIBUTE` and re-run. Do NOT change the test expectation — the existing `CHARACTERS` dict is the source of truth.
+If any of the round-trip tests fails, one of `GROWTH_CLASS_TO_CLASS`, `GROWTH_COLOR_TO_ATTRIBUTE`, or `RARITY_TO_GRADE` is wrong. Read the failing assertion to see which mapping is off, fix the table, and re-run. Do NOT change the test expectation — the existing `CHARACTERS` dict is the source of truth.
 
 - [ ] **Step 4: Smoke run for Adelheid**
 
 Run: `python scripts/extract_combatant.py C:/Users/soste/Downloads/output 1055`
-Expected: stdout shows a paste-ready dict literal starting with `1055: {`, with `"name": 'Adelheid'`, `"attribute": 'Justice'`, `"class": 'Controller'`, `"grade": 4`.
+Expected: stdout shows a paste-ready dict literal starting with `1055: {`, with `"name": 'Adelheid'`, `"attribute": 'Void'`, `"class": 'Vanguard'`, `"grade": 5`.
 
 - [ ] **Step 5: Commit**
 
@@ -361,7 +390,7 @@ Open `api/game_data/characters.py` and insert the captured block between entry `
 - [ ] **Step 3: Smoke import**
 
 Run: `python -c "from api.game_data.characters import CHARACTERS; c = CHARACTERS[1055]; print(c['name'], c['attribute'], c['class'], c['grade'])"`
-Expected: `Adelheid Justice Controller 4`
+Expected: `Adelheid Void Vanguard 5`
 
 - [ ] **Step 4: Verify name reverse-lookup**
 
@@ -375,7 +404,7 @@ Remove-Item _adel.txt
 ```
 ```bash
 git add api/game_data/characters.py
-git commit -m "feat(characters): register Adelheid (1055) — Justice Controller SR"
+git commit -m "feat(characters): register Adelheid (1055) — Void Vanguard SSR"
 ```
 
 ---

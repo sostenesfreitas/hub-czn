@@ -7,7 +7,7 @@
 
 The game shipped an update. The unpacked client lives at `C:\Users\soste\Downloads\output\`. Two new entries are relevant:
 
-- **Adelheid** — `char_base@name@1055` in `text/en/text.json`; full row in `db/char_base@char_combatant.json` under `id: "1055"`. Class `controller`, ego type `BLUE`, level group `c_lv_controller_sr` (grade 4 SR). Base stats: `s_atk=129, s_def=56, s_hp=74, s_cri=3, s_cri_dmg_rate=125`.
+- **Adelheid** — `char_base@name@1055` in `text/en/text.json`. Display attributes from `db/char_base@char_base.json`: `rarity: "RARITY_SSR"` (grade 5), `link_char_growth_material_id: "c_knight_purple"` (Vanguard / Void). Stats from `db/char_base@char_combatant.json`: `s_atk=129, s_def=56, s_hp=74, s_cri=3, s_cri_dmg_rate=125, link_combatant_level_group=c_lv_controller_sr`. **Note:** the stats and level group in `char_combatant.json` look like placeholder Controller SR values (identical to Nia 1003). The game appears authoritative on display class/attribute/grade from `char_base`, while combat-stat scaling continues to use `char_combatant.link_combatant_level_group`. We preserve both — display from `char_base`, stats from `char_combatant`.
 - **Clara** — `char_base@name@30095`; row in `db/partner_base@char_base.json` under `id: "30095"`.
 
 Today, `api/game_data/characters.py::CHARACTERS` and `api/game_data/partners.py::PARTNERS` are hand-maintained dicts. Every game update repeats the same chore: open the new `.json` files, copy values, normalize text. We will write the extraction once and reuse forever.
@@ -36,15 +36,20 @@ python scripts/extract_combatant.py <output_dir> <res_id> [<res_id> ...]
 ```
 
 Reads:
-- `db/char_base@char_combatant.json` — base stats, class, ego type, level group
+- `db/char_base@char_base.json` — display class, attribute, grade (rarity)
+- `db/char_base@char_combatant.json` — base stats (`s_atk` etc.)
 - `text/en/text.json` — name (`char_base@name@{id}`)
 - `db/potential_node@potential_node_effect.json` — node_50/node_60 stat types
 
 Resolves:
-- `link_ego_type_id` (BLUE/RED/PURPLE/ORANGE/GREEN) → `attribute` via a mapping table inferred at script-build time from a known anchor (Yuki 1057 → Order; Hugo 1043 → Order; Rin 1018 → Void; Veronica 1033 → Passion; Magna 1010 → Justice; Khalipe 1008 → Instinct). The mapping is hard-coded inside the script after one-shot verification, not re-derived every run.
-- `link_base_class_define_id` (controller/hunter/ranger/striker/vanguard/psionic) → `class` (capitalized).
-- `link_combatant_level_group` suffix → `grade` (`_sr` → 4, `_ssr` → 5).
+- `link_char_growth_material_id` (from `char_base@char_base.json`) of the shape `c_{class_key}_{color_key}` → `class` and `attribute`:
+  - class_key: `controller`→Controller, `knight`→Vanguard, `striker`→Striker, `ranger`→Ranger, `hunter`→Hunter, `psionic`→Psionic
+  - color_key: `orange`→Instinct, `blue`→Justice, `purple`→Void, `red`→Passion, `green`→Order
+- `rarity` (from `char_base@char_base.json`): `RARITY_SSR`→5, `RARITY_SR`→4, `RARITY_R`→3.
+- Base stats from `char_base@char_combatant.json` row keys `s_atk/s_def/s_hp/s_cri/s_cri_dmg_rate/s_weak_ego_dmg_rate`.
 - `node_50` / `node_60`: from `potential_node@potential_node_effect.json`, filter rows whose `id` starts with `{res_id}50…` and `{res_id}60…`, extract the `stat_type` (HP%/ATK%/DEF%/CRate/CDmg).
+
+The historical `link_ego_type_id` and `link_base_class_define_id` fields in `char_combatant.json` are **ignored** — they reflect mechanics/card-pool internals, not display, and disagree with `char_base@char_base.json` for at least one live combatant (Adelheid).
 
 Prints to stdout a Python dict literal ready to paste into `CHARACTERS`:
 
@@ -92,7 +97,15 @@ Prints Python dict literal for `PARTNERS`.
 
 ### Mapping ground-truth check
 
-Before trusting the BLUE/RED/etc → attribute map, the script asserts the mapping against three sentinels by running its own inference against res_ids 1057 (Yuki/Order), 1018 (Rin/Void), 1033 (Veronica/Passion). If any mismatch with the current `CHARACTERS` dict, abort with a clear error.
+Before trusting the `c_{class}_{color}` map, tests run the extractor against six well-known combatants and compare against the existing `CHARACTERS` dict:
+- 1003 Nia → Controller / Instinct (c_controller_orange)
+- 1008 Khalipe → Vanguard / Instinct (c_knight_orange)
+- 1010 Magna → Vanguard / Justice (c_knight_blue)
+- 1018 Rin → Striker / Void (c_striker_purple)
+- 1033 Veronica → Ranger / Passion (c_ranger_red)
+- 1057 Yuki → Striker / Order (c_striker_green)
+
+If any anchor fails, the script's mapping table is wrong and the test surfaces it loudly.
 
 ### Data pipeline (in order)
 
