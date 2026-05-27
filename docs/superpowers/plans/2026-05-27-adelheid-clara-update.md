@@ -383,21 +383,33 @@ git commit -m "feat(scripts): add extract_combatant.py for paste-ready CHARACTER
 Run: `python scripts/extract_combatant.py C:/Users/soste/Downloads/output 1055 > _adel.txt`
 Then `Get-Content _adel.txt` to inspect.
 
-- [ ] **Step 2: Insert into `CHARACTERS`**
+- [ ] **Step 2: Override stats with in-game Lv60 values**
 
-Open `api/game_data/characters.py` and insert the captured block between entry `1052` and `1056` (the existing entries on either side of `1055`). Maintain trailing comma and indentation matching surrounding entries.
+The scaffold's `base_atk` / `base_def` / `base_hp` come from `char_combatant.json` (in-DB placeholder Controller-SR pattern). User-confirmed in-game Lv60 values for Adelheid are:
+- `base_atk: 327`
+- `base_def: 153`
+- `base_hp: 403`
+- `base_crit_rate: 3.0` (default)
+- `base_crit_dmg: 125.0` (default)
+- `base_weak_ego_dmg_rate: 125.0` (default)
 
-- [ ] **Step 3: Smoke import**
+In `_adel.txt`, replace the `base_atk` / `base_def` / `base_hp` lines with the in-game values above before pasting. Leave the rest of the scaffold (name, grade, attribute, class, nodes) as emitted.
 
-Run: `python -c "from api.game_data.characters import CHARACTERS; c = CHARACTERS[1055]; print(c['name'], c['attribute'], c['class'], c['grade'])"`
-Expected: `Adelheid Void Vanguard 5`
+- [ ] **Step 3: Insert into `CHARACTERS`**
 
-- [ ] **Step 4: Verify name reverse-lookup**
+Open `api/game_data/characters.py` and insert the corrected block between entry `1052` and `1056` (the existing entries on either side of `1055`). Maintain trailing comma and indentation matching surrounding entries.
+
+- [ ] **Step 4: Smoke import**
+
+Run: `python -c "from api.game_data.characters import CHARACTERS; c = CHARACTERS[1055]; print(c['name'], c['attribute'], c['class'], c['grade'], c['base_atk'], c['base_def'], c['base_hp'])"`
+Expected: `Adelheid Void Vanguard 5 327 153 403`
+
+- [ ] **Step 5: Verify name reverse-lookup**
 
 Run: `python -c "from api.game_data.characters import get_character_by_name; print(get_character_by_name('Adelheid')['base_atk'])"`
-Expected: `129`
+Expected: `327`
 
-- [ ] **Step 5: Clean up temp file and commit**
+- [ ] **Step 6: Clean up temp file and commit**
 
 ```powershell
 Remove-Item _adel.txt
