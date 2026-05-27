@@ -5,6 +5,11 @@ All notable changes to Vribbels CZN Optimizer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-05-27
+
+### Fixed
+- **Adelheid + Clara portraits** — the optimizer renders portraits via the path `/assets/game/faces/bookmark_face_character_map_{res_id}.png`. v0.4.0 shipped with `face_character_*.png` / `portrait_character_*.png` for 1055/30095 (wrong filename pattern), causing empty silhouettes in combatant cards and pull-history rows. Copied the correct `bookmark_face_character_map_1055.png` and `bookmark_face_character_map_30095.png` from the unpacked client and removed the unused variants.
+
 ## [0.4.0] - 2026-05-27
 
 ### Added
