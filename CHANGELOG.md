@@ -5,6 +5,12 @@ All notable changes to Vribbels CZN Optimizer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2026-05-27
+
+### Fixed
+- **Adelheid combatant-card icon + expanded background art** — the combatant list uses `/assets/game/tp_skill/battle_icon_tp_skill_{res_id}.png` for the rectangular row icon and `/assets/game/collapse/collapse_{res_id}_{01,02}.png` for the background art when expanded. v0.4.1 added Adelheid's `bookmark_face_character_map_*.png` (fixing detail/picker portraits) but missed these two asset paths. Now copied from `output/tp_skill/` and `output/collapse/collapse_illustration/`.
+- **Clara partner-badge icon** — same `battle_icon_tp_skill_*.png` is used for the small partner badge inside a combatant's expanded row. Added `battle_icon_tp_skill_30095.png`.
+
 ## [0.4.1] - 2026-05-27
 
 ### Fixed
