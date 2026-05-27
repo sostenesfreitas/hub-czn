@@ -39,13 +39,13 @@ if errorlevel 1 (
 :: ---- Step 2: Frontend ----
 echo.
 echo [2/4] Building frontend...
-npm install
+call npm install
 if errorlevel 1 (
     echo ERROR: npm install failed.
     pause & exit /b 1
 )
 
-npm run build
+call npm run build
 if errorlevel 1 (
     echo ERROR: npm run build failed.
     pause & exit /b 1
@@ -54,7 +54,7 @@ if errorlevel 1 (
 :: ---- Step 3: Tauri bundle ----
 echo.
 echo [3/4] Building Tauri app...
-npm run tauri build
+call npm run tauri build
 if errorlevel 1 (
     echo ERROR: npm run tauri build failed.
     pause & exit /b 1
