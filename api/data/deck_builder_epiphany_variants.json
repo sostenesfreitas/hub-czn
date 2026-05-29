@@ -7092,5 +7092,257 @@
         "description": "200%\nDamage.\nInspiration: Add\n1\nHit."
       }
     ]
+  },
+  "c_1055_uni2": {
+    "character_id": 1055,
+    "character_name": "Adelheid",
+    "base_card_id": "c_1055_uni2",
+    "base_card_name": "Friends from Fairy Tales",
+    "variants": [
+      {
+        "variant_id": "c_1055_uni2_epiphany_1",
+        "level": 1,
+        "name": "Friends from Fairy Tales I",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nCreate\n1\nDoggie.\n+\n20%\nDamage Amount to Doggie for every\n1\nBlessing\ncard in possession (max\n15\ncards)."
+      },
+      {
+        "variant_id": "c_1055_uni2_epiphany_2",
+        "level": 2,
+        "name": "Friends from Fairy Tales II",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nCreate\n1\nTeddy.\nIf Damage is taken, move Teddy to hand (\n1\ntime per turn)."
+      },
+      {
+        "variant_id": "c_1055_uni2_epiphany_3",
+        "level": 3,
+        "name": "Friends from Fairy Tales III",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nCreate\n4\nDoggie (Pack) in Draw Pile."
+      },
+      {
+        "variant_id": "c_1055_uni2_epiphany_4",
+        "level": 4,
+        "name": "Friends from Fairy Tales IV",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nCreate\n1\nTeddy.\nWhen Teddy is used,\n1\nCounterattack, and for\n1\nturn,\nRetain\nCounterattack."
+      },
+      {
+        "variant_id": "c_1055_uni2_epiphany_5",
+        "level": 5,
+        "name": "Friends from Fairy Tales V",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nCreate\n1\nDoggie (Morphed)."
+      }
+    ]
+  },
+  "c_1055_srt4": {
+    "character_id": 1055,
+    "character_name": "Adelheid",
+    "base_card_id": "c_1055_srt4",
+    "base_card_name": "Once Upon A Time",
+    "variants": [
+      {
+        "variant_id": "c_1055_srt4_epiphany_1",
+        "level": 1,
+        "name": "Once Upon A Time I",
+        "cost": 1,
+        "card_type": "Skill",
+        "tags": [
+          "Exhaust 2"
+        ],
+        "description": "[Exhaust 2]\nApply\nBlessing\nto\n3\nrandom cards in Draw Pile, Draw\n1\nof those cards."
+      },
+      {
+        "variant_id": "c_1055_srt4_epiphany_2",
+        "level": 2,
+        "name": "Once Upon A Time II",
+        "cost": 0,
+        "card_type": "Skill",
+        "tags": [
+          "Initiation",
+          "Exhaust 2"
+        ],
+        "description": "[Initiation]\n[Exhaust 2]\nSelect and draw\n1\nfrom Draw Pile, then apply\nBlessing\nto those cards."
+      },
+      {
+        "variant_id": "c_1055_srt4_epiphany_3",
+        "level": 3,
+        "name": "Once Upon A Time III",
+        "cost": 0,
+        "card_type": "Skill",
+        "tags": [
+          "Exhaust 2"
+        ],
+        "description": "[Exhaust 2]\nDiscard\n1\nrandom card(s) from Draw Pile; Apply\nBlessing\nto\n3\nrandom card(s) of the Combatant who owns the Discarded card."
+      },
+      {
+        "variant_id": "c_1055_srt4_epiphany_4",
+        "level": 4,
+        "name": "Once Upon A Time IV",
+        "cost": 0,
+        "card_type": "Skill",
+        "tags": [
+          "Retain",
+          "Exhaust 2"
+        ],
+        "description": "[Retain]\n[Exhaust 2]\nDraw equal to\nX, then apply\nBlessing\nto those cards."
+      },
+      {
+        "variant_id": "c_1055_srt4_epiphany_5",
+        "level": 5,
+        "name": "Once Upon A Time V",
+        "cost": 1,
+        "card_type": "Upgrade",
+        "tags": [
+          "Unique"
+        ],
+        "description": "[Unique]\nWhen a card is created, apply\nBlessing\n(\n5\ntimes per turn)."
+      }
+    ]
+  },
+  "c_1055_uni1": {
+    "character_id": 1055,
+    "character_name": "Adelheid",
+    "base_card_id": "c_1055_uni1",
+    "base_card_name": "Protect Us",
+    "variants": [
+      {
+        "variant_id": "c_1055_uni1_epiphany_1",
+        "level": 1,
+        "name": "Protect Us I",
+        "cost": 1,
+        "card_type": "Skill",
+        "tags": [
+          "Blessing"
+        ],
+        "description": "[Blessing]\nFor the next\n3\nBlessing\ncards activated, draw\n1\nBlessing\ncard."
+      },
+      {
+        "variant_id": "c_1055_uni1_epiphany_2",
+        "level": 2,
+        "name": "Protect Us II",
+        "cost": 1,
+        "card_type": "Skill",
+        "tags": [
+          "Blessing"
+        ],
+        "description": "[Blessing]\nThe next\n2\ntimes\n0\ncards are in hand, draw\n1\nBlessing\ncard."
+      },
+      {
+        "variant_id": "c_1055_uni1_epiphany_3",
+        "level": 3,
+        "name": "Protect Us III",
+        "cost": 1,
+        "card_type": "Skill",
+        "tags": [
+          "Blessing"
+        ],
+        "description": "[Blessing]\nDraw\n3.\nchange Cost of those cards to\n0-2\nfor\n1\nturn."
+      },
+      {
+        "variant_id": "c_1055_uni1_epiphany_4",
+        "level": 4,
+        "name": "Protect Us IV",
+        "cost": 0,
+        "card_type": "Skill",
+        "tags": [
+          "Blessing"
+        ],
+        "description": "[Blessing]\nDraw\n1.\nif that card is a\nBlessing\ncard, add\n1\nDraw."
+      },
+      {
+        "variant_id": "c_1055_uni1_epiphany_5",
+        "level": 5,
+        "name": "Protect Us V",
+        "cost": 1,
+        "card_type": "Skill",
+        "tags": [],
+        "description": "Draw\n2\nBlessing\ncard(s) of this unit.\nIncrease Damage and Shield Gain Amount of those cards by\n60%\nfor\n1\nturn."
+      }
+    ]
+  },
+  "c_1055_uni3": {
+    "character_id": 1055,
+    "character_name": "Adelheid",
+    "base_card_id": "c_1055_uni3",
+    "base_card_name": "Truth Behind A Story",
+    "variants": [
+      {
+        "variant_id": "c_1055_uni3_epiphany_1",
+        "level": 1,
+        "name": "Truth Behind a Story I",
+        "cost": 1,
+        "card_type": "Attack",
+        "tags": [
+          "Haste"
+        ],
+        "description": "[Haste]\n300%\nDefense-Based Damage.\n2\nWeaken, +\n100%\nDamage Amount taken by the target for\n1\nturn."
+      },
+      {
+        "variant_id": "c_1055_uni3_epiphany_2",
+        "level": 2,
+        "name": "Truth Behind a Story II",
+        "cost": 1,
+        "card_type": "Attack",
+        "tags": [
+          "Haste"
+        ],
+        "description": "[Haste]\n200%\nDefense-Based Damage\nMove\n2\nBlessing\ncard(s) from Discard Pile to hand."
+      },
+      {
+        "variant_id": "c_1055_uni3_epiphany_3",
+        "level": 3,
+        "name": "Truth Behind a Story III",
+        "cost": 1,
+        "card_type": "Attack",
+        "tags": [
+          "Haste"
+        ],
+        "description": "[Haste]\n200%\nDefense-Based Damage.\nIncrease Damage and Shield Gain Amounts of Doggie and Teddy by\n100%\nfor\n1\nturn."
+      },
+      {
+        "variant_id": "c_1055_uni3_epiphany_4",
+        "level": 4,
+        "name": "Truth Behind a Story IV",
+        "cost": 2,
+        "card_type": "Attack",
+        "tags": [
+          "Quietus"
+        ],
+        "description": "[Quietus]\n400%\nDefense-Based Damage.\nIncrease Damage Amount by\n30%\nfor each Blessing card in hand."
+      },
+      {
+        "variant_id": "c_1055_uni3_epiphany_5",
+        "level": 5,
+        "name": "Truth Behind a Story V",
+        "cost": 1,
+        "card_type": "Attack",
+        "tags": [
+          "Haste"
+        ],
+        "description": "[Haste]\n300%\nDefense-Based Damage.\nIncrease Action Count by\n4."
+      }
+    ]
   }
 }

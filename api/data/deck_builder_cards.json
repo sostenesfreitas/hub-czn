@@ -3,34 +3,43 @@
     "character_name": "Adelheid",
     "starting_cards": [
       {
-        "card_id": "c_1055_srt1"
+        "card_id": "c_1055_srt1",
+        "description": "100% Defense-Based Damage."
       },
       {
-        "card_id": "c_1055_srt2"
+        "card_id": "c_1055_srt2",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1055_srt3"
+        "card_id": "c_1055_srt3",
+        "description": "100% Shield."
       },
       {
-        "card_id": "c_1055_srt4"
+        "card_id": "c_1055_srt4",
+        "description": "[Exhaust 2] Apply Blessing to 2 random cards in Draw Pile, Draw 1 of those cards."
       }
     ],
     "epiphany_cards": [
       {
-        "card_id": "c_1055_uni1"
+        "card_id": "c_1055_uni1",
+        "description": "[Blessing] Draw 1 Blessing card on the next 2 Blessing card uses."
       },
       {
-        "card_id": "c_1055_uni2"
+        "card_id": "c_1055_uni2",
+        "description": "[Unique] Select and create 1 Doggie or Teddy card."
       },
       {
-        "card_id": "c_1055_uni3"
+        "card_id": "c_1055_uni3",
+        "description": "[Haste] 200% Defense-Based Damage. +100% Damage Amount taken by the target for 1 turn."
       },
       {
-        "card_id": "c_1055_uni4"
+        "card_id": "c_1055_uni4",
+        "description": "[Unique] 200% Shield, 25% Shield Retention."
       }
     ],
     "ego_skill": {
-      "card_id": "c_1055_eps"
+      "card_id": "c_1055_eps",
+      "description": "300% Shield. Fixed heal equal to Shield in possession (does not exceed 30% of max HP)."
     }
   },
   "1017": {
@@ -1108,7 +1117,7 @@
     ],
     "ego_skill": {
       "card_id": "c_30097_eps",
-        "description": "6 Chronal Ascension. Increase Damage Amount of the next Attack Card of this unit used by 10% for each combined Cost of cards activated during this battle (max 200%)."
+      "description": "6 Chronal Ascension. Increase Damage Amount of the next Attack Card of this unit used by 10% for each combined Cost of cards activated during this battle (max 200%)."
     }
   },
   "1005": {
