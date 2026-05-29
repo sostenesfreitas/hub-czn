@@ -1,4 +1,4 @@
-export const DECK_BUILDER_CARD_IMAGE_BY_ID = {
+export const DECK_BUILDER_CARD_IMAGE_BY_ID: Record<string, string> = {
   "c_1003_eps": "combatants/nia/c_1003_eps.webp",
   "c_1003_srt1": "combatants/nia/c_1003_srt1.webp",
   "c_1003_srt2": "combatants/nia/c_1003_srt2.webp",
@@ -175,6 +175,14 @@ export const DECK_BUILDER_CARD_IMAGE_BY_ID = {
   "c_1052_uni2": "combatants/narja/c_1052_uni2.webp",
   "c_1052_uni3": "combatants/narja/c_1052_uni3.webp",
   "c_1052_uni4": "combatants/narja/c_1052_uni4.webp",
+  "c_1055_srt1": "combatants/adelheid/c_1055_srt1.webp",
+  "c_1055_srt2": "combatants/adelheid/c_1055_srt2.webp",
+  "c_1055_srt3": "combatants/adelheid/c_1055_srt3.webp",
+  "c_1055_srt4": "combatants/adelheid/c_1055_srt4.webp",
+  "c_1055_uni1": "combatants/adelheid/c_1055_uni1.webp",
+  "c_1055_uni2": "combatants/adelheid/c_1055_uni2.webp",
+  "c_1055_uni3": "combatants/adelheid/c_1055_uni3.webp",
+  "c_1055_uni4": "combatants/adelheid/c_1055_uni4.webp",
   "c_1056_eps": "combatants/rei/c_1056_eps.webp",
   "c_1056_srt1": "combatants/rei/c_1056_srt1.webp",
   "c_1056_srt2": "combatants/rei/c_1056_srt2.webp",
@@ -271,6 +279,4 @@ export const DECK_BUILDER_CARD_IMAGE_BY_ID = {
   "c_30097_uni2": "combatants/rita/c_30097_uni2.webp",
   "c_30097_uni3": "combatants/rita/c_30097_uni3.webp",
   "c_30097_uni4": "combatants/rita/c_30097_uni4.webp",
-} as const
-
-export type DeckBuilderCardImageId = keyof typeof DECK_BUILDER_CARD_IMAGE_BY_ID
+}
