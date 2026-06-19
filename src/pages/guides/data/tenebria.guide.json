@@ -9,8 +9,8 @@
         {
           "type": "prose",
           "body": {
-            "en": "Tenebria's gimmick is Music, Start! and her Rhythm. ALL ALLY BASIC ATTACKS count as Basic Skills (characters with 2 Basic Attacks give more FM than ones with more). The main problem of her gimmick is how many extra cards she adds/converts, so the cycle requirement of Tenebria teams is much higher than any other combatant. The upside: the more Rhythm you build, the more her Basic Potentials, Move and Re-Narja synergize for higher damage.",
-            "pt-BR": "O gimmick da Tenebria é o Music, Start! e o Rhythm dela. TODOS os ATAQUES BÁSICOS dos aliados contam como Basic Skills (personagens com 2 ataques básicos geram mais FM que os com mais). O maior problema do gimmick é a quantidade de cartas extras que ela adiciona/converte, então o requisito de ciclo de times de Tenebria é bem mais alto que o de qualquer outro combatente. O lado bom: quanto mais Rhythm você acumula, mais os Basic Potentials, o Move e o Re-Narja sinergizam para mais dano."
+            "en": "Tenebria's gimmick is Music, Start!, which Exhausts. ALL ALLY (including self) BASIC ATTACKS are now Basic Skills (characters with 2 Basic Attacks save 40 FM, characters with 1 only save 20 FM). The main problem of her gimmick is how she adds/converts 6 extra cards, which means the cycle requirement of Tenebria teams is much higher than average. Rhythms created by Tenebria are all considered Basics — so Basic Potentials, Mei Move, and Rei/Narja all synergize with her.",
+            "pt-BR": "O gimmick da Tenebria é o Music, Start!, que Exausta. TODOS os ATAQUES BÁSICOS dos aliados (incluindo ela mesma) agora são Basic Skills (personagens com 2 ataques básicos economizam 40 FM; com 1, só 20 FM). O maior problema do gimmick é a quantidade de cartas extras que ela adiciona/converte (6), o que faz o requisito de ciclo de times de Tenebria ser bem mais alto que a média. Os Rhythms criados pela Tenebria são todos considerados Basics — então Basic Potentials, Mei Move e Rei/Narja sinergizam com ela."
           }
         },
         {
@@ -20,30 +20,9 @@
             "pt-BR": "As cartas-assinatura dela — a base de todo combo da Tenebria:"
           },
           "items": [
-            {
-              "cardId": "c_1069_uni1",
-              "rating": "S",
-              "note": {
-                "en": "Spotlight — the engine that sets up her Rhythm payoff.",
-                "pt-BR": "Spotlight — o motor que prepara o retorno de Rhythm dela."
-              }
-            },
-            {
-              "cardId": "c_1069_uni2",
-              "rating": "A",
-              "note": {
-                "en": "Call & Response (CnR) — Tenebria's unique follow-up damage card.",
-                "pt-BR": "Call & Response (CnR) — a carta de dano de acompanhamento exclusiva da Tenebria."
-              }
-            },
-            {
-              "cardId": "c_1069_srt4",
-              "rating": "A",
-              "note": {
-                "en": "Music, Start! — her 0-cost opener that kicks off the cycle.",
-                "pt-BR": "Music, Start! — abertura de custo 0 que dá início ao ciclo."
-              }
-            }
+            { "cardId": "c_1069_uni1", "rating": "S", "note": { "en": "Spotlight — the engine that sets up her Rhythm payoff.", "pt-BR": "Spotlight — o motor que prepara o retorno de Rhythm dela." } },
+            { "cardId": "c_1069_uni2", "rating": "A", "note": { "en": "Call & Response (CnR) — Tenebria's unique follow-up damage card.", "pt-BR": "Call & Response (CnR) — a carta de dano de acompanhamento exclusiva da Tenebria." } },
+            { "cardId": "c_1069_srt4", "rating": "A", "note": { "en": "Music, Start! — her 0-cost opener that kicks off the cycle (and Exhausts).", "pt-BR": "Music, Start! — abertura de custo 0 que dá início ao ciclo (e Exausta)." } }
           ]
         }
       ]
@@ -55,8 +34,8 @@
         {
           "type": "prose",
           "body": {
-            "en": "The only Rhythm version that stays purely as Tenebria's own cards. If you draw any 0/1 you can chain into the rest of them. TLDR: Arpeggio is actually only about Cycle -2 and ~1/2 AP, which makes it the easiest line to pilot. Nia is really good at fishing for Arpeggio 3/4/5 while also shuffling away to enable Arpeggio 3.\n\n[verificar] Exact combo sequences from the sheet (e.g. 1->2, 1->2&1, 2->3, 3->4&5) were low-resolution — confirm the notation before relying on it.",
-            "pt-BR": "A única versão de Rhythm que fica puramente nas cartas da própria Tenebria. Se você comprar qualquer 0/1, dá pra encadear no resto. Resumo: o Arpeggio na real é só cerca de Cycle -2 e ~1/2 de AP, o que faz dele a linha mais fácil de pilotar. A Nia é ótima pra garimpar Arpeggio 3/4/5 e ao mesmo tempo embaralhar pra habilitar o Arpeggio 3.\n\n[verificar] As sequências exatas de combo da planilha (ex.: 1->2, 1->2&1, 2->3, 3->4&5) estavam em baixa resolução — confirme a notação antes de confiar."
+            "en": "The only Rhythm version that stays purely as Tenebria's own cards. If you draw arp 0/1 you can chain into the rest of them.\n\nLine 1 (Total AP = 1, arp 2):\n0->1, 1->2&3, 2->3, 3->4/5 — then you only need to draw 4/5 to finish all 6.\n\nLine 2 (Total AP = 2, arp 1&2):\n1->0&2, 0->3, 2->3, 3->4/5.\n\nNia is really good at searching for arp 0&1 while also shuffling away for arp 3. TLDR: Arpeggio is actually only Cycle -2 and 1/2 AP.",
+            "pt-BR": "A única versão de Rhythm que fica puramente nas cartas da própria Tenebria. Se você comprar arp 0/1, dá pra encadear no resto.\n\nLinha 1 (Total AP = 1, arp 2):\n0->1, 1->2&3, 2->3, 3->4/5 — aí você só precisa comprar 4/5 pra fechar todos os 6.\n\nLinha 2 (Total AP = 2, arp 1&2):\n1->0&2, 0->3, 2->3, 3->4/5.\n\nA Nia é ótima pra garimpar arp 0&1 e ao mesmo tempo embaralhar pra habilitar o arp 3. Resumo: o Arpeggio na real é só Cycle -2 e 1/2 de AP."
           }
         },
         {
@@ -83,8 +62,15 @@
         {
           "type": "prose",
           "body": {
-            "en": "1st-pot Arpeggio + Spotlight synergy. Just play out your Arpeggios like normal; then when you Spotlight, pick 1->4->1 — it will force a 1 into your hand, which you can then use to get 4&5. If the AP requirement of 1 is too high, go Spotlight 1->1->0 (the 0 AP is from the discount on Arpeggio 1). CnR is just here to help with early cycle and soft Arpeggio by counting as a 7th Rhythm. You end up playing a total of ~18 Rhythms, most of them being Arpeggio 4/5. Good tower picks: Limeray Tower / Misery Refugia.\n\n[verificar] Combo notation was low-resolution — confirm before relying on it.",
-            "pt-BR": "Sinergia de Arpeggio + Spotlight (1o pot). Toque seus Arpeggios normalmente; aí, quando der Spotlight, escolha 1->4->1 — isso força um 1 pra sua mão, que você usa pra pegar o 4&5. Se o custo de AP do 1 estiver alto demais, vá de Spotlight 1->1->0 (o 0 de AP vem do desconto no Arpeggio 1). O CnR está aqui só pra ajudar no ciclo inicial e no soft Arpeggio, contando como um 7o Rhythm. Você acaba tocando ~18 Rhythms no total, a maioria sendo Arpeggio 4/5. Boas torres: Limeray Tower / Misery Refugia.\n\n[verificar] A notação dos combos estava em baixa resolução — confirme antes de confiar."
+            "en": "It's just Arpeggio + Spotlight synergy (Cycle -7+). Just play out your Arpeggios like normal. Then when you Spotlight, pick 5->4->1 — it will force a 1 into your hand, which you can then use to get 4&5.\n\nIf the AP requirement of 1 is too high: Spotlight 5->1->0, Draws 0->1->5 (0 AP required because of the discount on Arp 1).\n\nCnR is just here to help with early cycle and buff Arpeggio by counting as a 7th Rhythm. You end up playing a total of 18 Rhythms, most of them being the Arpeggio 4/5. Good picks: Limeney Tower, Misery Nebula, Pathfinder Nebula.",
+            "pt-BR": "É só a sinergia de Arpeggio + Spotlight (Cycle -7+). Toque seus Arpeggios normalmente. Aí, quando der Spotlight, escolha 5->4->1 — isso força um 1 pra sua mão, que você usa pra pegar o 4&5.\n\nSe o custo de AP do 1 estiver alto demais: Spotlight 5->1->0, Draws 0->1->5 (0 de AP graças ao desconto no Arp 1).\n\nO CnR está aqui só pra ajudar no ciclo inicial e buffar o Arpeggio, contando como um 7o Rhythm. Você acaba tocando 18 Rhythms no total, a maioria sendo Arpeggio 4/5. Boas escolhas: Limeney Tower, Misery Nebula, Pathfinder Nebula."
+          }
+        },
+        {
+          "type": "prose",
+          "body": {
+            "en": "CnR + Photo Time (Moral Stack) variant (Cycle -7+): if you're going for CnR + Photo Time damage, you should Moral Stack instead of basic buff. Total hits is going to be 6 Arpeggio + 24 CnR 4 + 10 Photo Time = 30 hits total.",
+            "pt-BR": "Variante CnR + Photo Time (Moral Stack) (Cycle -7+): se você vai de dano de CnR + Photo Time, deve fazer Moral Stack em vez de basic buff. O total de hits fica em 6 Arpeggio + 24 CnR 4 + 10 Photo Time = 30 hits no total."
           }
         },
         {
@@ -95,31 +81,29 @@
           },
           "items": [
             { "cardId": "c_1069_uni1", "rating": "S", "note": { "en": "Spotlight — forces the card you need into hand.", "pt-BR": "Spotlight — força a carta que você precisa pra mão." } },
-            { "cardId": "c_1069_uni2", "rating": "A", "note": { "en": "CnR — counts as a 7th Rhythm for early cycle.", "pt-BR": "CnR — conta como 7o Rhythm para o ciclo inicial." } }
+            { "cardId": "c_1069_uni2", "rating": "A", "note": { "en": "CnR — counts as a 7th Rhythm for early cycle.", "pt-BR": "CnR — conta como 7o Rhythm para o ciclo inicial." } },
+            { "cardId": "c_1069_uni4", "rating": "B", "note": { "en": "Photo Time — the Moral-Stack damage payoff (10 hits).", "pt-BR": "Photo Time — o retorno de dano via Moral Stack (10 hits)." } }
           ]
         }
       ]
     },
     {
       "id": "crescendo",
-      "title": { "en": "Mar Lin Crescendo", "pt-BR": "Mar Lin Crescendo" },
+      "title": { "en": "Mei Lin Crescendo & Formats", "pt-BR": "Mei Lin Crescendo & Formatos" },
       "blocks": [
         {
           "type": "prose",
           "body": {
-            "en": "Crescendo formats are just easier to play than Staccato, and deal slightly higher damage. Honestly the set you run on Tenebria can basically be anything from Encore Activate / Spotlight Activate / Spotlight Move.",
-            "pt-BR": "Os formatos de Crescendo são simplesmente mais fáceis de jogar que Staccato, e dão um pouco mais de dano. Sinceramente, o set que você roda na Tenebria pode ser basicamente qualquer um entre Encore Activate / Spotlight Activate / Spotlight Move."
+            "en": "Fermata for Crescendo is just easier to play than Staccato, and slightly higher damage. Honestly the format you run on Tenebria can basically be anything from Encore Activate / Spotlight Activate / Spotlight Move.",
+            "pt-BR": "Fermata para Crescendo é simplesmente mais fácil de jogar que Staccato, e dá um pouco mais de dano. Sinceramente, o formato que você roda na Tenebria pode ser basicamente qualquer um entre Encore Activate / Spotlight Activate / Spotlight Move."
           }
         },
         {
-          "type": "card-list",
-          "intro": {
-            "en": "Crescendo vs Staccato Rhythm cards:",
-            "pt-BR": "Cartas de Rhythm Crescendo vs Staccato:"
-          },
+          "type": "rating-list",
           "items": [
-            { "cardId": "c_1069_cre2", "rating": "A", "note": { "en": "Rhythm: Crescendo — easier to play, slightly higher damage.", "pt-BR": "Rhythm: Crescendo — mais fácil de jogar, dano um pouco maior." } },
-            { "cardId": "c_1069_cre3", "rating": "B", "note": { "en": "Rhythm: Staccato — the harder alternative format.", "pt-BR": "Rhythm: Staccato — o formato alternativo mais difícil." } }
+            { "label": "Encore Activate (Cycle -8+)", "text": { "en": "Encore has a lower upfront AP requirement than Spotlight; the only difference is lower card base damage, and a slightly stricter requirement of playing Arpeggio 5 last to get max damage. Picks: Rene Tower, Nesha Nebula, Aco GR, Darkpulse GR.", "pt-BR": "O Encore tem um requisito de AP inicial menor que o Spotlight; a única diferença é o dano base de carta menor, e um requisito um pouco mais rígido de jogar o Arpeggio 5 por último pra dano máximo. Escolhas: Rene Tower, Nesha Nebula, Aco GR, Darkpulse GR." } },
+            { "label": "Spotlight Activate (Cycle -7+)", "text": { "en": "Much higher AP costs than Encore, but it has a less strict requirement of lining up Rhythm 5.", "pt-BR": "Custos de AP bem mais altos que o Encore, mas com requisito menos rígido de alinhar o Rhythm 5." } },
+            { "label": "Gimmicky Crescendo — Don't", "text": { "en": "Lining up Spotlight and Encore together sounds like a pain.", "pt-BR": "Alinhar Spotlight e Encore juntos parece uma dor de cabeça." } }
           ]
         }
       ]
@@ -131,33 +115,9 @@
         {
           "type": "partner-list",
           "items": [
-            {
-              "charResId": 1070,
-              "name": "Aria",
-              "rating": "5/5",
-              "note": {
-                "en": "Everything Tenebria would ever want: high raw stats, 24% Multi + Crit Dmg, and a good Ego.",
-                "pt-BR": "Tudo que a Tenebria poderia querer: stats brutos altos, 24% de Multi + Crit Dmg, e um bom Ego."
-              }
-            },
-            {
-              "charResId": 20027,
-              "name": "Eloise",
-              "rating": "4/5",
-              "note": {
-                "en": "Classic good stat stick with some Gen Multi.",
-                "pt-BR": "Stat stick clássico e bom, com um pouco de Gen Multi."
-              }
-            },
-            {
-              "charResId": 20008,
-              "name": "Anteia",
-              "rating": "3.5/5",
-              "note": {
-                "en": "A better stat stick than Eloise eventually, but no Gen Multi, and an okayish Ego.",
-                "pt-BR": "Com o tempo, um stat stick melhor que a Eloise, mas sem Gen Multi, e um Ego mediano."
-              }
-            }
+            { "charResId": 1070, "name": "Aria", "rating": "5/5", "note": { "en": "Everything Tenebria would ever want: high raw stats, 24% Multi + Crit Dmg, and a good Ego.", "pt-BR": "Tudo que a Tenebria poderia querer: stats brutos altos, 24% de Multi + Crit Dmg, e um bom Ego." } },
+            { "charResId": 20027, "name": "Eloise", "rating": "4/5", "note": { "en": "Classic good stat stick with some Gen Multi.", "pt-BR": "Stat stick clássico e bom, com um pouco de Gen Multi." } },
+            { "charResId": 20008, "name": "Anteia", "rating": "3.5/5", "note": { "en": "A better stat stick than Eloise eventually, but no Gen Multi, and an okayish Ego.", "pt-BR": "Com o tempo, um stat stick melhor que a Eloise, mas sem Gen Multi, e um Ego mediano." } }
           ]
         }
       ]
@@ -170,12 +130,12 @@
           "type": "gear-list",
           "intro": {
             "en": "2/2/2 does everything Tene wants, since her main damage comes from Basics — love Scrab.",
-            "pt-BR": "2/2/2 faz tudo que a Tene quer, ja que o dano principal dela vem dos Basics — amo Scrab."
+            "pt-BR": "2/2/2 faz tudo que a Tene quer, já que o dano principal dela vem dos Basics — amo Scrab."
           },
           "items": [
-            { "name": "Executioners", "note": { "en": "Core 2-piece for her damage profile.", "pt-BR": "2 pecas essencial para o perfil de dano dela." } },
-            { "name": "Blackwing", "note": { "en": "2-piece — important; sets lacking Blackwing are bad on her.", "pt-BR": "2 pecas — importante; sets sem Blackwing sao ruins nela." } },
-            { "name": "Scrab", "note": { "en": "2-piece — great because her main damage comes from Basic attacks.", "pt-BR": "2 pecas — otimo porque o dano principal dela vem dos ataques basicos." } }
+            { "name": "Executioners", "note": { "en": "Core 2-piece for her damage profile.", "pt-BR": "2 peças essencial para o perfil de dano dela." } },
+            { "name": "Blackwing", "note": { "en": "2-piece — important; sets lacking Blackwing are bad on her.", "pt-BR": "2 peças — importante; sets sem Blackwing são ruins nela." } },
+            { "name": "Scrab", "note": { "en": "2-piece — great because her main damage comes from Basic attacks.", "pt-BR": "2 peças — ótimo porque o dano principal dela vem dos ataques básicos." } }
           ]
         },
         {
@@ -190,8 +150,8 @@
         {
           "type": "prose",
           "body": {
-            "en": "Sets — Passion / Executioners: the Passion set's multi buff works on everything, but the lack of Blackwing makes it a bad set overall.",
-            "pt-BR": "Sets — Passion / Executioners: o buff de multi do set Passion funciona em tudo, mas a falta de Blackwing torna ele um set ruim no geral."
+            "en": "Sets — Passion / Executioners: the Passion set's multi buff works on everything, but the lack of Blackwing makes it a bad set overall.\n\nPotentials: Basic buffs are good. Uniques aren't her main damage.",
+            "pt-BR": "Sets — Passion / Executioners: o buff de multi do set Passion funciona em tudo, mas a falta de Blackwing torna ele um set ruim no geral.\n\nPotentials: buffs de Basic são bons. Os Uniques não são o dano principal dela."
           }
         }
       ]
@@ -204,11 +164,11 @@
           "type": "rating-list",
           "items": [
             { "label": "E1", "text": { "en": "This is so bad — 2.5 Morale on 10 hits of a mid skill, except in Chaos.", "pt-BR": "Muito ruim — 2.5 de Morale em 10 hits de uma skill mediana, exceto em Chaos." } },
-            { "label": "E2", "text": { "en": "2 Ego at the start of every fight — good in Chaos and Tower, pretty mid elsewhere.", "pt-BR": "2 de Ego no comeco de toda luta — bom em Chaos e Tower, mediano no resto." } },
-            { "label": "E3", "text": { "en": "Everyone's Idol? More like everyone's letdown — this EP skill is 7 cost (5 thanks to E2).", "pt-BR": "Everyone's Idol? Mais pra decepcao de todo mundo — essa skill de EP custa 7 (5 gracas ao E2)." } },
-            { "label": "E4", "text": { "en": "30% Multi — pretty nice, but nothing to splurge over.", "pt-BR": "30% de Multi — bem legal, mas nada por que valha a pena gastar muito." } },
-            { "label": "E5", "text": { "en": "Tene actually has some pretty high base numbers — this isn't terrible.", "pt-BR": "A Tene tem numeros base bem altos — esse nao e terrivel." } },
-            { "label": "E6", "text": { "en": "Now Ego is usable! Yay! 40% Final Multi — boring, but a big damage buff.", "pt-BR": "Agora o Ego e utilizavel! Eba! 40% de Final Multi — sem graca, mas um grande buff de dano." } }
+            { "label": "E2", "text": { "en": "2 Ego at the start of every fight — good in Chaos and Tower, pretty mid elsewhere.", "pt-BR": "2 de Ego no começo de toda luta — bom em Chaos e Tower, mediano no resto." } },
+            { "label": "E3", "text": { "en": "Everyone's Idol? More like everyone's letdown — this EP skill is 7 cost (5 thanks to E2).", "pt-BR": "Everyone's Idol? Mais pra decepção de todo mundo — essa skill de EP custa 7 (5 graças ao E2)." } },
+            { "label": "E4", "text": { "en": "30% Multi — pretty nice, but nothing to spend over.", "pt-BR": "30% de Multi — bem legal, mas nada por que valha a pena gastar." } },
+            { "label": "E5", "text": { "en": "Tene actually has some pretty high base numbers — this isn't terrible.", "pt-BR": "A Tene tem números base bem altos — esse não é terrível." } },
+            { "label": "E6", "text": { "en": "Now Ego is usable! Yay! 40% Final Multi — boring, but a big damage buff.", "pt-BR": "Agora o Ego é utilizável! Eba! 40% de Final Multi — sem graça, mas um grande buff de dano." } }
           ]
         }
       ]
@@ -219,32 +179,26 @@
       "blocks": [
         {
           "type": "prose",
-          "body": {
-            "en": "Lux Equipment Engraving options:",
-            "pt-BR": "Opcoes de Engraving de Equipamento Lux:"
-          }
+          "body": { "en": "Lux Equipment Engraving options:", "pt-BR": "Opções de Engraving de Equipamento Lux:" }
         },
         {
           "type": "rating-list",
           "items": [
-            { "label": "Lux - Action Count", "text": { "en": "\"When the Action Count of enemies increases, +50% Damage Amount to ally Attack Cards for 1 turn (1/turn).\" Action Count increase can come from Equipment; it does not affect Extra Attacks (Blades are still Cards), so it has weak synergy with Hugo/Selena Extra Attacks — still a big boost to Tenebria herself.", "pt-BR": "\"Quando o Action Count dos inimigos aumenta, +50% de Damage Amount as Attack Cards aliadas por 1 turno (1x/turno).\" O aumento de Action Count pode vir de Equipamento; nao afeta Extra Attacks (Blades ainda sao Cards), entao tem pouca sinergia com os Extra Attacks de Hugo/Selena — mesmo assim, um grande boost na propria Tenebria." } },
-            { "label": "Lux - Haste buff", "text": { "en": "\"When an ally Haste card is activated, increase Damage Amount of this unit's next Attack Card by 25% (1/turn).\" It's a damage buff.", "pt-BR": "\"Quando uma Haste card aliada e ativada, aumenta em 25% o Damage Amount da proxima Attack Card desta unidade (1x/turno).\" E um buff de dano." } },
-            { "label": "Lux - on attacked", "text": { "en": "\"When attacked, randomly apply 1 Vulnerable or Weaken to the attacker (1/turn).\" It's a damage buff.", "pt-BR": "\"Ao ser atacado, aplica aleatoriamente 1 Vulnerable ou Weaken no atacante (1x/turno).\" E um buff de dano." } },
-            { "label": "Lux - Haste dmg", "text": { "en": "\"Increase Damage Amount of this unit's Haste cards by 25%.\" It's a damage buff, even more conditionally.", "pt-BR": "\"Aumenta em 25% o Damage Amount das Haste cards desta unidade.\" E um buff de dano, ainda mais condicional." } }
+            { "label": "Lux - Action Count", "text": { "en": "\"When the Action Count of enemies increases, +50% Damage Amount to ally Attack Cards for 1 turn (1/turn).\" Action Count increase can come from Equipment; it does not affect Extra Attacks (Blades are still Cards), so it doesn't have great synergy with Hugo/Selena Extra Attacks — still a big boost to Heide herself.", "pt-BR": "\"Quando o Action Count dos inimigos aumenta, +50% de Damage Amount às Attack Cards aliadas por 1 turno (1x/turno).\" O aumento de Action Count pode vir de Equipamento; não afeta Extra Attacks (Blades ainda são Cards), então não tem grande sinergia com os Extra Attacks de Hugo/Selena — mesmo assim, um grande boost na própria Heide." } },
+            { "label": "Lux - Haste buff", "text": { "en": "Ig it's a damage buff.", "pt-BR": "Tipo, é um buff de dano." } },
+            { "label": "Lux - on attacked", "text": { "en": "Ig it's a damage buff.", "pt-BR": "Tipo, é um buff de dano." } },
+            { "label": "Lux - Haste dmg", "text": { "en": "Ig it's a damage buff EVEN MORE CONDITIONALLY.", "pt-BR": "Tipo, é um buff de dano AINDA MAIS CONDICIONAL." } }
           ]
         },
         {
           "type": "prose",
-          "body": {
-            "en": "Umbra Equipment Engraving options:",
-            "pt-BR": "Opcoes de Engraving de Equipamento Umbra:"
-          }
+          "body": { "en": "Umbra Equipment Engraving options:", "pt-BR": "Opções de Engraving de Equipamento Umbra:" }
         },
         {
           "type": "rating-list",
           "items": [
-            { "label": "Umbra - 7 in Graveyard", "text": { "en": "\"When 7 or more cards are in the Graveyard, increase Damage Amount of this unit's Attack Cards by 30%.\" The only really feasible and also good equipment engraving.", "pt-BR": "\"Quando ha 7 ou mais cartas no Graveyard, aumenta em 30% o Damage Amount das Attack Cards desta unidade.\" O unico engraving de equipamento realmente viavel e bom." } },
-            { "label": "Umbra - 15 in Graveyard", "text": { "en": "\"When 15 or more cards are in the Graveyard, +15% Critical Damage to this unit's Attack Cards.\" 15% crit needs SO much in generic buff dilution to beat 30% Damage from only 7 cards in Grave.", "pt-BR": "\"Quando ha 15 ou mais cartas no Graveyard, +15% de Critical Damage as Attack Cards desta unidade.\" 15% de crit precisa de MUITA diluicao de buff generico pra superar 30% de Damage com apenas 7 cartas no Grave." } }
+            { "label": "Umbra - 7 in Graveyard", "text": { "en": "\"When 7 or more cards are in the Graveyard, increase Damage Amount of this unit's Attack Cards by 30%.\" The only really feasible and also good equipment engraving.", "pt-BR": "\"Quando há 7 ou mais cartas no Graveyard, aumenta em 30% o Damage Amount das Attack Cards desta unidade.\" O único engraving de equipamento realmente viável e bom." } },
+            { "label": "Umbra - 15 in Graveyard", "text": { "en": "15% Crit rate needs SO MUCH in generic buff dilution to beat 30% Damage from only 7 cards in Grave.", "pt-BR": "15% de Crit precisa de MUITA diluição de buff genérico pra superar 30% de Damage com apenas 7 cartas no Grave." } }
           ]
         }
       ]
@@ -256,9 +210,9 @@
         {
           "type": "rating-list",
           "items": [
-            { "label": "Persona - Draw (5/5)", "text": { "en": "\"[Unique] Draw 1. When an Attack Card is Drawn, 2 Morale for 1 turn.\" Draw 1 = Draw Neutral + potential Morale is never bad.", "pt-BR": "\"[Unico] Compra 1. Quando uma Attack Card e comprada, 2 de Morale por 1 turno.\" Compra 1 = Draw Neutral + Morale potencial nunca e ruim." } },
-            { "label": "Persona - Discard (4/5)", "text": { "en": "\"[Unique] Discard up to 2 cards. For each discarded, +50% Damage Amount to this unit's Attack Cards for 1 turn.\" Discarding 2 is always alright, especially if it's for CnR4 (doesn't buff Photo Time).", "pt-BR": "\"[Unico] Descarta ate 2 cartas. Para cada descartada, +50% de Damage Amount as Attack Cards desta unidade por 1 turno.\" Descartar 2 e sempre OK, especialmente se for pro CnR4 (nao buffa o Photo Time)." } },
-            { "label": "Umbra Skill", "text": { "en": "\"Increase Damage Amount of this unit's Attack Cards by 30% for 1 turn.\" 60% Damage Multi for free.", "pt-BR": "\"Aumenta em 30% o Damage Amount das Attack Cards desta unidade por 1 turno.\" 60% de Damage Multi de graca." } }
+            { "label": "Persona - Draw (5/5)", "text": { "en": "Draw 1 = Draw Neutral + potential Morale is never bad.", "pt-BR": "Compra 1 = Draw Neutral + Morale potencial nunca é ruim." } },
+            { "label": "Persona - Discard (4/5)", "text": { "en": "Discarding 2 is always gonna be alright, especially if it's for CnR4 (doesn't buff Photo Time).", "pt-BR": "Descartar 2 é sempre OK, especialmente se for pro CnR4 (não buffa o Photo Time)." } },
+            { "label": "Umbra Skill", "text": { "en": "60% Damage Multi for free.", "pt-BR": "60% de Damage Multi de graça." } }
           ]
         }
       ]
@@ -270,53 +224,58 @@
         {
           "type": "prose",
           "body": {
-            "en": "Tenebria's unique cards come in graded variants. Ratings below are per the original guide.",
-            "pt-BR": "As cartas unicas da Tenebria vem em variantes graduadas. As notas abaixo seguem o guia original."
+            "en": "The three unique attack cards (Spotlight / CnR / Encore) come in graded variants, plus the Rhythm formats. Ratings and notes below are per the original guide.",
+            "pt-BR": "As três cartas de ataque únicas (Spotlight / CnR / Encore) vêm em variantes graduadas, além dos formatos de Rhythm. As notas abaixo seguem o guia original."
           }
         },
         {
           "type": "card-list",
-          "intro": {
-            "en": "The three unique attack cards these variants are based on:",
-            "pt-BR": "As tres cartas de ataque unicas em que essas variantes se baseiam:"
-          },
+          "intro": { "en": "Rhythm formats:", "pt-BR": "Formatos de Rhythm:" },
           "items": [
-            { "cardId": "c_1069_uni1", "rating": "Spotlight", "note": { "en": "Spotlight base card.", "pt-BR": "Carta base do Spotlight." } },
-            { "cardId": "c_1069_uni2", "rating": "CnR", "note": { "en": "Call & Response base card.", "pt-BR": "Carta base do Call & Response." } },
-            { "cardId": "c_1069_uni3", "rating": "Encore", "note": { "en": "Encore base card.", "pt-BR": "Carta base do Encore." } }
+            { "cardId": "c_1069_cre2", "rating": "3/5", "note": { "en": "Crescendo: 7 AP to use all the Rhythms, but no additional requirement like Staccato.", "pt-BR": "Crescendo: 7 de AP pra usar todos os Rhythms, mas sem requisito adicional como o Staccato." } },
+            { "cardId": "c_1069_cre3", "rating": "2/5", "note": { "en": "Staccato: 6 AP to play them all, but the requirement is to space out uses.", "pt-BR": "Staccato: 6 de AP pra jogar todos, mas o requisito é espaçar os usos." } },
+            { "cardId": "c_1069_cre4", "rating": "2/5", "note": { "en": "Fortissimo: pretty hard to use, both hand-size/draw and AP-wise — but with Draw Heide it's interesting (have to test Fortissimo + Activation).", "pt-BR": "Fortissimo: bem difícil de usar, tanto em tamanho de mão/draw quanto em AP — mas com Draw Heide fica interessante (preciso testar Fortissimo + Activation)." } },
+            { "cardId": "c_1069_cre5", "rating": "4/5", "note": { "en": "Fermata: basically just 1 AP to draw 2 Rhythms — the go-to version if not Arpeggio.", "pt-BR": "Fermata: basicamente só 1 de AP pra comprar 2 Rhythms — a versão padrão se não for Arpeggio." } },
+            { "cardId": "c_1069_cre6", "rating": "5/5", "note": { "en": "Arpeggio: see the whole section above. TLDR unmatched Cycle/AP requirement, lower damage ceiling.", "pt-BR": "Arpeggio: veja a seção inteira acima. Resumo: requisito de Cycle/AP imbatível, teto de dano menor." } }
           ]
         },
         {
           "type": "rating-list",
           "items": [
-            { "label": "CnR 1", "text": { "en": "Cycle +2 as well as counting as a Rhythm to buff, but lowkey can break Arpeggio chains.", "pt-BR": "Cycle +2 e ainda conta como Rhythm pra buffar, mas da pra quebrar correntes de Arpeggio sem querer." } },
-            { "label": "CnR 2", "text": { "en": "Basically just free damage, but not very interesting otherwise.", "pt-BR": "Basicamente so dano gratis, mas nada de muito interessante alem disso." } },
+            { "label": "Spotlight 1", "text": { "en": "Good with Rhythm 0, and okay with Crescendo; the others, not so much interesting.", "pt-BR": "Bom com Rhythm 0, e ok com Crescendo; os outros, nem tão interessantes." } },
+            { "label": "Spotlight 2", "text": { "en": "Basically 1 free Rhythm draw each turn, not very impressive.", "pt-BR": "Basicamente 1 draw de Rhythm grátis por turno, nada muito impressionante." } },
+            { "label": "Spotlight 3", "text": { "en": "Moves 2 Rhythms but also Activates both — only issue is that 2 cost is a high upfront expense.", "pt-BR": "Move 2 Rhythms mas também Ativa os dois — o único problema é que o custo 2 é uma despesa inicial alta." } },
+            { "label": "Spotlight 4", "text": { "en": "Move 3 Rhythms from anywhere to top of Draw pile, then draw 1 — amazing.", "pt-BR": "Move 3 Rhythms de qualquer lugar pro topo da pilha de compra, depois compra 1 — incrível." } },
+            { "label": "Spotlight 5", "text": { "en": "0 cost, Draw 2, but discards non-Rhythms — it's okay.", "pt-BR": "Custo 0, Compra 2, mas descarta não-Rhythms — é ok." } },
+            { "label": "Spotlight 0", "text": { "en": "Actually not too bad, just to get a Morale Epiphany on this.", "pt-BR": "Na real não é ruim, só pra pegar uma Morale Epiphany nele." } }
+          ]
+        },
+        {
+          "type": "rating-list",
+          "items": [
+            { "label": "CnR 1", "text": { "en": "Cycle +2 as well as counting as a Rhythm to buff, but lowkey can break Arpeggio chains.", "pt-BR": "Cycle +2 e ainda conta como Rhythm pra buffar, mas dá pra quebrar correntes de Arpeggio sem querer." } },
+            { "label": "CnR 2", "text": { "en": "Basically just free damage, but not very interesting otherwise.", "pt-BR": "Basicamente só dano grátis, mas nada de muito interessante além disso." } },
             { "label": "CnR 3", "text": { "en": "Cycle +2 at best, Cycle +1 at worst, but no damage buffing unlike CnR 1.", "pt-BR": "Cycle +2 no melhor caso, +1 no pior, mas sem buff de dano, diferente do CnR 1." } },
-            { "label": "CnR 4", "text": { "en": "6 hits equivalent, but the downside is it isn't actually card activations for Hugo/Lena/Cass.", "pt-BR": "Equivalente a 6 hits, mas a desvantagem e que nao sao ativacoes de carta de verdade pra Hugo/Lena/Cass." } },
-            { "label": "CnR 5", "text": { "en": "Counts as a Rhythm to buff and is also a sort of cycle big damage, but -1 Cycle.", "pt-BR": "Conta como Rhythm pra buffar e tambem e um tipo de cycle big damage, mas -1 de Cycle." } },
-            { "label": "CnR 6", "text": { "en": "Also not that bad to just get a Morale Epiphany.", "pt-BR": "Tambem nao e ruim so pra pegar uma Morale Epiphany." } },
-            { "label": "CnR 7", "text": { "en": "[verificar] Not legible in the source screenshots.", "pt-BR": "[verificar] Nao legivel nas screenshots de origem." } }
-          ]
-        },
-        {
-          "type": "rating-list",
-          "items": [
-            { "label": "Spotlight 1", "text": { "en": "Good with Rhythm 0 and playing with Crescendo; the others, not so much interesting.", "pt-BR": "Bom com Rhythm 0 e jogando com Crescendo; os outros, nem tao interessantes." } },
-            { "label": "Spotlight 2", "text": { "en": "Basically 1 free Rhythm draw each turn, not very impressive.", "pt-BR": "Basicamente 1 draw de Rhythm gratis por turno, nada muito impressionante." } },
-            { "label": "Spotlight 3", "text": { "en": "3 damage and also a 3-AP saver pick (can also get Draw Three).", "pt-BR": "3 de dano e tambem economiza 3 de AP (tambem pode pegar Draw Three)." } },
-            { "label": "Spotlight 4", "text": { "en": "3 cost is okay-high, but activating 6 Rhythms is good damage.", "pt-BR": "Custo 3 e meio alto, mas ativar 6 Rhythms da um bom dano." } },
-            { "label": "Spotlight 5", "text": { "en": "The 2nd discards non-Rhythms — ok idea.", "pt-BR": "O 2o descarta nao-Rhythms — ideia ok." } },
-            { "label": "Spotlight 6", "text": { "en": "[verificar] Not legible in the source screenshots.", "pt-BR": "[verificar] Nao legivel nas screenshots de origem." } }
+            { "label": "CnR 4", "text": { "en": "6 hits equivalent, but the downside is it isn't actually card activations for Hugo/Lena/Cass.", "pt-BR": "Equivalente a 6 hits, mas a desvantagem é que não são ativações de carta de verdade pra Hugo/Lena/Cass." } },
+            { "label": "CnR 5", "text": { "en": "Counts as a Rhythm to buff, and is also just a 0-cost big damage, but -1 Cycle.", "pt-BR": "Conta como Rhythm pra buffar, e também é só um big damage de custo 0, mas -1 de Cycle." } },
+            { "label": "CnR 0", "text": { "en": "Also not that bad to just get a Morale Epiphany.", "pt-BR": "Também não é ruim só pra pegar uma Morale Epiphany." } }
           ]
         },
         {
           "type": "rating-list",
           "items": [
             { "label": "Encore 1", "text": { "en": "Honestly I'd just consider this a better Spotlight 3.", "pt-BR": "Sinceramente, eu consideraria isso um Spotlight 3 melhor." } },
-            { "label": "Encore 2", "text": { "en": "1.5 hits max, but that requires 30 Rhythm activations — what the fuck? Boosted by Morale.", "pt-BR": "1.5 hits no maximo, mas isso exige 30 ativacoes de Rhythm — que isso? Potencializado por Morale." } },
-            { "label": "Encore 3", "text": { "en": "3 hits and also a 3-AP saver pick (can also get Draw Three).", "pt-BR": "3 hits e tambem economiza 3 de AP (tambem pode pegar Draw Three)." } },
-            { "label": "Encore 4", "text": { "en": "3 cost is a bit high too, but activating 6 Rhythms is good damage.", "pt-BR": "Custo 3 tambem e meio alto, mas ativar 6 Rhythms da um bom dano." } },
-            { "label": "Encore 5", "text": { "en": "Draw — never bad because it's a 0-cost cantrip minimum, and Tene has a lot of Uniques.", "pt-BR": "Draw — nunca e ruim porque e no minimo um cantrip de custo 0, e a Tene tem muitos Unicos." } }
+            { "label": "Encore 2", "text": { "en": "15 hits max, but that requires 30 Rhythm activations — what the fuck? Boosted by Morale.", "pt-BR": "15 hits no máximo, mas isso exige 30 ativações de Rhythm — que isso? Potencializado por Morale." } },
+            { "label": "Encore 3", "text": { "en": "3 hits and also 3 AP saved (can also get Draw Divine).", "pt-BR": "3 hits e também 3 de AP economizado (também pode pegar Draw Divine)." } },
+            { "label": "Encore 4", "text": { "en": "3 cost is a high bar, but activating 6 Rhythms is good damage.", "pt-BR": "Custo 3 é uma barra alta, mas ativar 6 Rhythms dá um bom dano." } },
+            { "label": "Encore 5", "text": { "en": "Draw — never bad because it's a 0-cost cantrip minimum, and Tene has a lot of Uniques.", "pt-BR": "Draw — nunca é ruim porque é no mínimo um cantrip de custo 0, e a Tene tem muitos Unicos." } }
+          ]
+        },
+        {
+          "type": "card-list",
+          "intro": { "en": "Photo Time:", "pt-BR": "Photo Time:" },
+          "items": [
+            { "cardId": "c_1069_uni4", "rating": "2/5", "note": { "en": "Tell me you have shit design without telling me — look here (and also Encore 2). Max is 10x of 100%/150% (1000% dmg), only boosted by Morale, no card-based buffs. Why is this not an Upgrade, and why the arbitrary cap?", "pt-BR": "Me diz que tem design ruim sem dizer — olha aqui (e o Encore 2 também). Máximo é 10x de 100%/150% (1000% de dano), só potencializado por Morale, sem buffs baseados em carta. Por que isso não é um Upgrade, e por que o limite arbitrário?" } }
           ]
         }
       ]
@@ -328,8 +287,8 @@
         {
           "type": "prose",
           "body": {
-            "en": "Tenebria teams are built around four engine roles: Draw Engines, Buff/Debuff, DPS, and AP Engines. Because her cycle requirement is so high, the Draw and AP engines do a lot of the heavy lifting (Nia is a standout draw/shuffle engine).\n\n[verificar] The exact example rosters from the screenshots could not be identified reliably from the face thumbnails — please confirm the specific characters for each example team and I'll fill in a face grid.",
-            "pt-BR": "Os times de Tenebria se organizam em quatro papeis de engine: Draw Engines, Buff/Debuff, DPS e AP Engines. Como o requisito de ciclo dela e altissimo, os engines de Draw e AP carregam boa parte do peso (a Nia se destaca como engine de draw/shuffle).\n\n[verificar] Nao consegui identificar com seguranca os rosters exatos dos times de exemplo pelas miniaturas de rosto — confirme os personagens de cada time e eu preencho a grade de rostos."
+            "en": "Tenebria example teams are organized into four engine roles: Draw Engines, Buff/Debuff, DPS, and AP Engines. Because her cycle requirement is so high, the Draw and AP engines do a lot of the heavy lifting (Nia is a standout draw/shuffle engine).\n\n[verificar] The specific characters in each example team are images in the source sheet and weren't included in the text — send me the roster for each column (Draw / Buff-Debuff / DPS / AP) and I'll fill in a face grid using the team-grid block.",
+            "pt-BR": "Os times de exemplo da Tenebria se organizam em quatro papéis de engine: Draw Engines, Buff/Debuff, DPS e AP Engines. Como o requisito de ciclo dela é altíssimo, os engines de Draw e AP carregam boa parte do peso (a Nia se destaca como engine de draw/shuffle).\n\n[verificar] Os personagens de cada time de exemplo são imagens na planilha de origem e não vieram no texto — me passe o roster de cada coluna (Draw / Buff-Debuff / DPS / AP) e eu preencho a grade de rostos com o bloco team-grid."
           }
         }
       ]
