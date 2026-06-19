@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, ExternalLink } from 'lucide-react'
 import { getCharacterFaceUrl } from '@/lib/deck-builder-assets'
+import { openExternal } from '@/lib/browser'
 import { GUIDE_LIST } from './guides-registry'
 import { getGuide } from './guides-content'
+import { resolveLang, localized } from './guides.utils'
 import { GuidePage } from './components/GuidePage'
 
 export function GuidesPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = resolveLang(i18n.language)
   const [selected, setSelected] = useState<number | null>(null)
   const guide = selected != null ? getGuide(selected) : undefined
 
@@ -24,6 +27,16 @@ export function GuidesPage() {
             {t('guides.backToList')}
           </button>
           <span className="text-sm font-bold text-[#ffffff]">{guide.name}</span>
+          {guide.source && (
+            <button
+              type="button"
+              onClick={() => openExternal(guide.source!.url)}
+              className="ml-auto flex items-center gap-1 rounded px-2 py-1 text-xs text-[#b3b3b3] hover:bg-[#282828] hover:text-[#c084fc]"
+            >
+              <ExternalLink size={12} />
+              {localized(guide.source.label, lang)}
+            </button>
+          )}
         </div>
         <div className="min-h-0 flex-1">
           <GuidePage guide={guide} />

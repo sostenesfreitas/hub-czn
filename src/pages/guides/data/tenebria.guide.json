@@ -1,6 +1,10 @@
 {
   "charResId": 1069,
   "name": "Tenebria",
+  "source": {
+    "url": "https://docs.google.com/spreadsheets/u/0/d/1-KkQUFrjD_2Un3zMDmypCwZFVF5VmowswqYdLt9MOw8/htmlview?gid=423931700#gid=698100458",
+    "label": { "en": "Source guide", "pt-BR": "Guia original" }
+  },
   "sections": [
     {
       "id": "overview",

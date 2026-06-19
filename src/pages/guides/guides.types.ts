@@ -33,8 +33,14 @@ export interface GuideSection {
   blocks: Block[]
 }
 
+export interface GuideSource {
+  url: string
+  label: LocalizedText
+}
+
 export interface Guide {
   charResId: number
   name: string
+  source?: GuideSource
   sections: GuideSection[]
 }
