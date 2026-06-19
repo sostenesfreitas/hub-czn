@@ -26,6 +26,35 @@ describe('guides content', () => {
               expectLocalized(it.note, `${ctx}.note`)
             }
           }
+          if (block.type === 'partner-list') {
+            for (const it of block.items) {
+              expect(it.name?.trim(), `${ctx}.name`).not.toBe('')
+              expect(it.rating?.trim(), `${ctx}.rating`).not.toBe('')
+              expectLocalized(it.note, `${ctx}.note`)
+            }
+          }
+          if (block.type === 'gear-list') {
+            if (block.intro) expectLocalized(block.intro, `${ctx}.intro`)
+            for (const it of block.items) {
+              expect(it.name?.trim(), `${ctx}.name`).not.toBe('')
+              if (it.note) expectLocalized(it.note, `${ctx}.note`)
+            }
+          }
+          if (block.type === 'rating-list') {
+            for (const it of block.items) {
+              expect(it.label?.trim(), `${ctx}.label`).not.toBe('')
+              expectLocalized(it.text, `${ctx}.text`)
+            }
+          }
+          if (block.type === 'team-grid') {
+            for (const group of block.groups) {
+              if (group.title) expectLocalized(group.title, `${ctx}.title`)
+              expect(Array.isArray(group.faces), `${ctx}.faces`).toBe(true)
+              for (const face of group.faces) {
+                expect(typeof face, `${ctx}.faces[]`).toBe('number')
+              }
+            }
+          }
         }
       }
     }

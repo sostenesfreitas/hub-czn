@@ -8,6 +8,10 @@ import { resolveLang, localized } from '../guides.utils'
 import type { Guide } from '../guides.types'
 import { ProseBlock } from './blocks/ProseBlock'
 import { CardListBlock } from './blocks/CardListBlock'
+import { PartnerListBlock } from './blocks/PartnerListBlock'
+import { GearListBlock } from './blocks/GearListBlock'
+import { RatingListBlock } from './blocks/RatingListBlock'
+import { TeamGridBlock } from './blocks/TeamGridBlock'
 
 export function GuidePage({ guide }: { guide: Guide }) {
   const { t, i18n } = useTranslation()
@@ -70,6 +74,14 @@ export function GuidePage({ guide }: { guide: Guide }) {
                         cardsById={cardsById}
                       />
                     )
+                  if (block.type === 'partner-list')
+                    return <PartnerListBlock key={i} items={block.items} />
+                  if (block.type === 'gear-list')
+                    return <GearListBlock key={i} intro={block.intro} items={block.items} />
+                  if (block.type === 'rating-list')
+                    return <RatingListBlock key={i} items={block.items} />
+                  if (block.type === 'team-grid')
+                    return <TeamGridBlock key={i} groups={block.groups} />
                   return null
                 })}
               </div>
