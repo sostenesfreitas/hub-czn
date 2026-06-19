@@ -1,0 +1,62 @@
+{
+  "charResId": 1069,
+  "name": "Tenebria",
+  "sections": [
+    {
+      "id": "overview",
+      "title": { "en": "Overview & Rhythm", "pt-BR": "Visão Geral & Rhythm" },
+      "blocks": [
+        {
+          "type": "prose",
+          "body": {
+            "en": "Tenebria's core identity is Music, Start! and her Rhythm. ALL ALLY (minutes set) BASIC ATTACKS are Basic Skills, and her cycle builds Rhythm to power up her Attack Cards. Higher Rhythm means her Basic Potentials, Move and Re-Narja synergize for higher damage.",
+            "pt-BR": "A identidade central da Tenebria é o Music, Start! e seu Rhythm. TODOS os ATAQUES BÁSICOS dos aliados contam como Basic Skills, e o ciclo dela acumula Rhythm para potencializar as Attack Cards. Mais Rhythm significa que os Basic Potentials, o Move e o Re-Narja sinergizam para mais dano."
+          }
+        },
+        {
+          "type": "card-list",
+          "intro": {
+            "en": "Her signature cards — the foundation of every Tenebria combo:",
+            "pt-BR": "As cartas-assinatura dela — a base de todo combo da Tenebria:"
+          },
+          "items": [
+            {
+              "cardId": "c_1069_uni1",
+              "rating": "S",
+              "note": {
+                "en": "Spotlight — the engine that sets up her Rhythm payoff.",
+                "pt-BR": "Spotlight — o motor que prepara o retorno de Rhythm dela."
+              }
+            },
+            {
+              "cardId": "c_1069_uni2",
+              "rating": "A",
+              "note": {
+                "en": "Call & Response — Tenebria's unique follow-up damage card.",
+                "pt-BR": "Call & Response — a carta de dano de acompanhamento exclusiva da Tenebria."
+              }
+            },
+            {
+              "cardId": "c_1069_srt1",
+              "rating": "B",
+              "note": {
+                "en": "Sound Check — basic starting attack, fuels the cycle.",
+                "pt-BR": "Sound Check — ataque inicial básico, alimenta o ciclo."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    { "id": "arpeggio", "title": { "en": "Arpeggio (EZ Mode)", "pt-BR": "Arpeggio (Modo Fácil)" }, "blocks": [] },
+    { "id": "spotlight", "title": { "en": "Arpeggio + Spotlight", "pt-BR": "Arpeggio + Spotlight" }, "blocks": [] },
+    { "id": "crescendo", "title": { "en": "Mar Lin Crescendo", "pt-BR": "Mar Lin Crescendo" }, "blocks": [] },
+    { "id": "partners", "title": { "en": "Partners", "pt-BR": "Parceiros" }, "blocks": [] },
+    { "id": "gear", "title": { "en": "Gear & Sets", "pt-BR": "Equipamentos & Sets" }, "blocks": [] },
+    { "id": "ego", "title": { "en": "Ego (E1–E6)", "pt-BR": "Ego (E1–E6)" }, "blocks": [] },
+    { "id": "engravings", "title": { "en": "Lux / Umbra Engravings", "pt-BR": "Engravings Lux / Umbra" }, "blocks": [] },
+    { "id": "persona", "title": { "en": "Skill Persona", "pt-BR": "Skill Persona" }, "blocks": [] },
+    { "id": "cards", "title": { "en": "Cards", "pt-BR": "Cartas" }, "blocks": [] },
+    { "id": "teams", "title": { "en": "Example Teams", "pt-BR": "Times de Exemplo" }, "blocks": [] }
+  ]
+}
