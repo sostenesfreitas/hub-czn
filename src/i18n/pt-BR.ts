@@ -18,6 +18,7 @@ const ptBR = {
     rescue: 'Registros de Rescue',
     cards: 'Biblioteca de Cartas',
     encyclopedia: 'Enciclopédia',
+    guides: 'Guias',
     deckBuilder: 'Deck Builder',
     simulator: 'Simulador',
     battle: 'Histórico de Batalhas',
@@ -325,6 +326,12 @@ const ptBR = {
       hits: 'Hits',
       spark: 'Spark',
     },
+  },
+  guides: {
+    title: 'Guias',
+    description: 'Guias de build e estratégia dos personagens.',
+    backToList: 'Todos os guias',
+    sectionComingSoon: 'Esta seção chega em breve.',
   },
   encyclopedia: {
     tabs: {

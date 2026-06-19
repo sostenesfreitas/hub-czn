@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   Home, Swords, Layers, Users, BarChart2,
-  Radio, Settings, Gift, Info, Zap, Sword, BookOpen,
+  Radio, Settings, Gift, Info, Zap, Sword, BookOpen, BookMarked,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import i18n from '@/i18n'
@@ -17,6 +17,7 @@ const NAV = [
   { to: '/scoring',    key: 'nav.scoring',     icon: BarChart2 },
   { to: '/deck-builder', key: 'nav.deckBuilder', icon: Swords, beta: true },
   { to: '/encyclopedia', key: 'nav.encyclopedia', icon: BookOpen },
+  { to: '/guides',     key: 'nav.guides',      icon: BookMarked },
   { to: '/simulator',  key: 'nav.simulator',   icon: Zap,  beta: true },
   { to: '/battle',     key: 'nav.battle',      icon: Sword, beta: true },
   { to: '/capture',    key: 'nav.capture',     icon: Radio },

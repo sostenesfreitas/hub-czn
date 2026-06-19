@@ -18,6 +18,7 @@ const en = {
     rescue: 'Rescue Records',
     cards: 'Card Library',
     encyclopedia: 'Encyclopedia',
+    guides: 'Guides',
     deckBuilder: 'Deck Builder',
     simulator: 'Simulator',
     battle: 'Battle History',
@@ -325,6 +326,12 @@ const en = {
       hits: 'Hits',
       spark: 'Spark',
     },
+  },
+  guides: {
+    title: 'Guides',
+    description: 'Character build and strategy guides.',
+    backToList: 'All guides',
+    sectionComingSoon: 'This section is coming soon.',
   },
   encyclopedia: {
     tabs: {

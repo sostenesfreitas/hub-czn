@@ -21,6 +21,7 @@ import { EngravingsTab } from './pages/encyclopedia/components/EngravingsTab'
 import { GlossaryTab } from './pages/encyclopedia/components/GlossaryTab'
 import { BattlePage } from './pages/battle/BattlePage'
 import { DeckBuilderPage } from './pages/deck-builder/DeckBuilderPage'
+import { GuidesPage } from './pages/guides/GuidesPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +55,7 @@ function AppRoutes() {
           </Route>
           <Route path="cards" element={<Navigate to="/encyclopedia/cards" replace />} />
           <Route path="deck-builder" element={<DeckBuilderPage />} />
+          <Route path="guides" element={<GuidesPage />} />
           <Route path="simulator"  element={<SimulatorPage />} />
           <Route path="capture"    element={<CapturePage />} />
           <Route path="setup"      element={<SetupPage />} />
