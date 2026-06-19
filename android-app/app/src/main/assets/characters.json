@@ -134,6 +134,11 @@
     "rarity": 5,
     "kind": "Combatant"
   },
+  "Tenebria": {
+    "res_id": 1069,
+    "rarity": 5,
+    "kind": "Combatant"
+  },
   "Nine": {
     "res_id": 30047,
     "rarity": 5,
@@ -166,6 +171,11 @@
   },
   "Solia": {
     "res_id": 1058,
+    "rarity": 5,
+    "kind": "Partner"
+  },
+  "Aria": {
+    "res_id": 1070,
     "rarity": 5,
     "kind": "Partner"
   },

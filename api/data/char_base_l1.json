@@ -348,13 +348,13 @@
     "friendship_group": "friendship_bonus_no_bg"
   },
   "1055": {
-    "atk": 129,
-    "def": 56,
-    "hp": 74,
+    "atk": 135,
+    "def": 55,
+    "hp": 102,
     "cri": 3.0,
     "cri_dmg": 125.0,
     "weak_ego_dmg_rate": 125.0,
-    "level_group": "c_lv_controller_sr",
+    "level_group": "c_lv_knight_ssr",
     "ascend_group": "dev_ascend",
     "limit_break_group": "limit_1055",
     "friendship_group": "friendship_bonus_no_bg"
@@ -516,15 +516,15 @@
     "friendship_group": "friendship_bonus_no_bg"
   },
   "1069": {
-    "atk": 135,
+    "atk": 150,
     "def": 50,
-    "hp": 90,
+    "hp": 85,
     "cri": 3.0,
     "cri_dmg": 125.0,
     "weak_ego_dmg_rate": 125.0,
-    "level_group": "c_lv_knight_ssr",
+    "level_group": "c_lv_psionic_ssr",
     "ascend_group": "dev_ascend",
-    "limit_break_group": "none",
+    "limit_break_group": "limit_1069",
     "friendship_group": "friendship_bonus_no_bg"
   },
   "1071": {
@@ -981,6 +981,30 @@
     "level_group": "c_lv_hunter_ssr",
     "ascend_group": "dev_ascend",
     "limit_break_group": "limit_1061",
+    "friendship_group": "friendship_bonus_no_bg"
+  },
+  "90003": {
+    "atk": 135,
+    "def": 55,
+    "hp": 102,
+    "cri": 3.0,
+    "cri_dmg": 125.0,
+    "weak_ego_dmg_rate": 125.0,
+    "level_group": "c_lv_knight_ssr",
+    "ascend_group": "dev_ascend",
+    "limit_break_group": "limit_1055",
+    "friendship_group": "friendship_bonus_no_bg"
+  },
+  "90004": {
+    "atk": 150,
+    "def": 50,
+    "hp": 85,
+    "cri": 3.0,
+    "cri_dmg": 125.0,
+    "weak_ego_dmg_rate": 125.0,
+    "level_group": "c_lv_psionic_ssr",
+    "ascend_group": "dev_ascend",
+    "limit_break_group": "limit_1069",
     "friendship_group": "friendship_bonus_no_bg"
   }
 }

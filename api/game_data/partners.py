@@ -51,6 +51,22 @@ PARTNERS = {
         "ego_cost": 3,
         "ego_desc": "250% Damage\nMark 1",
     },
+    1070: {
+        "name": "Aria",
+        "grade": 5,
+        "class": "Psionic",
+        "passive_name": "Aria On Stage",
+        "passive_desc": "The assigned combatant's Attack is increased by {ATK%}%.\nIncrease Damage Amount of the assigned combatant's Basic Attack Cards by {BasicAtkDMG%}% for each Basic Attack Card that shares the same name (max {MaxBasicAtkDMG%}%).",
+        "values": {
+            "ATK%": (16, 18, 20, 22, 24),
+            "BasicAtkDMG%": (4, 5, 6, 7, 8),
+            "MaxBasicAtkDMG%": (24, 30, 36, 42, 48),
+        },
+        "stats": {"ATK%": (16, 18, 20, 22, 24)},
+        "ego_name": "An Aria For You",
+        "ego_cost": 2,
+        "ego_desc": "+Basic Attack Card Damage\nIf Ego used: -1 Cost to Basic Attack Cards for 1 turn",
+    },
     20001: {
         "name": "Arwen",
         "grade": 4,
